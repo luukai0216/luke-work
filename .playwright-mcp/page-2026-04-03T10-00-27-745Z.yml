@@ -1,0 +1,125 @@
+- generic [ref=e4]:
+  - banner [ref=e6]:
+    - link "USDD Decentralized USD" [ref=e7] [cursor=pointer]:
+      - /url: https://app.usdd.io
+      - img [ref=e8]:
+        - img [ref=e9]
+      - generic [ref=e13]:
+        - generic [ref=e14]: USDD
+        - generic [ref=e15]: Decentralized USD
+    - generic [ref=e16]:
+      - link "Home" [ref=e17] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e18]:
+        - generic [ref=e19]: Developer
+        - img [ref=e20]:
+          - img [ref=e21]
+      - generic [ref=e23]:
+        - generic [ref=e24]: Transparency
+        - img [ref=e25]:
+          - img [ref=e26]
+      - generic [ref=e28]:
+        - generic [ref=e29]: Community
+        - img [ref=e30]:
+          - img [ref=e31]
+    - button "Launch APP" [ref=e34] [cursor=pointer]:
+      - generic [ref=e35]: Launch APP
+  - generic [ref=e37]:
+    - generic [ref=e38]:
+      - heading "Smart Allocator" [level=4] [ref=e39]
+      - heading "Sustainable, Secure, Shared Yields" [level=5] [ref=e40]
+      - img "img" [ref=e41]
+    - generic [ref=e43]:
+      - generic [ref=e47]: Overview
+      - generic [ref=e48]:
+        - paragraph [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - text: Debt(USDD)
+              - img "info-circle" [ref=e54] [cursor=pointer]:
+                - img [ref=e55]
+            - paragraph [ref=e58]: "0"
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - text: Invested
+              - img "info-circle" [ref=e63] [cursor=pointer]:
+                - img [ref=e64]
+            - paragraph [ref=e67]: $0
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - text: Earnings
+              - img "info-circle" [ref=e72] [cursor=pointer]:
+                - img [ref=e73]
+            - paragraph [ref=e76]:
+              - text: $0
+              - generic [ref=e77] [cursor=pointer]: APY:0.00%
+        - paragraph [ref=e78]:
+          - heading "Transparency" [level=3] [ref=e79]
+          - paragraph [ref=e80]: Track total available vs. invested value — all on-chain, fully transparent.
+          - paragraph [ref=e81]: No data available
+          - paragraph [ref=e85]:
+            - paragraph [ref=e86]: Debt(USDD)
+            - paragraph [ref=e88]:
+              - text: Total Investment Value
+              - img "info-circle" [ref=e92] [cursor=pointer]:
+                - img [ref=e93]
+    - generic [ref=e96]:
+      - generic [ref=e97]:
+        - paragraph [ref=e98]: Assets Breakdown
+        - paragraph [ref=e100]:
+          - paragraph [ref=e101]:
+            - generic [ref=e102] [cursor=pointer]: By Protocol
+            - generic [ref=e103] [cursor=pointer]: By Network
+            - generic [ref=e104] [cursor=pointer]: By Asset
+      - generic [ref=e108]:
+        - img [ref=e109]
+        - generic:
+          - generic: Total Invested
+          - generic: $0
+    - generic [ref=e111]:
+      - generic [ref=e115]: Proof of Reserve
+      - generic [ref=e116]:
+        - generic [ref=e119]:
+          - generic [ref=e120]: Platform
+          - generic [ref=e121]: Invested
+          - generic [ref=e122]: Earnings
+          - generic [ref=e123]: APY
+          - generic [ref=e125]:
+            - text: Investment Address
+            - img [ref=e127] [cursor=pointer]
+        - generic [ref=e136]:
+          - 'heading "Smart Allocator: USDD’s Sustainable Yield Strategy" [level=3] [ref=e137]'
+          - paragraph [ref=e138]: Smart Allocator is USDD’s yield-sharing initiative, where capital from USDD’s cash reserve is deployed into diverse investment opportunities to earn returns in the form of interest and platform rewards. The profits are distributed to users through USDD Earn.
+          - paragraph [ref=e139]: Our investment strategies include supplying USDD to trusted DeFi protocols to earn interest, as well as capturing funding fees by deploying USDD on exchanges that offer perpetual futures. These approaches are designed to generate sustainable and market-neutral yields.
+          - paragraph [ref=e140]:
+            - text: The chosen investment platforms are selected by the USDD and JUST DAO teams based on strict risk controls, and all investment activities are publicly viewable on this data page. For more details, please refer to
+            - 'link "Introducing Smart Allocator: USDD’s Sustainable Yield Strategy." [ref=e141] [cursor=pointer]':
+              - /url: https://medium.com/p/451cd74af73c/
+            - text: .
+          - paragraph [ref=e142]: Get your sustainable, secure, shared yields with Smart Allocator.
+        - paragraph [ref=e143]
+    - generic [ref=e144]:
+      - generic [ref=e145]:
+        - paragraph [ref=e146]: Debt Overview
+        - paragraph
+      - generic [ref=e150]:
+        - generic [ref=e151]: Network
+        - generic [ref=e152]: Vault
+        - generic [ref=e153]: Total Debt
+        - generic [ref=e154]: contract
+        - generic [ref=e155]: Actions
+  - generic [ref=e163]:
+    - generic [ref=e164]:
+      - generic [ref=e165]:
+        - link [ref=e166] [cursor=pointer]:
+          - /url: https://x.com/usddio
+        - img [ref=e167] [cursor=pointer]
+        - link [ref=e168] [cursor=pointer]:
+          - /url: https://discord.com/invite/NurKn6KEqx
+      - generic [ref=e170]:
+        - generic [ref=e171]: Decentralized USD
+        - generic [ref=e172]: USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.
+      - link "support@usdd.io" [ref=e173] [cursor=pointer]:
+        - /url: mailto:support@usdd.io
+    - generic [ref=e174]: Copyright © 2026 USDD. All rights reserved
+  - text: ","

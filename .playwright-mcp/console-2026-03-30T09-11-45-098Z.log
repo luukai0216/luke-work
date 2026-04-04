@@ -1,0 +1,2 @@
+[     224ms] [WARNING] Manifest: property 'start_url' ignored, should be same origin as document. @ https://prod-app-cdn.usdd.io/manifest.json:0
+[    1008ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://bscrpc.com/:0

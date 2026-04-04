@@ -1,0 +1,82 @@
+- generic [ref=e5]:
+  - banner [ref=e7]:
+    - link "USDD Decentralized USD" [ref=e8] [cursor=pointer]:
+      - /url: https://usdd.io
+      - img [ref=e9]:
+        - img [ref=e10]
+      - generic [ref=e14]:
+        - generic [ref=e15]: USDD
+        - generic [ref=e16]: Decentralized USD
+    - generic [ref=e17]:
+      - generic [ref=e19]: 🔥 Vault
+      - link "Swap(PSM)" [ref=e20] [cursor=pointer]:
+        - /url: /bsc/psm
+        - generic [ref=e21]: Swap(PSM)
+      - generic [ref=e23]: Migrate
+      - link "Earn" [ref=e24] [cursor=pointer]:
+        - /url: /bsc/earn
+        - generic [ref=e25]: Earn
+    - button "Connect Wallet" [ref=e29] [cursor=pointer]:
+      - generic [ref=e30]: Connect Wallet
+  - generic [ref=e31]:
+    - generic [ref=e33]:
+      - heading "Swap(PSM)" [level=1] [ref=e34]
+      - heading "Swap USDD with Other Stablecoins at a Fixed 1:1 Ratio" [level=5] [ref=e35]
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "From" [level=4] [ref=e39]
+          - generic [ref=e42]:
+            - textbox "0.00" [ref=e43]
+            - generic [ref=e46] [cursor=pointer]:
+              - combobox [ref=e48]
+              - generic [ref=e49]:
+                - img "logo" [ref=e51]
+                - generic [ref=e52]: USDT
+          - heading "Balance:" [level=6] [ref=e53]: "Balance:"
+        - generic [ref=e56]:
+          - generic [ref=e58]:
+            - heading "To" [level=4] [ref=e59]
+            - generic [ref=e62]:
+              - textbox "0.00" [ref=e63]
+              - generic [ref=e66] [cursor=pointer]:
+                - combobox [ref=e68]
+                - generic [ref=e69]:
+                  - img "logo" [ref=e71]
+                  - generic [ref=e72]: USDD
+          - 'heading "Available: info-circle" [level=6] [ref=e74]':
+            - generic [ref=e75]:
+              - generic [ref=e76]: "Available:"
+              - img "info-circle" [ref=e81] [cursor=pointer]:
+                - img [ref=e82]
+        - button "Connect Wallet" [ref=e85] [cursor=pointer]:
+          - generic [ref=e86]: Connect Wallet
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - heading "What is Swap(PSM)?" [level=4] [ref=e92]
+            - heading "Swap (PSM) is USDD’s built-in fixed-rate swap feature that lets you convert between USDD and supported stablecoins at a predictable 1:1 rate. It’s designed to keep USDD stable while giving users a simple, transparent way to move in and out of USDD." [level=6] [ref=e93]
+          - generic [ref=e94]:
+            - heading "Why Swap(PSM)?" [level=4] [ref=e97]
+            - heading "Swap (PSM) offers a smooth and reliable way to exchange stablecoins without worrying about slippage.Unlike traditional DEX swaps that rely on liquidity pools and price curves, Swap (PSM) provides fixed-rate conversions with competitive fees across supported networks — making it ideal for larger transactions and stable conversions." [level=6] [ref=e98]
+          - generic [ref=e99]:
+            - heading "How does Swap(PSM) work?" [level=4] [ref=e102]
+            - heading "Swap (PSM) allows users to swap USDD with supported stablecoins such as USDT and USDC at a fixed 1:1 rate. By providing direct conversions instead of market-based pricing, it helps maintain USDD’s dollar peg while ensuring a seamless user experience." [level=6] [ref=e103]
+        - generic [ref=e104]:
+          - heading "Mechanism" [level=6] [ref=e106] [cursor=pointer]
+          - heading "PSM Contracts" [level=6] [ref=e108] [cursor=pointer]
+          - heading "Audit Report" [level=6] [ref=e110] [cursor=pointer]
+  - generic [ref=e113]:
+    - link "support@usdd.io" [ref=e114] [cursor=pointer]:
+      - /url: mailto:support@usdd.io
+    - generic [ref=e115]: Copyright © 2026 USDD. All rights reserved
+    - generic [ref=e116]:
+      - link [ref=e117] [cursor=pointer]:
+        - /url: https://x.com/usddio
+        - img [ref=e118]
+      - link [ref=e120] [cursor=pointer]:
+        - /url: https://t.me/usddio
+        - img [ref=e121]
+      - link [ref=e123] [cursor=pointer]:
+        - /url: https://discord.com/invite/NurKn6KEqx
+        - img [ref=e124]

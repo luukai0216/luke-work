@@ -1,0 +1,76 @@
+- generic [ref=e5]:
+  - banner [ref=e7]:
+    - link "USDD Decentralized USD" [ref=e8] [cursor=pointer]:
+      - /url: https://usdd.io
+      - img [ref=e9]:
+        - img [ref=e10]
+      - generic [ref=e14]:
+        - generic [ref=e15]: USDD
+        - generic [ref=e16]: Decentralized USD
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e20]: 🔥 Vault
+        - img [ref=e21]:
+          - img [ref=e22]
+      - link "Swap(PSM)" [ref=e24] [cursor=pointer]:
+        - /url: /tron/psm
+        - generic [ref=e25]: Swap(PSM)
+      - link "Migrate" [ref=e26] [cursor=pointer]:
+        - /url: /tron/migrate
+        - generic [ref=e27]: Migrate
+      - link "Earn" [ref=e28] [cursor=pointer]:
+        - /url: /tron/earn
+        - generic [ref=e29]: Earn
+    - button "Connect Wallet" [ref=e33] [cursor=pointer]:
+      - generic [ref=e34]: Connect Wallet
+  - generic [ref=e35]:
+    - generic [ref=e37]:
+      - heading "Migrate" [level=1] [ref=e38]
+      - heading "Migrate USDDOLD to the new USDD at a 1:1 ratio" [level=5] [ref=e39]
+    - generic [ref=e40]:
+      - generic [ref=e42]:
+        - heading "USDD Available" [level=5] [ref=e43]
+        - heading "--" [level=2] [ref=e44]
+        - generic [ref=e45]:
+          - img [ref=e47]
+          - paragraph [ref=e49]: USDDOLD Migration Has Ended
+          - paragraph [ref=e50]:
+            - text: Direct conversion from USDDOLD to USDD is no longer supported.
+            - text: 2-Step Quick Swap for USDDOLD
+          - generic [ref=e51]:
+            - paragraph [ref=e52]:
+              - text: 1. Swap USDDOLD to USDT on the
+              - link "Legacy Site PSM" [ref=e53] [cursor=pointer]:
+                - /url: https://legacy.usdd.io/#/psm
+            - paragraph [ref=e54]:
+              - text: 2. Swap USDT to USDD on
+              - link "Swap(PSM)" [ref=e55] [cursor=pointer]:
+                - /url: /tron/psm
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - heading "Why is there a migration?" [level=4] [ref=e61]
+            - heading "The new USDD migration enhances security, improves decentralization, and introduces community-focused features, creating a stronger and more adaptable stablecoin." [level=6] [ref=e62]
+          - generic [ref=e63]:
+            - heading "What happens to USDDOLD?" [level=4] [ref=e66]
+            - heading "Users can easily convert their USDDOLD to the new contract without any loss or disruption, ensuring a seamless transition." [level=6] [ref=e67]
+          - generic [ref=e68]:
+            - heading "Is migration time-limited?" [level=4] [ref=e71]
+            - heading "There is no fixed deadline, users can swap at their convenience according to their needs." [level=6] [ref=e72]
+        - generic [ref=e73]:
+          - heading "USDD Contracts" [level=6] [ref=e75] [cursor=pointer]
+          - heading "USDDOLD Contracts" [level=6] [ref=e77] [cursor=pointer]
+  - generic [ref=e79]:
+    - link "support@usdd.io" [ref=e80] [cursor=pointer]:
+      - /url: mailto:support@usdd.io
+    - generic [ref=e81]: Copyright © 2026 USDD. All rights reserved
+    - generic [ref=e82]:
+      - link [ref=e83] [cursor=pointer]:
+        - /url: https://x.com/usddio
+        - img [ref=e84]
+      - link [ref=e86] [cursor=pointer]:
+        - /url: https://t.me/usddio
+        - img [ref=e87]
+      - link [ref=e89] [cursor=pointer]:
+        - /url: https://discord.com/invite/NurKn6KEqx
+        - img [ref=e90]

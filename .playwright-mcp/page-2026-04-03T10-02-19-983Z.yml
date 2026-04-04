@@ -1,0 +1,261 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - banner [ref=e7]:
+      - link "USDD Decentralized USD" [ref=e8] [cursor=pointer]:
+        - /url: https://usdd.io
+        - img [ref=e9]:
+          - img [ref=e10]
+        - generic [ref=e14]:
+          - generic [ref=e15]: USDD
+          - generic [ref=e16]: Decentralized USD
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e20]: 🔥 Vault
+          - img [ref=e21]:
+            - img [ref=e22]
+        - link "Swap(PSM)" [ref=e24] [cursor=pointer]:
+          - /url: /tron/psm
+          - generic [ref=e25]: Swap(PSM)
+        - link "Migrate" [ref=e26] [cursor=pointer]:
+          - /url: /tron/migrate
+          - generic [ref=e27]: Migrate
+        - link "Earn" [ref=e28] [cursor=pointer]:
+          - /url: /tron/earn
+          - generic [ref=e29]: Earn
+      - button "Connect Wallet" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: Connect Wallet
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "All Assets" [level=4] [ref=e38]
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e42]: Collateral
+            - generic [ref=e43]:
+              - generic [ref=e44]: Min. Coll. Ratio
+              - generic [ref=e45]: Stability Fee
+          - menu [ref=e46]
+        - generic [ref=e47]:
+          - generic [ref=e50]: Welcome to USDD
+          - generic [ref=e51]:
+            - tablist [ref=e52]:
+              - generic [ref=e54]:
+                - tab "Open a vault" [selected] [ref=e56] [cursor=pointer]
+                - tab "Manage a vault" [ref=e58] [cursor=pointer]
+            - generic:
+              - generic:
+                - tabpanel "Open a vault"
+          - generic [ref=e60]:
+            - button "prev" [ref=e61] [cursor=pointer]
+            - generic [ref=e63]:
+              - generic [ref=e68]: 1.Choose a Collateral
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: 2.Deposit Collateral
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: 3.Mint USDD(Borrow Debt)
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: 4.Monitor Your Position
+            - button "next" [ref=e69] [cursor=pointer]
+          - link "Learn more" [ref=e70] [cursor=pointer]:
+            - /url: https://docs.usdd.io/
+        - generic [ref=e71]:
+          - text: Reduce gas fees with
+          - link "Energy Rental" [ref=e72] [cursor=pointer]:
+            - /url: https://app.justlend.org/energyRental
+      - generic [ref=e73]:
+        - heading "TRX-A/USDD" [level=4] [ref=e74]:
+          - generic [ref=e77]: TRX-A/USDD
+        - generic [ref=e78]:
+          - list [ref=e79]:
+            - listitem [ref=e80]:
+              - heading "Stability Fee info-circle" [level=6] [ref=e81]:
+                - text: Stability Fee
+                - img "info-circle" [ref=e82] [cursor=pointer]:
+                  - img [ref=e83]
+              - heading "-- %" [level=4] [ref=e86]
+            - listitem [ref=e87]:
+              - heading "Liquidation Fee info-circle" [level=6] [ref=e88]:
+                - text: Liquidation Fee
+                - img "info-circle" [ref=e89] [cursor=pointer]:
+                  - img [ref=e90]
+              - heading "0 %" [level=4] [ref=e93]
+            - listitem [ref=e94]:
+              - heading "Min. Collateral Ratio info-circle" [level=6] [ref=e95]:
+                - text: Min. Collateral Ratio
+                - img "info-circle" [ref=e96] [cursor=pointer]:
+                  - img [ref=e97]
+              - heading "100 %" [level=4] [ref=e100]
+            - listitem [ref=e101]:
+              - heading "Dust Limit info-circle" [level=6] [ref=e102]:
+                - text: Dust Limit
+                - img "info-circle" [ref=e103] [cursor=pointer]:
+                  - img [ref=e104]
+              - heading "0" [level=4] [ref=e107]
+          - list [ref=e108]:
+            - listitem [ref=e109]:
+              - 'heading "info-circle Current Price: $0" [level=6] [ref=e110]':
+                - img "info-circle" [ref=e111] [cursor=pointer]:
+                  - img [ref=e112]
+                - text: "Current Price: $0"
+            - listitem [ref=e115]:
+              - 'heading "info-circle Next Price: $0 in 0 min" [level=6] [ref=e116]':
+                - img "info-circle" [ref=e117] [cursor=pointer]:
+                  - img [ref=e118]
+                - text: "Next Price: $0 in 0 min"
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - heading "Open a vault" [level=4] [ref=e126]
+            - generic [ref=e127]:
+              - generic [ref=e128]:
+                - heading "Deposit TRX" [level=4] [ref=e129]
+                - 'heading "Balance: 0 TRX" [level=6] [ref=e130]'
+              - generic [ref=e131]:
+                - textbox "Input amount of TRX" [ref=e134]
+                - button "Max" [ref=e136] [cursor=pointer]:
+                  - generic [ref=e137]: Max
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - heading "Mint USDD" [level=4] [ref=e140]
+                - 'heading "From: 0 USDD" [level=6] [ref=e141]':
+                  - generic [ref=e142]: "From: 0 USDD"
+              - generic [ref=e143]:
+                - textbox "Input amount of USDD" [ref=e146]
+                - button "Max" [ref=e148] [cursor=pointer]:
+                  - generic [ref=e149]: Max
+            - button "Connect Wallet" [ref=e151] [cursor=pointer]:
+              - generic [ref=e152]: Connect Wallet
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - tablist [ref=e155]:
+                - generic [ref=e157]:
+                  - tab "My Position" [selected] [ref=e159] [cursor=pointer]
+                  - tab "History" [ref=e161] [cursor=pointer]
+              - generic:
+                - generic:
+                  - tabpanel "My Position"
+            - generic [ref=e162]:
+              - list [ref=e163]:
+                - listitem [ref=e164]:
+                  - heading "Status" [level=6] [ref=e165]
+                - listitem [ref=e166]:
+                  - generic [ref=e167]:
+                    - text: Liquidation Price
+                    - img "info-circle" [ref=e168] [cursor=pointer]:
+                      - img [ref=e169]
+                  - generic [ref=e173] [cursor=pointer]: $--
+                - listitem [ref=e174]:
+                  - generic [ref=e175]:
+                    - text: Collateral Ratio
+                    - img "info-circle" [ref=e176] [cursor=pointer]:
+                      - img [ref=e177]
+                  - generic [ref=e181] [cursor=pointer]: "-- %"
+              - list [ref=e182]:
+                - listitem [ref=e183]:
+                  - heading "Collateral TRX-A" [level=6] [ref=e184]:
+                    - text: Collateral
+                    - generic [ref=e186]: TRX-A
+                - listitem [ref=e187]:
+                  - generic [ref=e188]:
+                    - text: Collateral Locked
+                    - img "info-circle" [ref=e189] [cursor=pointer]:
+                      - img [ref=e190]
+                  - generic [ref=e194] [cursor=pointer]: "--"
+                - listitem [ref=e195]:
+                  - generic [ref=e196]:
+                    - text: Available to Withdraw
+                    - img "info-circle" [ref=e197] [cursor=pointer]:
+                      - img [ref=e198]
+                  - generic [ref=e202] [cursor=pointer]: "--"
+              - list [ref=e203]:
+                - listitem [ref=e204]:
+                  - heading "Debt USDD" [level=6] [ref=e205]:
+                    - text: Debt
+                    - generic [ref=e207]: USDD
+                - listitem [ref=e208]:
+                  - generic [ref=e209]:
+                    - text: Vault USDD Debt
+                    - img "info-circle" [ref=e210] [cursor=pointer]:
+                      - img [ref=e211]
+                  - generic [ref=e215] [cursor=pointer]: "--"
+                - listitem [ref=e216]:
+                  - generic [ref=e217]:
+                    - text: Available to Generate
+                    - img "info-circle" [ref=e218] [cursor=pointer]:
+                      - img [ref=e219]
+                  - generic [ref=e223] [cursor=pointer]: "--"
+              - generic [ref=e224]: "* Values are estimates and may change."
+    - generic [ref=e226]:
+      - link "support@usdd.io" [ref=e227] [cursor=pointer]:
+        - /url: mailto:support@usdd.io
+      - generic [ref=e228]: Copyright © 2026 USDD. All rights reserved
+      - generic [ref=e229]:
+        - link [ref=e230] [cursor=pointer]:
+          - /url: https://x.com/usddio
+          - img [ref=e231]
+        - link [ref=e233] [cursor=pointer]:
+          - /url: https://t.me/usddio
+          - img [ref=e234]
+        - link [ref=e236] [cursor=pointer]:
+          - /url: https://discord.com/invite/NurKn6KEqx
+          - img [ref=e237]
+  - generic [ref=e239]:
+    - dialog "Please Connect Your Wallet":
+      - generic [ref=e240]:
+        - button "Close" [ref=e241] [cursor=pointer]:
+          - img [ref=e243]
+        - generic [ref=e246]: Please Connect Your Wallet
+        - generic [ref=e248]:
+          - generic [ref=e249]:
+            - img [ref=e250]
+            - text: Connect to an Tron wallet
+          - generic [ref=e253]:
+            - button "Tronlink loading" [disabled] [ref=e255]:
+              - generic:
+                - generic: Tronlink
+              - generic:
+                - img "loading":
+                  - img
+            - button "Binance Wallet loading" [disabled] [ref=e257]:
+              - generic:
+                - generic: Binance Wallet
+              - generic:
+                - img "loading":
+                  - img
+            - button "OKX Wallet loading" [disabled] [ref=e259]:
+              - generic:
+                - generic: OKX Wallet
+              - generic:
+                - img "loading":
+                  - img
+            - button "TokenPocket loading" [disabled] [ref=e261]:
+              - generic:
+                - generic: TokenPocket
+              - generic:
+                - img "loading":
+                  - img
+            - button "imToken Wallet App only (no extension)" [disabled] [ref=e263]:
+              - generic:
+                - generic: imToken Wallet
+                - generic: App only (no extension)
+            - button "Wallet Connect loading" [disabled] [ref=e265]:
+              - generic:
+                - generic: Wallet Connect
+              - generic:
+                - img "loading":
+                  - img
+          - generic [ref=e266]:
+            - text: Clicking to 'Connect' indicates your acceptance of the
+            - generic [ref=e267]:
+              - link "Terms of Service" [ref=e268] [cursor=pointer]:
+                - /url: /terms-of-use.pdf
+              - text: and
+              - link "Privacy Policy" [ref=e269] [cursor=pointer]:
+                - /url: /privacy-policy.pdf

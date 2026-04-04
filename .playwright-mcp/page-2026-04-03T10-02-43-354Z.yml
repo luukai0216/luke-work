@@ -1,0 +1,216 @@
+- generic [ref=e5]:
+  - banner [ref=e7]:
+    - link "USDD Decentralized USD" [ref=e8] [cursor=pointer]:
+      - /url: https://usdd.io
+      - img [ref=e9]:
+        - img [ref=e10]
+      - generic [ref=e14]:
+        - generic [ref=e15]: USDD
+        - generic [ref=e16]: Decentralized USD
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e20]: 🔥 Vault
+        - img [ref=e21]:
+          - img [ref=e70]
+      - link "Swap(PSM)" [ref=e24] [cursor=pointer]:
+        - /url: /tron/psm
+        - generic [ref=e25]: Swap(PSM)
+      - link "Migrate" [ref=e26] [cursor=pointer]:
+        - /url: /tron/migrate
+        - generic [ref=e27]: Migrate
+      - link "Earn" [ref=e28] [cursor=pointer]:
+        - /url: /tron/earn
+        - generic [ref=e29]: Earn
+    - button "Connect Wallet" [ref=e33] [cursor=pointer]:
+      - generic [ref=e34]: Connect Wallet
+  - generic [ref=e35]:
+    - generic [ref=e37]:
+      - heading "Leading the FinancialFuture with" [level=2] [ref=e38]
+      - heading "StabilityandTransparency" [level=2] [ref=e39]
+      - heading "JUST DAO offers a lending protocol that enables users to mint over-collateralized stablecoins (USDD) by depositing Tron chain assets." [level=6] [ref=e40]
+    - generic [ref=e42]:
+      - generic [ref=e43]: "\"11 days 21 hours\""
+      - link "Read More" [ref=e44] [cursor=pointer]:
+        - /url: /tron/activity
+        - img [ref=e45]
+        - text: Read More
+    - generic [ref=e47]:
+      - heading "All Vaults" [level=3] [ref=e48]
+      - table [ref=e78]:
+        - rowgroup [ref=e80]:
+          - row "Collateral Total Collateral USDD Limit info-circle Min. Collateral Ratio info-circle Stability Fee info-circle Dust Limit info-circle" [ref=e81]:
+            - columnheader "Collateral" [ref=e82]
+            - columnheader "Total Collateral" [ref=e83]
+            - columnheader "USDD Limit info-circle" [ref=e84]:
+              - generic [ref=e85]:
+                - text: USDD Limit
+                - img "info-circle" [ref=e86] [cursor=pointer]:
+                  - img [ref=e87]
+            - columnheader "Min. Collateral Ratio info-circle" [ref=e90]:
+              - generic [ref=e91]:
+                - text: Min. Collateral Ratio
+                - img "info-circle" [ref=e92] [cursor=pointer]:
+                  - img [ref=e93]
+            - columnheader "Stability Fee info-circle" [ref=e96]:
+              - generic [ref=e97]:
+                - text: Stability Fee
+                - img "info-circle" [ref=e98] [cursor=pointer]:
+                  - img [ref=e99]
+            - columnheader "Dust Limit info-circle" [ref=e102]:
+              - generic [ref=e103]:
+                - text: Dust Limit
+                - img "info-circle" [ref=e104] [cursor=pointer]:
+                  - img [ref=e105]
+            - columnheader [ref=e108]
+        - rowgroup [ref=e109]:
+          - row "TRX-A $393.73M 170.25M / 200.00M 120% 5% 0.5% Reduced Fees 1,000 Mint" [ref=e110]:
+            - cell "TRX-A" [ref=e111]:
+              - generic [ref=e112]:
+                - img [ref=e115]
+                - generic [ref=e116]: TRX-A
+            - cell "$393.73M" [ref=e117]:
+              - generic [ref=e120]: $393.73M
+            - cell "170.25M / 200.00M" [ref=e121]:
+              - generic [ref=e122]:
+                - generic [ref=e123]: 170.25M
+                - generic [ref=e124]: / 200.00M
+            - cell "120%" [ref=e125]:
+              - generic [ref=e128]: 120%
+            - cell "5% 0.5% Reduced Fees" [ref=e129]:
+              - generic [ref=e132]:
+                - generic [ref=e133]:
+                  - img [ref=e134]
+                  - generic [ref=e138]: 5%
+                - generic [ref=e139]:
+                  - generic [ref=e140]: 0.5%
+                  - generic [ref=e141]: Reduced Fees
+            - cell "1,000" [ref=e142]:
+              - generic [ref=e144]: 1,000
+            - cell "Mint" [ref=e145]:
+              - link "Mint" [ref=e146] [cursor=pointer]:
+                - /url: /tron/vault?token=TRX-A
+                - button "Mint" [ref=e147]:
+                  - generic [ref=e148]: Mint
+          - row "TRX-B $227.91M 96.13M / 100.00M 117% 7% 0.5% Reduced Fees 2,000 Mint" [ref=e149]:
+            - cell "TRX-B" [ref=e150]:
+              - generic [ref=e151]:
+                - img [ref=e154]
+                - generic [ref=e155]: TRX-B
+            - cell "$227.91M" [ref=e156]:
+              - generic [ref=e159]: $227.91M
+            - cell "96.13M / 100.00M" [ref=e160]:
+              - generic [ref=e161]:
+                - generic [ref=e162]: 96.13M
+                - generic [ref=e163]: / 100.00M
+            - cell "117%" [ref=e164]:
+              - generic [ref=e167]: 117%
+            - cell "7% 0.5% Reduced Fees" [ref=e168]:
+              - generic [ref=e171]:
+                - generic [ref=e172]:
+                  - img [ref=e173]
+                  - generic [ref=e177]: 7%
+                - generic [ref=e178]:
+                  - generic [ref=e179]: 0.5%
+                  - generic [ref=e180]: Reduced Fees
+            - cell "2,000" [ref=e181]:
+              - generic [ref=e183]: 2,000
+            - cell "Mint" [ref=e184]:
+              - link "Mint" [ref=e185] [cursor=pointer]:
+                - /url: /tron/vault?token=TRX-B
+                - button "Mint" [ref=e186]:
+                  - generic [ref=e187]: Mint
+          - row "TRX-C $472.20M 190.13M / 200.00M 130% 3% 0.5% Reduced Fees 500 Mint" [ref=e188]:
+            - cell "TRX-C" [ref=e189]:
+              - generic [ref=e190]:
+                - img [ref=e193]
+                - generic [ref=e194]: TRX-C
+            - cell "$472.20M" [ref=e195]:
+              - generic [ref=e198]: $472.20M
+            - cell "190.13M / 200.00M" [ref=e199]:
+              - generic [ref=e200]:
+                - generic [ref=e201]: 190.13M
+                - generic [ref=e202]: / 200.00M
+            - cell "130%" [ref=e203]:
+              - generic [ref=e206]: 130%
+            - cell "3% 0.5% Reduced Fees" [ref=e207]:
+              - generic [ref=e210]:
+                - generic [ref=e211]:
+                  - img [ref=e212]
+                  - generic [ref=e216]: 3%
+                - generic [ref=e217]:
+                  - generic [ref=e218]: 0.5%
+                  - generic [ref=e219]: Reduced Fees
+            - cell "500" [ref=e220]:
+              - generic [ref=e222]: "500"
+            - cell "Mint" [ref=e223]:
+              - link "Mint" [ref=e224] [cursor=pointer]:
+                - /url: /tron/vault?token=TRX-C
+                - button "Mint" [ref=e225]:
+                  - generic [ref=e226]: Mint
+          - row "USDT-A $673.11K 559.38K / 200.00M 105% 1% 2,000 Mint" [ref=e227]:
+            - cell "USDT-A" [ref=e228]:
+              - generic [ref=e229]:
+                - img [ref=e232]
+                - generic [ref=e233]: USDT-A
+            - cell "$673.11K" [ref=e234]:
+              - generic [ref=e237]: $673.11K
+            - cell "559.38K / 200.00M" [ref=e238]:
+              - generic [ref=e239]:
+                - generic [ref=e240]: 559.38K
+                - generic [ref=e241]: / 200.00M
+            - cell "105%" [ref=e242]:
+              - generic [ref=e245]: 105%
+            - cell "1%" [ref=e246]:
+              - generic [ref=e249]: 1%
+            - cell "2,000" [ref=e250]:
+              - generic [ref=e252]: 2,000
+            - cell "Mint" [ref=e253]:
+              - link "Mint" [ref=e254] [cursor=pointer]:
+                - /url: /tron/vault?token=USDT-A
+                - button "Mint" [ref=e255]:
+                  - generic [ref=e256]: Mint
+          - row "sTRX-A info-circle $19.34M 8.86M / 50.00M 130% 3% 1% Reduced Fees 2,000 Mint" [ref=e257]:
+            - cell "sTRX-A info-circle" [ref=e258]:
+              - generic [ref=e259]:
+                - img [ref=e262]
+                - generic [ref=e263]:
+                  - text: sTRX-A
+                  - img "info-circle" [ref=e264] [cursor=pointer]:
+                    - img [ref=e265]
+            - cell "$19.34M" [ref=e268]:
+              - generic [ref=e271]: $19.34M
+            - cell "8.86M / 50.00M" [ref=e272]:
+              - generic [ref=e273]:
+                - generic [ref=e274]: 8.86M
+                - generic [ref=e275]: / 50.00M
+            - cell "130%" [ref=e276]:
+              - generic [ref=e279]: 130%
+            - cell "3% 1% Reduced Fees" [ref=e280]:
+              - generic [ref=e283]:
+                - generic [ref=e284]:
+                  - img [ref=e285]
+                  - generic [ref=e289]: 3%
+                - generic [ref=e290]:
+                  - generic [ref=e291]: 1%
+                  - generic [ref=e292]: Reduced Fees
+            - cell "2,000" [ref=e293]:
+              - generic [ref=e295]: 2,000
+            - cell "Mint" [ref=e296]:
+              - link "Mint" [ref=e297] [cursor=pointer]:
+                - /url: /tron/vault?token=STRX-A
+                - button "Mint" [ref=e298]:
+                  - generic [ref=e299]: Mint
+  - generic [ref=e57]:
+    - link "support@usdd.io" [ref=e58] [cursor=pointer]:
+      - /url: mailto:support@usdd.io
+    - generic [ref=e59]: Copyright © 2026 USDD. All rights reserved
+    - generic [ref=e60]:
+      - link [ref=e61] [cursor=pointer]:
+        - /url: https://x.com/usddio
+        - img [ref=e62]
+      - link [ref=e64] [cursor=pointer]:
+        - /url: https://t.me/usddio
+        - img [ref=e65]
+      - link [ref=e67] [cursor=pointer]:
+        - /url: https://discord.com/invite/NurKn6KEqx
+        - img [ref=e68]

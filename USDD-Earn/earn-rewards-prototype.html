@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USDD App — Earn Rewards Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-default: #216C58;
+      --brand-hover: #2A8C6C;
+      --brand-active: #1C5D4C;
+      --brand-light: #5FC693;
+      --brand-highlight: #81DEB0;
+      --brand-bg: rgba(33, 108, 88, 0.15);
+
+      --bg-page: #0C0C0E;
+      --bg-section: #141615;
+      --bg-card: #181A1C;
+      --bg-elevated: #212426;
+
+      --text-primary: rgba(255, 255, 255, 1);
+      --text-secondary: rgba(255, 255, 255, 0.8);
+      --text-tertiary: rgba(255, 255, 255, 0.6);
+      --text-quaternary: rgba(255, 255, 255, 0.4);
+      --text-disabled: rgba(255, 255, 255, 0.2);
+
+      --border-strong: rgba(255, 255, 255, 0.25);
+      --border-default: rgba(255, 255, 255, 0.15);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+
+      --fill-hover: rgba(255, 255, 255, 0.04);
+      --fill-overlay: rgba(0, 0, 0, 0.6);
+
+      --success-default: #448F6A;
+      --warning-default: #FF8F0B;
+      --danger-default: #D73133;
+      --info-default: #0D9488;
+
+      --radius-xs: 4px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+
+      --shadow-sm: 0 1px 8px rgba(0, 0, 0, 0.32);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.48);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.64);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      background: none;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(33, 108, 88, 0.14), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(95, 198, 147, 0.08), transparent 24%),
+        var(--bg-page);
+    }
+
+    .notice-bar {
+      width: 100%;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.08);
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(12, 12, 14, 0.88);
+      backdrop-filter: blur(12px);
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 80px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, var(--brand-default), var(--brand-hover));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-link {
+      height: 40px;
+      padding: 0 16px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-tertiary);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background .18s ease, color .18s ease, border-color .18s ease;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      background: var(--fill-hover);
+      color: var(--text-primary);
+    }
+
+    .nav-link.active {
+      background: var(--brand-bg);
+      color: var(--brand-light);
+      border-color: rgba(95, 198, 147, 0.22);
+    }
+
+    .nav-tag {
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-quaternary);
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .nav-link.active .nav-tag {
+      color: var(--brand-light);
+      background: rgba(95, 198, 147, 0.12);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chain-chip {
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .chain-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #627EEA;
+      box-shadow: 0 0 0 4px rgba(98, 126, 234, 0.14);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: background .18s ease, color .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+
+    .btn-primary-sm,
+    .btn-secondary-sm {
+      height: 40px;
+      padding: 0 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .btn-primary-md,
+    .btn-secondary-md {
+      height: 48px;
+      padding: 0 24px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .btn-primary-sm,
+    .btn-primary-md {
+      background: var(--brand-default);
+      color: #fff;
+    }
+
+    .btn-primary-sm:hover,
+    .btn-primary-md:hover {
+      background: var(--brand-hover);
+    }
+
+    .btn-secondary-sm,
+    .btn-secondary-md {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary-sm:hover,
+    .btn-secondary-md:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    .btn[disabled] {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
+    .page-main {
+      padding-top: 32px;
+      padding-bottom: 72px;
+    }
+
+    .page-hero {
+      margin-bottom: 24px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(95, 198, 147, 0.12), transparent 36%),
+        linear-gradient(145deg, rgba(33, 108, 88, 0.32), rgba(33, 108, 88, 0.06) 42%, rgba(255, 255, 255, 0.02) 100%),
+        var(--bg-card);
+      position: relative;
+    }
+
+    .page-hero::before {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -80px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(129, 222, 176, 0.22), transparent 62%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .page-hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 36px 36px 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+      gap: 28px;
+      align-items: end;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(95, 198, 147, 0.18);
+      background: rgba(95, 198, 147, 0.08);
+      color: var(--brand-light);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 32px;
+      line-height: 1.28;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-tertiary);
+      max-width: 720px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      min-height: 104px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric-value {
+      font-size: 26px;
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .metric-sub {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .section-shell {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+    }
+
+    .section-shell + .section-shell {
+      margin-top: 24px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-tertiary);
+      max-width: 780px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .featured-card {
+      min-height: 248px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-card::after {
+      content: "";
+      position: absolute;
+      right: -36px;
+      bottom: -36px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(95, 198, 147, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .featured-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .platform-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .status-badge,
+    .type-badge,
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 24px;
+      padding: 0 10px;
+      border-radius: var(--radius-xs);
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .status-active {
+      background: rgba(68, 143, 106, 0.15);
+      color: var(--success-default);
+    }
+
+    .status-upcoming {
+      background: rgba(255, 143, 11, 0.15);
+      color: var(--warning-default);
+    }
+
+    .status-ended {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-disabled);
+    }
+
+    .type-lending {
+      background: rgba(13, 148, 136, 0.16);
+      color: var(--info-default);
+    }
+
+    .type-dex {
+      background: rgba(33, 108, 88, 0.15);
+      color: var(--brand-light);
+    }
+
+    .type-cex {
+      background: rgba(129, 222, 176, 0.14);
+      color: var(--brand-highlight);
+    }
+
+    .type-wallet {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+
+    .platform-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .platform-property {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+      min-height: 42px;
+    }
+
+    .platform-apy {
+      margin: 14px 0 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .platform-apy strong {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--brand-highlight);
+    }
+
+    .platform-apy span {
+      font-size: 12px;
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .network-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .network-chip {
+      height: 24px;
+      padding: 0 8px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      color: var(--text-tertiary);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      height: 32px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-tertiary);
+      font-size: 13px;
+      font-weight: 500;
+      transition: background .18s ease, border-color .18s ease, color .18s ease;
+    }
+
+    .filter-chip:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .filter-chip.active {
+      background: var(--brand-bg);
+      border-color: rgba(95, 198, 147, 0.22);
+      color: var(--brand-light);
+    }
+
+    .filter-chip.sort.active {
+      color: var(--brand-highlight);
+    }
+
+    .chip-counter {
+      color: var(--text-quaternary);
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    .opportunities-wrap {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .table-scroll {
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1160px;
+    }
+
+    thead tr {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    th {
+      padding: 14px 16px;
+      text-align: left;
+      color: var(--text-quaternary);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      text-transform: inherit;
+    }
+
+    th button.active {
+      color: var(--brand-light);
+    }
+
+    td {
+      padding: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      vertical-align: middle;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .platform-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .platform-logo-sm {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .platform-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .platform-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .platform-help {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid var(--border-default);
+      color: var(--text-quaternary);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: help;
+      position: relative;
+    }
+
+    .platform-help:hover .tooltip {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .tooltip {
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 10px);
+      transform: translateX(-50%) translateY(4px);
+      width: 240px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      box-shadow: var(--shadow-md);
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.6;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .16s ease, transform .16s ease;
+      z-index: 10;
+    }
+
+    .subline {
+      color: var(--text-quaternary);
+      font-size: 12px;
+    }
+
+    .network-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .apy-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: var(--radius-xs);
+      background: rgba(95, 198, 147, 0.1);
+      color: var(--brand-highlight);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .rule-link {
+      color: var(--brand-light);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .rule-link:hover {
+      color: var(--brand-highlight);
+    }
+
+    .projects-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      min-height: 214px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-default);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+    }
+
+    .project-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .project-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .project-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-tertiary);
+    }
+
+    .project-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .project-link {
+      color: var(--brand-light);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .empty-state {
+      border: 1px dashed var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+
+    .load-more-wrap {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-quaternary);
+      text-align: right;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fill-overlay);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .16s ease;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      width: 560px;
+      max-width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 28px;
+      transform: translateY(10px);
+      transition: transform .16s ease;
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .modal-body {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-tertiary);
+      white-space: pre-wrap;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .toast-stack {
+      position: fixed;
+      right: 24px;
+      top: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      min-width: 280px;
+      max-width: 360px;
+      background: var(--bg-elevated);
+      border: 1px solid rgba(68, 143, 106, 0.35);
+      border-left: 3px solid var(--success-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      animation: toast-in .18s ease;
+    }
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .toast-icon {
+      color: var(--success-default);
+      font-size: 16px;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .toast-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .toast-text {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1280px) {
+      .cards-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .page-hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner {
+        min-height: auto;
+        padding: 14px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topnav {
+        justify-content: flex-start;
+      }
+
+      .top-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .cards-grid,
+      .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        padding: 0 16px;
+      }
+
+      .page-main {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      .page-hero-inner,
+      .section-shell {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .page-hero-inner {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      .hero-title {
+        font-size: 24px;
+      }
+
+      .section-title {
+        font-size: 20px;
+      }
+
+      .cards-grid,
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar-row,
+      .projects-topbar,
+      .section-head {
+        align-items: stretch;
+      }
+
+      .footer-note {
+        text-align: left;
+      }
+
+      .toast-stack {
+        left: 16px;
+        right: 16px;
+        top: 16px;
+      }
+
+      .toast {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="notice-bar">Reward cards and opportunities are configured by web3 admin and published to the app after launch.</div>
+
+    <header class="topbar">
+      <div class="app-container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">U</span>
+          <span>USDD</span>
+        </div>
+
+        <nav class="topnav">
+          <a class="nav-link" href="#"><span>PSM</span><span class="nav-tag">All</span></a>
+          <a class="nav-link" href="#"><span>Savings</span><span class="nav-tag">ETH · BSC</span></a>
+          <a class="nav-link active" href="#"><span>Earn</span><span class="nav-tag">All chains</span></a>
+          <a class="nav-link" href="#"><span>Migrate</span><span class="nav-tag">Tron</span></a>
+        </nav>
+
+        <div class="top-actions">
+          <button class="chain-chip" type="button">
+            <span class="chain-dot"></span>
+            Ethereum
+          </button>
+          <button class="btn btn-primary-sm" type="button" onclick="connectWallet()">Connect Wallet</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-container page-main">
+      <section class="page-hero">
+        <div class="page-hero-inner">
+          <div>
+            <div class="hero-badge">Rewards hub · event_earnpage_open</div>
+            <h1 class="hero-title">Where to Earn USDD</h1>
+            <p class="hero-desc">
+              View active platforms offering APY rewards for USDD. The page includes four parts required by the PRD:
+              top banner, curated cards, earn platform list, and supported projects. Savings stays as a separate app entry,
+              while Earn becomes the all-chain rewards directory for third-party opportunities.
+            </p>
+          </div>
+
+          <div class="hero-metrics">
+            <article class="metric-card">
+              <div class="metric-label">Featured Cards</div>
+              <div class="metric-value">5</div>
+              <div class="metric-sub">Configured in admin Cards tab</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-label">Active Opportunities</div>
+              <div class="metric-value">7</div>
+              <div class="metric-sub">Sorted by status then APY then A-Z</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-label">Supported Projects</div>
+              <div class="metric-value">12</div>
+              <div class="metric-sub">Tag filter + single load more action</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Featured Reward Cards</h2>
+            <p class="section-desc">
+              The card rail mirrors the PRD requirement to surface key third-party campaigns at the top of the Earn page.
+              All fields are assumed to come from the web3 admin configuration and follow the same schema as the opportunities list.
+            </p>
+          </div>
+          <button class="btn btn-secondary-sm" type="button">Cards sync: 2026-04-01 10:42 UTC</button>
+        </div>
+
+        <div class="cards-grid" id="featuredCards"></div>
+      </section>
+
+      <section class="section-shell">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Earn Platform List</h2>
+            <p class="section-desc">
+              Default ordering follows the PRD: Active → Upcoming → Ended, then APY high → low, then platform name A → Z.
+              Filters support Network and Status, while APY supports ascending and descending sort.
+            </p>
+          </div>
+          <button class="btn btn-secondary-sm" type="button" onclick="showToast('event_earnpage_open', 'Prototype event fired on first page load.')">Preview event</button>
+        </div>
+
+        <div class="toolbar-row">
+          <div class="toolbar-group">
+            <button class="filter-chip status-filter active" data-status="all" type="button">All Status<span class="chip-counter" id="statusCount">9</span></button>
+            <button class="filter-chip status-filter" data-status="active" type="button">Active</button>
+            <button class="filter-chip status-filter" data-status="upcoming" type="button">Upcoming</button>
+            <button class="filter-chip status-filter" data-status="ended" type="button">Ended</button>
+          </div>
+
+          <div class="toolbar-group">
+            <button class="filter-chip network-filter active" data-network="all" type="button">All Networks</button>
+            <button class="filter-chip network-filter" data-network="Ethereum" type="button">Ethereum</button>
+            <button class="filter-chip network-filter" data-network="Tron" type="button">Tron</button>
+            <button class="filter-chip network-filter" data-network="BNB Chain" type="button">BNB Chain</button>
+          </div>
+
+          <div class="toolbar-group">
+            <button class="filter-chip sort active" id="sortDefault" type="button">Default Order</button>
+            <button class="filter-chip sort" id="sortApyDesc" type="button">APY ↓</button>
+            <button class="filter-chip sort" id="sortApyAsc" type="button">APY ↑</button>
+          </div>
+        </div>
+
+        <div class="opportunities-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Property</th>
+                  <th>Network</th>
+                  <th>Status</th>
+                  <th>
+                    <button class="active" type="button" id="apyHeader">APY</button>
+                  </th>
+                  <th>Type</th>
+                  <th>Rule</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="opportunitiesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell">
+        <div class="projects-topbar">
+          <div>
+            <h2 class="section-title">Supported Projects</h2>
+            <p class="section-desc">
+              Explore all DeFi and CeFi projects that have integrated USDD. Projects support tag filtering and a single load more action.
+              Sorting follows admin priority first, then name A → Z when priorities are equal.
+            </p>
+          </div>
+
+          <div class="toolbar-group">
+            <button class="btn btn-secondary-sm" type="button" onclick="showToast('click_list_project', 'Jump to the Google Form for listing a platform.')">List Your Platform</button>
+            <button class="filter-chip project-filter active" data-project-type="all" type="button">All</button>
+            <button class="filter-chip project-filter" data-project-type="Lending" type="button">Lending</button>
+            <button class="filter-chip project-filter" data-project-type="DEX" type="button">DEX</button>
+            <button class="filter-chip project-filter" data-project-type="CEX" type="button">CEX</button>
+            <button class="filter-chip project-filter" data-project-type="Wallet" type="button">Wallet</button>
+          </div>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid"></div>
+
+        <div class="load-more-wrap" id="loadMoreWrap">
+          <button class="btn btn-secondary-md" type="button" onclick="loadMoreProjects()">Load More</button>
+        </div>
+      </section>
+
+      <p class="footer-note">Prototype target file: <code>earn-rewards-prototype.html</code></p>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="ruleModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 class="modal-title" id="ruleModalTitle">Rule detail</h3>
+        <button class="modal-close" type="button" onclick="closeRuleModal()">×</button>
+      </div>
+      <div class="modal-body" id="ruleModalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <script>
+    const featuredCards = [
+      {
+        platform: "Binance Earn",
+        property: "Flexible Savings · USDD spot campaign",
+        apy: "18.5%",
+        status: "active",
+        type: "CEX",
+        networks: ["Ethereum", "BNB Chain"],
+        button: "Go to Binance",
+        locked: false,
+        color: "linear-gradient(180deg, #F3BA2F, #BD8D13)"
+      },
+      {
+        platform: "PancakeSwap",
+        property: "Provide USDD-USDT LP on v3 stable pool",
+        apy: "22.1%",
+        status: "active",
+        type: "DEX",
+        networks: ["BNB Chain"],
+        button: "Stake LP",
+        locked: false,
+        color: "linear-gradient(180deg, #1FC7D4, #0D7681)"
+      },
+      {
+        platform: "PancakeSwap",
+        property: "Single-sided USDD syrup pool",
+        apy: "11.9%",
+        status: "upcoming",
+        type: "DEX",
+        networks: ["BNB Chain"],
+        button: "Coming Soon",
+        locked: true,
+        color: "linear-gradient(180deg, #7A6FF0, #4237A8)"
+      },
+      {
+        platform: "Uniswap",
+        property: "USDD-USDT concentrated liquidity",
+        apy: "13.2%",
+        status: "active",
+        type: "DEX",
+        networks: ["Ethereum"],
+        button: "Provide Liquidity",
+        locked: false,
+        color: "linear-gradient(180deg, #FF3D81, #992548)"
+      },
+      {
+        platform: "Uniswap",
+        property: "USDD-ETH incentive campaign",
+        apy: "9.4%",
+        status: "ended",
+        type: "DEX",
+        networks: ["Ethereum"],
+        button: "Ended",
+        locked: true,
+        color: "linear-gradient(180deg, #627EEA, #2A4386)"
+      }
+    ];
+
+    const opportunities = [
+      {
+        id: 1,
+        platform: "Aave",
+        description: "Permissionless lending market for USDD deposits.",
+        property: "Deposit USDD and earn variable yield",
+        networks: ["Ethereum"],
+        status: "active",
+        apy: 8.9,
+        apyType: "Dynamic",
+        type: "Lending",
+        actionLabel: "Deposit Now",
+        locked: false,
+        href: "#",
+        logo: "A",
+        logoColor: "linear-gradient(180deg, #6B8BFF, #334D99)",
+        rule: "Connect wallet on Ethereum.\nDeposit USDD into Aave V3 market.\nYield updates dynamically from on-chain supply APY."
+      },
+      {
+        id: 2,
+        platform: "Binance Earn",
+        description: "Centralized platform campaign with flexible redemption.",
+        property: "Flexible USDD reward event",
+        networks: ["Ethereum", "BNB Chain"],
+        status: "active",
+        apy: 18.5,
+        apyType: "Static",
+        type: "CEX",
+        actionLabel: "Go to Binance",
+        locked: false,
+        href: "#",
+        logo: "B",
+        logoColor: "linear-gradient(180deg, #F3BA2F, #A2780B)",
+        rule: "Create or log in to a Binance account.\nTransfer USDD to the eligible wallet.\nSubscribe to the campaign before the event quota is filled."
+      },
+      {
+        id: 3,
+        platform: "PancakeSwap",
+        description: "AMM campaign with LP incentives for USDD pairs.",
+        property: "Provide liquidity for USDD-USDT",
+        networks: ["BNB Chain"],
+        status: "active",
+        apy: 22.1,
+        apyType: "Dynamic",
+        type: "DEX",
+        actionLabel: "Add LP",
+        locked: false,
+        href: "#",
+        logo: "P",
+        logoColor: "linear-gradient(180deg, #1FC7D4, #0F6F79)",
+        rule: "Add USDD-USDT liquidity on PancakeSwap.\nStake LP in the campaign farm.\nAPY varies with farm emissions and pool TVL."
+      },
+      {
+        id: 4,
+        platform: "PancakeSwap",
+        description: "Upcoming single-asset rewards for idle USDD.",
+        property: "Single-sided USDD pool",
+        networks: ["BNB Chain"],
+        status: "upcoming",
+        apy: 11.9,
+        apyType: "Static",
+        type: "DEX",
+        actionLabel: "Coming Soon",
+        locked: true,
+        href: "#",
+        logo: "P",
+        logoColor: "linear-gradient(180deg, #7A6FF0, #453DB2)",
+        rule: "Campaign starts after the configured valid period.\nButton is locked before launch.\nAdmin controls active time and button state."
+      },
+      {
+        id: 5,
+        platform: "Trust Wallet",
+        description: "Wallet-integrated earn campaign surfaced in app wallet flow.",
+        property: "Stake USDD from wallet dashboard",
+        networks: ["Ethereum", "BNB Chain"],
+        status: "active",
+        apy: 7.2,
+        apyType: "Static",
+        type: "Wallet",
+        actionLabel: "Open Wallet",
+        locked: false,
+        href: "#",
+        logo: "T",
+        logoColor: "linear-gradient(180deg, #2D77FF, #184599)",
+        rule: "Open Trust Wallet.\nFind the USDD reward placement.\nComplete the wallet-side staking flow."
+      },
+      {
+        id: 6,
+        platform: "JustLend",
+        description: "Tron-based lending venue for on-chain USDD supply.",
+        property: "Deposit USDD on Tron lending market",
+        networks: ["Tron"],
+        status: "active",
+        apy: 10.4,
+        apyType: "Dynamic",
+        type: "Lending",
+        actionLabel: "Supply USDD",
+        locked: false,
+        href: "#",
+        logo: "J",
+        logoColor: "linear-gradient(180deg, #FF5D5D, #943232)",
+        rule: "Switch to Tron.\nSupply USDD to JustLend.\nRewards come from market borrow demand and campaign incentives."
+      },
+      {
+        id: 7,
+        platform: "SunSwap",
+        description: "Tron DEX liquidity event for USDD trading pair.",
+        property: "Provide liquidity for USDD-USDT on Tron",
+        networks: ["Tron"],
+        status: "upcoming",
+        apy: 16.8,
+        apyType: "Static",
+        type: "DEX",
+        actionLabel: "Upcoming",
+        locked: true,
+        href: "#",
+        logo: "S",
+        logoColor: "linear-gradient(180deg, #FF8F0B, #A65A06)",
+        rule: "Wait until campaign valid period is reached.\nThen add LP and stake according to event rules."
+      },
+      {
+        id: 8,
+        platform: "Uniswap",
+        description: "Ethereum DEX campaign for concentrated liquidity.",
+        property: "USDD-USDT narrow range strategy",
+        networks: ["Ethereum"],
+        status: "active",
+        apy: 13.2,
+        apyType: "Dynamic",
+        type: "DEX",
+        actionLabel: "Provide LP",
+        locked: false,
+        href: "#",
+        logo: "U",
+        logoColor: "linear-gradient(180deg, #FF3D81, #A92457)",
+        rule: "Add concentrated liquidity to the required range.\nClaim fees and rewards on the platform side."
+      },
+      {
+        id: 9,
+        platform: "Uniswap",
+        description: "Historical event kept visible after completion.",
+        property: "USDD-ETH campaign archive",
+        networks: ["Ethereum"],
+        status: "ended",
+        apy: 9.4,
+        apyType: "Static",
+        type: "DEX",
+        actionLabel: "Ended",
+        locked: true,
+        href: "#",
+        logo: "U",
+        logoColor: "linear-gradient(180deg, #627EEA, #364E8D)",
+        rule: "Campaign has finished.\nEnded rows remain visible for reference and can be filtered by status."
+      }
+    ];
+
+    const projects = [
+      { name: "Aave", type: "Lending", priority: 990, desc: "USDD integrated into permissionless lending markets.", logo: "A", color: "linear-gradient(180deg, #6B8BFF, #334D99)" },
+      { name: "Binance", type: "CEX", priority: 980, desc: "CeFi distribution and earn event support for USDD campaigns.", logo: "B", color: "linear-gradient(180deg, #F3BA2F, #A2780B)" },
+      { name: "PancakeSwap", type: "DEX", priority: 970, desc: "BNB Chain liquidity and farm integrations for USDD.", logo: "P", color: "linear-gradient(180deg, #1FC7D4, #0F6F79)" },
+      { name: "Trust Wallet", type: "Wallet", priority: 960, desc: "Wallet-native visibility for USDD yield opportunities.", logo: "T", color: "linear-gradient(180deg, #2D77FF, #184599)" },
+      { name: "JustLend", type: "Lending", priority: 950, desc: "Tron lending support for USDD supply-side utility.", logo: "J", color: "linear-gradient(180deg, #FF5D5D, #943232)" },
+      { name: "SunSwap", type: "DEX", priority: 940, desc: "Tron liquidity venue supporting USDD trading pairs.", logo: "S", color: "linear-gradient(180deg, #FF8F0B, #A65A06)" },
+      { name: "Uniswap", type: "DEX", priority: 930, desc: "Ethereum concentrated liquidity integrations for USDD.", logo: "U", color: "linear-gradient(180deg, #FF3D81, #A92457)" },
+      { name: "OKX", type: "CEX", priority: 920, desc: "Centralized exchange support for USDD trading access.", logo: "O", color: "linear-gradient(180deg, #7B8497, #384051)" },
+      { name: "SafePal", type: "Wallet", priority: 910, desc: "Wallet partner exposing USDD to broader retail users.", logo: "S", color: "linear-gradient(180deg, #59C27D, #2F6B45)" },
+      { name: "Venus", type: "Lending", priority: 905, desc: "BNB Chain lending market with USDD supply support.", logo: "V", color: "linear-gradient(180deg, #F6C64C, #A07A18)" },
+      { name: "Gate", type: "CEX", priority: 900, desc: "Exchange listing and promotional support for USDD.", logo: "G", color: "linear-gradient(180deg, #34B6FF, #165D84)" },
+      { name: "1inch", type: "DEX", priority: 900, desc: "Aggregation routes for USDD swaps and liquidity discovery.", logo: "1", color: "linear-gradient(180deg, #7B7FFF, #4046A5)" }
+    ];
+
+    const statusRank = { active: 0, upcoming: 1, ended: 2 };
+    let selectedStatus = "all";
+    let selectedNetwork = "all";
+    let selectedProjectType = "all";
+    let sortMode = "default";
+    let projectsExpanded = false;
+    let hasOpened = false;
+
+    function statusClass(status) {
+      if (status === "active") return "status-badge status-active";
+      if (status === "upcoming") return "status-badge status-upcoming";
+      return "status-badge status-ended";
+    }
+
+    function typeClass(type) {
+      if (type === "Lending") return "type-badge type-lending";
+      if (type === "DEX") return "type-badge type-dex";
+      if (type === "CEX") return "type-badge type-cex";
+      return "type-badge type-wallet";
+    }
+
+    function createButton(label, locked) {
+      return locked
+        ? '<button class="btn btn-secondary-sm" type="button" disabled>' + label + '</button>'
+        : '<button class="btn btn-primary-sm" type="button" onclick="handleJump()">' + label + '</button>';
+    }
+
+    function renderFeaturedCards() {
+      const root = document.getElementById("featuredCards");
+      root.innerHTML = featuredCards.map((item) => {
+        return `
+          <article class="featured-card">
+            <div>
+              <div class="featured-card-top">
+                <span class="platform-logo" style="background:${item.color}">${item.platform.charAt(0)}</span>
+                <span class="${statusClass(item.status)}">${capitalize(item.status)}</span>
+              </div>
+              <div class="${typeClass(item.type)}" style="width:max-content;margin-bottom:12px">${item.type}</div>
+              <h3 class="platform-name">${item.platform}</h3>
+              <p class="platform-property">${item.property}</p>
+              <div class="platform-apy">
+                <strong>${item.apy}</strong>
+                <span>APY</span>
+              </div>
+              <div class="network-row">
+                ${item.networks.map((network) => `<span class="network-chip">${network}</span>`).join("")}
+              </div>
+            </div>
+            <div>${createButton(item.button, item.locked)}</div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function getFilteredOpportunities() {
+      let data = opportunities.filter((item) => {
+        const statusOk = selectedStatus === "all" || item.status === selectedStatus;
+        const networkOk = selectedNetwork === "all" || item.networks.includes(selectedNetwork);
+        return statusOk && networkOk;
+      });
+
+      if (sortMode === "apy-desc") {
+        data = [...data].sort((a, b) => b.apy - a.apy || a.platform.localeCompare(b.platform));
+      } else if (sortMode === "apy-asc") {
+        data = [...data].sort((a, b) => a.apy - b.apy || a.platform.localeCompare(b.platform));
+      } else {
+        data = [...data].sort((a, b) => {
+          const statusDiff = statusRank[a.status] - statusRank[b.status];
+          if (statusDiff !== 0) return statusDiff;
+          if (b.apy !== a.apy) return b.apy - a.apy;
+          return a.platform.localeCompare(b.platform);
+        });
+      }
+
+      return data;
+    }
+
+    function renderOpportunities() {
+      const rows = getFilteredOpportunities();
+      document.getElementById("statusCount").textContent = rows.length;
+      const body = document.getElementById("opportunitiesBody");
+
+      body.innerHTML = rows.map((item) => {
+        return `
+          <tr>
+            <td>
+              <div class="platform-cell">
+                <span class="platform-logo-sm" style="background:${item.logoColor}">${item.logo}</span>
+                <div class="platform-meta">
+                  <div class="platform-title">
+                    <span>${item.platform}</span>
+                    <span class="platform-help">
+                      i
+                      <span class="tooltip">${item.description}</span>
+                    </span>
+                  </div>
+                  <span class="subline">${item.apyType} APY</span>
+                </div>
+              </div>
+            </td>
+            <td>${item.property}</td>
+            <td>
+              <div class="network-stack">
+                ${item.networks.map((network) => `<span class="network-chip">${network}</span>`).join("")}
+              </div>
+            </td>
+            <td><span class="${statusClass(item.status)}">${capitalize(item.status)}</span></td>
+            <td><span class="apy-chip">${item.apy.toFixed(1)}%</span></td>
+            <td><span class="${typeClass(item.type)}">${item.type}</span></td>
+            <td><button class="rule-link" type="button" onclick="openRuleModal(${item.id})">View Rule</button></td>
+            <td>${createButton(item.actionLabel, item.locked)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function getFilteredProjects() {
+      let data = [...projects];
+      if (selectedProjectType !== "all") {
+        data = data.filter((item) => item.type === selectedProjectType);
+      }
+      data.sort((a, b) => {
+        if (b.priority !== a.priority) return b.priority - a.priority;
+        return a.name.localeCompare(b.name);
+      });
+      return data;
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById("projectsGrid");
+      const loadMoreWrap = document.getElementById("loadMoreWrap");
+      const filtered = getFilteredProjects();
+      const visible = projectsExpanded ? filtered : filtered.slice(0, 8);
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">No supported projects match the current filter.</div>';
+        loadMoreWrap.style.display = "none";
+        return;
+      }
+
+      grid.innerHTML = visible.map((item) => {
+        return `
+          <article class="project-card">
+            <div class="project-head">
+              <span class="project-logo" style="background:${item.color}">${item.logo}</span>
+              <div>
+                <div class="project-title">${item.name}</div>
+                <div class="${typeClass(item.type)}" style="width:max-content;margin-top:6px">${item.type}</div>
+              </div>
+            </div>
+            <p class="project-desc">${item.desc}</p>
+            <div class="project-footer">
+              <span class="subline">Priority ${item.priority}</span>
+              <button class="project-link" type="button" onclick="handleProjectClick('${item.name}')">Open project ↗</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      loadMoreWrap.style.display = (!projectsExpanded && filtered.length > 8) ? "flex" : "none";
+    }
+
+    function openRuleModal(id) {
+      const item = opportunities.find((entry) => entry.id === id);
+      if (!item) return;
+      document.getElementById("ruleModalTitle").textContent = item.platform + " · Rule";
+      document.getElementById("ruleModalBody").textContent = item.rule;
+      document.getElementById("ruleModal").classList.add("open");
+    }
+
+    function closeRuleModal() {
+      document.getElementById("ruleModal").classList.remove("open");
+    }
+
+    function handleJump() {
+      showToast("click_earnactivity_jump", "Platform jump CTA clicked. In production this would open the configured external link.");
+    }
+
+    function connectWallet() {
+      showToast("click_connect_wallet", "Connect Wallet clicked. Simulated success event: wallet_connect_success.");
+    }
+
+    function handleProjectClick(name) {
+      showToast("click_projects_cards", name + " card clicked. In production this would open the configured project link.");
+    }
+
+    function loadMoreProjects() {
+      projectsExpanded = true;
+      renderProjects();
+      showToast("click_loadmore", "All supported projects are now visible.");
+    }
+
+    function showToast(title, text) {
+      const stack = document.getElementById("toastStack");
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `
+        <span class="toast-icon">✓</span>
+        <div>
+          <div class="toast-title">${title}</div>
+          <div class="toast-text">${text}</div>
+        </div>
+      `;
+      stack.appendChild(toast);
+      setTimeout(() => toast.remove(), 2800);
+    }
+
+    function capitalize(value) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    document.querySelectorAll(".status-filter").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".status-filter").forEach((node) => node.classList.remove("active"));
+        button.classList.add("active");
+        selectedStatus = button.dataset.status;
+        renderOpportunities();
+      });
+    });
+
+    document.querySelectorAll(".network-filter").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".network-filter").forEach((node) => node.classList.remove("active"));
+        button.classList.add("active");
+        selectedNetwork = button.dataset.network;
+        renderOpportunities();
+      });
+    });
+
+    document.getElementById("sortDefault").addEventListener("click", (event) => {
+      document.querySelectorAll(".sort").forEach((node) => node.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+      sortMode = "default";
+      renderOpportunities();
+    });
+
+    document.getElementById("sortApyDesc").addEventListener("click", (event) => {
+      document.querySelectorAll(".sort").forEach((node) => node.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+      sortMode = "apy-desc";
+      renderOpportunities();
+    });
+
+    document.getElementById("sortApyAsc").addEventListener("click", (event) => {
+      document.querySelectorAll(".sort").forEach((node) => node.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+      sortMode = "apy-asc";
+      renderOpportunities();
+    });
+
+    document.querySelectorAll(".project-filter").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".project-filter").forEach((node) => node.classList.remove("active"));
+        button.classList.add("active");
+        selectedProjectType = button.dataset.projectType;
+        projectsExpanded = false;
+        renderProjects();
+      });
+    });
+
+    document.getElementById("ruleModal").addEventListener("click", (event) => {
+      if (event.target.id === "ruleModal") closeRuleModal();
+    });
+
+    renderFeaturedCards();
+    renderOpportunities();
+    renderProjects();
+
+    if (!hasOpened) {
+      hasOpened = true;
+      setTimeout(() => {
+        showToast("event_earnpage_open", "Earn page prototype opened.");
+      }, 200);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+- generic [ref=e5]:
+  - banner [ref=e7]:
+    - link "USDD Decentralized USD" [ref=e8] [cursor=pointer]:
+      - /url: https://usdd.io
+      - img [ref=e9]:
+        - img [ref=e10]
+      - generic [ref=e14]:
+        - generic [ref=e15]: USDD
+        - generic [ref=e16]: Decentralized USD
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e20]: 🔥 Vault
+        - img [ref=e21]:
+          - img [ref=e22]
+      - link "Swap(PSM)" [ref=e24] [cursor=pointer]:
+        - /url: /tron/psm
+        - generic [ref=e25]: Swap(PSM)
+      - link "Migrate" [ref=e26] [cursor=pointer]:
+        - /url: /tron/migrate
+        - generic [ref=e27]: Migrate
+      - link "Earn" [ref=e28] [cursor=pointer]:
+        - /url: /tron/earn
+        - generic [ref=e29]: Earn
+    - button "Connect Wallet" [ref=e33] [cursor=pointer]:
+      - generic [ref=e34]: Connect Wallet
+  - generic [ref=e36]:
+    - generic [ref=e40]:
+      - paragraph [ref=e41]: USDD 2.0 offers a
+      - paragraph [ref=e42]: 20% APY Reward powered by
+      - paragraph [ref=e43]: Smart Allocator and TronDAO
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - img [ref=e47]
+        - text: Select to Earn
+        - img [ref=e55]
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - img [ref=e68]
+            - paragraph [ref=e81]:
+              - img [ref=e82]
+            - paragraph [ref=e84]:
+              - generic [ref=e85]: 6.00%
+              - generic [ref=e86]:
+                - text: APY
+                - img [ref=e87]
+            - paragraph [ref=e89] [cursor=pointer]: GO
+          - generic [ref=e90]:
+            - generic [ref=e91]: TVL --
+            - generic [ref=e92]: Reward Pool Balance --
+            - generic [ref=e93]:
+              - text: Reward Pool Address
+              - img [ref=e94] [cursor=pointer]
+        - generic [ref=e97]:
+          - img [ref=e99]
+          - paragraph [ref=e103]:
+            - img [ref=e104]
+          - paragraph [ref=e109]:
+            - generic [ref=e110]: 6.00%
+            - generic [ref=e111]:
+              - text: APY
+              - img [ref=e112]
+          - paragraph [ref=e114] [cursor=pointer]: GO
+        - generic [ref=e116]:
+          - img [ref=e118]
+          - paragraph [ref=e121]:
+            - img [ref=e122]
+          - paragraph [ref=e124]:
+            - generic [ref=e125]: 5.00%
+            - generic [ref=e126]:
+              - text: APY
+              - img [ref=e127]
+          - paragraph [ref=e129] [cursor=pointer]: GO
+        - generic [ref=e131]:
+          - img [ref=e133]
+          - paragraph [ref=e137]:
+            - img [ref=e138]
+          - paragraph [ref=e140]:
+            - generic [ref=e141]: 5.00%
+            - generic [ref=e142]:
+              - text: APY
+              - img [ref=e143]
+          - paragraph [ref=e145] [cursor=pointer]: GO
+        - generic [ref=e147]:
+          - img [ref=e149]
+          - paragraph [ref=e152]:
+            - img [ref=e153]
+          - paragraph [ref=e155]:
+            - generic [ref=e156]: 5.00%
+            - generic [ref=e157]:
+              - text: APY
+              - img [ref=e158]
+          - paragraph [ref=e160] [cursor=pointer]: GO
+        - generic [ref=e162]:
+          - img [ref=e164]
+          - paragraph [ref=e169]:
+            - img [ref=e170]
+          - paragraph [ref=e172]:
+            - generic [ref=e173]: 5.00%
+            - generic [ref=e174]:
+              - text: APY
+              - img [ref=e175]
+          - paragraph [ref=e177] [cursor=pointer]: GO
+        - generic [ref=e179]:
+          - img [ref=e181]
+          - paragraph [ref=e184]:
+            - img [ref=e185]
+          - paragraph [ref=e187]:
+            - generic [ref=e188]: 5.00%
+            - generic [ref=e189]:
+              - text: APY
+              - img [ref=e190]
+          - paragraph [ref=e192] [cursor=pointer]: GO
+        - generic [ref=e194]:
+          - img [ref=e196]
+          - paragraph [ref=e199]:
+            - img [ref=e200]
+          - paragraph [ref=e202]:
+            - generic [ref=e203]: 5.00%
+            - generic [ref=e204]:
+              - text: APY
+              - img [ref=e205]
+          - paragraph [ref=e207] [cursor=pointer]: GO
+        - generic [ref=e209]:
+          - img [ref=e211]
+          - paragraph [ref=e219]:
+            - img [ref=e220]
+          - paragraph [ref=e226]:
+            - generic [ref=e227]: 5.00%
+            - generic [ref=e228]:
+              - text: APY
+              - img [ref=e229]
+          - paragraph [ref=e231] [cursor=pointer]: GO
+        - generic [ref=e233]:
+          - img [ref=e235]
+          - paragraph [ref=e239]:
+            - img [ref=e240]
+          - paragraph [ref=e249]:
+            - generic [ref=e250]: 8.00%
+            - generic [ref=e251]:
+              - text: APY
+              - img [ref=e252]
+          - paragraph [ref=e254] [cursor=pointer]: Sold Out
+        - generic [ref=e256]:
+          - img [ref=e258]
+          - paragraph [ref=e261]:
+            - img [ref=e262]
+          - paragraph [ref=e264]:
+            - generic [ref=e265]: 10.00%
+            - generic [ref=e266]:
+              - text: APY
+              - img [ref=e267]
+          - paragraph [ref=e269] [cursor=pointer]: Sold Out
+        - generic [ref=e271]:
+          - img [ref=e273]
+          - paragraph [ref=e276]:
+            - img [ref=e277]
+          - paragraph [ref=e289]:
+            - generic [ref=e290]: 20.00%
+            - generic [ref=e291]:
+              - text: APY
+              - img [ref=e292]
+          - paragraph [ref=e294] [cursor=pointer]: Sold Out
+    - generic [ref=e296]:
+      - tablist [ref=e297]:
+        - generic [ref=e299]:
+          - tab "USDD Staking Campaign" [selected] [ref=e301] [cursor=pointer]:
+            - generic [ref=e302]:
+              - img [ref=e304]
+              - text: USDD Staking Campaign
+              - img [ref=e312]
+          - tab "USDD Earn APY Explanation" [ref=e322] [cursor=pointer]:
+            - generic [ref=e323]: USDD Earn APY Explanation
+      - tabpanel "USDD Staking Campaign" [ref=e326]:
+        - generic [ref=e329]:
+          - paragraph [ref=e330]: To align with USDD’s new ecosystem goals and vision in 2026, we launched a new tiered yield system. Across different blockchain ecosystems, USDD’s yields correspond to the USDD Supply TVL (Total Value Locked) on each chain and dynamically adjust within the reference ranges. Users’ total APY combines the USDD ecosystem Base APY with an exclusive Boost APY for ecosystem partners and select channels.
+          - paragraph [ref=e331]:
+            - text: Exact APY rates will be dynamically updated based on each chain’s ecosystem development, protocol scale, and market conditions, with official announcements or USDD and partner platforms. For full vision details, please check it
+            - link "here" [ref=e332] [cursor=pointer]:
+              - /url: https://medium.com/@usddio/usdd-2026-outlook-from-growth-incentives-to-long-term-sustainability-c87a140fea92
+            - text: .
+          - paragraph [ref=e333]:
+            - text: For the detailed staking rules, please refer to their official
+            - link "announcement" [ref=e334] [cursor=pointer]:
+              - /url: https://medium.com/@usddio/announcement-on-the-adjustment-of-usdd-base-apy-158a6897ff76?postPublishedType=repub
+            - text: .
+  - generic [ref=e336]:
+    - link "support@usdd.io" [ref=e337] [cursor=pointer]:
+      - /url: mailto:support@usdd.io
+    - generic [ref=e338]: Copyright © 2026 USDD. All rights reserved
+    - generic [ref=e339]:
+      - link [ref=e340] [cursor=pointer]:
+        - /url: https://x.com/usddio
+        - img [ref=e341]
+      - link [ref=e343] [cursor=pointer]:
+        - /url: https://t.me/usddio
+        - img [ref=e344]
+      - link [ref=e346] [cursor=pointer]:
+        - /url: https://discord.com/invite/NurKn6KEqx
+        - img [ref=e347]

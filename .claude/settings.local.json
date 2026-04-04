@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:usdd.io)",
+      "WebFetch(domain:sky.money)",
+      "WebFetch(domain:ethena.fi)",
+      "WebFetch(domain:app.usdd.io)",
+      "WebFetch(domain:app.sky.money)",
+      "WebFetch(domain:app.ethena.fi)",
+      "WebSearch",
+      "WebFetch(domain:docs.usdd.io)",
+      "WebFetch(domain:beincrypto.com)",
+      "Bash(find /Users/luke -maxdepth 2 -type f -name *.json)",
+      "Bash(git config:*)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__claude_ai_Figma__whoami",
+      "mcp__claude_ai_Figma__create_new_file",
+      "mcp__claude_ai_Figma__use_figma",
+      "mcp__claude_ai_Figma__get_metadata",
+      "mcp__claude_ai_Figma__get_design_context",
+      "mcp__claude_ai_Figma__get_screenshot",
+      "mcp__bff92f24-07ca-4a3e-b504-eef91bad5650__use_figma"
+    ]
+  }
+}

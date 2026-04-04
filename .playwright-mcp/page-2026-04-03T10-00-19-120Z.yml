@@ -1,0 +1,123 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - banner [ref=e6]:
+      - link "USDD Decentralized USD" [ref=e7] [cursor=pointer]:
+        - /url: https://app.usdd.io
+        - img [ref=e8]:
+          - img [ref=e9]
+        - generic [ref=e13]:
+          - generic [ref=e14]: USDD
+          - generic [ref=e15]: Decentralized USD
+      - generic [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e18]:
+          - generic [ref=e19]: Developer
+          - img [ref=e20]:
+            - img [ref=e21]
+        - generic [ref=e23]:
+          - generic [ref=e24]: Transparency
+          - img [ref=e25]:
+            - img [ref=e26]
+        - generic [ref=e28]:
+          - generic [ref=e29]: Community
+          - img [ref=e30]:
+            - img [ref=e31]
+      - button "Launch APP" [ref=e34] [cursor=pointer]:
+        - generic [ref=e35]: Launch APP
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e40]:
+          - generic [ref=e41]: USDD Data
+          - generic [ref=e42]:
+            - generic [ref=e43] [cursor=pointer]:
+              - img [ref=e44]
+              - generic [ref=e46]: Overview
+            - generic [ref=e47] [cursor=pointer]:
+              - img [ref=e48]
+              - generic [ref=e51]: Tron
+            - generic [ref=e52] [cursor=pointer]:
+              - img [ref=e53]
+              - generic [ref=e62]: Ethereum
+            - generic [ref=e63] [cursor=pointer]:
+              - img [ref=e64]
+              - generic [ref=e68]: BNB Chain
+        - generic [ref=e70]:
+          - generic [ref=e72]:
+            - img
+            - generic [ref=e73]: Total Supply
+          - generic [ref=e79]: Savings TVL
+          - generic [ref=e85]: Total Collateral Value
+          - generic [ref=e90]:
+            - generic [ref=e91]: Smart Allocator Earnings
+            - link "Go to Smart Allocator Earnings" [ref=e92] [cursor=pointer]:
+              - /url: /sa
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - paragraph [ref=e101]: Total Supply
+            - paragraph [ref=e103]:
+              - paragraph [ref=e104]:
+                - generic [ref=e105] [cursor=pointer]: All
+                - generic [ref=e106] [cursor=pointer]: Tron
+                - generic [ref=e107] [cursor=pointer]: ETH
+                - generic [ref=e108] [cursor=pointer]: BSC
+          - generic [ref=e111]:
+            - button "Total Supply" [ref=e112] [cursor=pointer]:
+              - img [ref=e113]
+              - generic [ref=e115]: Total Supply
+            - button "sUSDD supply" [ref=e116] [cursor=pointer]:
+              - img [ref=e117]
+              - generic [ref=e119]: sUSDD supply
+        - generic [ref=e123]:
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - img "Tron" [ref=e127]
+              - generic [ref=e128]: Tron-APY
+              - generic [ref=e129]: 90D
+            - button "Explore" [ref=e130] [cursor=pointer]
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - img "Ethereum" [ref=e137]
+              - generic [ref=e138]: Ethereum-APY
+              - generic [ref=e139]: 90D
+            - button "Explore" [ref=e140] [cursor=pointer]
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - img "BNB Chain" [ref=e147]
+              - generic [ref=e148]: BNB Chain-APY
+              - generic [ref=e149]: 90D
+            - button "Explore" [ref=e150] [cursor=pointer]
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - link [ref=e157] [cursor=pointer]:
+            - /url: https://x.com/usddio
+          - img [ref=e158] [cursor=pointer]
+          - link [ref=e159] [cursor=pointer]:
+            - /url: https://discord.com/invite/NurKn6KEqx
+        - generic [ref=e161]:
+          - generic [ref=e162]: Decentralized USD
+          - generic [ref=e163]: USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.
+        - link "support@usdd.io" [ref=e164] [cursor=pointer]:
+          - /url: mailto:support@usdd.io
+      - generic [ref=e165]: Copyright © 2026 USDD. All rights reserved
+    - text: ","
+  - tooltip "News Latest updates and announcements FAQs Common questions answered" [ref=e168]:
+    - generic [ref=e170]:
+      - link "News Latest updates and announcements" [ref=e171] [cursor=pointer]:
+        - /url: /news
+        - generic [ref=e172]:
+          - img [ref=e173]:
+            - img [ref=e174]
+          - generic [ref=e176]:
+            - generic [ref=e177]: News
+            - generic [ref=e178]: Latest updates and announcements
+      - link "FAQs Common questions answered" [ref=e179] [cursor=pointer]:
+        - /url: /faq
+        - generic [ref=e180]:
+          - img [ref=e181]:
+            - img [ref=e182]
+          - generic [ref=e184]:
+            - generic [ref=e185]: FAQs
+            - generic [ref=e186]: Common questions answered

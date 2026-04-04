@@ -1,0 +1,505 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - banner [ref=e6]:
+      - link "USDD Decentralized USD" [ref=e7] [cursor=pointer]:
+        - /url: https://app.usdd.io
+        - img [ref=e8]:
+          - img [ref=e9]
+        - generic [ref=e13]:
+          - generic [ref=e14]: USDD
+          - generic [ref=e15]: Decentralized USD
+      - generic [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e18]:
+          - generic [ref=e19]: Developer
+          - img [ref=e20]:
+            - img [ref=e658]
+        - generic [ref=e23]:
+          - generic [ref=e24]: Transparency
+          - img [ref=e25]:
+            - img [ref=e26]
+        - generic [ref=e28]:
+          - generic [ref=e29]: Community
+          - img [ref=e30]:
+            - img [ref=e31]
+      - button "Launch APP" [ref=e34] [cursor=pointer]:
+        - generic [ref=e35]: Launch APP
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - heading "Leading The Financial Future With Stability And Transparency" [level=2] [ref=e39]
+        - heading "Decentralized USD (USDD) is a fully decentralized stablecoin pegged to the US dollar through crypto reserves." [level=5] [ref=e40]
+        - generic [ref=e41]:
+          - button "Get USDD" [ref=e42] [cursor=pointer]:
+            - generic [ref=e43]: Get USDD
+          - button "Earn" [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]: Earn
+        - generic [ref=e46]:
+          - link "View Total Supply on data overview" [ref=e47] [cursor=pointer]:
+            - img "deco" [ref=e48]
+            - generic [ref=e49]:
+              - text: Total Supply
+              - generic [ref=e551]:
+                - img [ref=e552]
+                - img [ref=e555]
+                - img [ref=e564]
+            - generic [ref=e68]:
+              - img "total-supply" [ref=e568]
+              - text: $1.55B
+            - img [ref=e70]
+          - link "View Protocol TVL on data overview" [ref=e72] [cursor=pointer]:
+            - img "deco" [ref=e73]
+            - generic [ref=e74]:
+              - text: Protocol TVL
+              - generic [ref=e569]:
+                - img [ref=e570]
+                - img [ref=e573]
+                - img [ref=e582]
+            - generic [ref=e93]: $2.19B
+            - img [ref=e95]
+          - link "View Savings TVL on data overview" [ref=e97] [cursor=pointer]:
+            - img "deco" [ref=e98]
+            - generic [ref=e99]:
+              - text: Savings TVL
+              - generic [ref=e586]:
+                - img [ref=e587]
+                - img [ref=e596]
+            - generic [ref=e115]: $422.71M
+            - img [ref=e117]
+      - list [ref=e129]:
+        - listitem [ref=e130]:
+          - button "1" [ref=e131] [cursor=pointer]
+        - listitem [ref=e132]:
+          - button "2" [ref=e133] [cursor=pointer]
+        - listitem [ref=e134]:
+          - button "3" [ref=e135] [cursor=pointer]
+        - listitem [ref=e136]:
+          - button "4" [ref=e137] [cursor=pointer]
+        - listitem [ref=e138]:
+          - button "5" [ref=e139] [cursor=pointer]
+        - listitem [ref=e140]:
+          - button "6" [ref=e141] [cursor=pointer]
+        - listitem [ref=e142]:
+          - button "7" [ref=e143] [cursor=pointer]
+      - generic [ref=e144]:
+        - heading "Grow Smarter & Earn More" [level=1] [ref=e145]
+        - heading "Earn up to 20% APY with USDD — Instant Access, transparent & secure" [level=5] [ref=e146]
+        - generic [ref=e147]:
+          - generic [ref=e148]:
+            - heading "USDD APY Tron Ethereum BNB Chain" [level=2] [ref=e150]:
+              - text: USDD APY
+              - generic [ref=e151]:
+                - generic [ref=e152] [cursor=pointer]:
+                  - img [ref=e153]
+                  - text: Tron
+                - generic [ref=e156] [cursor=pointer]:
+                  - img [ref=e157]
+                  - text: Ethereum
+                - generic [ref=e166] [cursor=pointer]:
+                  - img [ref=e167]
+                  - text: BNB Chain
+            - paragraph [ref=e171]: Track USDD’s yield performance across TRON, Ethereum, and BSC. Whether you prioritize low gas fees or deep liquidity, USDD delivers consistent and competitive returns. Analyze historical trends to optimize your portfolio strategy.
+            - generic [ref=e172]:
+              - paragraph [ref=e173]:
+                - heading "4.75%" [level=3] [ref=e605]
+                - text: Current APY
+              - paragraph [ref=e175]:
+                - heading "7.83%" [level=3] [ref=e606]
+                - text: Avg APY
+            - generic [ref=e181]:
+              - generic [ref=e182]: "2025.01"
+              - generic [ref=e607]: "2025.03"
+              - generic [ref=e608]: "2025.05"
+              - generic [ref=e609]: "2025.07"
+              - generic [ref=e610]: "2025.09"
+              - generic [ref=e611]: "2025.11"
+              - generic [ref=e612]: "2026.01"
+              - generic [ref=e613]: "2026.03"
+              - generic [ref=e614]: "2026.04"
+          - generic [ref=e183]:
+            - heading "Yield Simulator Tron Ethereum BNB Chain" [level=2] [ref=e184]:
+              - text: Yield Simulator
+              - generic [ref=e185]:
+                - generic [ref=e186] [cursor=pointer]:
+                  - img [ref=e187]
+                  - text: Tron
+                - generic [ref=e190] [cursor=pointer]:
+                  - img [ref=e191]
+                  - text: Ethereum
+                - generic [ref=e200] [cursor=pointer]:
+                  - img [ref=e201]
+                  - text: BNB Chain
+            - generic [ref=e205]:
+              - generic [ref=e206]:
+                - generic [ref=e207]:
+                  - paragraph [ref=e208]: Select token
+                  - generic [ref=e210] [cursor=pointer]:
+                    - combobox [ref=e212]
+                    - generic [ref=e213]:
+                      - img "logo" [ref=e615]
+                      - generic [ref=e214]: USDD
+                - generic [ref=e215]:
+                  - paragraph [ref=e216]: Amount
+                  - textbox "Enter an amount" [ref=e217] [cursor=pointer]: "100"
+              - generic [ref=e218]:
+                - button "Estimate Earnings" [disabled] [ref=e219]:
+                  - generic: Estimate Earnings
+                - button "Earn Now" [ref=e221] [cursor=pointer]:
+                  - generic [ref=e222]: Earn Now
+                  - img [ref=e223]
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - paragraph [ref=e227]:
+                  - heading "Estimated Earn(1 Year)" [level=2] [ref=e228]:
+                    - generic [ref=e229]: Estimated Earn(1 Year)
+                  - generic [ref=e616]: 4.75 USDD
+                - paragraph [ref=e232]:
+                  - heading "Current APY" [level=2] [ref=e233]:
+                    - generic [ref=e234]: Current APY
+                  - generic [ref=e617]: 4.75%
+              - generic [ref=e237]:
+                - generic [ref=e618]: Estimated Holdings
+                - generic [ref=e623]:
+                  - generic [ref=e624]: "2026.04"
+                  - generic [ref=e625]: "2026.06"
+                  - generic [ref=e626]: "2026.08"
+                  - generic [ref=e627]: "2026.10"
+                  - generic [ref=e628]: "2026.12"
+                  - generic [ref=e629]: "2027.02"
+                  - generic [ref=e630]: "2027.04"
+      - generic [ref=e241]:
+        - generic [ref=e242]: Why Use USDD
+        - generic [ref=e243]:
+          - generic [ref=e244]:
+            - generic [ref=e246]: Decentralized Governance
+            - generic [ref=e247]: USDD is governed by a transparent, community-driven process through decentralized proposals and on-chain voting mechanisms.
+          - generic [ref=e248]:
+            - generic [ref=e250]: Collateral-Backed Stability
+            - generic [ref=e251]: Fully backed by digital assets, maintaining a stable value.
+        - generic [ref=e252]:
+          - generic [ref=e253]:
+            - img "Security" [ref=e632]
+            - generic [ref=e254]: Security
+            - generic [ref=e255]: USDD ensures asset protection with full collateral and decentralized governance.
+          - generic [ref=e256]:
+            - img "Transparency" [ref=e634]
+            - generic [ref=e257]: Transparency
+            - generic [ref=e258]: USDD is fully transparent, with all transactions and governance processes recorded on-chain.
+          - generic [ref=e259]:
+            - img "Easy DeFi Integration" [ref=e636]
+            - generic [ref=e260]: Easy DeFi Integration
+            - generic [ref=e261]: Seamless integration with DeFi platforms for lending, borrowing, and trading.
+          - generic [ref=e262]:
+            - img "Multichain" [ref=e638]
+            - generic [ref=e263]: Multichain
+            - generic [ref=e264]: A fully decentralized stablecoin supporting Tron, Ethereum, BNB Chain,and other major blockchains.
+      - generic [ref=e266]:
+        - paragraph [ref=e267]: USDD Transition and Rewards
+        - generic [ref=e268]:
+          - generic [ref=e269]:
+            - img "Rate 1:1 USDDOLD to USDD" [ref=e639]
+            - paragraph [ref=e270]: Rate 1:1 USDDOLD to USDD
+            - paragraph [ref=e271]: Easily exchange USDDOLD for USDD on TRON at a 1:1 ratio, ensuring a smooth transition to the upgraded stablecoin.
+            - paragraph [ref=e272] [cursor=pointer]: Migrate USDD
+          - generic [ref=e273]:
+            - img "Mint USDD With Ease" [ref=e640]
+            - paragraph [ref=e274]: Mint USDD With Ease
+            - paragraph [ref=e275]: Users can stake assets like TRX or USDT to mint USDD. This allows them to unlock liquidity while retaining their crypto holdings, making it easy to access stablecoin liquidity without selling their assets.
+            - paragraph [ref=e276] [cursor=pointer]: Mint USDD
+          - generic [ref=e277]:
+            - img "Earn Rewards by Staking USDD" [ref=e641]
+            - paragraph [ref=e278]: Earn Rewards by Staking USDD
+            - paragraph [ref=e279]: Stake your USDD to earn rewards. The process is straightforward and designed with security in mind, allowing you to grow your holdings while leveraging the stability of USDD.
+            - paragraph [ref=e280] [cursor=pointer]: Earn
+      - generic [ref=e281]:
+        - generic [ref=e282]:
+          - paragraph [ref=e283]: Tokens
+          - generic [ref=e284]:
+            - img "deco" [ref=e285]
+            - generic [ref=e286]:
+              - generic [ref=e287]:
+                - img "usdd-logo" [ref=e288]
+                - generic [ref=e289]:
+                  - text: USDD
+                  - img [ref=e291] [cursor=pointer]
+                  - img [ref=e295] [cursor=pointer]
+                  - img [ref=e305] [cursor=pointer]
+              - generic [ref=e309]: The USDD protocol aims to provide the blockchain industry with the most stable, decentralized, tamper-proof,and freeze-free stablecoin system, a perpetual system independent from any centralized entity.
+              - button "Get USDD" [ref=e311] [cursor=pointer]
+            - generic [ref=e312]:
+              - generic [ref=e313]:
+                - img "decentralized" [ref=e314]
+                - generic [ref=e315]: Decentralized
+                - generic [ref=e316]: It operates without a central authority, relying on smart contracts to maintain stability and security.
+              - generic [ref=e317]:
+                - img "decentralized" [ref=e318]
+                - generic [ref=e319]: Transparency
+                - generic [ref=e320]: Offering transparency through publicly verifiable reserves and transactions on the blockchain.
+          - generic [ref=e321]:
+            - img "deco" [ref=e322]
+            - generic [ref=e323]:
+              - generic [ref=e324]:
+                - img "usdd-logo" [ref=e325]
+                - generic [ref=e326]:
+                  - text: sUSDD
+                  - img [ref=e328] [cursor=pointer]
+                  - img [ref=e338] [cursor=pointer]
+              - generic [ref=e342]: The sUSDD token enables users to earn interest on USDD through a decentralized and transparent savings system. It is an interest-bearing version of USDD, designed for users who want to passively grow their stablecoin holdings while maintaining full control on-chain.
+              - button "Get sUSDD" [ref=e344] [cursor=pointer]
+            - generic [ref=e345]:
+              - generic [ref=e346]:
+                - img "decentralized" [ref=e347]
+                - generic [ref=e348]: Low Risk & Full Liquidity
+                - generic [ref=e349]: sUSDD is fully backed by USDD and redeemable anytime with no lock-up, giving users full control and eliminating liquidity risk.
+              - generic [ref=e350]:
+                - img "decentralized" [ref=e351]
+                - generic [ref=e352]: Stable On-Chain Yield
+                - generic [ref=e353]: sUSDD earns stable, predictable interest via secure smart contracts, with all returns transparently shown on-chain.
+          - generic [ref=e354]:
+            - img "deco" [ref=e355]
+            - generic [ref=e356]:
+              - generic [ref=e357]:
+                - img "usdd-logo" [ref=e358]
+                - generic [ref=e359]:
+                  - text: JST
+                  - img [ref=e361] [cursor=pointer]
+              - generic [ref=e364]: JST serves as the primary token for DApp governance and supports multiple protocols within the ecosystem. Users can acquire JST through activities such as mining, trading, or participating in promotional campaigns.
+              - button "Get JST" [ref=e366] [cursor=pointer]
+            - generic [ref=e367]:
+              - generic [ref=e368]:
+                - img "decentralized" [ref=e369]
+                - generic [ref=e370]: Mining
+                - generic [ref=e371]: Earn JST by engaging in ecosystem activities like depositing assets, lending, providing liquidity, or other qualifying actions.
+              - generic [ref=e372]:
+                - img "decentralized" [ref=e373]
+                - generic [ref=e374]: Governance
+                - generic [ref=e375]: JST holders collaboratively govern the JUST platform through a decentralized voting mechanism, enabling collective decision-making.
+        - generic [ref=e376]:
+          - generic [ref=e377]: News
+          - generic [ref=e378]:
+            - link [ref=e642] [cursor=pointer]:
+              - /url: https://medium.com/p/9ef7ff19f851
+              - generic [ref=e644]:
+                - generic [ref=e645]:
+                  - generic [ref=e646]: Announcement on USDD Base APY Adjustment & Dynamic Pricing Mechanism
+                  - generic [ref=e647]: "Dear USDD community,As the USDD ecosystem and our multi-chain operations continue to grow, we remain committed to refining our yield model. To maximize on-chain capital efficiency and ensure the long-term resilience of the ecosystem, we will adjust USDD’s Base APY across BNB Chain, Ethereum, and TRON.Dynamic APY Pricing MechanismTo maintain long-term stability and sustainability, USDD utilizes a “Dynamic APY Pricing Model” to guide interest rate evaluations and adjustments. The Base APY is determined based on the following core factors:● Crypto Market Performance: We continuously monitor the 7-day moving average yield of leading yield-bearing stablecoins in the crypto market to establish an industry baseline.● Federal Reserve Rate: We factor in traditional risk-free rates – specifically the U.S. Federal Funds rate – to ensure the Base APY remains above TradFi benchmarks, safeguarding baseline returns for our users.● Competitive Premium: Rather than just matching the DeFi and TradFi baselines above, we also maintain a strategic premium to ensure our rates remain highly competitive.● Protocol Revenue & Sustainability: We align the APY with the actual yield generated by the protocol’s underlying assets, keeping rates within a healthy range to optimize capital efficiency and ensure long-term viability.Under this dynamic pricing model, the Base APY will be uniformly adjusted to 4.75%. This update is designed to better balance capital efficiency with user returns, so that users can earn transparent, reliable yields that consistently outperform TradFi risk-free rates.For the exact implementation dates, please refer to the follow-up announcements from official USDD channels and our ecosystem partners.We will continue to evaluate this adjustment to ensure our yield strategy remains both competitive and sustainable.Thank you for your continued support!The USDD Team"
+                - generic [ref=e649]: 2026.03.25
+            - link [ref=e650] [cursor=pointer]:
+              - /url: https://medium.com/p/f6bb006952f1
+              - generic [ref=e652]:
+                - generic [ref=e653]:
+                  - generic [ref=e654]: Mint USDD with sTRX & TRX Vaults to Enjoy 0.5% Stability Fee Plus 5,000 USDD Rewards!
+                  - generic [ref=e655]: "Phase 11 of the sTRX & TRX Vaults Special Campaign is coming to a smooth close. Throughout this phase, we witnessed strong user engagement and sustained growth in USDD’s Total Value Locked (TVL). With these results in place, we now move forward with:sTRX & TRX Vaults Special Campaign Phase 12!📅 Campaign PeriodMarch 15, 2025 16:00 – April 15, 2026 16:00 (UTC+8)🔥 Stability Fee Reduction – Extended for 30 DaysWe heard you have enjoyed the reduced stability fees in the previous phases, so these discounts will be extended for 30 more days throughout Phase 12:TRX-A / TRX-B / TRX-C Vaults: Reduced to 0.5%sTRX Vault: Reduced to 1%The cost of minting USDD using TRX or sTRX is greatly lowered during this campaign period. Do seize this opportunity to enhance your capital efficiency and maximize your DeFi earnings!💸 Double-Layered Earning StrategyDon’t just let your assets sit around. Supercharge your returns with a double-layered earning strategy.Step One: Mint your USDD with TRX or sTRX.Step Two: Stake your USDD and earn competitive yields through the following options:Stake on JustLend&HTX: ~5% APYStake via partner exchanges: ~8% APY (Learn more)With this double-layered earning strategy, you can leverage both your collateral (TRX/sTRX) and the yield potential of USDD at the same time, compounding your returns. Let’s put your assets to work!🌟During the campaign, an additional 5,000 USDD Vault minting reward pool is available – mint more to earn more, with rewards of up to 50 USDD!Campaign Rules:To participate, open a new sTRX or TRX Vault and mint USDD during the campaign period.Tier 1: Mint ≥ 2,000 USDDHold for 7+ days: Earn 5 USDDHold for 14+ days: Earn an extra 10 USDDMaximum reward: 15 USDD per userTier 2: Mint ≥ 10,000 USDDHold for 7+ days: Earn 10 USDDHold for 14+ days: Earn an extra 20 USDDMaximum reward: 30 USDD per userTier 3: Mint ≥ 50,000 USDDHold for 7+ days: Earn 20 USDDHold for 14+ days: Earn an extra 30 USDDMaximum reward: 50 USDD per userTerms & ConditionsExclusive to First-Time Minters: Only users w..."
+                - generic [ref=e657]: 2026.03.15
+        - generic [ref=e402]:
+          - img [ref=e404]:
+            - generic "ascendex"
+            - generic "bibox"
+            - generic "bitmart"
+            - generic "bitrue"
+            - generic "btse"
+            - generic "bybit"
+            - generic "coinw"
+            - generic "gate"
+            - generic "htx"
+            - generic "justlend"
+            - generic "kucoin"
+            - generic "latoken"
+            - generic "lbank"
+            - generic "mexc"
+            - generic "pancakeswap"
+            - generic "poloniex"
+            - generic "probit"
+            - generic "sunswap"
+            - generic "trubit"
+            - generic "uniswap"
+            - generic "venus"
+          - generic [ref=e405]: USDD Markets
+          - generic [ref=e406]:
+            - generic [ref=e408]:
+              - link "V2.0" [ref=e409] [cursor=pointer]:
+                - /url: https://www.htx.com/trade/usdd_usdt
+                - img [ref=e410]
+                - text: V2.0
+              - link "V2.0" [ref=e412] [cursor=pointer]:
+                - /url: https://www.bybit.com/en/trade/spot/USDD/USDT
+                - img [ref=e413]
+                - text: V2.0
+              - link "V2.0" [ref=e415] [cursor=pointer]:
+                - /url: https://www.gate.io/zh/trade/USDD_USDT
+                - img [ref=e416]
+                - text: V2.0
+              - link "V2.0" [ref=e418] [cursor=pointer]:
+                - /url: https://www.mexc.com/exchange/USDD_USDT
+                - img [ref=e419]
+                - text: V2.0
+              - link "V2.0" [ref=e421] [cursor=pointer]:
+                - /url: https://poloniex.com/trade/USDD_USDT?type=spot
+                - img [ref=e422]
+                - text: V2.0
+              - link "V2.0" [ref=e424] [cursor=pointer]:
+                - /url: https://app.justlend.org/marketDetailNew?jtokenAddress=TKFRELGGoRgiayhwJTNNLqCNjFoLBh3Mnf&_from=%2FhomeNew&lang=en-US
+                - img [ref=e425]
+                - text: V2.0
+              - link "V2.0" [ref=e427] [cursor=pointer]:
+                - /url: https://www.htx.com/trade/usdd_usdt
+                - img [ref=e428]
+                - text: V2.0
+              - link "V2.0" [ref=e430] [cursor=pointer]:
+                - /url: https://www.bybit.com/en/trade/spot/USDD/USDT
+                - img [ref=e431]
+                - text: V2.0
+              - link "V2.0" [ref=e433] [cursor=pointer]:
+                - /url: https://www.gate.io/zh/trade/USDD_USDT
+                - img [ref=e434]
+                - text: V2.0
+              - link "V2.0" [ref=e436] [cursor=pointer]:
+                - /url: https://www.mexc.com/exchange/USDD_USDT
+                - img [ref=e437]
+                - text: V2.0
+              - link "V2.0" [ref=e439] [cursor=pointer]:
+                - /url: https://poloniex.com/trade/USDD_USDT?type=spot
+                - img [ref=e440]
+                - text: V2.0
+              - link "V2.0" [ref=e442] [cursor=pointer]:
+                - /url: https://app.justlend.org/marketDetailNew?jtokenAddress=TKFRELGGoRgiayhwJTNNLqCNjFoLBh3Mnf&_from=%2FhomeNew&lang=en-US
+                - img [ref=e443]
+                - text: V2.0
+            - generic [ref=e446]:
+              - link [ref=e447] [cursor=pointer]:
+                - /url: https://sunswap.com/#/home
+                - img [ref=e448]
+              - link [ref=e450] [cursor=pointer]:
+                - /url: https://app.uniswap.org/#/swap
+                - img [ref=e451]
+              - link [ref=e453] [cursor=pointer]:
+                - /url: https://pancakeswap.finance/
+                - img [ref=e454]
+              - link [ref=e456] [cursor=pointer]:
+                - /url: https://www.kucoin.com/trade/USDD-USDT
+                - img [ref=e457]
+              - link [ref=e459] [cursor=pointer]:
+                - /url: https://www.bibox.com/zh/exchange/basic/USDD_USDT
+                - img [ref=e460]
+              - link [ref=e462] [cursor=pointer]:
+                - /url: https://www.bitrue.com/zh-hant/trade/usdd_usdt
+                - img [ref=e463]
+              - link [ref=e465] [cursor=pointer]:
+                - /url: https://www.btse.com/en/trading/USDD-USD
+                - img [ref=e466]
+              - link [ref=e468] [cursor=pointer]:
+                - /url: https://www.bitmart.com/trade/en-US?symbol=USDD_USDT&layout=basic
+                - img [ref=e469]
+              - link [ref=e471] [cursor=pointer]:
+                - /url: https://www.lbank.com/trade/usdd_usdt
+                - img [ref=e472]
+              - link [ref=e474] [cursor=pointer]:
+                - /url: https://www.coinw.com/front/fastTrading?symbol=817
+                - img [ref=e475]
+              - link [ref=e477] [cursor=pointer]:
+                - /url: https://latoken.com/exchange/USDD_USDT
+                - img [ref=e478]
+              - link [ref=e480] [cursor=pointer]:
+                - /url: https://www.trubit.com/pro/crypto-spot-trading/USDD/USDT
+                - img [ref=e481]
+              - link [ref=e483] [cursor=pointer]:
+                - /url: https://www.probit.com/en-us/app/exchange/USDD-USDT
+                - img [ref=e484]
+              - link [ref=e486] [cursor=pointer]:
+                - /url: https://ascendex.com/zh-cn/cashtrade-spottrading/usdt/usdd
+                - img [ref=e487]
+              - link [ref=e489] [cursor=pointer]:
+                - /url: https://app.venus.io/#/isolated-pools/pool/0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0/market/0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7?chainId=56
+                - img [ref=e490]
+              - link [ref=e492] [cursor=pointer]:
+                - /url: https://sunswap.com/#/home
+                - img [ref=e493]
+              - link [ref=e495] [cursor=pointer]:
+                - /url: https://app.uniswap.org/#/swap
+                - img [ref=e496]
+              - link [ref=e498] [cursor=pointer]:
+                - /url: https://pancakeswap.finance/
+                - img [ref=e499]
+              - link [ref=e501] [cursor=pointer]:
+                - /url: https://www.kucoin.com/trade/USDD-USDT
+                - img [ref=e502]
+              - link [ref=e504] [cursor=pointer]:
+                - /url: https://www.bibox.com/zh/exchange/basic/USDD_USDT
+                - img [ref=e505]
+              - link [ref=e507] [cursor=pointer]:
+                - /url: https://www.bitrue.com/zh-hant/trade/usdd_usdt
+                - img [ref=e508]
+              - link [ref=e510] [cursor=pointer]:
+                - /url: https://www.btse.com/en/trading/USDD-USD
+                - img [ref=e511]
+              - link [ref=e513] [cursor=pointer]:
+                - /url: https://www.bitmart.com/trade/en-US?symbol=USDD_USDT&layout=basic
+                - img [ref=e514]
+              - link [ref=e516] [cursor=pointer]:
+                - /url: https://www.lbank.com/trade/usdd_usdt
+                - img [ref=e517]
+              - link [ref=e519] [cursor=pointer]:
+                - /url: https://www.coinw.com/front/fastTrading?symbol=817
+                - img [ref=e520]
+              - link [ref=e522] [cursor=pointer]:
+                - /url: https://latoken.com/exchange/USDD_USDT
+                - img [ref=e523]
+              - link [ref=e525] [cursor=pointer]:
+                - /url: https://www.trubit.com/pro/crypto-spot-trading/USDD/USDT
+                - img [ref=e526]
+              - link [ref=e528] [cursor=pointer]:
+                - /url: https://www.probit.com/en-us/app/exchange/USDD-USDT
+                - img [ref=e529]
+              - link [ref=e531] [cursor=pointer]:
+                - /url: https://ascendex.com/zh-cn/cashtrade-spottrading/usdt/usdd
+                - img [ref=e532]
+              - link [ref=e534] [cursor=pointer]:
+                - /url: https://app.venus.io/#/isolated-pools/pool/0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0/market/0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7?chainId=56
+                - img [ref=e535]
+          - paragraph [ref=e537]:
+            - text: The USDD ecosystem is gradually migrating to USDD 2.0.
+            - text: Please verify support for USDD 2.0 during transactions.
+            - link "Click to check" [ref=e538] [cursor=pointer]:
+              - /url: https://docs.usdd.io/ecosystem-migration-progress
+            - text: the latest updates.
+    - generic [ref=e539]:
+      - generic [ref=e540]:
+        - generic [ref=e541]:
+          - link [ref=e542] [cursor=pointer]:
+            - /url: https://x.com/usddio
+          - img [ref=e543] [cursor=pointer]
+          - link [ref=e544] [cursor=pointer]:
+            - /url: https://discord.com/invite/NurKn6KEqx
+        - generic [ref=e546]:
+          - generic [ref=e547]: Decentralized USD
+          - generic [ref=e548]: USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.
+        - link "support@usdd.io" [ref=e549] [cursor=pointer]:
+          - /url: mailto:support@usdd.io
+      - generic [ref=e550]: Copyright © 2026 USDD. All rights reserved
+    - text: ","
+  - tooltip "Developer Doc Technical docs and guides Audit Report Independent security audits USDD Legacy Legacy resources archive" [ref=e667]:
+    - generic [ref=e669]:
+      - link "Developer Doc Technical docs and guides" [ref=e670] [cursor=pointer]:
+        - /url: https://docs.usdd.io/
+        - generic [ref=e671]:
+          - img [ref=e672]:
+            - img [ref=e673]
+          - generic [ref=e675]:
+            - generic [ref=e676]: Developer Doc
+            - generic [ref=e677]: Technical docs and guides
+      - link "Audit Report Independent security audits" [ref=e678] [cursor=pointer]:
+        - /url: https://docs.usdd.io/security/audits
+        - generic [ref=e679]:
+          - img [ref=e680]:
+            - img [ref=e681]
+          - generic [ref=e683]:
+            - generic [ref=e684]: Audit Report
+            - generic [ref=e685]: Independent security audits
+      - link "USDD Legacy Legacy resources archive" [ref=e686] [cursor=pointer]:
+        - /url: https://legacy.usdd.io/
+        - generic [ref=e687]:
+          - img [ref=e688]:
+            - img [ref=e689]
+          - generic [ref=e691]:
+            - generic [ref=e692]: USDD Legacy
+            - generic [ref=e693]: Legacy resources archive
