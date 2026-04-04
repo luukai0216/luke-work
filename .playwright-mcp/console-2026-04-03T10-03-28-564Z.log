@@ -1,5 +1,0 @@
-[    1219ms] [ERROR] Access to manifest at 'https://prod-app-cdn-new.usdd.io/manifest.json' from origin 'https://app.usdd.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://app.usdd.io/bsc/:0
-[    1219ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://prod-app-cdn-new.usdd.io/manifest.json:0
-[    1479ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://bscrpc.com/:0
-[    2311ms] [ERROR] Access to manifest at 'https://prod-app-cdn-new.usdd.io/manifest.json' from origin 'https://app.usdd.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://app.usdd.io/bsc/psm:0
-[    2312ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://prod-app-cdn-new.usdd.io/manifest.json:0

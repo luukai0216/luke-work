@@ -1,4 +1,0 @@
-[    3779ms] [WARNING] Manifest: property 'start_url' ignored, should be same origin as document. @ https://prod-app-cdn-new.usdd.io/manifest.json:0
-[    5098ms] [ERROR] WebSocket connection to 'wss://nbstream.binance.click/wallet-connector' failed: Error in connection establishment: net::ERR_NAME_NOT_RESOLVED @ https://prod-app-cdn-new.usdd.io/static/js/main.633d4944.js:1
-[    5269ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://bscrpc.com/:0
-[    7816ms] [LOG] 🚀 ~ file: relay.ts:63 ~ .then ~ domains: [wss://nbstream.binance.com/wallet-connector, wss://nbstream.binance.info/wallet-connector, wss://nbstream.yshyqxx.com/wallet-connector] @ https://prod-app-cdn-new.usdd.io/static/js/main.633d4944.js:1
