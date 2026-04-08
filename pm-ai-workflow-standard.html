@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品及 UI 组 AI 工作流规范 v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#2B6AFF;--brand-dark:#1A4FCC;--brand-light:#EBF1FF;--brand-glow:rgba(43,106,255,.12);--accent:#00C48C;--accent-light:#E6FAF3;--warn:#FF8F1F;--warn-light:#FFF4E6;--err:#FF3B30;--err-light:#FFF0F0;--bg:#F7F8FA;--surface:#FFF;--t1:#0F172A;--t2:#475569;--t3:#94A3B8;--border:#E2E8F0;--code-bg:#1E293B;--code-fg:#E2E8F0;--sidebar-w:260px;--radius:10px;--shadow-sm:0 1px 3px rgba(15,23,42,.06);--shadow-md:0 4px 16px rgba(15,23,42,.08)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans','Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--t1);line-height:1.75;font-size:14.5px}
+
+/* Sidebar */
+.sidebar{width:var(--sidebar-w);position:fixed;top:0;left:0;bottom:0;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:28px 0 40px}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.sidebar .logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar .logo h1{font-size:14px;font-weight:700;color:var(--brand);letter-spacing:-.3px;line-height:1.3}
+.sidebar .logo .sub{font-size:11px;color:var(--t3);margin-top:3px}
+.sidebar .logo .ver{font-size:10px;color:var(--t3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.sidebar nav a{display:block;padding:5px 20px;color:var(--t2);text-decoration:none;font-size:12px;transition:all .15s;border-left:3px solid transparent}
+.sidebar nav a:hover{color:var(--brand);background:var(--brand-light);border-left-color:var(--brand)}
+.sidebar nav a.h2{font-weight:600;color:var(--t1);margin-top:12px;padding-top:6px;font-size:12.5px}
+.sidebar nav a.h3{padding-left:32px;font-size:11.5px}
+
+/* Main */
+.main{margin-left:var(--sidebar-w);max-width:920px;padding:40px 52px 100px}
+.doc-title{font-size:36px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.doc-subtitle{font-size:15px;color:var(--t2);line-height:1.6;margin-bottom:32px}
+
+/* Typography */
+h2{font-size:22px;font-weight:700;margin:56px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--brand);letter-spacing:-.3px}
+h3{font-size:16px;font-weight:600;margin:32px 0 12px}
+h4{font-size:14px;font-weight:600;color:var(--t2);margin:20px 0 8px}
+p{margin-bottom:12px}ul,ol{margin:0 0 14px 20px}li{margin-bottom:4px}
+strong{font-weight:600}hr{border:none;border-top:1px solid var(--border);margin:36px 0}
+blockquote{border-left:3px solid var(--brand);background:var(--brand-light);padding:12px 18px;margin:12px 0 18px;border-radius:0 var(--radius) var(--radius) 0;font-size:13.5px;color:var(--t2)}
+blockquote.warn{border-left-color:var(--warn);background:var(--warn-light)}
+blockquote.err{border-left-color:var(--err);background:var(--err-light)}
+code{background:var(--brand-light);color:var(--brand-dark);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12.5px}
+pre{background:var(--code-bg);color:var(--code-fg);padding:18px 22px;border-radius:var(--radius);overflow-x:auto;margin:14px 0 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;box-shadow:var(--shadow-sm)}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:14px 0 22px;font-size:13px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+th{background:var(--brand);color:#fff;text-align:left;padding:10px 14px;font-weight:600;font-size:12px;letter-spacing:.3px}
+td{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface);vertical-align:top}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--brand-light)}
+
+/* Executive Card */
+.exec-card{background:linear-gradient(135deg,#1E3A8A 0%,var(--brand) 50%,#3B82F6 100%);border-radius:16px;padding:40px 44px;color:#fff;margin:0 0 40px;box-shadow:0 8px 32px rgba(43,106,255,.25);position:relative;overflow:hidden}
+.exec-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(255,255,255,.06);border-radius:50%}
+.exec-card::after{content:'';position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;background:rgba(255,255,255,.04);border-radius:50%}
+.exec-card h2{color:#fff;border-bottom:2px solid rgba(255,255,255,.25);font-size:24px;margin:0 0 16px}
+.exec-card p{color:rgba(255,255,255,.9)}.exec-card strong{color:#fff}
+.exec-nav{display:flex;gap:12px;margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.15)}
+.exec-nav a{color:#fff;text-decoration:none;font-size:12.5px;font-weight:500;background:rgba(255,255,255,.15);padding:6px 14px;border-radius:6px;transition:background .15s}
+.exec-nav a:hover{background:rgba(255,255,255,.25)}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.result-item{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border-radius:8px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:8px}
+.result-item .icon{font-size:16px;flex-shrink:0}
+
+/* Principle Cards */
+.principle-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0 28px}
+.principle-grid.three-col{grid-template-columns:1fr 1fr 1fr}
+.principle-card{background:var(--surface);border-radius:var(--radius);padding:20px;border:1px solid var(--border);box-shadow:var(--shadow-sm);transition:all .2s}
+.principle-card:hover{border-color:var(--brand);box-shadow:0 2px 12px var(--brand-glow);transform:translateY(-2px)}
+.principle-card .pc-num{font-size:32px;font-weight:900;color:var(--brand-light);line-height:1;margin-bottom:6px}
+.principle-card .pc-title{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--brand-dark)}
+.principle-card .pc-desc{font-size:12px;color:var(--t2);line-height:1.5}
+
+/* Flywheel */
+.flywheel{display:flex;align-items:center;justify-content:center;gap:0;margin:24px 0 28px;flex-wrap:wrap}
+.fw-node{background:var(--surface);border:2px solid var(--brand);border-radius:var(--radius);padding:14px 18px;text-align:center;min-width:140px;box-shadow:var(--shadow-sm)}
+.fw-node .fw-title{font-weight:700;font-size:13px;color:var(--brand);margin-bottom:4px}
+.fw-node .fw-detail{font-size:11px;color:var(--t3);line-height:1.4}
+.fw-arrow{font-size:22px;color:var(--brand);padding:0 6px;font-weight:700}
+.fw-return{width:100%;text-align:center;margin-top:10px;font-size:12px;color:var(--brand);font-weight:600}
+.fw-return::before{content:'';display:block;width:80%;margin:0 auto 6px;height:2px;background:linear-gradient(90deg,transparent,var(--brand),transparent);border-radius:2px}
+
+/* Flow Diagram */
+.flow-section{margin:28px 0}
+.flow-box{border:2px solid var(--border);border-radius:14px;padding:28px 24px;background:var(--surface);box-shadow:var(--shadow-sm);position:relative}
+.flow-box.main-flow{border-color:var(--brand)}.flow-box.data-loop{border-color:var(--accent)}.flow-box.comp-flow{border-color:var(--warn)}
+.flow-box>.box-title{position:absolute;top:-11px;left:20px;font-size:12px;font-weight:700;padding:0 10px;background:var(--surface)}
+.flow-box.main-flow>.box-title{color:var(--brand)}.flow-box.data-loop>.box-title{color:var(--accent)}.flow-box.comp-flow>.box-title{color:var(--warn)}
+.flow-row{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;justify-content:center}
+.flow-node{flex:1;min-width:90px;max-width:130px;border-radius:8px;padding:12px 8px;text-align:center;border:1.5px solid var(--border);background:var(--surface);transition:all .2s;cursor:default}
+.flow-node:hover{border-color:var(--brand);box-shadow:0 2px 12px var(--brand-glow);transform:translateY(-2px)}
+.flow-node .phase-num{font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px}
+.flow-node .phase-name{font-size:12px;font-weight:600;margin:3px 0 6px}
+.flow-node .phase-ai{font-size:10px;color:var(--brand);line-height:1.3}
+.flow-node .phase-human{font-size:10px;color:var(--t3);line-height:1.3}
+.flow-connector{display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:16px;flex-shrink:0;width:16px}
+.flow-vertical-arrow{text-align:center;color:var(--t3);font-size:20px;margin:8px 0}
+.flow-return-arrow{text-align:center;margin:14px 0 4px;font-size:12px;font-weight:600}
+.flow-return-arrow.to-brand{color:var(--brand)}.flow-return-arrow.to-accent{color:var(--accent)}
+.legend{display:flex;gap:24px;margin-top:18px;font-size:12px;color:var(--t3);justify-content:center}.legend span{display:flex;align-items:center;gap:4px}
+.legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* Phase Detail */
+.phase-detail{background:var(--surface);border-radius:var(--radius);padding:24px 28px;margin:16px 0 24px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.phase-detail .pd-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.phase-detail .pd-badge{background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap}
+.phase-detail .pd-badge.accent{background:var(--accent)}
+.phase-detail .pd-badge.warn{background:var(--warn)}
+.phase-detail .pd-title{font-size:16px;font-weight:700}
+.phase-detail .pd-purpose{font-size:13px;color:var(--t2);margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+
+/* Checklist */
+.checklist{list-style:none;margin-left:0;padding-left:0}.checklist li{padding:4px 0 4px 28px;position:relative;font-size:13px}.checklist li::before{content:'☐';position:absolute;left:0;color:var(--t3);font-size:15px}
+
+/* Stats Row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+.stat-card{background:var(--surface);border-radius:var(--radius);padding:18px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.stat-card .stat-num{font-size:28px;font-weight:900;color:var(--brand);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--t3);margin-top:4px}
+
+/* Severity badges */
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge.red{background:var(--err-light);color:var(--err)}
+.badge.yellow{background:var(--warn-light);color:var(--warn)}
+.badge.green{background:var(--accent-light);color:var(--accent)}
+.badge.blue{background:var(--brand-light);color:var(--brand)}
+
+/* Print & Mobile */
+@media print{.sidebar{display:none}.main{margin-left:0;max-width:100%;padding:20px}.exec-card{break-inside:avoid}h2{break-before:page}.flow-box,.phase-detail,table,pre{break-inside:avoid}.flow-node:hover{transform:none;box-shadow:none}}
+@media(max-width:960px){.sidebar{display:none}.main{margin-left:0;padding:20px 16px 60px}.results-grid{grid-template-columns:1fr}.principle-grid,.principle-grid.three-col{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.flow-row{flex-direction:column;align-items:center}.flow-connector{transform:rotate(90deg);width:auto;height:20px}}
+</style>
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<aside class="sidebar">
+<div class="logo">
+  <h1>产品及 UI 组 AI 工作流规范</h1>
+  <div class="sub">TRON ECO Product & UI Team</div>
+  <div class="ver">v1.0 · 2026-03-27</div>
+</div>
+<nav>
+  <a href="#exec-summary" class="h2">Executive Summary</a>
+  <a href="#ch1" class="h2">一、核心原则</a>
+  <a href="#ch2" class="h2">二、工作流全景</a>
+  <a href="#ch2-flow" class="h3">流程全景图</a>
+  <a href="#ch2-flywheel" class="h3">知识库飞轮</a>
+  <a href="#ch2-overview" class="h3">各阶段速览</a>
+  <a href="#phase1" class="h3">2.1 需求调研与澄清</a>
+  <a href="#phase2" class="h3">2.2 PRD 撰写</a>
+  <a href="#phase3" class="h3">2.3 原型生成</a>
+  <a href="#phase35" class="h3">2.4 AI 预评审</a>
+  <a href="#phase4" class="h3">2.5 评审、交付与验收</a>
+  <a href="#phase6" class="h3">2.6 数据验证与迭代</a>
+  <a href="#uiux" class="h3">UI/UX 设计流程</a>
+  <a href="#ch3" class="h2">三、交付物标准</a>
+  <a href="#ch3-naming" class="h3">命名规范</a>
+  <a href="#ch4" class="h2">四、AI 使用规范</a>
+  <a href="#ch4-skills" class="h3">Skill 清单</a>
+  <a href="#ch4-donts" class="h3">AI 不适用场景</a>
+  <a href="#ch5" class="h2">五、项目初始化</a>
+  <a href="#ch5-dir" class="h3">目录结构</a>
+  <a href="#ch5-claude" class="h3">CLAUDE.md 规范</a>
+  <a href="#ch5-drive" class="h3">文档协作与同步</a>
+  <a href="#ch5-examples" class="h3">实操示例</a>
+  <a href="#ch6" class="h2">六、质量门禁</a>
+  <a href="#ch6-prd" class="h3">PRD 八项检查</a>
+  <a href="#ch6-release" class="h3">上线前检查</a>
+  <a href="#ch7" class="h2">七、避坑指南</a>
+  <a href="#sources" class="h2">附：来源整合</a>
+</nav>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+
+<h1 class="doc-title">产品及 UI 组 AI 工作流规范</h1>
+<p class="doc-subtitle">整合产品及 UI 组内的实践经验，定义产品经理与 UI/UX 设计师借助 Claude Code / AI 工具完成日常工作的标准流程、交付物要求和质量门禁。</p>
+
+<!-- Executive Summary -->
+<div class="exec-card" id="exec-summary">
+<h2>Executive Summary</h2>
+<p><strong>目标</strong>：让 AI 成为产品及 UI 团队的持续协作者，而非一次性工具。通过构建产品知识库，AI 在每次迭代中都能读取完整上下文，更快、更高质量地输出 PRD、原型、设计稿、评审报告，显著缩短从需求到交付的周期。</p>
+<p><strong>分工原则</strong>：AI 做信息收集、初稿生成和执行实现（80% 的重复劳动），人做产品判断、设计决策和最终验收（20% 的核心价值）。</p>
+<div class="exec-nav">
+  <a href="#ch1">核心原则 →</a>
+  <a href="#ch2-flow">流程全景 →</a>
+  <a href="#ch2-overview">各阶段速览 →</a>
+  <a href="#ch5-dir">项目模板 →</a>
+  <a href="#ch6">质量门禁 →</a>
+</div>
+</div>
+
+<!-- Chapter 1: Principles -->
+<h2 id="ch1">一、核心原则</h2>
+<p>以下五条原则贯穿全部工作阶段，团队全员必须理解并遵守。</p>
+
+<div class="principle-grid">
+  <div class="principle-card">
+    <div class="pc-num">01</div>
+    <div class="pc-title">AI 做执行，人做决策</div>
+    <div class="pc-desc">AI 负责信息收集、初稿生成、逐条检查、设计执行。PM 负责产品判断与优先级，设计师负责设计决策与品牌把控。AI 产出的一切内容都是草稿。</div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">02</div>
+    <div class="pc-title">不允许脑补，信息不足先提问</div>
+    <div class="pc-desc">AI 可能编造数据、杜撰接口。必须区分「已确认事实」「用户回答」「AI 推断」三类信息，严禁 AI 自行补完。</div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">03</div>
+    <div class="pc-title">用文件沉淀，不用对话沉淀</div>
+    <div class="pc-desc">对话会消失，文件可追溯。重要产出必须写入项目文件。每个环节的产出文件直接交付给下一环节，下游角色的 AI 可直接读取并继续推进，实现人 + AI 的接力式协作。CLAUDE.md 是项目的「长期记忆」，每次对话自动加载。</div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">04</div>
+    <div class="pc-title">小步快跑，先骨架后内容</div>
+    <div class="pc-desc">避免一次性让 AI 生成大量内容。先出骨架确认方向，再逐章填充细节。每轮对话聚焦一个明确目标。</div>
+  </div>
+  <div class="principle-card" style="grid-column:1/3">
+    <div class="pc-num">05</div>
+    <div class="pc-title">链上变更成本高，提前想清楚</div>
+    <div class="pc-desc">Web3 产品特有约束：合约部署后不可修改、链上交易不可逆、资产安全零容忍。涉及链上逻辑的需求必须在 PRD 阶段充分讨论异常场景和边界条件，安全审计前置，不可跳过。</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Chapter 2: Workflow -->
+<h2 id="ch2">二、工作流全景</h2>
+<p>工作流分为 <strong>7 个阶段</strong>，覆盖从需求到数据验证的完整闭环。每阶段完成后输出产物并等待 PM 确认，不自动推进。</p>
+<blockquote><strong>适用范围</strong>：中型及以上需求（≥1 周开发量）走完整流程。小型需求（UI 微调、文案修改）可走简化流程。</blockquote>
+
+<h3 id="ch2-flow">流程全景图</h3>
+
+<div class="flow-section">
+<!-- Competitive Analysis - Independent -->
+<div class="flow-box comp-flow" style="margin-bottom:18px">
+  <span class="box-title">竞品分析 — 独立流程，可在任何阶段触发</span>
+  <div style="text-align:center;padding:8px 0">
+    <div style="font-size:13px;font-weight:600;color:var(--warn)">competitive-analysis Skill</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:4px">快速对标（15-30min）| 深度对标（2-4h）→ 产出输入到版本规划</div>
+  </div>
+</div>
+
+<!-- Main Flow -->
+<div class="flow-box main-flow">
+<span class="box-title">主流程 — 7 阶段</span>
+<div class="flow-row" style="margin-top:10px">
+  <div class="flow-node">
+    <div class="phase-num">Phase 1</div>
+    <div class="phase-name">需求调研</div>
+    <div class="phase-ai">AI：苏格拉底提问</div>
+    <div class="phase-human">人：判断 + 决策</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node">
+    <div class="phase-num">Phase 2</div>
+    <div class="phase-name">PRD 撰写</div>
+    <div class="phase-ai">AI：生成初稿</div>
+    <div class="phase-human">人：审阅修改</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node">
+    <div class="phase-num">Phase 3</div>
+    <div class="phase-name">原型生成</div>
+    <div class="phase-ai">AI：HTML 原型</div>
+    <div class="phase-human">人：规范校验</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node">
+    <div class="phase-num">Phase 3.5</div>
+    <div class="phase-name">AI 预评审</div>
+    <div class="phase-ai">AI：5 角色并行</div>
+    <div class="phase-human">人：处理 P0</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node">
+    <div class="phase-num">Phase 4-5</div>
+    <div class="phase-name">团队评审</div>
+    <div class="phase-ai">AI：预判问题</div>
+    <div class="phase-human">人：面对面对齐</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node">
+    <div class="phase-num">Phase 6</div>
+    <div class="phase-name">交付验收</div>
+    <div class="phase-ai">AI：变更同步</div>
+    <div class="phase-human">人：UI 还原验收</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node">
+    <div class="phase-num">Phase 7-8</div>
+    <div class="phase-name">数据验证</div>
+    <div class="phase-ai">AI：数据分析</div>
+    <div class="phase-human">人：迭代决策</div>
+  </div>
+</div>
+</div>
+
+<!-- UI/UX Design Flow -->
+<div class="flow-box" style="margin-top:18px;border-color:#8B5CF6">
+<span class="box-title" style="color:#8B5CF6">UI/UX 设计流程 — 与主流程 Phase 3-6 并行</span>
+<div class="flow-row" style="margin-top:10px">
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S1</div>
+    <div class="phase-name" style="font-size:11px">需求拆解</div>
+    <div class="phase-ai" style="font-size:9px">AI：结构化简报</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S2</div>
+    <div class="phase-name" style="font-size:11px">线框稿</div>
+    <div class="phase-ai" style="font-size:9px">AI：HTML 线框</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S3</div>
+    <div class="phase-name" style="font-size:11px">规范校验</div>
+    <div class="phase-ai" style="font-size:9px">AI：自动校验</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S4</div>
+    <div class="phase-name" style="font-size:11px">UI 设计稿</div>
+    <div class="phase-ai" style="font-size:9px">AI：高保真 HTML</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S5</div>
+    <div class="phase-name" style="font-size:11px">走查修改</div>
+    <div class="phase-human" style="font-size:9px">人：量化反馈</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S6</div>
+    <div class="phase-name" style="font-size:11px">交付包</div>
+    <div class="phase-ai" style="font-size:9px">AI：标注文档</div>
+  </div>
+  <div class="flow-connector">→</div>
+  <div class="flow-node" style="min-width:80px;max-width:110px">
+    <div class="phase-num" style="color:#8B5CF6">S7</div>
+    <div class="phase-name" style="font-size:11px">开发验收</div>
+    <div class="phase-human" style="font-size:9px">人：截图对比</div>
+  </div>
+</div>
+</div>
+
+<!-- Data Loop -->
+<div class="flow-box data-loop" style="margin-top:18px">
+<span class="box-title">数据闭环</span>
+<div style="text-align:center;padding:8px 0">
+  <div style="font-size:13px;font-weight:600;color:var(--accent)">版本复盘 → 漏斗分析 → 用户反馈 → 下一轮 Phase 1</div>
+  <div style="font-size:11px;color:var(--t3);margin-top:4px">上线后 7-14 天执行复盘，数据洞察驱动下一轮迭代</div>
+</div>
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:var(--brand)"></span> PM 主流程</span>
+  <span><span class="dot" style="background:#8B5CF6"></span> UI/UX 设计流程</span>
+  <span><span class="dot" style="background:var(--accent)"></span> 数据闭环</span>
+  <span><span class="dot" style="background:var(--warn)"></span> 竞品分析</span>
+</div>
+</div>
+
+<h3 id="ch2-flywheel">知识库飞轮</h3>
+<p>核心设计：每个版本上线后将变更合并回基线，AI 在下一版本自动获得累积知识。<strong>迭代越多，AI 越准</strong>。</p>
+<div class="flywheel">
+  <div class="fw-node"><div class="fw-title">知识库完善</div><div class="fw-detail">基线 PRD · 设计规范<br>术语表 · API 接口</div></div>
+  <div class="fw-arrow">→</div>
+  <div class="fw-node"><div class="fw-title">AI 输出准确</div><div class="fw-detail">PRD 与现有功能衔接<br>术语统一 · 异常覆盖</div></div>
+  <div class="fw-arrow">→</div>
+  <div class="fw-node"><div class="fw-title">评审返工少</div><div class="fw-detail">预评审拦截问题<br>评审效率提升</div></div>
+  <div class="fw-arrow">→</div>
+  <div class="fw-node"><div class="fw-title">知识沉淀</div><div class="fw-detail">合并基线 · 数据复盘<br>竞品更新</div></div>
+</div>
+<div class="fw-return">↻ 每个版本上线后合并回基线 → AI 在下一版本自动获得累积知识</div>
+
+<h3 id="ch2-overview">各阶段速览</h3>
+<table>
+<thead><tr><th>Phase</th><th>阶段</th><th>AI 做什么</th><th>人做什么</th><th>核心产出</th><th>通过标准</th></tr></thead>
+<tbody>
+<tr><td><strong>0</strong></td><td>了解产品</td><td>读取基线 PRD + 设计规范 + 术语表</td><td>确认 AI 上下文正确</td><td>—</td><td>AI 术语与 glossary 一致</td></tr>
+<tr><td><strong>1</strong></td><td>需求调研</td><td>苏格拉底提问法 · 多数据源调研</td><td>定义需求目标、范围、约束</td><td><code>overview.md</code></td><td>成功指标可量化 · 不做范围明确</td></tr>
+<tr><td><strong>2</strong></td><td>PRD 撰写</td><td>基于基线生成 12 章节 PRD 初稿</td><td>审阅业务逻辑、做产品决策</td><td><code>prd-{name}.md</code><br><code>i18n.csv</code> · <code>tracking.csv</code></td><td>12 章节完整 · 无「⚠️ 待确认」</td></tr>
+<tr><td><strong>3</strong></td><td>原型生成</td><td>基于 PRD + 设计规范生成 HTML 原型</td><td>审阅交互流程 · 规范校验</td><td><code>prototype.html</code><br><code>validation.md</code></td><td>4 态覆盖 · 校验总分 ≥95%</td></tr>
+<tr><td><strong>3.5</strong></td><td>AI 预评审</td><td>5 角色并行评审（PM/开发/QA/设计/UX）</td><td>处理 🔴 P0 项 · 评估 🟡 P1 项</td><td><code>ai-review.md</code></td><td>所有 P0 已解决</td></tr>
+<tr><td><strong>4-5</strong></td><td>团队评审</td><td>预判挑战点 · 准备应答策略</td><td>组内 + 跨职能面对面评审</td><td><code>review-notes.md</code><br><code>figma-mapping.md</code></td><td>反馈无待处理项 · 决策已书面记录</td></tr>
+<tr><td><strong>6</strong></td><td>交付验收</td><td>同步维护知识库 · 变更管理</td><td>PM 需求变更管理 · 设计师 UI 还原验收</td><td><code>acceptance.md</code></td><td>还原度 ≥90% · 需求歧义 2h 内澄清</td></tr>
+<tr><td><strong>7</strong></td><td>基线合并</td><td>生成合并预览，安全合并基线</td><td>确认合并范围</td><td>modules/ 更新</td><td>基线反映线上真实状态</td></tr>
+<tr><td><strong>8</strong></td><td>数据验证</td><td>数据分析 · 趋势识别 · 洞察报告</td><td>业务解读 · 迭代决策</td><td>复盘报告 · 漏斗分析</td><td>数据支撑下一轮决策</td></tr>
+<tr><td>—</td><td>竞品分析</td><td>搜索竞品信息 · 截图 · 对比基线</td><td>PM 定义分析范围和方向</td><td>竞品报告 · landscape.md</td><td>快速 15-30min / 深度 2-4h</td></tr>
+<tr style="background:rgba(139,92,246,.06)"><td colspan="6" style="font-weight:700;color:#8B5CF6;font-size:12px;padding:6px 14px">▼ UI/UX 设计流程（与 PM 主流程 Phase 3-6 并行）</td></tr>
+<tr><td><strong>S1</strong></td><td>需求拆解</td><td>读取 PRD 生成结构化设计简报</td><td>设计师补充交互细节 · PM 确认 MVP</td><td>—（融入 PRD 流程）</td><td>页面清单完整 · 异常状态覆盖</td></tr>
+<tr><td><strong>S2</strong></td><td>线框稿</td><td>生成灰度 HTML 线框</td><td>设计师审核结构和信息层级</td><td>—（过程稿）</td><td>主流程零歧义 · 触控 ≥44px</td></tr>
+<tr><td><strong>S3</strong></td><td>规范校验</td><td>自动校验色彩/字体/圆角/间距</td><td>设计师确认校验结果</td><td>—（校验通过即可）</td><td>总分 ≥95% · 色彩/字体/圆角 100%</td></tr>
+<tr><td><strong>S4</strong></td><td>UI 设计稿</td><td>套用完整设计规范生成高保真 HTML</td><td>设计师做「要不要」的决策</td><td><code>ui-{name}.html</code> + Figma 链接</td><td>色差 deltaE < 2 · 图标线宽统一</td></tr>
+<tr><td><strong>S5</strong></td><td>走查修改</td><td>按走查反馈逐项修改</td><td>设计师量化走查（具体数值）</td><td>走查记录</td><td>最多 3 轮 · P1 全部修复</td></tr>
+<tr><td><strong>S6</strong></td><td>交付包</td><td>从代码提取数值生成标注文档</td><td>设计师确认交付完整性</td><td>标注文档 · components.css</td><td>开发可直接使用</td></tr>
+<tr><td><strong>S7</strong></td><td>开发验收</td><td>截图对比 · 输出差异报告</td><td>设计师 + PM 确认还原度</td><td><code>acceptance.md</code></td><td>还原度 ≥90% · 设计师签字</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<!-- Phase Details -->
+<h3 id="phase1">2.1 需求调研与澄清</h3>
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge">Phase 1</span><span class="pd-title">把模糊需求变成结构化的、可执行的需求描述</span></div>
+  <div class="pd-purpose">双轨入口：已上线产品读取基线 PRD 做增量定义；从 0 到 1 从业务简报出发结构化定义范围。</div>
+  <p><strong>AI 协作方式：</strong></p>
+  <ol>
+    <li><strong>进入 Plan Mode</strong>（Shift+Tab）— 只分析不修改，PM 的安全网</li>
+    <li><strong>苏格拉底提问法</strong> — AI 分轮提问：问题真实性 → 方案合理性 → 成功衡量 → 约束取舍 → 战略合理性</li>
+    <li><strong>多数据源调研</strong>（Web3 特色）— 链上行为数据 + 社区反馈 + 竞品分析 + 用户访谈</li>
+  </ol>
+  <p><strong>通过标准：</strong></p>
+  <ul class="checklist">
+    <li>需求的「为什么做」有数据或用户反馈支撑</li>
+    <li>核心用户场景已识别（至少 3 个）</li>
+    <li>成功指标已定义（可量化）</li>
+    <li>约束和不做的范围已明确</li>
+  </ul>
+  <p><strong>产出：</strong><code>overview.md</code></p>
+</div>
+
+<h3 id="phase2">2.2 PRD 撰写</h3>
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge">Phase 2</span><span class="pd-title">输出完整 PRD，回答「做什么、为什么做、做成什么样」</span></div>
+  <div class="pd-purpose">AI 读取基线 PRD + 设计规范 + 术语表 + API 参考，基于 12 章节模板生成初稿，PM 审阅修改。</div>
+  <p><strong>PRD 12 章节结构：</strong></p>
+  <div class="principle-grid three-col" style="margin:12px 0">
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">1. 背景与目标</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">2. 目标用户与场景</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">3. 功能清单（P0/P1/P2）</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">4. 用户流程</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">5. 业务规则</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">6. UI / 交互说明</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">7. 异常场景与边界</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">8. 数据埋点需求</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">9. 国际化与文案</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">10. 兼容性与平台差异</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">11. 安全与隐私</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-desc">12. 成功指标与验收</div></div>
+  </div>
+  <blockquote class="warn"><strong>写作红线</strong>：PRD 不含代码/CSS 类名 · 不确定处标注「⚠️ 待确认」 · 异常场景写清错误码和文案，不接受模糊描述</blockquote>
+  <p><strong>产出：</strong><code>prd-{功能名}-v{N}.md</code> + <code>i18n-{功能名}.csv</code> + <code>tracking-{功能名}.csv</code></p>
+</div>
+
+<h3 id="phase3">2.3 原型生成</h3>
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge">Phase 3</span><span class="pd-title">PRD 转化为可交互 HTML 原型</span></div>
+  <div class="pd-purpose">原型即文档 — 所有页面状态均需可见（弹窗、加载态、空态、错误态单独出图），让团队基于真实可操作的产品讨论。</div>
+  <p><strong>状态覆盖要求：</strong></p>
+  <table>
+    <thead><tr><th>状态</th><th>说明</th><th>是否必须</th></tr></thead>
+    <tbody>
+      <tr><td>正常态</td><td>数据正常展示</td><td><span class="badge red">必须</span></td></tr>
+      <tr><td>空态</td><td>无数据时展示</td><td><span class="badge red">必须</span></td></tr>
+      <tr><td>加载态</td><td>数据请求中</td><td><span class="badge red">必须</span></td></tr>
+      <tr><td>错误态</td><td>请求失败/操作异常</td><td><span class="badge red">必须</span></td></tr>
+      <tr><td>边界态</td><td>数据过长/极端值</td><td><span class="badge yellow">推荐</span></td></tr>
+    </tbody>
+  </table>
+  <p><strong>UI/UX 规范校验（强制门槛）：</strong></p>
+  <table>
+    <thead><tr><th>校验项</th><th>标准</th><th>容忍度</th></tr></thead>
+    <tbody>
+      <tr><td>色彩</td><td>全部使用设计规范 token，零裸色值</td><td><span class="badge red">100%</span></td></tr>
+      <tr><td>字体</td><td>字阶符合规范定义</td><td><span class="badge red">100%</span></td></tr>
+      <tr><td>圆角</td><td>按钮/卡片/弹窗分别定义</td><td><span class="badge red">100%</span></td></tr>
+      <tr><td>间距 + 触控尺寸</td><td>margin 符合规范 · ≥44px</td><td><span class="badge yellow">≥95%</span></td></tr>
+      <tr><td>总评分</td><td>加权总分</td><td><span class="badge blue">≥95% 方可评审</span></td></tr>
+    </tbody>
+  </table>
+  <p><strong>产出：</strong><code>prototype-{功能名}-v{N}.html</code> + <code>validation-{功能名}.md</code></p>
+</div>
+
+<h3 id="phase35">2.4 AI 多角色预评审</h3>
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge accent">Phase 3.5</span><span class="pd-title">5 角色 Sub-Agent 并行审查，提前拦截问题</span></div>
+  <div class="pd-purpose">在正式评审前，用 AI 模拟产品经理、前端、后端、设计师、QA 五个角色并行审查，减少评审返工。</div>
+  <table>
+    <thead><tr><th>Agent 角色</th><th>审查重点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>产品经理</strong></td><td>产品定位、需求完整性、优先级合理性、指标可衡量</td></tr>
+      <tr><td><strong>前端开发</strong></td><td>交互可行性、组件复用、性能、浏览器兼容</td></tr>
+      <tr><td><strong>后端开发</strong></td><td>架构合理性、数据流、API 设计、安全权限</td></tr>
+      <tr><td><strong>设计师</strong></td><td>信息架构、UX 流程、一致性、视觉层次</td></tr>
+      <tr><td><strong>QA 测试</strong></td><td>可验证性、边界条件、回归风险、文档准确性</td></tr>
+    </tbody>
+  </table>
+  <p><strong>输出分级：</strong>
+    <span class="badge red">🔴 P0 必须解决</span>
+    <span class="badge yellow">🟡 P1 建议优化</span>
+    <span class="badge green">🟢 P2 锦上添花</span>
+  </p>
+  <p><strong>持续学习机制</strong>：每次真人评审后复盘 AI 预评审的命中/遗漏/误报，将经验追加到 CLAUDE.md，持续提升预评审质量。</p>
+  <p><strong>产出：</strong><code>ai-review-{功能名}-{日期}.md</code></p>
+</div>
+
+<h3 id="phase4">2.5 评审、交付与验收</h3>
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge">Phase 4-6</span><span class="pd-title">团队评审 → 开发跟进 → 上线验收</span></div>
+  <div class="pd-purpose">AI 预判评审挑战点并准备应答策略，人工面对面评审达成共识。开发阶段 PM 管需求变更，设计师管 UI 还原验收。</div>
+
+  <h4>评审</h4>
+  <ul>
+    <li><strong>产品组内评审</strong> → <strong>跨职能评审</strong>（设计 → 开发 → QA），反馈记入 <code>review-notes.md</code></li>
+    <li>响应 SLA：需求歧义 <strong>2h 内</strong>、评审反馈 <strong>48h 内</strong>、紧急技术确认 <strong>4h 内</strong></li>
+  </ul>
+  <blockquote class="warn"><strong>书面决策文化</strong>：所有重要决策必须书面存档。拒绝口头决策。</blockquote>
+
+  <h4>开发跟进</h4>
+  <ul>
+    <li><strong>PM</strong>：PRD 作为 Single Source of Truth，提测后范围冻结，变更必须更新 PRD</li>
+    <li><strong>设计师</strong>：UI 还原度验收 ≥90%，走查反馈量化（设计稿值 vs 实际值），最多 <strong>3 轮</strong></li>
+  </ul>
+</div>
+
+<h3 id="phase6">2.6 数据验证与持续迭代</h3>
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge accent">Phase 7-8</span><span class="pd-title">基线合并 → 数据验证 → 竞品对标 → 驱动下一轮迭代</span></div>
+  <div class="pd-purpose">版本上线后合并基线，用数据验证效果，结合竞品动态，形成「做 → 验证 → 改进」闭环。</div>
+
+  <div class="principle-grid" style="margin:12px 0">
+    <div class="principle-card">
+      <div class="pc-title" style="color:var(--accent)">版本效果复盘</div>
+      <div class="pc-desc">上线后 7-14 天，对比指标基线，输出变化 + 问题 + 迭代建议</div>
+    </div>
+    <div class="principle-card">
+      <div class="pc-title" style="color:var(--accent)">漏斗 + 用户反馈</div>
+      <div class="pc-desc">PM 提供 GA4 数据，AI 分析流失点；AI 搜索应用商店评价提取痛点</div>
+    </div>
+    <div class="principle-card">
+      <div class="pc-title" style="color:var(--warn)">竞品对标（随时触发）</div>
+      <div class="pc-desc">快速对标 15-30min（竞品发版时）· 深度对标 2-4h（立项前/季度盘点）</div>
+    </div>
+    <div class="principle-card">
+      <div class="pc-title" style="color:var(--brand)">基线合并</div>
+      <div class="pc-desc">使用 baseline-merge Skill，AI 生成合并预览 → PM 确认 → 执行合并</div>
+    </div>
+  </div>
+  <p>数据结论和竞品洞察作为下一轮 Phase 1 的输入，驱动下一版本规划。</p>
+</div>
+
+<h3 id="uiux">UI/UX 设计流程（7 阶段）</h3>
+<p>与 PM 主流程 Phase 3-6 并行，覆盖从需求拆解到开发验收的完整设计链路。设计师做决策（「要不要」），AI 做执行（「怎么做」）。</p>
+
+<div class="stats-row">
+  <div class="stat-card"><div class="stat-num">~40%</div><div class="stat-label">S1 需求拆解提效</div></div>
+  <div class="stat-card"><div class="stat-num">~40%</div><div class="stat-label">S2 线框稿提效</div></div>
+  <div class="stat-card"><div class="stat-num">~45%</div><div class="stat-label">S3 规范校验提效</div></div>
+  <div class="stat-card"><div class="stat-num">~35%</div><div class="stat-label">S4 UI 设计稿提效</div></div>
+</div>
+
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge" style="background:#8B5CF6">S1-S3</span><span class="pd-title">设计准备：需求拆解 → 线框稿 → 规范校验</span></div>
+  <div class="pd-purpose">从 PRD 到可进入高保真设计的线框稿，中间插入强制规范校验门槛。</div>
+
+  <p><strong>S1 需求拆解</strong> — AI 读取 PRD 生成结构化设计简报（页面清单、组件清单、异常状态），设计师补充交互细节，使用「用户影响 × 开发复杂度」矩阵确认 MVP 范围，明确锁定「不设计的范围」。产出 <code>brief-{功能名}.md</code>，设计师 + PM 双签字。</p>
+
+  <p><strong>S2 线框稿</strong> — Claude 主导生成灰度 HTML 线框，设计师审核结构和信息层级。修改指令要精确：「改什么、改哪里、改成什么」。</p>
+
+  <p><strong>S3 规范校验（强制门槛）</strong> — 线框稿进入高保真前必须通过校验，总分 ≥95%：</p>
+  <table>
+    <thead><tr><th>校验项</th><th>标准</th><th>容忍度</th></tr></thead>
+    <tbody>
+      <tr><td>色彩 · 字体 · 圆角</td><td>全部符合 design.md 定义</td><td><span class="badge red">100%</span></td></tr>
+      <tr><td>间距 · 触控尺寸</td><td>margin 符合规范 · 可交互元素 ≥44px</td><td><span class="badge yellow">≥95%</span></td></tr>
+    </tbody>
+  </table>
+  <blockquote class="err">不通过项必须一次性修复后重新校验，不允许带着不合规项进入 S4。</blockquote>
+</div>
+
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge" style="background:#8B5CF6">S4-S5</span><span class="pd-title">设计执行：高保真 UI 稿 → 走查修改</span></div>
+  <div class="pd-purpose">设计师做「要不要」的决策，Claude 做「怎么做」的实现。走查反馈必须量化。</div>
+
+  <p><strong>S4 UI 设计稿</strong> — 在校验通过的线框稿上套用完整设计规范，生成高保真 HTML。关键检查：色差 deltaE < 2 · 图标线宽统一。产出 <code>ui-{功能名}-v{N}.html</code></p>
+
+  <p><strong>推荐 Claude Skills：</strong></p>
+  <div class="principle-grid" style="margin:12px 0">
+    <div class="principle-card" style="padding:12px"><div class="pc-title" style="font-size:12px;color:#8B5CF6">UI-UX-Pro-Max</div><div class="pc-desc">UX 规则库 + 智能搜索</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-title" style="font-size:12px;color:#8B5CF6">frontend-design</div><div class="pc-desc">消除「AI 味」，精致排版</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-title" style="font-size:12px;color:#8B5CF6">shadcn-ui</div><div class="pc-desc">可用 React 组件代码</div></div>
+    <div class="principle-card" style="padding:12px"><div class="pc-title" style="font-size:12px;color:#8B5CF6">web-design-guidelines</div><div class="pc-desc">间距/栅格/排版规范</div></div>
+    <div class="principle-card" style="padding:12px;grid-column:1/3"><div class="pc-title" style="font-size:12px;color:#8B5CF6">web-accessibility</div><div class="pc-desc">WCAG 2.1 合规、aria 标签、对比度验证</div></div>
+  </div>
+  <blockquote>安装 Skill 不等于生效，Prompt 中必须<strong>显式声明</strong>。Skill 与 design.md 冲突时以项目规范为准。</blockquote>
+
+  <p><strong>S5 走查修改</strong> — 走查反馈必须量化，不接受「感觉不对」。使用标准表格（ID / 页面 / 问题 / 期望效果 / 优先级）。每处修改标注走查 ID。</p>
+  <blockquote class="warn"><strong>走查最多 3 轮</strong>。超过 3 轮说明 S1 需求拆解不清晰，需回退补充简报。</blockquote>
+</div>
+
+<div class="phase-detail">
+  <div class="pd-header"><span class="pd-badge" style="background:#8B5CF6">S6-S7</span><span class="pd-title">交付验收：开发交付包 → 还原度验收</span></div>
+  <div class="pd-purpose">AI 从代码直接提取 CSS 数值生成标注文档（无手工误差），截图对比验收还原度。</div>
+
+  <p><strong>S6 交付包</strong> — 交付物：终版 HTML 设计稿 + Figma 设计稿链接 + Markdown 标注文档（CSS Token、组件尺寸、动画参数） + 切图清单 + 可复用 <code>components.css</code>。标注使用工程语言（CSS 属性和值）。</p>
+  <blockquote><strong>Figma → 代码</strong>：设计师交付 Figma 链接后记入 <code>figma-design-index.md</code> 或迭代版本目录下的 <code>figma-mapping.md</code>。开发可通过 <strong>Figma MCP</strong> 让 Claude Code 直接读取 Figma 设计稿的布局、组件、Token 和样式信息，自动生成高还原度的前端代码（HTML/CSS/React），大幅减少手工还原偏差和反复走查的成本。</blockquote>
+
+  <p><strong>S7 开发验收</strong> — 设计稿值 vs 开发实现值逐项对比：</p>
+  <table>
+    <thead><tr><th>严重程度</th><th>标准</th><th>处理方式</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge red">P0</span></td><td>品牌色错误、文案错误、功能缺失</td><td>打回本轮修复</td></tr>
+      <tr><td><span class="badge yellow">P1</span></td><td>间距偏差 >4px、字号错误、图标缺失</td><td>修复率 ≥80%</td></tr>
+      <tr><td><span class="badge green">P2</span></td><td>微调级偏差（1-2px）</td><td>可下版本处理</td></tr>
+    </tbody>
+  </table>
+  <p><strong>验收通过</strong>：整体还原度 <strong>≥90%</strong>，设计师签字。产出 <code>acceptance-{功能名}-{日期}.md</code></p>
+</div>
+
+<h4>PM 原型 vs 设计师 Figma 的定位</h4>
+<table>
+  <thead><tr><th>维度</th><th>PM 的 HTML 原型</th><th>设计师的 Figma</th></tr></thead>
+  <tbody>
+    <tr><td><strong>定位</strong></td><td>意图表达（80% 精度）</td><td>设计决策（100% 精度）</td></tr>
+    <tr><td><strong>用途</strong></td><td>评审沟通、需求对齐</td><td>开发实现、视觉交付</td></tr>
+    <tr><td><strong>开发衔接</strong></td><td>参考用，不直接转代码</td><td>通过 Figma MCP + Claude Code 生成高还原前端代码</td></tr>
+    <tr><td><strong>关系</strong></td><td colspan="2" style="text-align:center">互补不替代 — PM 原型定义「做什么」，Figma 定义「长什么样」</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<!-- Chapter 3: Deliverables -->
+<h2 id="ch3">三、交付物标准</h2>
+
+<table>
+  <thead><tr><th>交付物</th><th>格式</th><th>命名规范</th><th>示例</th></tr></thead>
+  <tbody>
+    <tr><td>PRD</td><td><code>.md</code></td><td><code>prd-{功能名}-v{N}.md</code></td><td><code>prd-batch-transfer-v2.md</code></td></tr>
+    <tr><td>原型</td><td><code>.html</code></td><td><code>prototype-{功能名}-v{N}.html</code></td><td><code>prototype-homepage-v1.html</code></td></tr>
+    <tr><td>翻译文案</td><td><code>.csv</code></td><td><code>i18n-{功能名}-v{N}.csv</code></td><td><code>i18n-settings-v1.csv</code></td></tr>
+    <tr><td>埋点需求</td><td><code>.csv</code></td><td><code>tracking-{功能名}-v{N}.csv</code></td><td><code>tracking-transfer-v1.csv</code></td></tr>
+    <tr><td>AI 评审报告</td><td><code>.md</code></td><td><code>ai-review-{功能名}-{日期}.md</code></td><td><code>ai-review-gasfree-20260315.md</code></td></tr>
+    <tr><td>评审纪要</td><td><code>.md</code></td><td><code>review-notes-{功能名}-{日期}.md</code></td><td><code>review-notes-gasfree-20260315.md</code></td></tr>
+    <tr><td>验收报告</td><td><code>.md</code></td><td><code>acceptance-{功能名}-{日期}.md</code></td><td><code>acceptance-gasfree-20260320.md</code></td></tr>
+    <tr><td>发版清单</td><td><code>.md</code></td><td><code>release-checklist-v{x.y.z}.md</code></td><td><code>release-checklist-v4.9.0.md</code></td></tr>
+    <tr style="background:rgba(139,92,246,.06)"><td colspan="4" style="font-weight:700;color:#8B5CF6;font-size:12px;padding:6px 14px">▼ UI/UX 设计流程交付物</td></tr>
+    <tr><td>UI / UX 设计稿</td><td><code>.html</code> + Figma 链接</td><td>HTML: <code>ui-{功能名}-v{N}.html</code><br>Figma: 记入 <code>figma-design-index.md</code> 或 <code>iterations/v{x.y.z}/figma-mapping.md</code></td><td><code>ui-homepage-v2.html</code><br><code>figma.com/design/xxx</code></td></tr>
+    <tr><td>走查记录</td><td><code>.md</code></td><td><code>walkthrough-{功能名}-{日期}.md</code></td><td><code>walkthrough-homepage-20260315.md</code></td></tr>
+    <tr><td>开发标注文档</td><td><code>.md</code></td><td><code>annotation-{功能名}.md</code></td><td><code>annotation-homepage.md</code></td></tr>
+    <tr><td>可复用样式</td><td><code>.css</code></td><td><code>components.css</code></td><td><code>components.css</code></td></tr>
+  </tbody>
+</table>
+
+<h3 id="ch3-naming">命名规范</h3>
+<blockquote class="warn"><strong>强制规则</strong>：全小写英文 + 连字符 · 日期用 YYYYMMDD · 版本号用 v + 数字 · <strong>禁止使用</strong> <code>final</code>、<code>最新版</code>、<code>修改版</code>、<code>new</code>、<code>(1)</code>、<code>copy</code></blockquote>
+
+<hr>
+
+<!-- Chapter 4: AI Usage -->
+<h2 id="ch4">四、AI 使用规范</h2>
+
+<h3 id="ch4-skills">Skill 清单（12 个）</h3>
+<blockquote>以下 Skill 和 Prompt 模板为参考配置，各项目可根据实际业务场景、技术栈和团队习惯进行调整与优化。不必照搬全部，选择适合自己项目的子集即可。</blockquote>
+<table>
+  <thead><tr><th>Skill</th><th>用途</th><th>触发示例</th></tr></thead>
+  <tbody>
+    <tr><td><code>prd-generate</code></td><td>生成 PRD</td><td>"帮我生成批量转账功能的 PRD"</td></tr>
+    <tr><td><code>prd-reverse</code></td><td>逆向还原基线 PRD</td><td>"帮我从代码逆向还原转账模块"</td></tr>
+    <tr><td><code>prd-review-all</code></td><td>全角色预评审</td><td>"请对这个 PRD 做全角色评审"</td></tr>
+    <tr><td><code>prd-review-dev</code></td><td>开发视角评审</td><td>"请从开发角度评审"</td></tr>
+    <tr><td><code>prd-review-qa</code></td><td>QA 视角评审</td><td>"请从 QA 角度评审"</td></tr>
+    <tr><td><code>prd-review-ux</code></td><td>UX 视角评审</td><td>"请从 UX 角度评审"</td></tr>
+    <tr><td><code>prototype-generate</code></td><td>生成 HTML 原型</td><td>"帮我生成这个功能的原型"</td></tr>
+    <tr><td><code>review-prep</code></td><td>评审准备</td><td>"帮我准备评审，预判挑战点"</td></tr>
+    <tr><td><code>competitive-analysis</code></td><td>竞品分析</td><td>"帮我分析 MetaMask 的转账功能"</td></tr>
+    <tr><td><code>data-driven-iteration</code></td><td>数据驱动迭代</td><td>"帮我复盘 v4.9.0 的上线效果"</td></tr>
+    <tr><td><code>baseline-merge</code></td><td>基线合并</td><td>"帮我将 v4.9.0 合并到基线"</td></tr>
+    <tr><td><code>sync-drive</code></td><td>同步到 Google Drive</td><td>"帮我同步到 Drive"</td></tr>
+  </tbody>
+</table>
+
+<h3 id="ch4-donts">AI 不适用场景</h3>
+<div class="principle-grid three-col">
+  <div class="principle-card"><div class="pc-title" style="color:var(--err)">利益博弈</div><div class="pc-desc">组织内部优先级决策需要人际判断</div></div>
+  <div class="principle-card"><div class="pc-title" style="color:var(--err)">情绪感知</div><div class="pc-desc">面对面用户调研，AI 无法感知情绪</div></div>
+  <div class="principle-card"><div class="pc-title" style="color:var(--err)">法律合规</div><div class="pc-desc">法律/合规/隐私判断需专业人员</div></div>
+  <div class="principle-card"><div class="pc-title" style="color:var(--err)">创意发散</div><div class="pc-desc">早期阶段 AI 倾向给出「正确但平庸」的答案</div></div>
+  <div class="principle-card"><div class="pc-title" style="color:var(--err)">建立信任</div><div class="pc-desc">关键会议中的信任和共识建立</div></div>
+  <div class="principle-card"><div class="pc-title" style="color:var(--err)">数据根因</div><div class="pc-desc">AI 可能混淆相关性与因果性</div></div>
+</div>
+
+<hr>
+
+<!-- Chapter 5: Project Setup -->
+<h2 id="ch5">五、项目初始化与目录规范</h2>
+
+<h3 id="ch5-dir">标准项目结构（48 个文件）</h3>
+<p>新项目复制 <code>project-template/</code> 目录，填充占位符即可开始工作。</p>
+<blockquote>以下目录结构、Skill 定义和模板文件均为参考配置。各项目可根据实际业务场景、产品复杂度和团队规模进行裁剪或扩展——单端产品可去掉多端目录，小团队可精简 Skill 数量，模板内容可按需调整。</blockquote>
+<pre><code>{project-name}/
+├── CLAUDE.md                      # 项目级 AI 指引（工作流 + 规则 + 评审经验）
+├── rules.md                       # 协作规则（写作规范/协作流程/维护规则/AI 交互规则）
+├── shared/                        # 跨端共享资源
+│   ├── product-overview.md        #   产品介绍（含业务背景）
+│   ├── glossary.md                #   术语表
+│   ├── api-reference.md           #   API 参考
+│   ├── user-personas.md           #   用户画像
+│   └── tech-constraints.md        #   技术约束
+├── {product}/                     # 按产品端分目录（可多个）
+│   ├── CLAUDE.md                  #   端级 AI 指引
+│   ├── design.md                  #   设计规范
+│   ├── figma-design-index.md      #   Figma 设计稿索引
+│   ├── modules/                   #   基线 PRD（反映线上真实状态）
+│   ├── iterations/                #   版本迭代目录
+│   └── prototype/screenshots/     #   截图 + 基线原型
+├── design/                        # UI/UX 设计师知识库
+│   ├── component-guidelines.md    #   组件使用指南
+│   ├── design-decisions.md        #   设计决策记录
+│   ├── review-checklist.md        #   走查清单（含校验标准）
+│   ├── asset-inventory.md         #   设计资产清单
+│   └── figma-structure.md         #   Figma 文件组织/命名规范
+├── research/                      # 调研
+│   ├── competitive/landscape.md   #   竞品全景图
+│   └── data-insights/             #   指标基线 + 版本复盘
+├── templates/                     # 模板 + AI Prompt
+│   ├── prd-template.md            #   PRD 12 章节模板
+│   ├── review-template.md         #   评审纪要模板
+│   ├── iteration-overview.md      #   版本概要模板
+│   ├── release-checklist.md       #   发版清单模板
+│   └── prompts/                   #   AI Prompt 模板
+├── docs/                          # 文档索引 + 新人引导 + 季度健康检查
+├── skills/                        # AI Skill 定义（12 个，按需裁剪）
+└── meeting-notes/                 # 会议纪要</code></pre>
+
+<h3 id="ch5-claude">CLAUDE.md 规范</h3>
+<p>CLAUDE.md 是 AI 的「项目记忆」，每次对话自动加载。</p>
+<table>
+  <thead><tr><th>层级</th><th>位置</th><th>内容</th></tr></thead>
+  <tbody>
+    <tr><td>全局</td><td><code>~/.claude/CLAUDE.md</code></td><td>通用规范（优先级体系、命名规则）</td></tr>
+    <tr><td>项目</td><td><code>{project}/CLAUDE.md</code></td><td>产品定位、工作流、跨端共享规则</td></tr>
+    <tr><td>端级</td><td><code>{project}/{product}/CLAUDE.md</code></td><td>设计约束、模块全景、特有规则</td></tr>
+  </tbody>
+</table>
+<blockquote>控制在 <strong>200 行以内</strong>，详细内容放独立文件。每月审视一次，删除过期内容。</blockquote>
+
+<h3 id="ch5-drive">文档协作与同步</h3>
+
+<h4>当前方案：Google Drive（过渡）</h4>
+<p>当前阶段使用 Google Drive 作为团队共享和备份方案。每次同步通过 <code>sync-drive</code> Skill 触发，同步前自动在本地创建全量 <code>.zip</code> 备份。</p>
+<table>
+  <thead><tr><th>规则</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><strong>谁触发</strong></td><td>通过 <code>sync-drive</code> Skill 触发，AI 不主动同步</td></tr>
+    <tr><td><strong>同步方向</strong></td><td>本地 → Drive（单向），Drive 不回写本地</td></tr>
+    <tr><td><strong>本地备份</strong></td><td>每次同步前自动在本地创建全量 <code>.zip</code> 备份，存入 <code>_backup/</code></td></tr>
+    <tr><td><strong>同步范围</strong></td><td><code>.md</code> / <code>.csv</code> / <code>.html</code> / 图片，排除 <code>node_modules</code></td></tr>
+  </tbody>
+</table>
+<blockquote class="warn"><strong>为什么本地备份？</strong> Google Drive 对非 Google 格式文件（.md / .html / .csv）需要手动「管理版本 → 保留此版本」才能下载旧版本，实际操作中容易遗漏。本地全量 <code>.zip</code> 备份解压即可一步恢复。</blockquote>
+
+<p><strong>协作模式：</strong></p>
+<ol>
+  <li>PM / 设计师在本地（Claude Code）编辑文档</li>
+  <li>通过 <code>sync-drive</code> Skill 同步到 Drive（自动本地备份）</li>
+  <li>团队通过 Drive 查阅和评论</li>
+  <li>反馈通过评审会收集，PM 在本地处理后重新同步</li>
+</ol>
+
+<table>
+  <thead><tr><th>角色</th><th>Drive 权限</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>PM / 设计师（文档 Owner）</td><td>编辑</td><td>通过 Skill 同步更新</td></tr>
+    <tr><td>开发 / QA</td><td>查看 + 评论</td><td>通过评论反馈，不直接编辑</td></tr>
+    <tr><td>PM Lead</td><td>编辑</td><td>紧急情况下可直接修改</td></tr>
+  </tbody>
+</table>
+
+<h4>目标方案：Git 知识库（推荐演进方向）</h4>
+<p>建议后续将知识库迁移到 Git 仓库（如 GitLab），实现更专业的版本管理和协作。</p>
+
+<table>
+  <thead><tr><th>维度</th><th>Google Drive（当前）</th><th>Git 仓库（目标）</th></tr></thead>
+  <tbody>
+    <tr><td>版本管理</td><td>手动备份 .zip，粗粒度</td><td>每次提交精确 diff，完整历史</td></tr>
+    <tr><td>协作</td><td>评论 + 口头反馈</td><td>MR/PR Review，评论绑定具体行</td></tr>
+    <tr><td>变更追溯</td><td>靠备份文件名推断</td><td>git log / git blame 精确到行</td></tr>
+    <tr><td>分支管理</td><td>不支持</td><td>版本分支、并行开发</td></tr>
+    <tr><td>与 Claude Code 集成</td><td>需手动触发 Skill</td><td>原生集成，天然协作</td></tr>
+    <tr><td>权限管理</td><td>文件夹级别</td><td>仓库/分支/目录多级控制</td></tr>
+  </tbody>
+</table>
+
+<h4>为什么不用 Confluence？</h4>
+<p>Confluence 作为传统文档平台可以满足一般协作需求，但在 AI 协作工作流中存在两个核心限制：</p>
+<ul>
+  <li><strong>AI 读写友好度不足</strong> — Confluence 的富文本存储格式与 AI 原生的 Markdown 工作流不匹配，AI 直接读写 Confluence 页面时需要额外的格式转换层，增加复杂度和出错概率</li>
+  <li><strong>格式兼容性损失</strong> — Markdown 与 Confluence 富文本互转时，表格、代码块、嵌套列表、折叠标签等格式经常出错或丢失，PRD 这类结构化文档的还原度不高</li>
+</ul>
+<blockquote>本地 Markdown 文件是 AI 协作的最佳载体：CLAUDE.md 自动加载、Skill 直接读写、格式零损耗。</blockquote>
+
+<h3 id="ch5-examples">实操示例</h3>
+
+<h4>示例 1：基于模板初始化新项目</h4>
+<pre><code># 1. 复制模板目录，重命名为你的产品
+cp -r project-template/ my-product/
+cd my-product/
+
+# 2. 重命名产品端目录
+mv {product}/ extension/
+
+# 3. 全局替换占位符（模板中有 40+ 处 {product} 引用）
+grep -rl '{product}' . --include="*.md" | xargs sed -i '' 's/{product}/extension/g'
+
+# 4. 启动 Claude Code，让 AI 帮你完成初始化
+claude
+
+> "请帮我初始化知识库：
+>  产品名称 TronLink，TRON 生态官方钱包
+>  填充 CLAUDE.md、shared/product-overview.md、shared/glossary.md
+>  设计主色 #2B6AFF，字体 PingFang SC"
+
+# 5. 同步到 Drive
+> "帮我同步到 Drive"</code></pre>
+<blockquote>也可以跳过步骤 2-3，直接让 AI 执行：<code>"请将 {product}/ 重命名为 extension/，并替换所有文件中的 {product} 为 extension"</code></blockquote>
+
+<h4>示例 2：启动新版本迭代</h4>
+<pre><code># 1. 进入 Claude Code，告知要做什么
+> "我要启动 extension v2.0.0 版本，目标是重新设计首页"
+
+# 2. AI 进入 Plan Mode 对话了解需求（Phase 1）
+> AI 会苏格拉底式提问：为什么做？目标指标？约束？不做什么？
+
+# 3. PM 确认后，AI 创建版本目录
+> "确认，请创建版本目录"
+# AI 自动创建：
+#   extension/iterations/v2.0.0/
+#   extension/iterations/v2.0.0/overview.md
+
+# 4. 生成 PRD（Phase 2）
+> "帮我生成首页重新设计的 PRD"
+# 或用 Skill：
+> /prd-generate
+
+# 5. 生成原型（Phase 3）
+> /prototype-generate
+
+# 6. AI 预评审（Phase 3.5）
+> /prd-review-all
+
+# 7. 准备评审（Phase 4）
+> /review-prep
+
+# 8. 同步到 Drive 给团队查阅
+> "帮我同步到 Drive"</code></pre>
+
+<h4>示例 3：已上线产品逆向建基线</h4>
+<pre><code># 1. 适用于文档缺失的已上线产品
+> "帮我为 extension 的转账模块逆向生成基线 PRD"
+# 或用 Skill：
+> /prd-reverse 模块：转账 代码范围：src/pages/transfer/
+
+# 2. AI 读取代码 + 截图，生成模块 PRD
+# 产出 → extension/modules/transfer-receive.md
+
+# 3. PM 校验后，逐个模块推进
+> /prd-reverse 模块：资产展示 代码范围：src/pages/home/
+
+# 4. 基线建好后，后续版本迭代即可走标准流程</code></pre>
+
+<h4>示例 4：版本上线后合并基线</h4>
+<pre><code># v2.0.0 已上线，将变更合并回基线
+> "帮我将 v2.0.0 的首页重设计合并到基线"
+# 或用 Skill：
+> /baseline-merge
+
+# AI 输出合并预览（哪些新增、哪些修改）
+# PM 确认后 AI 执行合并
+# → extension/modules/ 更新
+# → figma-design-index.md 更新
+# → iterations/README.md 标记「已发布 + 已合并」
+
+# 同步
+> "帮我同步到 Drive"</code></pre>
+
+<hr>
+
+<!-- Chapter 6: Quality Gates -->
+<h2 id="ch6">六、质量门禁</h2>
+
+<h3 id="ch6-prd">PRD 八项检查（每份 PRD 提交前必过）</h3>
+<ul class="checklist">
+  <li>目标清晰：一句话说清「为什么做」</li>
+  <li>范围明确：功能清单有 P0/P1/P2 标注</li>
+  <li>用户流程完整：主流程 + 分支 + 异常</li>
+  <li>状态覆盖：正常/空/加载/错误态均有描述</li>
+  <li>边界覆盖：极端值、并发、权限等场景</li>
+  <li>验收标准可检查：每条标准可判断「通过/不通过」</li>
+  <li>无歧义：无模糊表述、无冲突、无不可执行的描述</li>
+  <li>内审结论已记录：AI 预评审报告已处理</li>
+</ul>
+
+<h3 id="ch6-release">上线前 PM / 设计师检查（发版前必过）</h3>
+<ul class="checklist">
+  <li>PRD 所有 P0 功能点已实现</li>
+  <li>核心流程端到端走通</li>
+  <li>UI 还原度 ≥90%（设计师签字）</li>
+  <li>文案与 PRD 一致（中英文均检查）</li>
+  <li>空态/加载态/错误态展示正确</li>
+  <li>需求变更已同步更新 PRD</li>
+</ul>
+
+<hr>
+
+<!-- Chapter 7: Pitfalls -->
+<h2 id="ch7">七、避坑指南</h2>
+
+<h3>AI 常见陷阱</h3>
+<table>
+  <thead><tr><th>陷阱</th><th>表现</th><th>规避方法</th></tr></thead>
+  <tbody>
+    <tr><td><strong>编造数据</strong></td><td>AI 自行补充转化率、用户量</td><td>要求标注数据来源，假设数据标注「假设」</td></tr>
+    <tr><td><strong>杜撰接口</strong></td><td>AI 虚构不存在的 API</td><td>与 <code>api-reference.md</code> 交叉验证</td></tr>
+    <tr><td><strong>照搬竞品</strong></td><td>不加适配地复制竞品方案</td><td>要求说明为什么适合我们的场景</td></tr>
+    <tr><td><strong>过度设计</strong></td><td>简单需求生成 20 页 PRD</td><td>明确范围，先骨架后填充</td></tr>
+    <tr><td><strong>遗忘上下文</strong></td><td>长对话后忘记前面的约束</td><td>让 AI 重新读关键文件</td></tr>
+    <tr><td><strong>裸色值</strong></td><td>原型使用硬编码色值而非 token</td><td>强制规范校验门槛</td></tr>
+  </tbody>
+</table>
+
+<h3>流程常见错误</h3>
+<table>
+  <thead><tr><th>错误</th><th>后果</th><th>正确做法</th></tr></thead>
+  <tbody>
+    <tr><td>跳过 Plan Mode</td><td>需求理解偏差导致返工</td><td>先进 Plan Mode 对话确认需求</td></tr>
+    <tr><td>迭代中直接改基线</td><td>基线与线上不一致</td><td>版本上线后才合并基线</td></tr>
+    <tr><td>走查用「感觉不对」</td><td>修改方向不明，反复折腾</td><td>量化反馈：具体数值 + 具体页面</td></tr>
+    <tr><td>口头决策不记录</td><td>后续扯皮，无据可查</td><td>所有决策写入 review-notes</td></tr>
+    <tr><td>一次性生成全部内容</td><td>质量差，修改成本高</td><td>先骨架后填充，每轮一个目标</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<!-- Sources -->
+<h2 id="sources">附：来源整合</h2>
+<p>本规范整合以下六份工作流文档的实践经验：</p>
+<table>
+  <thead><tr><th>来源</th><th>核心贡献</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Joy</strong> — PM 工作流与交付标准</td><td>5 阶段 Pipeline、SPEC 驱动开发、Web3 安全前置</td></tr>
+    <tr><td><strong>Neil</strong> — PM + CC 工作流</td><td>双场景工作流、项目模板体系、AI 预评审持续学习、文档索引</td></tr>
+    <tr><td><strong>Albert</strong> — PM 工作流 v1.1</td><td>7 阶段发版管理、原型即文档、PM 发版决策权责、响应 SLA</td></tr>
+    <tr><td><strong>Yuki</strong> — AI 协作工作流方案</td><td>苏格拉底提问法、「不允许脑补」原则、AI 角色化、简化流程准入标准</td></tr>
+    <tr><td><strong>Erek</strong> — AI-workflow-guide TronLink</td><td>知识库飞轮、12 个 AI Skill、基线合并机制、数据驱动三子阶段</td></tr>
+    <tr><td><strong>Charlie</strong> — UI/UX 手册 TronLink</td><td>7 阶段设计流、规范校验强制门槛、量化走查反馈、Skills 体系</td></tr>
+  </tbody>
+</table>
+
+<hr>
+<p style="text-align:center;font-size:12px;color:var(--t3);margin-top:40px">产品及 UI 组 AI 工作流规范 v1.0 · TRON ECO Product & UI Team · 2026-03-27<br>由 Claude Code 辅助生成</p>
+
+</main>
+</body>
+</html>

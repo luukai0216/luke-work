@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>USDD App - [页面名]</title>
+  <title>USDD App - [Page Name]</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -54,9 +54,23 @@
     button { cursor: pointer; font-family: inherit; }
     img { display: block; max-width: 100%; }
 
+    /* Desktop: 1200px ~ 1471px */
     .container { width: 1200px; margin: 0 auto; }
-    @media (min-width: 1472px) { .container { width: 1440px; } }
-    @media (max-width: 1199px) { .container { width: auto; padding: 0 20px; } }
+
+    /* Large Desktop: >= 1472px */
+    @media (min-width: 1472px) {
+      .container { width: 1440px; }
+    }
+
+    /* Pad: 767px ~ 1199px */
+    @media (min-width: 767px) and (max-width: 1199px) {
+      .container { width: auto; padding: 0 20px; }
+    }
+
+    /* Mobile: < 767px */
+    @media (max-width: 766px) {
+      .container { width: auto; padding: 0 20px; }
+    }
   </style>
 </head>
 <body>
@@ -73,9 +87,7 @@
       </a>
 
       <nav style="display:flex;align-items:center;gap:4px">
-        <a href="#" style="height:40px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-full);font-size:14px;font-weight:600;color:var(--text-tertiary)" onmouseover="this.style.background='var(--fill-hover)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.6)'">
-          Vault <span style="font-size:10px;background:var(--warning-default);color:#000;padding:1px 5px;border-radius:4px;font-weight:700">HOT</span>
-        </a>
+        <a href="#" style="height:40px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-full);font-size:14px;font-weight:600;color:var(--text-tertiary)" onmouseover="this.style.background='var(--fill-hover)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.6)'">Vault</a>
         <a href="#" style="height:40px;padding:0 14px;display:inline-flex;align-items:center;border-radius:var(--radius-full);font-size:14px;font-weight:500;color:var(--text-tertiary)" onmouseover="this.style.background='var(--fill-hover)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.6)'">Swap(PSM)</a>
         <a href="#" style="height:40px;padding:0 14px;display:inline-flex;align-items:center;border-radius:var(--radius-full);font-size:14px;font-weight:500;color:var(--text-tertiary)" onmouseover="this.style.background='var(--fill-hover)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.6)'">Migrate</a>
         <a href="#" style="height:40px;padding:0 14px;display:inline-flex;align-items:center;border-radius:var(--radius-full);background:var(--brand-bg);font-size:14px;font-weight:600;color:var(--brand-light)">Earn</a>
@@ -95,15 +107,15 @@
       <div style="background:linear-gradient(180deg,rgba(33,108,88,.18),rgba(33,108,88,.04));border-radius:var(--radius-xl);padding:40px 32px;position:relative;overflow:hidden">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap">
           <div style="max-width:640px">
-            <p style="font-size:16px;color:var(--text-tertiary);margin-bottom:8px">[副标题 / 页面说明]</p>
+            <p style="font-size:16px;color:var(--text-tertiary);margin-bottom:8px">[Subtitle / Page Description]</p>
             <h1 style="font-size:40px;font-weight:700;line-height:1.3;margin-bottom:0">
-              <span style="background:linear-gradient(270deg,#87F1BD 61%,#F3EE9F 102%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">[高亮关键词]</span>
-              <span> [标题其余部分]</span>
+              <span style="background:linear-gradient(270deg,#87F1BD 61%,#F3EE9F 102%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">[Highlighted Keyword]</span>
+              <span> [Text]</span>
             </h1>
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-            <button style="height:40px;padding:0 18px;background:transparent;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-md);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer">[次操作]</button>
-            <button style="height:40px;padding:0 18px;background:var(--brand-default);color:#fff;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--brand-hover)'" onmouseout="this.style.background='var(--brand-default)'">[主操作]</button>
+            <button style="height:40px;padding:0 18px;background:transparent;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-md);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer">[Secondary Action]</button>
+            <button style="height:40px;padding:0 18px;background:var(--brand-default);color:#fff;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--brand-hover)'" onmouseout="this.style.background='var(--brand-default)'">[Primary Action]</button>
           </div>
         </div>
       </div>
@@ -134,14 +146,14 @@
       <div style="display:flex;flex-direction:column;gap:24px">
         <div style="background:var(--bg-card);border-radius:var(--radius-xl);padding:24px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-            <h2 style="font-size:20px;font-weight:600">[主模块标题]</h2>
-            <span style="font-size:12px;color:var(--text-quaternary)">[辅助说明]</span>
+            <h2 style="font-size:20px;font-weight:600">[Main Module Title]</h2>
+            <span style="font-size:12px;color:var(--text-quaternary)">[Supporting Note]</span>
           </div>
           <div style="height:260px;border-radius:var(--radius-lg);background:rgba(255,255,255,0.03)"></div>
         </div>
         <div style="background:var(--bg-card);border-radius:var(--radius-xl);padding:24px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-            <h2 style="font-size:20px;font-weight:600">[列表 / 历史记录]</h2>
+            <h2 style="font-size:20px;font-weight:600">[List / History]</h2>
             <a href="#" style="font-size:14px;color:var(--brand-light)">View all</a>
           </div>
         </div>
@@ -149,15 +161,15 @@
 
       <aside style="display:flex;flex-direction:column;gap:16px">
         <div style="background:var(--bg-card);border-radius:var(--radius-xl);padding:24px">
-          <h2 style="font-size:20px;font-weight:600;margin-bottom:20px">[操作卡标题]</h2>
+          <h2 style="font-size:20px;font-weight:600;margin-bottom:20px">[Action Card Title]</h2>
           <div style="display:flex;gap:8px;margin-bottom:20px">
             <button style="height:36px;padding:0 16px;background:var(--brand-bg);color:var(--brand-light);border:none;border-radius:var(--radius-lg);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer">[Tab A]</button>
             <button style="height:36px;padding:0 16px;background:transparent;color:var(--text-tertiary);border:1px solid var(--border-default);border-radius:var(--radius-lg);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer">[Tab B]</button>
           </div>
         </div>
         <div style="background:rgba(255,255,255,0.04);border-radius:var(--radius-xl);padding:20px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:8px">[说明卡标题]</div>
-          <p style="font-size:14px;color:var(--text-tertiary);line-height:1.6">[规则说明 / 风险提示]</p>
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">[Info Card Title]</div>
+          <p style="font-size:14px;color:var(--text-tertiary);line-height:1.6">[Rules / Risk Notice]</p>
         </div>
       </aside>
     </section>

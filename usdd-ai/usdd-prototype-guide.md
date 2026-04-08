@@ -2,16 +2,15 @@
 
 根据 PRD 生成 USDD HTML 原型页面的规范。两个站点：**usdd.io**（USDD 官网）· **app.usdd.io**（USDD APP）
 
-> Design System Source: [Figma](https://www.figma.com/design/R2TQ0Ve55k6UHh4K3sBqv7/USDD-Design-System)
 > Sites: [usdd.io](https://usdd.io) · [app.usdd.io](https://app.usdd.io)
-> Last updated: 2026-04-07
+> Last updated: 2026-04-08
 
 ---
 
 ## 0. TL;DR
 
 **输入**：一份 PRD（含页面目标、内容、数据字段）
-**输出**：单文件 HTML 原型（样式内联在 `<style>`，所有第三方库走 CDN）。**若 PRD 同时涉及两个站点，必须分别生成两份独立 HTML，禁止合并到一个文件**。
+**输出**：单文件 HTML 原型（样式内联在 `<style>`，所有第三方库走 CDN）。若 PRD 同时涉及两个站点，分别生成两份独立 HTML。
 **核心**：判断站点（可能多个） → 复制对应模板骨架 → 按内容映射表选区块 → 填数据 → 跑自检清单
 
 ---
@@ -43,7 +42,7 @@
 - **仅命中 app.usdd.io** → 生成 1 份 HTML，使用 §6.2 APP 模板
 - **两个站点都命中** → 必须生成 **2 份独立 HTML 文件**，分别使用对应模板。**禁止把官网内容和 APP 内容塞进同一个文件**，因为它们的 `:root` 背景色、Header 结构、用户身份假设都不同。建议命名 `usdd-io-[页面名].html` 与 `app-usdd-io-[页面名].html`，并在回复开头列出文件清单。
 
-**通用规则**：从 §6 复制完整模板，**不可省略 `:root` 变量、Header、Footer**。USDD APP 默认不生成左侧 Sidebar，除非 PRD 明确要求后台式管理布局。
+**通用规则**：从 §6 复制完整模板骨架。USDD APP 默认不生成左侧 Sidebar，除非 PRD 明确要求后台式管理布局。
 
 ### 1.3 解析 PRD 内容 → 查 §4 内容映射表
 
@@ -134,7 +133,30 @@
   信息青     #0D9488
 ```
 
-**强制规则**：所有颜色必须使用 CSS 变量（`var(--brand-default)`），禁止硬编码颜色，禁止白色背景。
+**强制规则**：页面业务样式中的颜色必须使用 CSS 变量（如 `var(--brand-default)`），禁止硬编码颜色，禁止白色背景。文档中的演示代码若出现字面色值，仅用于说明色值映射关系，落地页面时仍需改写为变量。
+
+**示例变量名约定**：后文代码片段默认引用以下变量名；若你在模板中使用别名，需保证语义一致。
+
+```css
+--brand-default
+--brand-hover
+--brand-light
+--danger-default
+--text-primary
+--text-secondary
+--text-tertiary
+--text-disabled
+--border-strong
+--border-default
+--border-weak
+--button-primary-disabled-bg
+--button-primary-disabled-text
+--button-secondary-bg
+--button-secondary-disabled-bg
+--button-secondary-disabled-border
+--button-danger-hover-bg
+--button-ghost-hover-bg
+```
 
 ### 3.2 字体规范
 
@@ -240,20 +262,15 @@ page-enter           320ms ease-out
 ### 5.1 基础组件（Atoms）
 
 - **Button** — 见 §5.1.1
-- **Input** — Small / Large，含 default / focus / error / disabled，带 prefix / suffix / 单位
-- **Select / Dropdown**
-- **Checkbox / Radio / Switch**
-- **Tag / Badge** — 含状态色（success / warning / danger / info / brand）
-- **Tooltip**
-- **Avatar / Token Icon** — 含链 logo 占位规范
-- **Divider**
-- **Skeleton** — 加载占位
+
+> 除 `Button` 外，其余组件库内容后续由你补充。
 
 #### 5.1.1 Button
 
 > Source: [Figma — Button](https://www.figma.com/design/R2TQ0Ve55k6UHh4K3sBqv7/USDD-Design-System?node-id=8-8)
 > **4 Types · 4 Sizes · 5 States · 3 Icon Layouts**
 > 规则：`Padding = Height ÷ 2`；按钮禁用 `radius-full`；Icon Only 宽高相等。
+> 以下 HTML 片段已改为 CSS 变量写法，可直接作为页面原型参考。
 
 **类型（Type）**
 
@@ -304,97 +321,62 @@ page-enter           320ms ease-out
 ```html
 <!-- ===== Primary ===== -->
 <!-- Primary / Large / Default -->
-<button style="height:64px;padding:0 32px;background:#216C58;color:#fff;border:none;border-radius:12px;font:700 20px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#2A8C6C'" onmouseout="this.style.background='#216C58'">Button</button>
+<button style="height:64px;padding:0 32px;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:12px;font:700 20px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--brand-hover)'" onmouseout="this.style.background='var(--brand-default)'">Button</button>
 
 <!-- Primary / Medium / Default -->
-<button style="height:48px;padding:0 24px;background:#216C58;color:#fff;border:none;border-radius:8px;font:600 16px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#2A8C6C'" onmouseout="this.style.background='#216C58'">Button</button>
+<button style="height:48px;padding:0 24px;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:8px;font:600 16px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--brand-hover)'" onmouseout="this.style.background='var(--brand-default)'">Button</button>
 
 <!-- Primary / Small / Default -->
-<button style="height:40px;padding:0 20px;background:#216C58;color:#fff;border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#2A8C6C'" onmouseout="this.style.background='#216C58'">Button</button>
+<button style="height:40px;padding:0 20px;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--brand-hover)'" onmouseout="this.style.background='var(--brand-default)'">Button</button>
 
 <!-- Primary / Mini / Default -->
-<button style="height:32px;padding:0 16px;background:#216C58;color:#fff;border:none;border-radius:4px;font:400 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#2A8C6C'" onmouseout="this.style.background='#216C58'">Button</button>
+<button style="height:32px;padding:0 16px;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:4px;font:400 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--brand-hover)'" onmouseout="this.style.background='var(--brand-default)'">Button</button>
 
 <!-- Primary / Small / Disabled -->
-<button disabled style="height:40px;padding:0 20px;background:rgba(33,108,88,0.4);color:rgba(255,255,255,0.4);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:not-allowed">Button</button>
+<button disabled style="height:40px;padding:0 20px;background:var(--button-primary-disabled-bg);color:var(--button-primary-disabled-text);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:not-allowed">Button</button>
 
 <!-- Primary / Small / Loading -->
-<button style="height:40px;padding:0 20px;background:#216C58;color:rgba(255,255,255,0.8);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
-  <span style="display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite"></span>
+<button style="height:40px;padding:0 20px;background:var(--brand-default);color:var(--text-secondary);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+  <span style="display:inline-block;width:16px;height:16px;border:2px solid var(--border-weak);border-top-color:var(--text-primary);border-radius:50%;animation:spin 1s linear infinite"></span>
   Loading
 </button>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <!-- ===== Secondary ===== -->
 <!-- Secondary / Small / Default -->
-<button style="height:40px;padding:0 20px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.15);border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'">Button</button>
+<button style="height:40px;padding:0 20px;background:var(--button-secondary-bg);color:var(--text-secondary);border:1px solid var(--border-default);border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border-default)'">Button</button>
 
 <!-- Secondary / Small / Disabled -->
-<button disabled style="height:40px;padding:0 20px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.10);border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:not-allowed">Button</button>
+<button disabled style="height:40px;padding:0 20px;background:var(--button-secondary-disabled-bg);color:var(--text-disabled);border:1px solid var(--button-secondary-disabled-border);border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:not-allowed">Button</button>
 
 <!-- ===== Danger ===== -->
 <!-- Danger / Small / Default -->
-<button style="height:40px;padding:0 20px;background:#D73133;color:#fff;border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#EA3A3C'" onmouseout="this.style.background='#D73133'">Button</button>
+<button style="height:40px;padding:0 20px;background:var(--danger-default);color:var(--text-primary);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--button-danger-hover-bg)'" onmouseout="this.style.background='var(--danger-default)'">Button</button>
 
 <!-- ===== Ghost ===== -->
 <!-- Ghost / Small / Default -->
-<button style="height:40px;padding:0 20px;background:transparent;color:rgba(255,255,255,0.6);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s,color .15s" onmouseover="this.style.background='rgba(255,255,255,0.04)';this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.6)'">Button</button>
+<button style="height:40px;padding:0 20px;background:transparent;color:var(--text-tertiary);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;transition:background .15s,color .15s" onmouseover="this.style.background='var(--button-ghost-hover-bg)';this.style.color='var(--text-secondary)'" onmouseout="this.style.background='transparent';this.style.color='var(--text-tertiary)'">Button</button>
 
 <!-- ===== Icon Layouts ===== -->
 <!-- Icon + Text -->
-<button style="height:40px;padding:0 20px;background:#216C58;color:#fff;border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+<button style="height:40px;padding:0 20px;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
   Button
 </button>
 
 <!-- Text + Icon -->
-<button style="height:40px;padding:0 20px;background:#216C58;color:#fff;border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+<button style="height:40px;padding:0 20px;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:6px;font:600 14px/1 Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
   Button
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
 </button>
 
 <!-- Icon Only -->
-<button aria-label="Settings" style="width:40px;height:40px;padding:0;background:#216C58;color:#fff;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
+<button aria-label="Settings" style="width:40px;height:40px;padding:0;background:var(--brand-default);color:var(--text-primary);border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
 </button>
 ```
 
-> 上述代码省略了 Medium / Mini 各类型的完整片段以保持简洁。其他尺寸按"尺寸表"调整 `height / padding / border-radius / font` 即可，色值与同类型 Small 完全一致。
-
----
-
-### 5.2 复合组件（Molecules）
-
-- **Tabs** — 横向 / 纵向 / Pill 三种
-- **Pagination**
-- **Table** — 含表头排序、筛选器、空态、加载态
-- **Modal / Drawer**
-- **Toast / Notification**
-- **Empty State**
-- **Step Indicator** — 步骤条
-- **Accordion** — FAQ 折叠
-- **Chain Selector** — 链切换器（Tron / ETH / BSC）
-
-### 5.3 区块组件（Organisms）
-
-> 与 §4 内容映射表一一对应。
-
-- **Hero** — 标题 + 副标题 + 双 CTA + 数据卡行
-- **KPI Grid** — 4 列指标卡
-- **Feature Card Grid** — 2 列大卡 / 3 列中卡
-- **CTA Block** — 渐变背景 + 双按钮
-- **Operation Layout** — 左主信息 + 右操作面板（APP 核心）
-- **Pool Card Grid** — Earn 池卡列表
-- **Timeline / History List**
-- **Info Card** — 规则说明 / 风险提示
-- **Article List** — 新闻列表
-- **FAQ Accordion**
-- **Header** — 官网版 / APP 版
-- **Footer** — 官网版 / APP 版
-
-### 5.4 数据可视化
-
-- **ECharts 深色主题预设**（line / bar / pie / area，统一 grid、axis、tooltip 样式）
+> 上述代码省略了 Medium / Mini 各类型的完整片段以保持简洁。其他尺寸按“尺寸表”调整 `height / padding / border-radius / font` 即可，色值与同类型 Small 完全一致。
 
 ---
 
@@ -405,10 +387,12 @@ page-enter           320ms ease-out
 ### 6.1 usdd.io — USDD 官网模板
 
 - 完整单文件 HTML（含 `:root` 变量 / Header / 内容区 / Footer）
+- 当前仅保留模板结构要求；实际骨架代码后续补充
 
 ### 6.2 app.usdd.io — USDD APP 模板
 
 - 完整单文件 HTML（含 `:root` 变量 / Header / 主体 / Footer）
+- 当前仅保留模板结构要求；实际骨架代码后续补充
 
 ---
 
@@ -439,7 +423,7 @@ TxHash         0x1234...5678
 ## 8. 反例清单（禁止做）
 
 - ❌ 白色或浅色背景
-- ❌ 硬编码颜色（如 `#fff`、`#ccc`），必须用 CSS 变量
+- ❌ 页面业务样式中硬编码颜色（如 `#fff`、`#ccc`），必须用 CSS 变量
 - ❌ 按钮使用 `radius-full`
 - ❌ 圆角嵌套反向（子元素圆角 ≥ 父元素）
 - ❌ 间距使用非 4 倍数值（如 5px、15px）
@@ -457,7 +441,7 @@ TxHash         0x1234...5678
 
 **结构**
 
-- 站点判断正确，使用了对应模板
+- 站点判断正确，使用了对应模板结构
 - `:root` 变量完整未省略
 - Header 高度 80px，主体 `padding-top:80px`
 - Footer 存在
@@ -466,7 +450,7 @@ TxHash         0x1234...5678
 **视觉**
 
 - 没有白色背景
-- 没有硬编码颜色（grep 检查 `#` 开头的颜色，仅允许出现在 `:root`）
+- 页面业务样式没有硬编码颜色（说明性示例代码除外）
 - 圆角嵌套：父 xl → 子 lg → 孙 md
 - 所有间距为 4 的倍数
 - 按钮未使用 `radius-full`
@@ -491,42 +475,50 @@ TxHash         0x1234...5678
 
 ## 10. 技术依赖（CDN）
 
-两个站点通过自托管 CDN（`prod-app-cdn-new.usdd.io/cdn/`）加载所有第三方库。
+两个站点通过自托管 CDN（`prod-app-cdn-new.usdd.io/cdn/`）加载所有第三方库与图标资源。
 
 ### 10.1 可用库清单
 
 
-| 库                 | 版本      | 用途         | 是否常用于原型     |
-| ----------------- | ------- | ---------- | ----------- |
-| **ECharts**       | 5.6.0   | 图表 / 数据可视化 | ✅ 数据页必用     |
-| **Ant Design**    | 5.21.6  | UI 组件库     | 按需使用        |
-| **Day.js**        | 1.11.10 | 日期格式化      | 按需使用        |
-| React + React DOM | 18.3.1  | 框架（SPA）    | ❌ 原型用纯 HTML |
-| TronWeb           | 6.0.3   | Tron 链交互   | ❌ 原型不需要     |
-| Ethers.js         | 6.14.4  | EVM 链交互    | ❌ 原型不需要     |
+| 库                 | 版本      | 用途         | 是否常用于原型        |
+| ----------------- | ------- | ---------- | -------------- |
+| **ECharts**       | 5.6.0   | 图表 / 数据可视化 | ✅ 数据页必用        |
+| **Ant Design**    | 5.21.6  | 设计参考 / 对照  | 不直接用于纯 HTML 原型 |
+| **Day.js**        | 1.11.10 | 日期格式化      | 按需使用           |
+| **Remix Icon**    | 4.x     | 图标字体 / SVG  | ✅ 统一图标来源      |
+| React + React DOM | 18.3.1  | 框架（SPA）    | ❌ 原型用纯 HTML    |
+| TronWeb           | 6.0.3   | Tron 链交互   | ❌ 原型不需要        |
+| Ethers.js         | 6.14.4  | EVM 链交互    | ❌ 原型不需要        |
 
 
-### 10.2 CDN Script 引用
+### 10.2 CDN 资源引用
 
 ```html
 <!-- ECharts（数据可视化图表，数据页必引） -->
 <script src="https://prod-app-cdn-new.usdd.io/cdn/echarts.min_5.6.0.js"></script>
 
-<!-- Ant Design（如需使用 antd 组件，需同时引入 React） -->
-<script src="https://prod-app-cdn-new.usdd.io/cdn/react.production.min_18.js"></script>
-<script src="https://prod-app-cdn-new.usdd.io/cdn/react-dom.production.min_18.js"></script>
-<script src="https://prod-app-cdn-new.usdd.io/cdn/antd.min_5.21.6.js"></script>
-
 <!-- Day.js（日期格式化） -->
 <script src="https://prod-app-cdn-new.usdd.io/cdn/dayjs.min_1.11.10.js"></script>
+
+<!-- Remix Icon（统一图标来源） -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
 ```
 
-### 10.3 ECharts 深色主题基础用法
+### 10.3 图标使用规范
+
+- 原型中的所有线性 / 填充图标优先使用 Remix Icon
+- 图标 class 统一使用 `ri-` 前缀，例如 `ri-arrow-right-line`、`ri-wallet-3-line`
+- 需要与文本基线对齐时，优先用 `font-size: 1em` 和 `vertical-align: -0.125em`
+- 除非 PRD 明确要求其他图标体系，否则不要混用 Ant Design Icons、Font Awesome 等其他来源
+
+### 10.4 ECharts 深色主题基础用法
 
 ```html
 <div id="chart" style="width:100%;height:280px;border-radius:var(--radius-lg)"></div>
 <script src="https://prod-app-cdn-new.usdd.io/cdn/echarts.min_5.6.0.js"></script>
 <script>
+  const css = getComputedStyle(document.documentElement);
+  const brandLight = css.getPropertyValue('--brand-light').trim() || '#5FC693';
   const chart = echarts.init(document.getElementById('chart'), null, { backgroundColor: 'transparent' });
   chart.setOption({
     backgroundColor: 'transparent',
@@ -547,8 +539,8 @@ TxHash         0x1234...5678
       type: 'line',
       data: [120, 200, 150, 220, 180, 260],
       smooth: true,
-      lineStyle: { color: '#5FC693', width: 2 },
-      itemStyle: { color: '#5FC693' },
+      lineStyle: { color: brandLight, width: 2 },
+      itemStyle: { color: brandLight },
       areaStyle: {
         color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
@@ -561,4 +553,5 @@ TxHash         0x1234...5678
   });
 </script>
 ```
+
 
