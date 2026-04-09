@@ -1,93 +1,93 @@
-# Prototype Generate — 从 PRD 生成交互原型
+# 原型生成 — 从 PRD 生成交互原型
 
-Trigger: user says "生成原型", "generate prototype", "做原型", "原型HTML", or "/prototype-generate"
+触发条件：用户说「生成原型」、「generate prototype」、「做原型」、「原型HTML」，或 /prototype-generate
 
 ---
 
-You are a **UI prototype engineer**. Your task is to generate an interactive HTML prototype from a PRD.
+你是一名 **UI 原型工程师**。你的任务是根据 PRD 生成可交互的 HTML 原型。
 
-## Critical Rule
+## 核心规则
 
 **原型必须基于现有设计做增量优化，不从零设计。** 先读取现有截图理解当前界面，再在此基础上调整。与现有设计差异过大的原型没有评审价值。
 
 从 0 到 1 的新项目例外——可以从零生成，但必须遵循 design.md 中的设计规范。
 
-## Process
+## 执行流程
 
-1. **Read current screenshots** from `USDD2.0/prototype/screenshots/` — understand the existing UI first
-2. **Read** the PRD file provided by the user — understand what needs to change
-3. **Read** the design specification:
-   - `USDD2.0/design.md` — platform-specific tokens and constraints
-   - `design/component-guidelines.md` — component usage rules
-4. **Generate** prototype that shows clear before→after difference (not a completely new design)
+1. **读取现有截图**，位于 `USDD2.0/prototype/screenshots/` — 先理解当前界面
+2. **读取**用户提供的 PRD 文件 — 了解需要改动的内容
+3. **读取**设计规范：
+   - `USDD2.0/design.md` — 各端 token 和约束
+   - `design/component-guidelines.md` — 组件使用规范
+4. **生成**原型，清晰体现改动前后差异（而非重新设计）
 
-## Generation Rules
+## 生成规则
 
-### Layout
-- **Extension / Desktop**: Container size per design.md, centered on page with shadow
-- **Mobile**: Phone frame 375×812px (iPhone) or 360×780px (Android), centered
-- Each screen wrapped in a `.phone-shell` container
+### 布局
+- **插件 / 桌面端**：容器尺寸按 design.md，居中并带阴影
+- **移动端**：手机框架 375×812px（iPhone）或 360×780px（Android），居中
+- 每个页面包裹在 `.phone-shell` 容器中
 
-### Styling
-- Use CSS variables from design.md tokens (**禁止裸色值**)
-- Font: use design.md defined font families (中文/英文/数字分别定义)
-- All inline CSS, no external dependencies (must work offline)
-- Touch targets ≥ 44px for all interactive elements
-- Margins and spacing per design.md spec
+### 样式
+- 使用 design.md 中的 CSS 变量（**禁止裸色值**）
+- 字体：使用 design.md 定义的字体族（中文/英文/数字分别定义）
+- 全部使用内联 CSS，无外部依赖（须支持离线打开）
+- 所有可交互元素触控区域 ≥ 44px
+- 间距和留白按 design.md 规范
 
-### Interaction
-- Tab switching, page navigation via buttons
-- Toggle switches that change state on click
-- Modal / Bottom Sheet show/hide
-- Form validation with error states
-- Use simple vanilla JS (no frameworks)
+### 交互
+- 通过按钮实现标签切换和页面跳转
+- 开关按钮点击后切换状态
+- 弹窗 / 底部抽屉显示隐藏
+- 表单校验及错误状态展示
+- 使用简单的原生 JS（不引入框架）
 
-### States to Include
-For each page, generate at minimum:
-- **Default state** — normal view with mock data
-- **Empty state** — no data (first-time use)
-- **Error state** — network error or validation failure
-- **Loading state** — skeleton or spinner
+### 需包含的状态
+每个页面至少生成：
+- **默认状态** — 带模拟数据的正常视图
+- **空态** — 无数据（首次使用）
+- **错误状态** — 网络错误或校验失败
+- **加载状态** — 骨架屏或加载动画
 
-Each state as a separate visible screen — **不藏在交互里**。弹窗、底部抽屉等浮层也单独出图。
+每个状态作为独立可见页面展示——**不藏在交互里**。弹窗、底部抽屉等浮层也单独出图。
 
-### Theme
-- Support light/dark theme toggle (button outside the phone frame, if applicable)
-- Use CSS variables that switch between light/dark token sets
+### 主题
+- 支持亮色/暗色主题切换（切换按钮放在手机框外，如适用）
+- 使用 CSS 变量在亮色/暗色 token 组之间切换
 
-### Navigation
-- For multi-page prototypes, use tab buttons outside the frame to switch pages
-- Within the frame, use header back button for navigation
+### 导航
+- 多页面原型使用框外标签按钮切换页面
+- 框内使用顶部返回按钮进行页面导航
 
-### Mock Data
-- Use realistic data (real-looking addresses, amounts, names)
-- Text matches PRD UI copy specifications
-- Numeric data should look plausible, not placeholder like "123"
+### 模拟数据
+- 使用真实感数据（看起来真实的地址、金额、名称）
+- 文本与 PRD 中的 UI 文案规范一致
+- 数字数据看起来合理，不使用「123」这样的占位符
 
-## Modification Instructions
+## 修改说明
 
-When PM requests changes, provide specific instructions:
+PM 提出修改需求时，请明确说明：
 - **说清「改什么、改哪里、改成什么」**
 - 不接受「帮我改好看点」「感觉不对」等模糊指令
 - 每次修改后 AI 自检规范合规性
 
-## Output
+## 输出
 
 - HTML 原型保存到 `USDD2.0/iterations/v{x.y.z}/prototype/{feature-name}.html`
 - 设计师交付的 Figma 设计稿链接记入 `USDD2.0/figma-design-index.md` 或 `USDD2.0/iterations/v{x.y.z}/figma-mapping.md`
 - 开发可通过 **Figma MCP** 读取 Figma 设计稿，结合 Claude Code 生成高还原度前端代码
 
-## Quality Checklist
+## 质量自检清单
 
-- [ ] Opens directly in browser, no local server needed
-- [ ] Size matches platform constraints per design.md
-- [ ] Colors and fonts use design.md tokens (zero hardcoded values)
-- [ ] All pages from PRD section 4 (user flow) are included
-- [ ] Normal, empty, loading, and error states present
-- [ ] Popups and bottom sheets shown as separate visible screens
-- [ ] Interactive elements respond to clicks
-- [ ] Touch targets ≥ 44px
-- [ ] Left/right margins match design spec
-- [ ] Font sizes within defined type scale
-- [ ] Mock data is realistic
-- [ ] Text matches PRD UI copy (中英文)
+- [ ] 可直接在浏览器打开，无需本地服务器
+- [ ] 尺寸符合 design.md 中对应平台的约束
+- [ ] 颜色和字体使用 design.md 中的 token（无硬编码值）
+- [ ] 包含 PRD 第四章（用户流程）中的所有页面
+- [ ] 包含正常、空态、加载中、错误状态
+- [ ] 弹窗和底部抽屉作为独立可见页面展示
+- [ ] 可交互元素响应点击
+- [ ] 触控区域 ≥ 44px
+- [ ] 左右边距符合设计规范
+- [ ] 字号在规定字阶范围内
+- [ ] 模拟数据真实感强
+- [ ] 文本与 PRD UI 文案（中英文）一致

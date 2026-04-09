@@ -14,10 +14,12 @@
 
 ## 2. 变更日志
 
-| 时间   | 变更人     | 主要内容 |
-| ---- | ------- | ---- |
-| 3.23 | Blackey | 新建需求 |
+
+| 时间   | 变更人     | 主要内容                  |
+| ---- | ------- | --------------------- |
+| 3.23 | Blackey | 新建需求                  |
 | 4.08 | Luke    | 补充待确认问题确认结论，输出最终版 PRD |
+
 
 ---
 
@@ -66,25 +68,27 @@ MCP Server Docs  USDD Treasury
 
 #### Footer 入口链接
 
-| 栏目           | 链接名称            | URL                                                                                       | 状态      | 备注      |
-| ------------ | --------------- | ----------------------------------------------------------------------------------------- | ------- | ------- |
-| Developer    | Developer Doc   | https://docs.usdd.io/                                                                     | 可点击     |         |
-| Developer    | Audit Report    | https://docs.usdd.io/security/audits                                                      | 可点击     |         |
-| Developer    | **MCP Server Docs** | GitBook URL（待更新）                                                                      | **不可点击（Disabled 态）** | **新增；URL 未确定前置灰禁用，URL 上线后解锁** |
-| Transparency | Data            | https://usdd.io/data                                                                      | 可点击     |         |
-| Transparency | Smart Allocator | https://usdd.io/sa                                                                        | 可点击     |         |
-| Transparency | USDD Treasury   | https://usdd.io/treasury                                                                  | 可点击     |         |
-| Community    | News            | https://usdd.io/news                                                                      | 可点击     |         |
-| Community    | FAQs            | https://usdd.io/faq                                                                       | 可点击     |         |
-| Legal        | Terms of Use    | https://docs.usdd.io/lrgals/terms-of-use                                                  | 可点击     | GitBook |
-| Legal        | Privacy Policy  | https://docs.usdd.io/lrgals/privacy-policy                                                | 可点击     | GitBook |
-| Legacy       | USDD Legacy     | https://legacy.usdd.io/                                                                   | 可点击     |         |
-| Legacy       | USDD Old PSM    | https://legacy.usdd.io/#/psm                                                              | 可点击     | 新增      |
-| 社交           | X (Twitter)     | https://x.com/usddio                                                                      | 可点击     | 保留      |
-| 社交           | Telegram        | —（Tooltip 触发，见下方说明）                                                                      | Tooltip | 保留      |
-| 社交           | Discord         | https://discord.com/invite/NurKn6KEqx                                                     | 可点击     | 保留      |
-| 联系           | support@usdd.io | mailto:support@usdd.io                                                                    | 可点击     | 保留      |
-| 版权           | Copyright © 2026 USDD. All rights reserved | 无                                                               | 展示文本    | 保留      |
+
+| 栏目           | 链接名称                                       | URL                                                                                      | 状态      | 备注      |
+| ------------ | ------------------------------------------ | ---------------------------------------------------------------------------------------- | ------- | ------- |
+| Developer    | Developer Doc                              | [https://docs.usdd.io/](https://docs.usdd.io/)                                           | 可点击     |         |
+| Developer    | Audit Report                               | [https://docs.usdd.io/security/audits](https://docs.usdd.io/security/audits)             | 可点击     |         |
+| Developer    | **MCP Server Docs**                        |                                                                                          | 可点击     |         |
+| Transparency | Data                                       | [https://usdd.io/data](https://usdd.io/data)                                             | 可点击     |         |
+| Transparency | Smart Allocator                            | [https://usdd.io/sa](https://usdd.io/sa)                                                 | 可点击     |         |
+| Transparency | USDD Treasury                              | [https://usdd.io/treasury](https://usdd.io/treasury)                                     | 可点击     |         |
+| Community    | News                                       | [https://usdd.io/news](https://usdd.io/news)                                             | 可点击     |         |
+| Community    | FAQs                                       | [https://usdd.io/faq](https://usdd.io/faq)                                               | 可点击     |         |
+| Legal        | Terms of Use                               | [https://docs.usdd.io/lrgals/terms-of-use](https://docs.usdd.io/lrgals/terms-of-use)     | 可点击     | GitBook |
+| Legal        | Privacy Policy                             | [https://docs.usdd.io/lrgals/privacy-policy](https://docs.usdd.io/lrgals/privacy-policy) | 可点击     | GitBook |
+| Legacy       | USDD Legacy                                | [https://legacy.usdd.io/](https://legacy.usdd.io/)                                       | 可点击     |         |
+| Legacy       | USDD Old PSM                               | [https://legacy.usdd.io/#/psm](https://legacy.usdd.io/#/psm)                             | 可点击     | 新增      |
+| 社交           | X (Twitter)                                | [https://x.com/usddio](https://x.com/usddio)                                             | 可点击     | 保留      |
+| 社交           | Telegram                                   | —（Tooltip 触发，见下方说明）                                                                      | Tooltip | 保留      |
+| 社交           | Discord                                    | [https://discord.com/invite/NurKn6KEqx](https://discord.com/invite/NurKn6KEqx)           | 可点击     | 保留      |
+| 联系           | [support@usdd.io](mailto:support@usdd.io)  | mailto:[support@usdd.io](mailto:support@usdd.io)                                         | 可点击     | 保留      |
+| 版权           | Copyright © 2026 USDD. All rights reserved | 无                                                                                        | 展示文本    | 保留      |
+
 
 #### MCP Server Docs Disabled 态设计规范
 
@@ -97,8 +101,8 @@ MCP Server Docs  USDD Treasury
 
 - 鼠标移入 Telegram 图标，显示 **Tooltip**（非下拉菜单）
 - Tooltip 内展示两个入口：
-  - `Telegram Group`（URL 待定，暂不可点击）
-  - `Telegram Announcement`（URL 待定，暂不可点击）
+  - `Telegram Group`
+  - `Telegram Announcement`
 - URL 确认后解锁两个入口的跳转功能
 
 ### 4.2 官网移动端响应式方案
@@ -127,43 +131,48 @@ MCP Server Docs  USDD Treasury
 
 > **注意：** MCP Server Docs 在 Disabled 态时**不埋点**，URL 解锁并变为可点击后再添加。
 
-| 事件名称                              | 触发逻辑                                             | 备注         |
-| --------------------------------- | ------------------------------------------------ | ---------- |
-| `footer_developer_doc_click`      | 点击页脚 `Developer` 栏的 `Developer Doc` 链接           |            |
-| `footer_audit_report_click`       | 点击页脚 `Developer` 栏的 `Audit Report` 链接            |            |
-| `footer_mcp_server_docs_click`    | 点击页脚 `Developer` 栏的 `MCP Server Docs` 链接         | URL 解锁后启用  |
-| `footer_data_click`               | 点击页脚 `Transparency` 栏的 `Data` 链接                 |            |
-| `footer_smart_allocator_click`    | 点击页脚 `Transparency` 栏的 `Smart Allocator` 链接      |            |
-| `footer_usdd_treasury_click`      | 点击页脚 `Transparency` 栏的 `USDD Treasury` 链接        |            |
-| `footer_news_click`               | 点击页脚 `Community` 栏的 `News` 链接                    |            |
-| `footer_faqs_click`               | 点击页脚 `Community` 栏的 `FAQs` 链接                    |            |
-| `footer_terms_click`              | 点击页脚 `Legal` 栏的 `Terms of Use` 链接                |            |
-| `footer_privacy_click`            | 点击页脚 `Legal` 栏的 `Privacy Policy` 链接              |            |
-| `footer_legacy_usdd_legacy_click` | 点击页脚 `Legacy` 栏的 `USDD Legacy` 链接                |            |
-| `footer_legacy_usdd_old_psm_click`| 点击页脚 `Legacy` 栏的 `USDD Old PSM` 链接               | 新增入口       |
-| `footer_x_click`                  | 点击页脚 `X (Twitter)` 社交图标                          |            |
-| `footer_telegram_group_click`     | 点击 Telegram Tooltip 内的 `Telegram Group` 链接       | URL 解锁后启用  |
-| `footer_telegram_announcement_click` | 点击 Telegram Tooltip 内的 `Telegram Announcement` 链接 | URL 解锁后启用 |
-| `footer_discord_click`            | 点击页脚 `Discord` 社交图标                              |            |
-| `footer_email_click`              | 点击页脚 `support@usdd.io` 邮箱链接                      |            |
+
+| 事件名称                                 | 触发逻辑                                              | 备注   |
+| ------------------------------------ | ------------------------------------------------- | ---- |
+| `footer_developer_doc_click`         | 点击页脚 `Developer` 栏的 `Developer Doc` 链接            |      |
+| `footer_audit_report_click`          | 点击页脚 `Developer` 栏的 `Audit Report` 链接             |      |
+| `footer_mcp_server_docs_click`       | 点击页脚 `Developer` 栏的 `MCP Server Docs` 链接          |      |
+| `footer_data_click`                  | 点击页脚 `Transparency` 栏的 `Data` 链接                  |      |
+| `footer_smart_allocator_click`       | 点击页脚 `Transparency` 栏的 `Smart Allocator` 链接       |      |
+| `footer_usdd_treasury_click`         | 点击页脚 `Transparency` 栏的 `USDD Treasury` 链接         |      |
+| `footer_news_click`                  | 点击页脚 `Community` 栏的 `News` 链接                     |      |
+| `footer_faqs_click`                  | 点击页脚 `Community` 栏的 `FAQs` 链接                     |      |
+| `footer_terms_click`                 | 点击页脚 `Legal` 栏的 `Terms of Use` 链接                 |      |
+| `footer_privacy_click`               | 点击页脚 `Legal` 栏的 `Privacy Policy` 链接               |      |
+| `footer_legacy_usdd_legacy_click`    | 点击页脚 `Legacy` 栏的 `USDD Legacy` 链接                 |      |
+| `footer_legacy_usdd_old_psm_click`   | 点击页脚 `Legacy` 栏的 `USDD Old PSM` 链接                | 新增入口 |
+| `footer_x_click`                     | 点击页脚 `X (Twitter)` 社交图标                           |      |
+| `footer_telegram_group_click`        | 点击 Telegram Tooltip 内的 `Telegram Group` 链接        |      |
+| `footer_telegram_announcement_click` | 点击 Telegram Tooltip 内的 `Telegram Announcement` 链接 |      |
+| `footer_discord_click`               | 点击页脚 `Discord` 社交图标                               |      |
+| `footer_email_click`                 | 点击页脚 `support@usdd.io` 邮箱链接                       |      |
+
 
 ---
 
 ## 6. 待确认问题（已全部关闭）
 
-| #   | 问题                                          | 确认结论                                                               | 状态  |
-| --- | ------------------------------------------- | ------------------------------------------------------------------ | --- |
-| Q1  | MCP Server Docs URL 未确认前 UI 如何处理？           | 设为**不可点击 Disabled 态**，URL 上线后解锁                                    | ✅ 已确认 |
-| Q2  | 列数以"四列"还是"五列"为准？Legacy 是独立列还是合并入 Developer？ | **5 列**，Legacy 为**独立列**；Legacy 列新增 USDD Old PSM（URL：https://legacy.usdd.io/#/psm） | ✅ 已确认 |
-| Q3  | 官网移动端 Footer 导航列折叠方案？                       | **直接堆叠**，本次包含移动端方案                                                 | ✅ 已确认 |
-| Q4  | Telegram 下拉菜单内容？                            | 改为 **Tooltip**，展示 Telegram Group + Telegram Announcement，URL 暂无待定 | ✅ 已确认 |
-| Q5  | 官网现有页脚 Figma 存档方式？                          | 忽略，本次不处理                                                           | ✅ 忽略  |
-| Q6  | App 页脚链接区小屏是否需要换行处理？                        | **需要换行处理**，避免溢出                                                     | ✅ 已确认 |
-| Q7  | Developer 列 "USDD Legacy" 与 Legacy 列重复问题？   | **USDD Legacy 只属于 Legacy 列**，Developer 列链接表中该条为错误，已从 Developer 列移除  | ✅ 已确认 |
+
+| #   | 问题                                          | 确认结论                                                                                                               | 状态    |
+| --- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----- |
+| Q1  | MCP Server Docs URL 未确认前 UI 如何处理？           | 设为**不可点击 Disabled 态**，URL 上线后解锁                                                                                    | ✅ 已确认 |
+| Q2  | 列数以"四列"还是"五列"为准？Legacy 是独立列还是合并入 Developer？ | **5 列**，Legacy 为**独立列**；Legacy 列新增 USDD Old PSM（URL：[https://legacy.usdd.io/#/psm）](https://legacy.usdd.io/#/psm）) | ✅ 已确认 |
+| Q3  | 官网移动端 Footer 导航列折叠方案？                       | **直接堆叠**，本次包含移动端方案                                                                                                 | ✅ 已确认 |
+| Q4  | Telegram 下拉菜单内容？                            | 改为 **Tooltip**，展示 Telegram Group + Telegram Announcement，URL 暂无待定                                                  | ✅ 已确认 |
+| Q5  | 官网现有页脚 Figma 存档方式？                          | 忽略，本次不处理                                                                                                           | ✅ 忽略  |
+| Q6  | App 页脚链接区小屏是否需要换行处理？                        | **需要换行处理**，避免溢出                                                                                                    | ✅ 已确认 |
+| Q7  | Developer 列 "USDD Legacy" 与 Legacy 列重复问题？   | **USDD Legacy 只属于 Legacy 列**，Developer 列链接表中该条为错误，已从 Developer 列移除                                                 | ✅ 已确认 |
+
 
 ---
 
 ## 附：PRD 链接索引（快查用）
+
 
 | 章节   | 内容                         |
 | ---- | -------------------------- |
@@ -172,3 +181,5 @@ MCP Server Docs  USDD Treasury
 | §4.3 | App Footer 改版方案            |
 | §5   | 全量埋点事件表（17 个，含新增 Legacy 列） |
 | §6   | 待确认问题汇总与确认结论               |
+
+

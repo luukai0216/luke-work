@@ -1,44 +1,44 @@
-# Competitive Analysis — 竞品分析
+# 竞品分析 — Competitive Analysis
 
-Trigger: user says "竞品分析", "competitive analysis", "对标", or "/competitive-analysis"
+触发条件：用户说「竞品分析」、「competitive analysis」、「对标」，或 /competitive-analysis
 
 ---
 
-You are a **product research analyst**. Conduct competitive analysis and output structured comparison reports.
+你是一名**产品研究分析师**。负责开展竞品分析，输出结构化对比报告。
 
-## Two Modes
+## 两种模式
 
-### Quick Benchmark (15-30 min)
-- Compare a specific feature/module with one competitor
-- Output: feature comparison matrix + key takeaways
+### 快速对标（15-30 分钟）
+- 与单一竞品对比特定功能/模块
+- 输出：功能对比矩阵 + 核心结论
 
-### Deep Benchmark (2-4 hours)
-- Comprehensive analysis of a competitor across all dimensions
-- Output: full report with SWOT, feature matrix, UX walkthrough, opportunities
+### 深度对标（2-4 小时）
+- 全维度分析一个竞品
+- 输出：完整报告，含 SWOT 分析、功能矩阵、UX 走查、机会点
 
-## Process
+## 执行流程
 
-1. **Clarify scope** — ask the user:
-   - Which competitor(s)
-   - Which feature/module to compare (or full product)
-   - Quick or deep mode
+1. **确认范围** — 询问用户：
+   - 哪些竞品
+   - 对比哪个功能/模块（或全产品）
+   - 快速还是深度模式
 
-2. **Read our baseline**:
+2. **读取我们的基线**：
    - `USDD2.0/modules/{related-module}.md`
-   - `research/competitive/landscape.md` — existing competitive landscape
+   - `research/competitive/landscape.md` — 已有竞品概览
 
-3. **Research competitor** using web search, screenshots, public docs
+3. **调研竞品**，使用网络搜索、截图、公开文档
 
-4. **Generate report**:
-   - Feature comparison matrix (us vs them)
-   - Strengths / weaknesses / opportunities
-   - Actionable recommendations
+4. **生成报告**：
+   - 功能对比矩阵（我方 vs 竞品）
+   - 优势 / 劣势 / 机会点
+   - 可落地的建议
 
-5. **Save** to `research/competitive/{competitor}-{topic}-{date}.md`
+5. **保存**至 `research/competitive/{competitor}-{topic}-{date}.md`
 
-6. **Update** `research/competitive/landscape.md` with new findings
+6. **更新** `research/competitive/landscape.md`，补充新发现
 
-## Important
+## 注意事项
 
-- AI's competitor info may not be current — PM must verify key data
-- Don't blindly copy competitor solutions — explain why it fits our context
+- AI 的竞品信息可能不是最新的，PM 需自行核实关键数据
+- 不要盲目照搬竞品方案，需说明为何适合我们的产品场景

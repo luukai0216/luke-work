@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USDD — Earn / Rewards Page Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────────────── */
+    /*  Design Tokens (from design.md + USDD-component-guidelines.md) */
+    /* ─────────────────────────────────────────────────── */
+    :root {
+      /* Brand */
+      --color-brand-default:   #216c58;
+      --color-brand-hover:     #2a8c6c;
+      --color-brand-light:     #5fc693;
+      --color-brand-highlight: #81deb0;
+      --color-brand-subtle:    #c8f5e0;
+      --color-brand-bg:        rgba(33,108,88,0.15);
+      /* Background */
+      --color-bg-page:         #0c0c0e;
+      --color-bg-section:      #141615;
+      --color-bg-card:         #181a1c;
+      --color-bg-elevated:     #212426;
+      /* Text */
+      --color-text-primary:    #ffffff;
+      --color-text-secondary:  rgba(255,255,255,0.8);
+      --color-text-tertiary:   rgba(255,255,255,0.6);
+      --color-text-quaternary: rgba(255,255,255,0.4);
+      --color-text-disabled:   rgba(255,255,255,0.2);
+      /* Border */
+      --color-border-strong:   rgba(255,255,255,0.25);
+      --color-border-default:  rgba(255,255,255,0.15);
+      --color-border-subtle:   rgba(255,255,255,0.08);
+      /* Fill */
+      --color-fill-hover:      rgba(255,255,255,0.04);
+      --color-fill-disabled:   rgba(255,255,255,0.20);
+      --color-fill-overlay:    rgba(0,0,0,0.6);
+      /* Status */
+      --color-success-default: #448f6a;
+      --color-warning-default: #ff8f0b;
+      --color-danger-default:  #d73133;
+      --color-info-default:    #0d9488;
+      /* Radius */
+      --radius-xs:   4px;
+      --radius-sm:   6px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-xl:   24px;
+      --radius-full: 999px;
+      /* Spacing */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 64px;
+      --space-9: 80px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--color-bg-page);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─────────────────────────────────────────────────── */
+    /*  State Switcher Bar (outside prototype frame)       */
+    /* ─────────────────────────────────────────────────── */
+    .state-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9000;
+      background: #000;
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 8px var(--space-5);
+    }
+    .state-bar-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: var(--space-2);
+    }
+    .state-btn {
+      background: transparent;
+      border: 1px solid var(--color-border-default);
+      color: var(--color-text-tertiary);
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      min-height: 28px;
+    }
+    .state-btn:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+    .state-btn.active {
+      background: var(--color-brand-default);
+      border-color: var(--color-brand-default);
+      color: #fff;
+    }
+
+    /* ─────────────────────────────────────────────────── */
+    /*  Page Shell                                         */
+    /* ─────────────────────────────────────────────────── */
+    .page-wrapper { padding-top: 44px; }
+
+    /* ─── Nav ─────────────────────────────────────────── */
+    .app-nav {
+      background: var(--color-bg-page);
+      border-bottom: 1px solid var(--color-border-subtle);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-9);
+      position: sticky;
+      top: 44px;
+      z-index: 200;
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.5px;
+    }
+    .nav-logo em { font-style: normal; color: var(--color-brand-highlight); }
+    .nav-tabs { display: flex; gap: 40px; }
+    .nav-tab {
+      font-size: 14px;
+      color: var(--color-text-tertiary);
+      cursor: pointer;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-tab:hover { color: var(--color-text-secondary); }
+    .nav-tab.active {
+      color: var(--color-text-primary);
+      font-weight: 600;
+      border-bottom-color: var(--color-brand-highlight);
+    }
+    .nav-right { display: flex; gap: var(--space-3); align-items: center; }
+
+    /* ─── Buttons ─────────────────────────────────────── */
+    .btn-primary {
+      background: var(--color-brand-default);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 9px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      min-height: 44px;
+    }
+    .btn-primary:hover { background: var(--color-brand-hover); }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 9px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+    .btn-secondary:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+
+    /* ─── Content Container ───────────────────────────── */
+    .content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 var(--space-9);
+    }
+
+    /* ─────────────────────────────────────────────────── */
+    /*  State Views                                        */
+    /* ─────────────────────────────────────────────────── */
+    .state-view { display: none; }
+    .state-view.active { display: block; }
+
+    /* ═══════════════════════════════════════════════════ */
+    /*  DEFAULT STATE                                      */
+    /* ═══════════════════════════════════════════════════ */
+
+    /* ─── Hero Banner ─────────────────────────────────── */
+    .earn-hero {
+      padding: var(--space-9) 0 var(--space-7);
+      text-align: center;
+    }
+    .earn-hero h1 {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 56px;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-3);
+    }
+    .earn-hero h1 em { font-style: normal; color: var(--color-brand-highlight); }
+    .earn-hero p {
+      font-size: 16px;
+      line-height: 22px;
+      color: var(--color-text-tertiary);
+    }
+
+    /* ─── Section Labels ──────────────────────────────── */
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-3);
+    }
+
+    /* ─── Feature Cards ───────────────────────────────── */
+    .feature-cards {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-7);
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .feature-cards::-webkit-scrollbar { height: 4px; }
+    .feature-cards::-webkit-scrollbar-track { background: transparent; }
+    .feature-cards::-webkit-scrollbar-thumb { background: var(--color-border-default); border-radius: 2px; }
+
+    .feat-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      min-width: 216px;
+      flex: 1;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .feat-card:hover {
+      border-color: var(--color-border-default);
+      background: var(--color-bg-elevated);
+      transform: translateY(-2px);
+    }
+    .feat-card-top { display: flex; align-items: center; gap: var(--space-2); }
+    .platform-icon {
+      width: 32px; height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .feat-card-name { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+    .feat-card-prop { font-size: 12px; color: var(--color-text-tertiary); margin-top: 1px; }
+    .feat-apy-row { display: flex; align-items: baseline; gap: 5px; }
+    .feat-apy-num { font-size: 28px; font-weight: 600; color: var(--color-brand-highlight); line-height: 1; }
+    .feat-apy-label { font-size: 13px; color: var(--color-text-quaternary); font-weight: 600; }
+    .feat-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    .network-badges { display: flex; gap: var(--space-1); flex-wrap: wrap; }
+    .network-badge {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-xs);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+      padding: 2px 6px;
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-xs);
+    }
+    .status-active   { background: rgba(68,143,106,0.15); color: var(--color-success-default); }
+    .status-upcoming { background: rgba(255,143,11,0.15);  color: var(--color-warning-default); }
+    .status-ended    { background: rgba(255,255,255,0.05); color: var(--color-text-disabled); }
+
+    /* ─── Section Header ──────────────────────────────── */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+    .section-title { font-size: 20px; font-weight: 600; color: var(--color-text-primary); }
+
+    /* ─── Filters ─────────────────────────────────────── */
+    .filter-row { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+    .filter-chip {
+      background: transparent;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-full);
+      color: var(--color-text-tertiary);
+      font-size: 13px;
+      font-family: inherit;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 32px;
+    }
+    .filter-chip:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+    .filter-chip.active {
+      background: var(--color-brand-bg);
+      border-color: var(--color-brand-default);
+      color: var(--color-brand-highlight);
+    }
+    .filter-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--color-border-subtle);
+      margin: 0 2px;
+    }
+    .filter-select {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-secondary);
+      font-size: 13px;
+      font-family: inherit;
+      padding: 6px 32px 6px 12px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(255,255,255,0.35)' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      min-height: 32px;
+    }
+    .filter-select:focus { outline: none; border-color: var(--color-border-strong); }
+
+    /* ─── Platform Table ──────────────────────────────── */
+    .table-wrap {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--space-7);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { border-bottom: 1px solid var(--color-border-subtle); background: var(--color-bg-section); }
+    th {
+      padding: 10px var(--space-4);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-quaternary);
+      text-align: left;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    th.sortable { cursor: pointer; }
+    th.sortable:hover { color: var(--color-text-secondary); }
+    th.sort-desc::after { content: ' ↓'; color: var(--color-brand-highlight); }
+    th.sort-asc::after  { content: ' ↑'; color: var(--color-brand-highlight); }
+    td {
+      padding: 14px var(--space-4);
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      border-bottom: 1px solid var(--color-border-subtle);
+      vertical-align: middle;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--color-fill-hover); }
+
+    .platform-cell { display: flex; align-items: center; gap: var(--space-3); }
+    .platform-icon-sm {
+      width: 28px; height: 28px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .platform-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      cursor: default;
+    }
+    .platform-prop { font-size: 12px; color: var(--color-text-tertiary); margin-top: 1px; }
+    .apy-value { font-size: 14px; font-weight: 600; color: var(--color-brand-highlight); }
+    .type-badge {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-xs);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+      padding: 2px 7px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .rule-link {
+      background: transparent;
+      border: none;
+      color: var(--color-brand-highlight);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(129,222,176,0.4);
+      transition: text-decoration-color 0.2s;
+    }
+    .rule-link:hover { text-decoration-color: var(--color-brand-highlight); }
+    .btn-action {
+      background: var(--color-brand-default);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 8px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      min-height: 36px;
+    }
+    .btn-action:hover { background: var(--color-brand-hover); }
+    .btn-action.locked {
+      background: var(--color-fill-disabled);
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+
+    /* ─── Supported Projects ──────────────────────────── */
+    .projects-section { margin-bottom: var(--space-9); }
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-5);
+      gap: var(--space-4);
+    }
+    .projects-title { font-size: 20px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
+    .projects-subtitle { font-size: 14px; color: var(--color-text-tertiary); line-height: 20px; }
+    .btn-list-project {
+      background: transparent;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      color: var(--color-brand-highlight);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 9px 18px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      min-height: 44px;
+      flex-shrink: 0;
+    }
+    .btn-list-project:hover {
+      border-color: var(--color-brand-default);
+      background: var(--color-brand-bg);
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+    .project-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .project-card:hover {
+      border-color: var(--color-border-default);
+      transform: translateY(-2px);
+    }
+    .project-card-top { display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px; }
+    .project-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .project-name { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+    .project-tag {
+      display: inline-block;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-xs);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-quaternary);
+      padding: 2px 6px;
+      margin-top: 2px;
+    }
+    .project-desc {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      line-height: 1.55;
+    }
+    .load-more-center { text-align: center; padding-top: var(--space-2); }
+    .btn-load-more {
+      background: transparent;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 10px 40px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+    .btn-load-more:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+
+    /* ═══════════════════════════════════════════════════ */
+    /*  SKELETON STATE                                     */
+    /* ═══════════════════════════════════════════════════ */
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position:  400px 0; }
+    }
+    .sk {
+      background: linear-gradient(
+        90deg,
+        var(--color-bg-elevated) 25%,
+        rgba(255,255,255,0.055) 50%,
+        var(--color-bg-elevated) 75%
+      );
+      background-size: 800px 100%;
+      animation: shimmer 1.6s infinite linear;
+      border-radius: var(--radius-sm);
+    }
+    .sk-h { height: 20px; }
+    .sk-sm { height: 14px; }
+    .sk-hero { height: 110px; border-radius: var(--radius-lg); margin-bottom: var(--space-7); }
+    .sk-card { height: 148px; flex: 1; min-width: 200px; border-radius: var(--radius-lg); }
+    .sk-table { height: 340px; border-radius: var(--radius-lg); }
+    .sk-cards { display: flex; gap: var(--space-4); margin-bottom: var(--space-7); }
+    .sk-section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-4);
+    }
+
+    /* ═══════════════════════════════════════════════════ */
+    /*  EMPTY / ERROR SHARED                              */
+    /* ═══════════════════════════════════════════════════ */
+    .placeholder-box {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-9) var(--space-5);
+      text-align: center;
+      margin-bottom: var(--space-7);
+    }
+    .placeholder-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto var(--space-4);
+    }
+    .placeholder-icon.empty { background: var(--color-bg-elevated); }
+    .placeholder-icon.error { background: rgba(215,49,51,0.1); }
+    .placeholder-title { font-size: 16px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 6px; }
+    .placeholder-desc { font-size: 14px; color: var(--color-text-tertiary); line-height: 1.6; margin-bottom: var(--space-5); }
+
+    /* ═══════════════════════════════════════════════════ */
+    /*  RULE MODAL                                         */
+    /* ═══════════════════════════════════════════════════ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--color-fill-overlay);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 5000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      width: 480px;
+      max-width: 90vw;
+      position: relative;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px; right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--color-text-tertiary);
+      font-size: 18px;
+      cursor: pointer;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+    .modal-close:hover { color: var(--color-text-primary); background: var(--color-fill-hover); }
+    .modal-title { font-size: 18px; font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--space-4); }
+    .modal-platform-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border-subtle);
+      margin-bottom: var(--space-4);
+    }
+    .modal-body {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+    .modal-body ol { padding-left: 20px; }
+    .modal-body li { margin-bottom: 8px; }
+
+    /* ─── Tooltip ─────────────────────────────────────── */
+    .tooltip-wrap { position: relative; display: inline-flex; flex-direction: column; }
+    .tooltip-box {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+      z-index: 300;
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    }
+    .tooltip-wrap:hover .tooltip-box { display: block; }
+
+    /* ─── Platform Icon Colors ────────────────────────── */
+    .icon-binance   { background: rgba(240,185,11,0.15);  color: #F0B90B; }
+    .icon-pancake   { background: rgba(30,182,141,0.15);  color: #1EB68D; }
+    .icon-uniswap   { background: rgba(255,0,122,0.15);   color: #FF007A; }
+    .icon-justlend  { background: rgba(235,58,57,0.15);   color: #EB3A39; }
+    .icon-sunswap   { background: rgba(255,155,0,0.15);   color: #FF9B00; }
+    .icon-aave      { background: rgba(123,63,228,0.15);  color: #7B3FE4; }
+    .icon-curve     { background: rgba(255,80,80,0.15);   color: #FF5050; }
+    .icon-okx       { background: rgba(255,255,255,0.07); color: var(--color-text-secondary); }
+    .icon-dydx      { background: rgba(110,88,247,0.15);  color: #6E58F7; }
+    .icon-compound  { background: rgba(0,210,91,0.15);    color: #00D25B; }
+    .icon-tronlink  { background: rgba(235,58,57,0.12);   color: #EB3A39; }
+    .icon-mathwallet{ background: rgba(63,110,243,0.15);  color: #3F6EF3; }
+    .icon-generic   { background: var(--color-bg-elevated); color: var(--color-text-tertiary); }
+  </style>
+</head>
+<body>
+
+<!-- ─────────────────────────────────────────────────── -->
+<!--  State Switcher (outside prototype frame)           -->
+<!-- ─────────────────────────────────────────────────── -->
+<div class="state-bar">
+  <span class="state-bar-label">State</span>
+  <button class="state-btn active" data-state="default" onclick="switchState('default', this)">Default</button>
+  <button class="state-btn" data-state="loading"  onclick="switchState('loading',  this)">Loading</button>
+  <button class="state-btn" data-state="empty"    onclick="switchState('empty',    this)">Empty</button>
+  <button class="state-btn" data-state="error"    onclick="switchState('error',    this)">Error</button>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ─── Shared Nav ─────────────────────────────────── -->
+  <nav class="app-nav">
+    <div class="nav-logo">USDD<em>.</em></div>
+    <div class="nav-tabs">
+      <div class="nav-tab">PSM</div>
+      <div class="nav-tab">Savings</div>
+      <div class="nav-tab active">Earn</div>
+    </div>
+    <div class="nav-right">
+      <button class="btn-secondary">Connect Wallet</button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- STATE: DEFAULT                                       -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="state-default" class="state-view active">
+    <div class="content">
+
+      <!-- Hero -->
+      <div class="earn-hero">
+        <h1>Where to Earn <em>USDD</em></h1>
+        <p>View active platforms offering APY rewards for USDD.</p>
+      </div>
+
+      <!-- Featured Cards -->
+      <div class="section-eyebrow">Featured Opportunities</div>
+      <div class="feature-cards" id="featuredCards">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Earn Platform List -->
+      <div class="section-header">
+        <div class="section-title">Earn Platform List</div>
+        <div class="filter-row">
+          <button class="filter-chip active" onclick="setNetworkFilter(this,'all')">All Networks</button>
+          <button class="filter-chip" onclick="setNetworkFilter(this,'Ethereum')">Ethereum</button>
+          <button class="filter-chip" onclick="setNetworkFilter(this,'BNB Chain')">BNB Chain</button>
+          <button class="filter-chip" onclick="setNetworkFilter(this,'Tron')">Tron</button>
+          <div class="filter-divider"></div>
+          <select class="filter-select" id="statusFilter" onchange="setStatusFilter()">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="ended">Ended</option>
+          </select>
+          <select class="filter-select" id="typeFilter" onchange="setTypeFilter()">
+            <option value="all">All Types</option>
+            <option value="DEX">DEX</option>
+            <option value="CEX">CEX</option>
+            <option value="Lending">Lending</option>
+            <option value="Wallet">Wallet</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:240px">Platform</th>
+              <th>Network</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th class="sortable sort-desc" id="apyTh" onclick="toggleApySort()" style="width:100px">APY</th>
+              <th>Rule</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="platformTbody"><!-- injected --></tbody>
+        </table>
+      </div>
+
+      <!-- Supported Projects -->
+      <div class="projects-section">
+        <div class="projects-header">
+          <div>
+            <div class="projects-title">Supported Projects</div>
+            <div class="projects-subtitle">Explore all DeFi and CeFi projects that have integrated USDD.</div>
+          </div>
+          <button class="btn-list-project" onclick="alert('Opens Google Form — submit your project for review')">
+            + List Your Platform
+          </button>
+        </div>
+
+        <div class="filter-row" style="margin-bottom:20px" id="projectFilters">
+          <button class="filter-chip active" onclick="setProjectTag(this,'all')">All</button>
+          <button class="filter-chip" onclick="setProjectTag(this,'DEX')">DEX</button>
+          <button class="filter-chip" onclick="setProjectTag(this,'CEX')">CEX</button>
+          <button class="filter-chip" onclick="setProjectTag(this,'Lending')">Lending</button>
+          <button class="filter-chip" onclick="setProjectTag(this,'Wallet')">Wallet</button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid"><!-- injected --></div>
+        <div class="load-more-center" id="loadMoreWrap">
+          <button class="btn-load-more" onclick="loadMoreProjects()">Load More</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- STATE: LOADING (Skeleton)                           -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="state-loading" class="state-view">
+    <div class="content">
+
+      <!-- Hero skeleton -->
+      <div style="padding:80px 0 48px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <div class="sk" style="height:44px;width:320px;border-radius:var(--radius-md);"></div>
+        <div class="sk" style="height:18px;width:420px;border-radius:var(--radius-sm);"></div>
+      </div>
+
+      <!-- Cards skeleton -->
+      <div class="sk" style="height:14px;width:160px;border-radius:var(--radius-sm);margin-bottom:12px;"></div>
+      <div class="sk-cards">
+        <div class="sk sk-card"></div>
+        <div class="sk sk-card"></div>
+        <div class="sk sk-card"></div>
+        <div class="sk sk-card"></div>
+        <div class="sk sk-card"></div>
+      </div>
+
+      <!-- Table skeleton -->
+      <div class="sk-section-head">
+        <div class="sk" style="height:24px;width:200px;border-radius:var(--radius-sm);"></div>
+        <div style="display:flex;gap:8px;">
+          <div class="sk" style="height:32px;width:120px;border-radius:var(--radius-full);"></div>
+          <div class="sk" style="height:32px;width:100px;border-radius:var(--radius-full);"></div>
+          <div class="sk" style="height:32px;width:100px;border-radius:var(--radius-full);"></div>
+          <div class="sk" style="height:32px;width:110px;border-radius:var(--radius-sm);"></div>
+        </div>
+      </div>
+      <div class="sk sk-table"></div>
+
+      <!-- Projects skeleton -->
+      <div class="sk-section-head">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="sk" style="height:24px;width:180px;border-radius:var(--radius-sm);"></div>
+          <div class="sk" style="height:16px;width:360px;border-radius:var(--radius-sm);"></div>
+        </div>
+        <div class="sk" style="height:44px;width:140px;border-radius:var(--radius-sm);"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:64px;">
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+        <div class="sk" style="height:120px;border-radius:var(--radius-lg);"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- STATE: EMPTY                                        -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="state-empty" class="state-view">
+    <div class="content">
+      <div class="earn-hero">
+        <h1>Where to Earn <em>USDD</em></h1>
+        <p>View active platforms offering APY rewards for USDD.</p>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Earn Platform List</div>
+        <div class="filter-row">
+          <button class="filter-chip active">All Networks</button>
+          <button class="filter-chip">Ethereum</button>
+          <button class="filter-chip">BNB Chain</button>
+          <button class="filter-chip">Tron</button>
+        </div>
+      </div>
+      <div class="placeholder-box">
+        <div class="placeholder-icon empty">📭</div>
+        <div class="placeholder-title">No opportunities found</div>
+        <div class="placeholder-desc" style="margin-bottom:0">No earn activities match the current filters.<br>Try adjusting your network or status selection.</div>
+      </div>
+
+      <div class="projects-section">
+        <div class="projects-header">
+          <div>
+            <div class="projects-title">Supported Projects</div>
+            <div class="projects-subtitle">Explore all DeFi and CeFi projects that have integrated USDD.</div>
+          </div>
+          <button class="btn-list-project">+ List Your Platform</button>
+        </div>
+        <div class="placeholder-box">
+          <div class="placeholder-icon empty">🔍</div>
+          <div class="placeholder-title">No projects listed yet</div>
+          <div class="placeholder-desc" style="margin-bottom:0">Be the first to list your platform and reach USDD holders.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- STATE: ERROR                                        -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div id="state-error" class="state-view">
+    <div class="content">
+      <div class="earn-hero">
+        <h1>Where to Earn <em>USDD</em></h1>
+        <p>View active platforms offering APY rewards for USDD.</p>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Earn Platform List</div>
+      </div>
+      <div class="placeholder-box">
+        <div class="placeholder-icon error">⚠</div>
+        <div class="placeholder-title">Failed to load opportunities</div>
+        <div class="placeholder-desc">Unable to fetch data from the server.<br>Please check your connection and try again.</div>
+        <button class="btn-primary" onclick="switchState('default', document.querySelector('[data-state=default]'))">Retry</button>
+      </div>
+
+      <div class="projects-section">
+        <div class="projects-header">
+          <div>
+            <div class="projects-title">Supported Projects</div>
+            <div class="projects-subtitle">Explore all DeFi and CeFi projects that have integrated USDD.</div>
+          </div>
+        </div>
+        <div class="placeholder-box">
+          <div class="placeholder-icon error">⚠</div>
+          <div class="placeholder-title">Failed to load projects</div>
+          <div class="placeholder-desc">Could not retrieve project data from the server.</div>
+          <button class="btn-primary" onclick="switchState('default', document.querySelector('[data-state=default]'))">Retry</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+<!-- ─────────────────────────────────────────────────── -->
+<!--  Rule Modal                                         -->
+<!-- ─────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="ruleModal" onclick="handleModalOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">How to Participate</div>
+    <div class="modal-platform-row" id="modalPlatformRow"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────── -->
+<!--  JavaScript                                         -->
+<!-- ─────────────────────────────────────────────────── -->
+<script>
+  /* ─── Mock Data ────────────────────────────────────── */
+  const PLATFORMS = [
+    {
+      id: 1,
+      name: 'SunSwap', prop: 'USDD-TRX LP',
+      icon: 'S', cls: 'icon-sunswap',
+      networks: ['Tron'], type: 'DEX', status: 'active', apy: 18.4,
+      action: 'Provide Liquidity', locked: false,
+      rule: ['Go to SunSwap v2 on sun.io', 'Connect TronLink wallet', 'Navigate to Liquidity → USDD / TRX pool', 'Add both tokens in equal value and receive SLP tokens', 'Stake SLP in the Farm tab to earn SUN rewards daily']
+    },
+    {
+      id: 2,
+      name: 'PancakeSwap', prop: 'USDD-USDT LP',
+      icon: '🥞', cls: 'icon-pancake',
+      networks: ['BNB Chain'], type: 'DEX', status: 'active', apy: 12.3,
+      action: 'Provide Liquidity', locked: false,
+      rule: ['Connect MetaMask or Trust Wallet to BNB Chain', 'Open PancakeSwap → Liquidity tab', 'Select USDD and USDT as the pair', 'Add equal USD value of both tokens and confirm', 'Deposit received LP tokens into the Farm to earn CAKE']
+    },
+    {
+      id: 3,
+      name: 'PancakeSwap', prop: 'USDD-BNB LP',
+      icon: '🥞', cls: 'icon-pancake',
+      networks: ['BNB Chain'], type: 'DEX', status: 'active', apy: 9.7,
+      action: 'Provide Liquidity', locked: false,
+      rule: ['Connect MetaMask or Trust Wallet to BNB Chain', 'Open PancakeSwap → Liquidity tab', 'Select USDD and BNB as the pair', 'Add equal USD value of both tokens and confirm', 'Deposit received LP tokens into the Farm to earn CAKE']
+    },
+    {
+      id: 4,
+      name: 'Binance', prop: 'Flexible Savings',
+      icon: 'B', cls: 'icon-binance',
+      networks: ['Ethereum', 'Tron', 'BNB Chain'], type: 'CEX', status: 'active', apy: 8.5,
+      action: 'Deposit Now', locked: false,
+      rule: ['Log in to your Binance account', 'Navigate to Earn → Flexible Savings', 'Search for "USDD" in the asset list', 'Click Subscribe, enter the amount, and confirm', 'Interest accrues daily and is credited to your spot wallet']
+    },
+    {
+      id: 5,
+      name: 'Uniswap', prop: 'USDD-USDT 0.3%',
+      icon: '🦄', cls: 'icon-uniswap',
+      networks: ['Ethereum'], type: 'DEX', status: 'active', apy: 7.8,
+      action: 'Add Liquidity', locked: false,
+      rule: ['Connect wallet to Uniswap v3 on Ethereum', 'Go to Pool → New Position', 'Select USDD / USDT with 0.3% fee tier', 'Set your price range and add both tokens', 'Earn a proportional share of all trading fees in this pool']
+    },
+    {
+      id: 6,
+      name: 'Uniswap', prop: 'USDD-USDC 0.05%',
+      icon: '🦄', cls: 'icon-uniswap',
+      networks: ['Ethereum'], type: 'DEX', status: 'active', apy: 6.2,
+      action: 'Add Liquidity', locked: false,
+      rule: ['Connect wallet to Uniswap v3 on Ethereum', 'Go to Pool → New Position', 'Select USDD / USDC with 0.05% fee tier', 'Set your price range and add both tokens', 'Earn a proportional share of trading fees in this stable pool']
+    },
+    {
+      id: 7,
+      name: 'JustLend', prop: 'Supply USDD',
+      icon: 'J', cls: 'icon-justlend',
+      networks: ['Tron'], type: 'Lending', status: 'active', apy: 5.1,
+      action: 'Lend Now', locked: false,
+      rule: ['Connect TronLink wallet on justlend.org', 'Click Supply on the USDD row', 'Enter the amount you wish to supply', 'Approve the transaction in TronLink', 'Interest compounds automatically and can be withdrawn anytime']
+    },
+    {
+      id: 8,
+      name: 'Aave', prop: 'Supply USDD',
+      icon: 'A', cls: 'icon-aave',
+      networks: ['Ethereum'], type: 'Lending', status: 'upcoming', apy: null,
+      action: 'Coming Soon', locked: true,
+      rule: ['This activity has not started yet.', 'Follow Aave Governance for the official launch proposal.', 'Once live, connect wallet on app.aave.com and navigate to USDD supply market.']
+    },
+    {
+      id: 9,
+      name: 'Curve', prop: 'USDD-3CRV',
+      icon: 'C', cls: 'icon-curve',
+      networks: ['Ethereum'], type: 'DEX', status: 'ended', apy: 4.3,
+      action: 'Ended', locked: true,
+      rule: ['This activity has ended.', 'CRV incentive rewards are no longer distributed for this pool.', 'You may still add liquidity to earn base trading fees, but no additional rewards apply.']
+    },
+  ];
+
+  const ALL_PROJECTS = [
+    { name:'Binance',      tag:'CEX',     icon:'B',  cls:'icon-binance',    desc:'World\'s largest crypto exchange with flexible and locked USDD savings products.' },
+    { name:'PancakeSwap',  tag:'DEX',     icon:'🥞', cls:'icon-pancake',    desc:'Leading DEX on BNB Chain with deep USDD liquidity pools and CAKE farm incentives.' },
+    { name:'Uniswap',      tag:'DEX',     icon:'🦄', cls:'icon-uniswap',    desc:'The most widely used Ethereum DEX. Provide liquidity for USDD pairs and earn fees.' },
+    { name:'JustLend',     tag:'Lending', icon:'J',  cls:'icon-justlend',   desc:'TRON\'s native money market. Lend USDD to earn competitive variable interest rates.' },
+    { name:'SunSwap',      tag:'DEX',     icon:'S',  cls:'icon-sunswap',    desc:'TRON\'s leading decentralized exchange. Add USDD-TRX liquidity for enhanced yield.' },
+    { name:'Aave',         tag:'Lending', icon:'A',  cls:'icon-aave',       desc:'Ethereum\'s leading non-custodial liquidity protocol. USDD supply market coming soon.' },
+    { name:'Curve',        tag:'DEX',     icon:'C',  cls:'icon-curve',      desc:'Stablecoin-optimized DEX. USDD-3CRV pool with deep liquidity and minimal slippage.' },
+    { name:'OKX',          tag:'CEX',     icon:'O',  cls:'icon-okx',        desc:'Global tier-1 exchange offering USDD trading pairs and savings products.' },
+    { name:'dYdX',         tag:'DEX',     icon:'d',  cls:'icon-dydx',       desc:'Decentralized perpetuals exchange integrating USDD as a margin collateral asset.' },
+    { name:'Compound',     tag:'Lending', icon:'C',  cls:'icon-compound',   desc:'Autonomous interest rate protocol on Ethereum supporting USDD as a supply asset.' },
+    { name:'TronLink',     tag:'Wallet',  icon:'T',  cls:'icon-tronlink',   desc:'Official TRON wallet with native USDD display, DApp browser, and staking shortcuts.' },
+    { name:'Math Wallet',  tag:'Wallet',  icon:'M',  cls:'icon-mathwallet', desc:'Multi-chain wallet supporting USDD across Ethereum, Tron, and BNB Chain.' },
+  ];
+
+  /* ─── State ────────────────────────────────────────── */
+  let networkFilter   = 'all';
+  let statusFilter    = 'all';
+  let typeFilter      = 'all';
+  let apySortDir      = 'desc';
+  let projectTag      = 'all';
+  let projectExpanded = false;
+
+  /* ─── State Switcher ────────────────────────────────── */
+  function switchState(stateId, btn) {
+    document.querySelectorAll('.state-view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('state-' + stateId).classList.add('active');
+    if (btn) btn.classList.add('active');
+  }
+
+  /* ─── Render Featured Cards ─────────────────────────── */
+  function renderFeatured() {
+    // Show the 5 PRD-specified feature cards (Binance, Pancake x2, Uniswap x2)
+    const featured = PLATFORMS.filter(p => ['Binance','PancakeSwap','Uniswap'].includes(p.name) && p.status !== 'ended');
+    const container = document.getElementById('featuredCards');
+    container.innerHTML = featured.map(p => {
+      const nets = p.networks.map(n => `<span class="network-badge">${netShort(n)}</span>`).join('');
+      const apyStr = p.apy !== null ? `${p.apy}%` : 'TBD';
+      return `
+        <div class="feat-card" onclick="alert('Opens ${p.name} — ${p.prop}')">
+          <div class="feat-card-top">
+            <div class="platform-icon ${p.cls}">${p.icon}</div>
+            <div>
+              <div class="feat-card-name">${p.name}</div>
+              <div class="feat-card-prop">${p.prop}</div>
+            </div>
+          </div>
+          <div class="feat-apy-row">
+            <span class="feat-apy-num">${apyStr}</span>
+            <span class="feat-apy-label">APY</span>
+          </div>
+          <div class="feat-card-footer">
+            <div class="network-badges">${nets}</div>
+            <span class="status-pill status-${p.status}">${capitalize(p.status)}</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  /* ─── Render Table ──────────────────────────────────── */
+  function renderTable() {
+    let rows = [...PLATFORMS];
+
+    // Filter
+    if (networkFilter !== 'all')  rows = rows.filter(r => r.networks.includes(networkFilter));
+    if (statusFilter  !== 'all')  rows = rows.filter(r => r.status === statusFilter);
+    if (typeFilter    !== 'all')  rows = rows.filter(r => r.type === typeFilter);
+
+    // Sort: status order first, then APY within same group
+    const sOrder = { active:0, upcoming:1, ended:2 };
+    rows.sort((a, b) => {
+      const sd = sOrder[a.status] - sOrder[b.status];
+      if (sd !== 0) return sd;
+      const av = a.apy ?? -1, bv = b.apy ?? -1;
+      return apySortDir === 'desc' ? bv - av : av - bv;
+    });
+
+    const tbody = document.getElementById('platformTbody');
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:48px 16px;color:var(--color-text-quaternary);font-size:14px;">No results — try adjusting the filters above</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = rows.map(r => {
+      const nets  = r.networks.map(n => `<span class="network-badge">${netShort(n)}</span>`).join('');
+      const apy   = r.apy !== null
+        ? `<span class="apy-value">${r.apy}%</span>`
+        : `<span style="color:var(--color-text-quaternary)">TBD</span>`;
+      const statusHtml = {
+        active:   `<span class="status-pill status-active">Active</span>`,
+        upcoming: `<span class="status-pill status-upcoming">Upcoming</span>`,
+        ended:    `<span class="status-pill status-ended">Ended</span>`,
+      }[r.status];
+      const actionBtn = r.locked
+        ? `<button class="btn-action locked" disabled>${r.action}</button>`
+        : `<button class="btn-action" onclick="alert('Opening ${r.name} — ${r.prop}')">${r.action}</button>`;
+      return `
+        <tr>
+          <td>
+            <div class="platform-cell">
+              <div class="platform-icon-sm ${r.cls}">${r.icon}</div>
+              <div class="tooltip-wrap">
+                <div class="platform-name">${r.name}</div>
+                <div class="platform-prop">${r.prop}</div>
+                <div class="tooltip-box">${r.name}: ${r.type} platform — ${r.prop}</div>
+              </div>
+            </div>
+          </td>
+          <td><div class="network-badges">${nets}</div></td>
+          <td><span class="type-badge">${r.type}</span></td>
+          <td>${statusHtml}</td>
+          <td>${apy}</td>
+          <td><button class="rule-link" onclick="openRuleModal(${r.id})">View Rule</button></td>
+          <td>${actionBtn}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  /* ─── Render Projects ───────────────────────────────── */
+  function renderProjects() {
+    let list = ALL_PROJECTS.filter(p => projectTag === 'all' || p.tag === projectTag);
+    const showAll = projectExpanded || list.length <= 8;
+    const visible = showAll ? list : list.slice(0, 8);
+
+    document.getElementById('projectsGrid').innerHTML = visible.map(p => `
+      <div class="project-card" onclick="alert('Opens ${p.name} website')">
+        <div class="project-card-top">
+          <div class="project-icon ${p.cls}">${p.icon}</div>
+          <div>
+            <div class="project-name">${p.name}</div>
+            <span class="project-tag">${p.tag}</span>
+          </div>
+        </div>
+        <div class="project-desc">${p.desc}</div>
+      </div>`).join('');
+
+    document.getElementById('loadMoreWrap').style.display =
+      (!projectExpanded && list.length > 8) ? 'block' : 'none';
+  }
+
+  /* ─── Filter Handlers ───────────────────────────────── */
+  function setNetworkFilter(btn, val) {
+    document.querySelectorAll('#state-default .section-header .filter-chip')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    networkFilter = val;
+    renderTable();
+  }
+  function setStatusFilter() {
+    statusFilter = document.getElementById('statusFilter').value;
+    renderTable();
+  }
+  function setTypeFilter() {
+    typeFilter = document.getElementById('typeFilter').value;
+    renderTable();
+  }
+  function toggleApySort() {
+    apySortDir = apySortDir === 'desc' ? 'asc' : 'desc';
+    document.getElementById('apyTh').className = `sortable sort-${apySortDir}`;
+    renderTable();
+  }
+  function setProjectTag(btn, tag) {
+    document.querySelectorAll('#projectFilters .filter-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    projectTag = tag;
+    projectExpanded = false;
+    renderProjects();
+  }
+  function loadMoreProjects() {
+    projectExpanded = true;
+    renderProjects();
+  }
+
+  /* ─── Rule Modal ────────────────────────────────────── */
+  function openRuleModal(id) {
+    const p = PLATFORMS.find(x => x.id === id);
+    document.getElementById('modalPlatformRow').innerHTML = `
+      <div class="platform-icon-sm ${p.cls}" style="width:36px;height:36px;font-size:14px;border-radius:var(--radius-md);">${p.icon}</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--color-text-primary)">${p.name}</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">${p.prop}</div>
+      </div>`;
+    document.getElementById('modalBody').innerHTML =
+      `<ol>${p.rule.map(s => `<li>${s}</li>`).join('')}</ol>`;
+    document.getElementById('ruleModal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('ruleModal').classList.remove('open');
+  }
+  function handleModalOverlayClick(e) {
+    if (e.target === document.getElementById('ruleModal')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ─── Helpers ───────────────────────────────────────── */
+  function netShort(n) {
+    return { 'Ethereum':'ETH', 'BNB Chain':'BNB', 'Tron':'TRX' }[n] || n;
+  }
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  /* ─── Init ──────────────────────────────────────────── */
+  renderFeatured();
+  renderTable();
+  renderProjects();
+</script>
+
+</body>
+</html>
