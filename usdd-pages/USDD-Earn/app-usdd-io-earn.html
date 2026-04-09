@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Earn 改版 — app.usdd.io Prototype</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg-page:#0F0F0F;
+      --bg-section:#161616;
+      --bg-card:#1E1E1E;
+      --bg-elevated:#252525;
+      --text-primary:#EBEBEB;
+      --text-secondary:#999999;
+      --text-tertiary:#555555;
+      --text-disabled:#383838;
+      --border-strong:#4A4A4A;
+      --border-default:#2E2E2E;
+      --border-weak:#1E1E1E;
+      --btn-primary-bg:#EBEBEB;
+      --btn-primary-text:#0F0F0F;
+      --btn-secondary-bg:#1E1E1E;
+      --btn-danger-bg:#555555;
+      --bg-overlay:rgba(15,15,15,.88);
+      --r-xs:4px;
+      --r-sm:6px;
+      --r-md:8px;
+      --r-lg:16px;
+      --r-xl:24px;
+    }
+    body{
+      font:400 14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg-page);
+      color:var(--text-primary);
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .container{width:1440px;max-width:100%;margin:0 auto;padding:0 48px}
+    @media(max-width:1471px){.container{width:1200px}}
+    @media(max-width:1199px){.container{width:auto;padding:0 20px}}
+    .header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:80px;
+      border-bottom:1px solid var(--border-default);
+      background:var(--bg-card);
+      z-index:100;
+    }
+    .header-inner{
+      height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .brand-mark{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      border:1px solid var(--border-strong);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      font-weight:600;
+      color:var(--text-primary);
+      background:var(--bg-elevated);
+      flex-shrink:0;
+    }
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .brand-title{
+      font-size:16px;
+      font-weight:600;
+      line-height:20px;
+    }
+    .brand-subtitle{
+      font-size:12px;
+      line-height:18px;
+      color:var(--text-tertiary);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .nav-link{
+      height:40px;
+      padding:0 16px;
+      border-radius:var(--r-md);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text-secondary);
+      border:1px solid transparent;
+    }
+    .nav-link.active{
+      background:var(--bg-elevated);
+      border-color:var(--border-default);
+      color:var(--text-primary);
+      font-weight:600;
+    }
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-shrink:0;
+    }
+    .chain-pill{
+      height:40px;
+      padding:0 14px;
+      border-radius:var(--r-md);
+      border:1px solid var(--border-default);
+      background:var(--bg-elevated);
+      color:var(--text-secondary);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      height:40px;
+      padding:0 20px;
+      border-radius:var(--r-md);
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+      transition:border-color .15s ease,background .15s ease,color .15s ease,opacity .15s ease;
+    }
+    .btn:hover{border-color:var(--border-strong)}
+    .btn-sm{height:40px;padding:0 16px}
+    .btn-md{height:48px;padding:0 24px;font-size:16px}
+    .btn-primary{
+      background:var(--btn-primary-bg);
+      color:var(--btn-primary-text);
+    }
+    .btn-secondary{
+      background:var(--btn-secondary-bg);
+      color:var(--text-secondary);
+      border:1px solid var(--border-default);
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--text-secondary);
+    }
+    .btn:disabled{
+      opacity:.4;
+      cursor:not-allowed;
+      border-color:var(--border-default);
+    }
+    .main{padding-top:80px;min-height:100vh}
+    .section{padding:64px 0}
+    .section-alt{padding:64px 0;background:transparent}
+    .card{
+      background:var(--bg-card);
+      border:none;
+      border-radius:var(--r-xl);
+      padding:24px;
+    }
+    .hero-panel{
+      border-radius:var(--r-xl);
+      background:var(--bg-card);
+      padding:48px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:32px;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:16px;
+      font-size:12px;
+      line-height:18px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--text-tertiary);
+    }
+    .hero-title{
+      font-size:48px;
+      line-height:68px;
+      font-weight:600;
+      margin-bottom:16px;
+      max-width:720px;
+    }
+    .hero-copy{
+      max-width:640px;
+      font-size:16px;
+      line-height:22px;
+      color:var(--text-secondary);
+    }
+    .meta-label{
+      font-size:12px;
+      line-height:18px;
+      color:var(--text-tertiary);
+      margin-bottom:4px;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:24px;
+      margin-bottom:32px;
+      flex-wrap:wrap;
+    }
+    .section-title{
+      font-size:32px;
+      line-height:46px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+    .section-copy{
+      max-width:720px;
+      font-size:14px;
+      line-height:20px;
+      color:var(--text-secondary);
+    }
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+    }
+    .opportunity-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      height:100%;
+    }
+    .opportunity-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .platform-block{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .logo{
+      width:44px;
+      height:44px;
+      border-radius:var(--r-md);
+      border:1px solid var(--border-default);
+      background:var(--bg-elevated);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text-primary);
+      font-size:14px;
+      font-weight:600;
+      flex-shrink:0;
+    }
+    .platform-text{
+      min-width:0;
+    }
+    .platform-name{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:18px;
+      line-height:28px;
+      font-weight:600;
+    }
+    .platform-name span{
+      min-width:0;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .platform-name i{
+      font-size:1em;
+      vertical-align:-0.125em;
+      color:var(--text-tertiary);
+    }
+    .platform-property{
+      font-size:14px;
+      line-height:20px;
+      color:var(--text-secondary);
+      margin-top:4px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      height:24px;
+      padding:0 8px;
+      border-radius:var(--r-xs);
+      border:1px solid var(--border-default);
+      font-size:12px;
+      line-height:18px;
+      color:var(--text-secondary);
+      white-space:nowrap;
+    }
+    .badge.pending{border-style:dashed}
+    .badge.ended{text-decoration:line-through}
+    .badge-group{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .stat-line{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .apy-block{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .apy-label{
+      font-size:12px;
+      line-height:18px;
+      color:var(--text-tertiary);
+    }
+    .apy-value{
+      font-size:24px;
+      line-height:34px;
+      font-weight:600;
+    }
+    .type-badge{
+      height:32px;
+      padding:0 12px;
+      border-radius:var(--r-sm);
+      border:1px solid var(--border-default);
+      background:var(--bg-page);
+      color:var(--text-secondary);
+      display:inline-flex;
+      align-items:center;
+      font-size:12px;
+      line-height:18px;
+    }
+    .card-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:auto;
+      flex-wrap:wrap;
+    }
+    .toolbar{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin-bottom:24px;
+    }
+    .toolbar-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .toolbar-copy{
+      font-size:12px;
+      line-height:18px;
+      color:var(--text-tertiary);
+    }
+    .chip-group{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      height:32px;
+      padding:0 12px;
+      border-radius:var(--r-sm);
+      border:1px solid var(--border-default);
+      background:var(--bg-card);
+      color:var(--text-secondary);
+      cursor:pointer;
+    }
+    .chip.active{
+      background:var(--bg-elevated);
+      color:var(--text-primary);
+      border-color:var(--border-strong);
+    }
+    .table-card{
+      padding:0;
+      overflow:hidden;
+    }
+    .table-wrap{
+      overflow:auto;
+    }
+    .table{
+      width:100%;
+      min-width:1100px;
+      border-collapse:collapse;
+    }
+    .table th{
+      text-align:left;
+      padding:16px;
+      font-size:12px;
+      line-height:18px;
+      font-weight:400;
+      color:var(--text-tertiary);
+      border-bottom:1px solid var(--border-weak);
+      white-space:nowrap;
+    }
+    .table td{
+      padding:20px 16px;
+      border-bottom:1px solid var(--border-weak);
+      vertical-align:middle;
+      color:var(--text-secondary);
+    }
+    .table tr:last-child td{border-bottom:none}
+    .table .platform-cell{
+      min-width:220px;
+    }
+    .table .platform-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .table .platform-row .logo{
+      width:40px;
+      height:40px;
+      font-size:12px;
+    }
+    .table .platform-row .platform-name{
+      font-size:16px;
+      line-height:22px;
+    }
+    .table .platform-row .platform-property{
+      font-size:12px;
+      line-height:18px;
+    }
+    .table-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .projects-toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+    .projects-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+    }
+    .project-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      height:100%;
+    }
+    .project-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .project-summary{
+      flex:1;
+      min-width:0;
+    }
+    .project-name{
+      font-size:18px;
+      line-height:28px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .project-copy{
+      font-size:14px;
+      line-height:20px;
+      color:var(--text-secondary);
+    }
+    .projects-footer{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:24px;
+    }
+    .footer{
+      padding:16px 0;
+      border-top:1px solid var(--border-default);
+      background:var(--bg-card);
+    }
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .footer-links{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--text-secondary);
+    }
+    .footer-links a:hover{color:var(--text-primary)}
+    .footer-copy{
+      font-size:12px;
+      line-height:18px;
+      color:var(--text-tertiary);
+    }
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:var(--bg-overlay);
+      z-index:120;
+    }
+    .modal.open{display:flex}
+    .modal-card{
+      width:560px;
+      max-width:100%;
+      background:var(--bg-card);
+      border-radius:var(--r-xl);
+      padding:24px;
+    }
+    .modal-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .modal-title{
+      font-size:24px;
+      line-height:34px;
+      font-weight:600;
+    }
+    .modal-body{
+      font-size:14px;
+      line-height:20px;
+      color:var(--text-secondary);
+      white-space:pre-line;
+      margin-bottom:24px;
+    }
+    .hidden{display:none!important}
+    @media(max-width:1199px){
+      .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .projects-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hero-panel{padding:32px}
+      .hero-title{font-size:40px;line-height:56px}
+      .header-inner{gap:16px}
+      .nav{display:none}
+    }
+    @media(max-width:767px){
+      .section,.section-alt{padding:48px 0}
+      .grid-3,.projects-grid{grid-template-columns:1fr}
+      .hero-panel{padding:24px}
+      .hero-title{font-size:32px;line-height:46px}
+      .section-title{font-size:24px;line-height:34px}
+      .header-inner{gap:12px}
+      .main{padding-top:80px}
+      .chain-pill{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark">U</div>
+          <div class="brand-text">
+            <div class="brand-title">USDD</div>
+            <div class="brand-subtitle">app.usdd.io</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#" class="nav-link">PSM</a>
+          <a href="#" class="nav-link">Savings</a>
+          <a href="#" class="nav-link active">Earn</a>
+          <a href="#" class="nav-link">Migrate</a>
+        </nav>
+        <div class="header-actions">
+          <div class="chain-pill">
+            <i class="ri-links-line" style="font-size:1em;vertical-align:-0.125em"></i>
+            Ethereum
+          </div>
+          <button class="btn btn-sm btn-primary">Connect Wallet</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section" style="padding:80px 0 64px">
+      <div class="container">
+        <div class="hero-panel">
+          <div>
+            <div class="eyebrow">
+              <i class="ri-stack-line" style="font-size:1em;vertical-align:-0.125em"></i>
+              Earn / Rewards
+            </div>
+            <h1 class="hero-title">Where to Earn USDD</h1>
+            <p class="hero-copy">View active platforms offering APY rewards for USDD. Featured cards, opportunities, and supported projects are configured from the web3 admin panel and update after launch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Featured Cards</h2>
+            <p class="section-copy">The card rail highlights the current third-party platforms from the legacy Tron earn page. Content, APY mode, rule text, button label, lock state, and links all come from admin configuration.</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <article class="card opportunity-card">
+            <div class="opportunity-top">
+              <div class="platform-block">
+                <div class="logo">BN</div>
+                <div class="platform-text">
+                  <div class="platform-name" title="Deposit USDD in Binance campaign vaults to receive time-limited APY rewards.">
+                    <span>Binance</span>
+                    <i class="ri-information-line"></i>
+                  </div>
+                  <div class="platform-property">USDD Flexible Campaign</div>
+                </div>
+              </div>
+              <span class="badge">Active</span>
+            </div>
+            <div class="badge-group">
+              <span class="badge">Ethereum</span>
+              <span class="badge">BNB Chain</span>
+            </div>
+            <div class="stat-line">
+              <div class="apy-block">
+                <div class="apy-label">APY</div>
+                <div class="apy-value">18.50% APY</div>
+              </div>
+              <span class="type-badge">CEX</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary">Go to Earn</button>
+              <button class="btn btn-secondary" data-rule-title="Binance" data-rule-body="1. Hold or deposit USDD during the configured valid period.\n2. Rewards distribution follows platform rules from the active campaign.\n3. Button label, status, and target URL are managed in admin.">View Rule</button>
+            </div>
+          </article>
+
+          <article class="card opportunity-card">
+            <div class="opportunity-top">
+              <div class="platform-block">
+                <div class="logo">PC</div>
+                <div class="platform-text">
+                  <div class="platform-name" title="Provide liquidity for the USDD-USDT pair on PancakeSwap and earn combined LP yield.">
+                    <span>PancakeSwap</span>
+                    <i class="ri-information-line"></i>
+                  </div>
+                  <div class="platform-property">Provide liquidity USDD-USDT</div>
+                </div>
+              </div>
+              <span class="badge">Active</span>
+            </div>
+            <div class="badge-group">
+              <span class="badge">BNB Chain</span>
+            </div>
+            <div class="stat-line">
+              <div class="apy-block">
+                <div class="apy-label">APY</div>
+                <div class="apy-value">12.40% APY</div>
+              </div>
+              <span class="type-badge">DEX</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary">Add Liquidity</button>
+              <button class="btn btn-secondary" data-rule-title="PancakeSwap USDD-USDT" data-rule-body="1. Add liquidity to the USDD-USDT pool on BNB Chain.\n2. Stake LP tokens in the configured campaign if required.\n3. Dynamic APY can be pulled from the selected backend interface.">View Rule</button>
+            </div>
+          </article>
+
+          <article class="card opportunity-card">
+            <div class="opportunity-top">
+              <div class="platform-block">
+                <div class="logo">PC</div>
+                <div class="platform-text">
+                  <div class="platform-name" title="Provide liquidity for the USDD-USDC pair on PancakeSwap with a separate campaign definition.">
+                    <span>PancakeSwap</span>
+                    <i class="ri-information-line"></i>
+                  </div>
+                  <div class="platform-property">Provide liquidity USDD-USDC</div>
+                </div>
+              </div>
+              <span class="badge">Active</span>
+            </div>
+            <div class="badge-group">
+              <span class="badge">BNB Chain</span>
+            </div>
+            <div class="stat-line">
+              <div class="apy-block">
+                <div class="apy-label">APY</div>
+                <div class="apy-value">10.80% APY</div>
+              </div>
+              <span class="type-badge">DEX</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary">Add Liquidity</button>
+              <button class="btn btn-secondary" data-rule-title="PancakeSwap USDD-USDC" data-rule-body="1. Join the USDD-USDC pool on BNB Chain.\n2. Keep LP positions active during the valid period.\n3. Admin can switch button state to locked without removing the card.">View Rule</button>
+            </div>
+          </article>
+
+          <article class="card opportunity-card">
+            <div class="opportunity-top">
+              <div class="platform-block">
+                <div class="logo">UV</div>
+                <div class="platform-text">
+                  <div class="platform-name" title="Upcoming concentrated liquidity campaign for the USDD-USDT pool on Uniswap v3.">
+                    <span>Uniswap</span>
+                    <i class="ri-information-line"></i>
+                  </div>
+                  <div class="platform-property">Provide liquidity USDD-USDT</div>
+                </div>
+              </div>
+              <span class="badge pending">Upcoming</span>
+            </div>
+            <div class="badge-group">
+              <span class="badge">Ethereum</span>
+            </div>
+            <div class="stat-line">
+              <div class="apy-block">
+                <div class="apy-label">APY</div>
+                <div class="apy-value">9.25% APY</div>
+              </div>
+              <span class="type-badge">DEX</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary" disabled>Coming Soon</button>
+              <button class="btn btn-secondary" data-rule-title="Uniswap USDD-USDT" data-rule-body="1. Campaign status switches to Upcoming when valid period has not started.\n2. The button is disabled until the activity becomes active.\n3. Details remain visible to help users plan participation.">View Rule</button>
+            </div>
+          </article>
+
+          <article class="card opportunity-card">
+            <div class="opportunity-top">
+              <div class="platform-block">
+                <div class="logo">UV</div>
+                <div class="platform-text">
+                  <div class="platform-name" title="Ended concentrated liquidity campaign for the USDD-USDC pool on Uniswap v3.">
+                    <span>Uniswap</span>
+                    <i class="ri-information-line"></i>
+                  </div>
+                  <div class="platform-property">Provide liquidity USDD-USDC</div>
+                </div>
+              </div>
+              <span class="badge ended">Ended</span>
+            </div>
+            <div class="badge-group">
+              <span class="badge">Ethereum</span>
+            </div>
+            <div class="stat-line">
+              <div class="apy-block">
+                <div class="apy-label">APY</div>
+                <div class="apy-value">8.90% APY</div>
+              </div>
+              <span class="type-badge">DEX</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary" disabled>Ended</button>
+              <button class="btn btn-secondary" data-rule-title="Uniswap USDD-USDC" data-rule-body="1. Ended activities stay visible after the valid period for reference.\n2. Action buttons are disabled while rule content remains accessible.\n3. Display order moves ended items below active and upcoming opportunities.">View Rule</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Earn Platform List</h2>
+            <p class="section-copy">All USDD earning opportunities can be filtered by network, status, and type. The list defaults to Active, then Upcoming, then Ended; APY high to low; then platform name A to Z.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-row">
+            <div class="chip-group" data-filter-group="network">
+              <button class="chip active" data-value="all">All Networks</button>
+              <button class="chip" data-value="Tron">Tron</button>
+              <button class="chip" data-value="Ethereum">Ethereum</button>
+              <button class="chip" data-value="BNB Chain">BNB Chain</button>
+            </div>
+            <div class="chip-group" data-filter-group="status">
+              <button class="chip active" data-value="all">All Status</button>
+              <button class="chip" data-value="Active">Active</button>
+              <button class="chip" data-value="Upcoming">Upcoming</button>
+              <button class="chip" data-value="Ended">Ended</button>
+            </div>
+          </div>
+          <div class="toolbar-row">
+            <div class="chip-group" data-filter-group="type">
+              <button class="chip active" data-value="all">All Types</button>
+              <button class="chip" data-value="Lending">Lending</button>
+              <button class="chip" data-value="CEX">CEX</button>
+              <button class="chip" data-value="DEX">DEX</button>
+              <button class="chip" data-value="Wallet">Wallet</button>
+            </div>
+            <div class="chip-group">
+              <button class="chip active" id="apy-sort" data-order="desc">APY High → Low</button>
+            </div>
+          </div>
+          <div class="toolbar-copy">Description is available on hover over the platform name. Rule details open in a modal. Disabled actions represent Upcoming, Ended, or locked button states from admin.</div>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Property</th>
+                  <th>Network</th>
+                  <th>Status</th>
+                  <th>APY</th>
+                  <th>Type</th>
+                  <th>Action</th>
+                  <th>Rule</th>
+                </tr>
+              </thead>
+              <tbody id="opportunities-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Supported Projects</h2>
+            <p class="section-copy">Explore all DeFi and CeFi projects that have integrated USDD. Projects can be filtered by tag. The list follows backend ranking in descending order, then project name A to Z.</p>
+          </div>
+        </div>
+
+        <div class="projects-toolbar">
+          <div class="chip-group" data-project-filter>
+            <button class="chip active" data-value="all">All</button>
+            <button class="chip" data-value="Lending">Lending</button>
+            <button class="chip" data-value="CEX">CEX</button>
+            <button class="chip" data-value="DEX">DEX</button>
+            <button class="chip" data-value="Wallet">Wallet</button>
+          </div>
+          <a href="[Google Form URL]" class="btn btn-primary">List Your Platform</a>
+        </div>
+
+        <div class="projects-grid" id="projects-grid"></div>
+        <div class="projects-footer">
+          <button class="btn btn-secondary" id="projects-load-more">Load More</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-links">
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Docs</a>
+          <a href="#">FAQs</a>
+        </div>
+        <div class="footer-copy">© 2026 USDD</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="rule-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="meta-label">Rule</div>
+          <div class="modal-title" id="rule-title">Rule Detail</div>
+        </div>
+        <button class="btn btn-sm btn-ghost" id="rule-close">Close</button>
+      </div>
+      <div class="modal-body" id="rule-body"></div>
+      <button class="btn btn-md btn-primary" id="rule-confirm">Done</button>
+    </div>
+  </div>
+
+  <script>
+    const opportunities = [
+      {
+        platform: "Binance",
+        description: "Deposit USDD in Binance campaign vaults to receive time-limited APY rewards.",
+        property: "USDD Flexible Campaign",
+        networks: ["Ethereum", "BNB Chain"],
+        status: "Active",
+        apy: 18.50,
+        apyText: "18.50% APY",
+        type: "CEX",
+        actionLabel: "Go to Earn",
+        disabled: false,
+        logo: "BN",
+        rule: "1. Hold or deposit USDD during the configured valid period.\n2. Rewards distribution follows platform rules from the active campaign.\n3. Button label, status, and target URL are managed in admin."
+      },
+      {
+        platform: "PancakeSwap",
+        description: "Provide liquidity for the USDD-USDT pair on PancakeSwap and earn combined LP yield.",
+        property: "Provide liquidity USDD-USDT",
+        networks: ["BNB Chain"],
+        status: "Active",
+        apy: 12.40,
+        apyText: "12.40% APY",
+        type: "DEX",
+        actionLabel: "Add Liquidity",
+        disabled: false,
+        logo: "PC",
+        rule: "1. Add liquidity to the USDD-USDT pool on BNB Chain.\n2. Stake LP tokens in the configured campaign if required.\n3. Dynamic APY can be pulled from the selected backend interface."
+      },
+      {
+        platform: "PancakeSwap",
+        description: "Provide liquidity for the USDD-USDC pair on PancakeSwap with a separate campaign definition.",
+        property: "Provide liquidity USDD-USDC",
+        networks: ["BNB Chain"],
+        status: "Active",
+        apy: 10.80,
+        apyText: "10.80% APY",
+        type: "DEX",
+        actionLabel: "Add Liquidity",
+        disabled: false,
+        logo: "PC",
+        rule: "1. Join the USDD-USDC pool on BNB Chain.\n2. Keep LP positions active during the valid period.\n3. Admin can switch button state to locked without removing the entry."
+      },
+      {
+        platform: "MathWallet",
+        description: "Route users into a wallet-integrated USDD earn campaign distributed through partner APIs.",
+        property: "USDD Partner Campaign",
+        networks: ["Tron", "Ethereum"],
+        status: "Active",
+        apy: 7.80,
+        apyText: "7.80% APY",
+        type: "Wallet",
+        actionLabel: "Locked",
+        disabled: true,
+        logo: "MW",
+        rule: "1. The activity is visible but the action is locked by admin.\n2. Users can review the opportunity before launch unlocks.\n3. Link and label remain configurable from backend."
+      },
+      {
+        platform: "Uniswap",
+        description: "Upcoming concentrated liquidity campaign for the USDD-USDT pool on Uniswap v3.",
+        property: "Provide liquidity USDD-USDT",
+        networks: ["Ethereum"],
+        status: "Upcoming",
+        apy: 9.25,
+        apyText: "9.25% APY",
+        type: "DEX",
+        actionLabel: "Coming Soon",
+        disabled: true,
+        logo: "UV",
+        rule: "1. Campaign status switches to Upcoming when valid period has not started.\n2. The action remains disabled until the campaign becomes active.\n3. Rule text can still be reviewed in detail."
+      },
+      {
+        platform: "Uniswap",
+        description: "Upcoming concentrated liquidity campaign for the USDD-USDC pool on Uniswap v3.",
+        property: "Provide liquidity USDD-USDC",
+        networks: ["Ethereum"],
+        status: "Upcoming",
+        apy: 8.90,
+        apyText: "8.90% APY",
+        type: "DEX",
+        actionLabel: "Coming Soon",
+        disabled: true,
+        logo: "UV",
+        rule: "1. Multiple pools under the same DEX are separated by the Property field.\n2. APY order still applies within the Upcoming group.\n3. Button remains disabled until launch."
+      },
+      {
+        platform: "JustLend DAO",
+        description: "Legacy flexible supply market for USDD on Tron.",
+        property: "Supply USDD Flexible",
+        networks: ["Tron"],
+        status: "Ended",
+        apy: 6.50,
+        apyText: "6.50% APY",
+        type: "Lending",
+        actionLabel: "Ended",
+        disabled: true,
+        logo: "JL",
+        rule: "1. Ended activities remain listed after expiration.\n2. Action buttons are disabled while information stays visible.\n3. Historical APY is kept as a display field."
+      }
+    ];
+
+    const projects = [
+      { name: "Binance", tag: "CEX", logo: "BN", order: 96, description: "Centralized exchange campaign hub for USDD savings and reward programs.", link: "#" },
+      { name: "JustLend DAO", tag: "Lending", logo: "JL", order: 92, description: "Tron-native lending market where users can supply USDD and track yield.", link: "#" },
+      { name: "PancakeSwap", tag: "DEX", logo: "PC", order: 90, description: "BNB Chain DEX supporting USDD liquidity pools and trading pairs.", link: "#" },
+      { name: "Uniswap", tag: "DEX", logo: "UV", order: 88, description: "Ethereum DEX with concentrated liquidity strategies for USDD pairs.", link: "#" },
+      { name: "MathWallet", tag: "Wallet", logo: "MW", order: 84, description: "Multi-chain wallet distribution channel for partner USDD earn campaigns.", link: "#" },
+      { name: "SafePal", tag: "Wallet", logo: "SP", order: 80, description: "Wallet partner supporting USDD discovery and direct external campaign jumps.", link: "#" },
+      { name: "HTX", tag: "CEX", logo: "HT", order: 78, description: "Centralized exchange partner with USDD deposit and campaign integrations.", link: "#" },
+      { name: "SunSwap", tag: "DEX", logo: "SS", order: 74, description: "Tron DEX supporting USDD liquidity distribution and swap routing.", link: "#" },
+      { name: "Aave", tag: "Lending", logo: "AV", order: 72, description: "Lending protocol reference slot for future USDD market integrations.", link: "#" },
+      { name: "KuCoin", tag: "CEX", logo: "KC", order: 70, description: "CEX campaign listing example for backend-managed supported projects.", link: "#" }
+    ];
+
+    const statusOrder = { Active: 0, Upcoming: 1, Ended: 2 };
+    const opportunitiesBody = document.getElementById("opportunities-body");
+    const apySortButton = document.getElementById("apy-sort");
+    const filterState = { network: "all", status: "all", type: "all", apyOrder: "desc" };
+
+    function createBadge(status) {
+      const map = { Active: "", Upcoming: " pending", Ended: " ended" };
+      return `<span class="badge${map[status] || ""}">${status}</span>`;
+    }
+
+    function sortOpportunities(items) {
+      const direction = filterState.apyOrder === "desc" ? -1 : 1;
+      return [...items].sort((a, b) => {
+        if (a.status !== b.status) return statusOrder[a.status] - statusOrder[b.status];
+        if (a.apy !== b.apy) return (a.apy - b.apy) * direction;
+        return a.platform.localeCompare(b.platform);
+      });
+    }
+
+    function renderOpportunities() {
+      const filtered = opportunities.filter(item => {
+        const networkPass = filterState.network === "all" || item.networks.includes(filterState.network);
+        const statusPass = filterState.status === "all" || item.status === filterState.status;
+        const typePass = filterState.type === "all" || item.type === filterState.type;
+        return networkPass && statusPass && typePass;
+      });
+
+      const sorted = sortOpportunities(filtered);
+      if (!sorted.length) {
+        opportunitiesBody.innerHTML = `<tr><td colspan="8"><div class="card" style="background:var(--bg-elevated);border:1px dashed var(--border-default);padding:24px;text-align:center;color:var(--text-tertiary)">No data</div></td></tr>`;
+        return;
+      }
+
+      opportunitiesBody.innerHTML = sorted.map(item => `
+        <tr>
+          <td class="platform-cell">
+            <div class="platform-row">
+              <div class="logo">${item.logo}</div>
+              <div class="platform-text">
+                <div class="platform-name" title="${item.description}">
+                  <span>${item.platform}</span>
+                  <i class="ri-information-line"></i>
+                </div>
+                <div class="platform-property">${item.description}</div>
+              </div>
+            </div>
+          </td>
+          <td>${item.property}</td>
+          <td><div class="badge-group">${item.networks.map(network => `<span class="badge">${network}</span>`).join("")}</div></td>
+          <td>${createBadge(item.status)}</td>
+          <td style="font-weight:600;color:var(--text-primary)">${item.apyText}</td>
+          <td><span class="type-badge">${item.type}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="btn btn-sm btn-primary" ${item.disabled ? "disabled" : ""}>${item.actionLabel}</button>
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-secondary" data-rule-title="${item.platform} — ${item.property}" data-rule-body="${item.rule.replace(/"/g, "&quot;")}">View Rule</button>
+          </td>
+        </tr>
+      `).join("");
+
+      bindRuleButtons();
+    }
+
+    document.querySelectorAll("[data-filter-group]").forEach(group => {
+      group.addEventListener("click", event => {
+        const chip = event.target.closest(".chip");
+        if (!chip) return;
+        group.querySelectorAll(".chip").forEach(node => node.classList.remove("active"));
+        chip.classList.add("active");
+        filterState[group.dataset.filterGroup] = chip.dataset.value;
+        renderOpportunities();
+      });
+    });
+
+    apySortButton.addEventListener("click", () => {
+      filterState.apyOrder = filterState.apyOrder === "desc" ? "asc" : "desc";
+      apySortButton.dataset.order = filterState.apyOrder;
+      apySortButton.textContent = filterState.apyOrder === "desc" ? "APY High → Low" : "APY Low → High";
+      renderOpportunities();
+    });
+
+    const projectsGrid = document.getElementById("projects-grid");
+    const loadMoreButton = document.getElementById("projects-load-more");
+    const projectState = { tag: "all", expanded: false };
+
+    function sortProjects(items) {
+      return [...items].sort((a, b) => {
+        if (a.order !== b.order) return b.order - a.order;
+        return a.name.localeCompare(b.name);
+      });
+    }
+
+    function renderProjects() {
+      const filtered = sortProjects(projects.filter(item => projectState.tag === "all" || item.tag === projectState.tag));
+      const visible = projectState.expanded ? filtered : filtered.slice(0, 8);
+
+      projectsGrid.innerHTML = visible.map(item => `
+        <article class="card project-card">
+          <div class="project-head">
+            <div class="platform-block">
+              <div class="logo">${item.logo}</div>
+              <div class="project-summary">
+                <div class="project-name">${item.name}</div>
+                <span class="badge">${item.tag}</span>
+              </div>
+            </div>
+          </div>
+          <p class="project-copy">${item.description}</p>
+          <div class="card-actions">
+            <a href="${item.link}" class="btn btn-secondary">Visit Project</a>
+          </div>
+        </article>
+      `).join("");
+
+      if (filtered.length <= 8 || projectState.expanded) {
+        loadMoreButton.classList.add("hidden");
+      } else {
+        loadMoreButton.classList.remove("hidden");
+      }
+    }
+
+    document.querySelector("[data-project-filter]").addEventListener("click", event => {
+      const chip = event.target.closest(".chip");
+      if (!chip) return;
+      document.querySelectorAll("[data-project-filter] .chip").forEach(node => node.classList.remove("active"));
+      chip.classList.add("active");
+      projectState.tag = chip.dataset.value;
+      projectState.expanded = false;
+      renderProjects();
+    });
+
+    loadMoreButton.addEventListener("click", () => {
+      projectState.expanded = true;
+      renderProjects();
+    });
+
+    const modal = document.getElementById("rule-modal");
+    const ruleTitle = document.getElementById("rule-title");
+    const ruleBody = document.getElementById("rule-body");
+
+    function openRule(title, body) {
+      ruleTitle.textContent = title;
+      ruleBody.textContent = body;
+      modal.classList.add("open");
+    }
+
+    function closeRule() {
+      modal.classList.remove("open");
+    }
+
+    function bindRuleButtons() {
+      document.querySelectorAll("[data-rule-title]").forEach(button => {
+        button.onclick = () => openRule(button.dataset.ruleTitle, button.dataset.ruleBody);
+      });
+    }
+
+    document.getElementById("rule-close").addEventListener("click", closeRule);
+    document.getElementById("rule-confirm").addEventListener("click", closeRule);
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeRule();
+    });
+
+    renderOpportunities();
+    renderProjects();
+    bindRuleButtons();
+  </script>
+</body>
+</html>
