@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Footer 改版 — app.usdd.io Prototype</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font:400 14px/1.5 Inter,-apple-system,sans-serif;background:var(--bg-page);color:var(--text-primary)}
+    :root{
+      --bg-page:#0F0F0F;--bg-section:#161616;--bg-card:#1E1E1E;
+      --text-primary:#EBEBEB;--text-secondary:#999999;--text-tertiary:#555555;--text-disabled:#383838;
+      --border-default:#2E2E2E;--border-weak:#1E1E1E;
+      --btn-primary-bg:#EBEBEB;--btn-primary-text:#0F0F0F;
+      --r-xs:4px;--r-md:8px;--r-lg:16px;
+    }
+    .container{width:1440px;max-width:100%;margin:0 auto;padding:0 48px}
+    @media(max-width:1471px){.container{width:1200px}}
+    @media(max-width:1199px){.container{width:auto;padding:0 20px}}
+
+    .main{min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--text-disabled);font-size:12px;letter-spacing:.08em}
+
+    .app-footer{background:var(--bg-card);border-top:1px solid var(--border-default);padding:16px 0}
+    .app-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .app-footer-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+    .app-footer-link{display:inline-flex;align-items:center;height:32px;padding:0 10px;font-size:13px;color:var(--text-secondary);text-decoration:none;border-radius:var(--r-md);white-space:nowrap;transition:background .15s,color .15s}
+    .app-footer-link:hover{background:var(--bg-section);color:var(--text-primary)}
+    .app-footer-link-disabled{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 10px;font-size:13px;color:var(--text-disabled);white-space:nowrap;cursor:not-allowed}
+    .app-footer-link-disabled-badge{font-size:10px;padding:1px 5px;border:1px solid var(--border-weak);border-radius:var(--r-xs);color:var(--text-disabled)}
+    .app-footer-dot{width:3px;height:3px;border-radius:50%;background:var(--border-default);flex-shrink:0}
+    .app-footer-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+    .app-footer-support{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;font-size:13px;color:var(--text-secondary);text-decoration:none;border-radius:var(--r-md);transition:background .15s,color .15s}
+    .app-footer-support:hover{background:var(--bg-section);color:var(--text-primary)}
+    .app-footer-copyright{font-size:12px;color:var(--text-disabled)}
+
+    @media(max-width:374px){
+      .app-footer-inner{flex-direction:column;align-items:flex-start}
+      .app-footer-right{flex-wrap:wrap;gap:8px}
+    }
+  </style>
+</head>
+<body>
+
+<main class="main">APP CONTENT AREA</main>
+
+<footer class="app-footer">
+  <div class="container">
+    <div class="app-footer-inner">
+      <div class="app-footer-links">
+        <a href="https://docs.usdd.io/lrgals/terms-of-use" target="_blank" class="app-footer-link">Terms</a>
+        <div class="app-footer-dot"></div>
+        <a href="https://docs.usdd.io/lrgals/privacy-policy" target="_blank" class="app-footer-link">Privacy</a>
+        <div class="app-footer-dot"></div>
+        <a href="https://docs.usdd.io/" target="_blank" class="app-footer-link">Docs</a>
+        <div class="app-footer-dot"></div>
+        <span class="app-footer-link-disabled">MCP Server<span class="app-footer-link-disabled-badge">Soon</span></span>
+        <div class="app-footer-dot"></div>
+        <a href="https://usdd.io/faq" target="_blank" class="app-footer-link">FAQs</a>
+      </div>
+      <div class="app-footer-right">
+        <a href="mailto:support@usdd.io" class="app-footer-support">
+          <i class="ri-mail-line" style="font-size:1em;vertical-align:-0.125em"></i>
+          Support
+        </a>
+        <div class="app-footer-copyright">© 2026 USDD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
