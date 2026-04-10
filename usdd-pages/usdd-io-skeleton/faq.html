@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USDD — FAQs</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Page hero ── */
+    .faq-hero {
+      padding: 48px 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 36px;
+    }
+
+    .faq-hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    @media (max-width: 766px) {
+      .faq-hero h1 { font-size: 26px; }
+      .faq-hero { flex-direction: column; align-items: flex-start; }
+      .search-bar { max-width: 100%; width: 100%; }
+    }
+
+    /* ── Accordion list ── */
+    .faq-list {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .accordion-item:last-child { border-bottom: none; }
+
+    .accordion-trigger {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      gap: 16px;
+    }
+
+    .accordion-trigger:hover { color: #a78bfa; }
+
+    .accordion-arrow {
+      flex-shrink: 0;
+      font-size: 18px;
+      color: rgba(255,255,255,0.3);
+      transition: transform 0.2s;
+    }
+
+    .accordion-item.open .accordion-arrow {
+      transform: rotate(180deg);
+      color: #a78bfa;
+    }
+
+    .accordion-body {
+      padding: 0 24px 22px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Header ====== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon"></div>
+          <div class="logo-text">
+            <span class="logo-name">USDD</span>
+            <span class="logo-sub">Decentralized USD</span>
+          </div>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <div class="nav-item">Developer ▾</div>
+          <div class="nav-item">Transparency ▾</div>
+          <div class="nav-item">Community ▾</div>
+        </div>
+        <button class="nav-cta">Launch APP</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Main ====== -->
+  <main>
+    <div class="container">
+
+      <!-- Hero + Search -->
+      <div class="faq-hero">
+        <h1>Frequently Asked Questions</h1>
+        <div class="search-bar">
+          <input type="text" placeholder="Search FAQs" />
+          <span style="color:rgba(255,255,255,0.3);">⌕</span>
+        </div>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="faq-list">
+
+        <!-- Q1 — open by default -->
+        <div class="accordion-item open">
+          <button class="accordion-trigger">
+            <span>What is USDD?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body">
+            USDD is a fully decentralized stablecoin that operates on the TRON network. It is designed to maintain a stable value through a robust collateral-backed system and advanced algorithms. Governed by a decentralized community, USDD ensures transparency and inclusivity, empowering users to actively participate in the protocol's evolution. This community-driven approach strengthens USDD's position as a reliable and sustainable stablecoin.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>How is USDD different from USDDOLD?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>How can I migrate USDDOLD for USDD?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>Can I borrow USDD using my crypto assets?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>How can I earn rewards with USDD?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>Is USDD fully decentralized?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>Is USDD backed by collateral?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger">
+            <span>What makes USDD secure?</span>
+            <span class="accordion-arrow">▾</span>
+          </button>
+          <div class="accordion-body" style="display:none;"></div>
+        </div>
+
+      </div>
+
+      <!-- Pagination -->
+      <nav class="pagination" aria-label="FAQ pages">
+        <button class="page-btn" disabled>‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">›</button>
+      </nav>
+
+    </div>
+  </main>
+
+  <!-- ====== Footer ====== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-socials">
+            <a href="https://x.com/usddio" class="social-link">𝕏</a>
+            <a href="#" class="social-link">●</a>
+            <a href="https://discord.com/invite/NurKn6KEqx" class="social-link">D</a>
+          </div>
+          <div class="footer-brand">
+            <div class="brand-name">Decentralized USD</div>
+            <div class="brand-desc">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</div>
+            <a href="mailto:support@usdd.io" class="brand-email">support@usdd.io</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copy">Copyright © 2026 USDD. All rights reserved</div>
+    </div>
+  </footer>
+
+</body>
+</html>

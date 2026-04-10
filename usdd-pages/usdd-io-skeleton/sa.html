@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USDD — Smart Allocator</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Hero ── */
+    .sa-hero {
+      padding: 60px 0 48px;
+      text-align: center;
+    }
+
+    .sa-hero h4 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a78bfa;
+      margin-bottom: 12px;
+    }
+
+    .sa-hero h5 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+    }
+
+    @media (max-width: 766px) {
+      .sa-hero h5 { font-size: 24px; }
+    }
+
+    /* ── Overview section ── */
+    .overview-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 1199px) {
+      .overview-panel { grid-template-columns: 1fr; }
+    }
+
+    .overview-stats-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .overview-stats-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .ov-stat .ov-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ov-stat .ov-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .ov-stat .ov-sub {
+      font-size: 12px;
+      color: #a78bfa;
+      margin-top: 2px;
+    }
+
+    .transparency-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .transparency-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .transparency-card p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    /* Legend */
+    .chart-legend {
+      display: flex;
+      gap: 20px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .legend-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    /* ── Assets Breakdown ── */
+    .breakdown-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .breakdown-inner {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 1199px) {
+      .breakdown-inner { grid-template-columns: 1fr; }
+    }
+
+    .breakdown-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .breakdown-bar-wrap {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .breakdown-bar {
+      height: 100%;
+      border-radius: 4px;
+      background: #7c3aed;
+    }
+
+    .breakdown-row .name {
+      width: 100px;
+      font-size: 14px;
+      color: #fff;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .breakdown-row .pct {
+      width: 52px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #a78bfa;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .breakdown-row .amt {
+      width: 140px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .total-invested-card {
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .total-invested-card .ti-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+
+    .total-invested-card .ti-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ── Proof of Reserve table ── */
+    .por-section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .table-wrap {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      overflow: auto;
+    }
+
+    .platform-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .platform-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #7c3aed;
+      flex-shrink: 0;
+    }
+
+    .tag-farm {
+      font-size: 10px;
+      background: rgba(124,58,237,0.2);
+      color: #a78bfa;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 4px;
+    }
+
+    .addr-link {
+      font-size: 12px;
+      color: #a78bfa;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
+    .apy-cell {
+      font-weight: 600;
+      color: #34d399;
+    }
+
+    /* Description aside */
+    .por-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 1199px) {
+      .por-layout { grid-template-columns: 1fr; }
+    }
+
+    .sa-description {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+    }
+
+    .sa-description h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .sa-description p { margin-bottom: 12px; }
+
+    /* ── Debt Overview ── */
+    .debt-section { margin-bottom: 60px; }
+
+    .debt-header {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Header ====== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon"></div>
+          <div class="logo-text">
+            <span class="logo-name">USDD</span>
+            <span class="logo-sub">Decentralized USD</span>
+          </div>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <div class="nav-item">Developer ▾</div>
+          <div class="nav-item">Transparency ▾</div>
+          <div class="nav-item">Community ▾</div>
+        </div>
+        <button class="nav-cta">Launch APP</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Main ====== -->
+  <main>
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="sa-hero">
+        <h4>Smart Allocator</h4>
+        <h5>Sustainable, Secure, Shared Yields</h5>
+      </section>
+
+      <!-- Overview -->
+      <section class="overview-panel">
+
+        <!-- Stats -->
+        <div class="overview-stats-card">
+          <p class="section-label">Overview</p>
+          <div class="overview-stats-row">
+            <div class="ov-stat">
+              <div class="ov-label">Debt (USDD) ⓘ</div>
+              <div class="ov-value">913.18M</div>
+            </div>
+            <div class="ov-stat">
+              <div class="ov-label">Invested ⓘ</div>
+              <div class="ov-value">$927.31M</div>
+            </div>
+            <div class="ov-stat">
+              <div class="ov-label">Earnings ⓘ</div>
+              <div class="ov-value">$14,446,757.61</div>
+              <div class="ov-sub">APY: 3.42%</div>
+            </div>
+          </div>
+          <div class="chart-area">Debt vs Invested Area Chart</div>
+        </div>
+
+        <!-- Transparency -->
+        <div class="transparency-card">
+          <h3>Transparency</h3>
+          <p>Track total available vs. invested value — all on-chain, fully transparent.</p>
+          <div class="chart-area" style="height:160px;">Debt / Investment Value Chart</div>
+          <div class="chart-legend">
+            <span><span class="legend-dot" style="background:#7c3aed;"></span>Debt (USDD)</span>
+            <span><span class="legend-dot" style="background:#34d399;"></span>Total Investment Value</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Assets Breakdown -->
+      <section style="margin-bottom:48px;">
+        <div class="breakdown-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+            <p class="section-label" style="margin-bottom:0;">Assets Breakdown</p>
+            <div class="tab-bar">
+              <button class="tab-btn active">By Protocol</button>
+              <button class="tab-btn">By Network</button>
+              <button class="tab-btn">By Asset</button>
+            </div>
+          </div>
+          <div class="breakdown-inner">
+            <div class="breakdown-rows">
+              <div class="breakdown-row">
+                <span class="name">Spark</span>
+                <div class="breakdown-bar-wrap">
+                  <div class="breakdown-bar" style="width:47.74%;background:#7c3aed;"></div>
+                </div>
+                <span class="pct">47.74%</span>
+                <span class="amt">$442,541,609.22</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="name">Aave</span>
+                <div class="breakdown-bar-wrap">
+                  <div class="breakdown-bar" style="width:40.93%;background:#6366f1;"></div>
+                </div>
+                <span class="pct">40.93%</span>
+                <span class="amt">$379,624,086.64</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="name">JustLend</span>
+                <div class="breakdown-bar-wrap">
+                  <div class="breakdown-bar" style="width:11.33%;background:#34d399;"></div>
+                </div>
+                <span class="pct">11.33%</span>
+                <span class="amt">$105,143,486.77</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="name">Venus</span>
+                <div class="breakdown-bar-wrap">
+                  <div class="breakdown-bar" style="width:0%;background:#f59e0b;"></div>
+                </div>
+                <span class="pct">0.00%</span>
+                <span class="amt">$1.64</span>
+              </div>
+            </div>
+            <div class="total-invested-card">
+              <div class="ti-label">Total Invested</div>
+              <div class="ti-value">$927,309,184.26</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Proof of Reserve + Description -->
+      <section class="por-section">
+        <div class="section-title">Proof of Reserve</div>
+        <div class="por-layout">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Invested</th>
+                  <th>Earnings</th>
+                  <th>APY</th>
+                  <th>Investment Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot"></span>Aave <span class="tag-farm">Investment</span></span></td>
+                  <td>379,624,086.64 USDT0</td>
+                  <td>$2,624,085.88</td>
+                  <td class="apy-cell">3.78%</td>
+                  <td><a href="https://plasmascan.to/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#34d399;"></span>Spark <span class="tag-farm">Investment</span></span></td>
+                  <td>272,339,039.94 USDS</td>
+                  <td>$1,832,369.64</td>
+                  <td class="apy-cell">3.75%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#34d399;"></span>Spark <span class="tag-farm">Investment</span></span></td>
+                  <td>135,202,569.29 USDT</td>
+                  <td>$202,569.27</td>
+                  <td class="apy-cell">2.94%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#f59e0b;"></span>JustLend <span class="tag-farm">Investment</span></span></td>
+                  <td>105,143,486.77 USDT</td>
+                  <td>$444,486.13</td>
+                  <td class="apy-cell">1.74%</td>
+                  <td><a href="https://tronscan.org/#/address/TKVnVyJiTzyCDgTkZRYc5LM4q8B7xXEbh5" class="addr-link">TKVnVy...bh5 ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#34d399;"></span>Spark Farm <span class="tag-farm">Investment</span></span></td>
+                  <td>35,000,000 USDS</td>
+                  <td>$317,198.76</td>
+                  <td class="apy-cell">3.93%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#6366f1;"></span>Venus <span class="tag-farm">Investment</span></span></td>
+                  <td>1.64 USDT</td>
+                  <td>$2,690.64</td>
+                  <td class="apy-cell">1.76%</td>
+                  <td><a href="https://bscscan.com/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot"></span>Aave <span class="tag-farm">Investment</span></span></td>
+                  <td>0 USDT</td>
+                  <td>$3,515,469.56</td>
+                  <td>0%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot"></span>Aave <span class="tag-farm">Investment</span></span></td>
+                  <td>0 USDC</td>
+                  <td>$2,535,016.27</td>
+                  <td>0%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#ec4899;"></span>Morpho Steakhouse <span class="tag-farm">Investment</span></span></td>
+                  <td>0 USDC</td>
+                  <td>$412,349.34</td>
+                  <td>0%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#ec4899;"></span>Morpho Gauntlet <span class="tag-farm">Investment</span></span></td>
+                  <td>0 USDC</td>
+                  <td>$142,503.88</td>
+                  <td>0%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#34d399;"></span>Spark Legacy <span class="tag-farm">Investment</span></span></td>
+                  <td>0 USDC</td>
+                  <td>$2,417,796.40</td>
+                  <td>0%</td>
+                  <td><a href="https://etherscan.io/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+                <tr>
+                  <td><span class="platform-badge"><span class="platform-dot" style="background:#f59e0b;"></span>ListaDAO <span class="tag-farm">Investment</span></span></td>
+                  <td>0 USDT</td>
+                  <td>$221.84</td>
+                  <td>0%</td>
+                  <td><a href="https://bscscan.com/address/0xD00e0079B8CAB524F3fa20EA879a7736E512a5Fc" class="addr-link">0xD00e...512a5Fc ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Description -->
+          <div class="sa-description">
+            <h3>Smart Allocator: USDD's Sustainable Yield Strategy</h3>
+            <p>Smart Allocator is USDD's yield-sharing initiative, where capital from USDD's cash reserve is deployed into diverse investment opportunities to earn returns in the form of interest and platform rewards. The profits are distributed to users through USDD Earn.</p>
+            <p>Our investment strategies include supplying USDD to trusted DeFi protocols to earn interest, as well as capturing funding fees by deploying USDD on exchanges that offer perpetual futures.</p>
+            <p>The chosen investment platforms are selected by the USDD and JUST DAO teams based on strict risk controls, and all investment activities are publicly viewable on this data page.</p>
+            <p>Get your sustainable, secure, shared yields with Smart Allocator.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Debt Overview -->
+      <section class="debt-section">
+        <div class="debt-header">Debt Overview</div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Network</th>
+                <th>Vault</th>
+                <th>Total Debt</th>
+                <th>Contract</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tron</td>
+                <td>SA001-A</td>
+                <td>554.7M</td>
+                <td><span class="addr-link">TYyC3kxzMYC1sGKpui79VAzwn992jCA6fN</span></td>
+                <td><a href="data.html" class="btn-outline" style="padding:6px 14px;font-size:12px;">Explore ↗</a></td>
+              </tr>
+              <tr>
+                <td>Ethereum</td>
+                <td>SA001-A</td>
+                <td>358.48M</td>
+                <td><span class="addr-link">0x5bf0c2de6ce7114efdb5a64e38fef3c43a481407</span></td>
+                <td><a href="data.html" class="btn-outline" style="padding:6px 14px;font-size:12px;">Explore ↗</a></td>
+              </tr>
+              <tr>
+                <td>BNB Chain</td>
+                <td>SA001-A</td>
+                <td>0</td>
+                <td><span class="addr-link">0xa86f11ae77bba1dc03174f80c7d956f3c2444866</span></td>
+                <td><a href="data.html" class="btn-outline" style="padding:6px 14px;font-size:12px;">Explore ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ====== Footer ====== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-socials">
+            <a href="https://x.com/usddio" class="social-link">𝕏</a>
+            <a href="#" class="social-link">●</a>
+            <a href="https://discord.com/invite/NurKn6KEqx" class="social-link">D</a>
+          </div>
+          <div class="footer-brand">
+            <div class="brand-name">Decentralized USD</div>
+            <div class="brand-desc">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</div>
+            <a href="mailto:support@usdd.io" class="brand-email">support@usdd.io</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copy">Copyright © 2026 USDD. All rights reserved</div>
+    </div>
+  </footer>
+
+</body>
+</html>

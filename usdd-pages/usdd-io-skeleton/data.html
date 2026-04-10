@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USDD — Data</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Page sub-nav ── */
+    .page-subnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .page-subnav h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ── Overview stats row ── */
+    .overview-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 1199px) {
+      .overview-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 766px) {
+      .overview-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Chart panels ── */
+    .chart-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chart-panel-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .chart-toggle {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chart-toggle button {
+      padding: 5px 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      background: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .chart-toggle button.active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    /* Breakdown list */
+    .breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .breakdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .breakdown-item .name { font-weight: 500; color: #fff; }
+
+    /* APY chain cards */
+    .apy-chain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 766px) {
+      .apy-chain-grid { grid-template-columns: 1fr; }
+    }
+
+    .apy-chain-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .apy-chain-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .apy-chain-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .apy-chain-period {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      padding: 2px 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Header ====== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon"></div>
+          <div class="logo-text">
+            <span class="logo-name">USDD</span>
+            <span class="logo-sub">Decentralized USD</span>
+          </div>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <div class="nav-item">Developer ▾</div>
+          <div class="nav-item">Transparency ▾</div>
+          <div class="nav-item">Community ▾</div>
+        </div>
+        <button class="nav-cta">Launch APP</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Main ====== -->
+  <main>
+    <div class="container">
+
+      <!-- Sub-nav -->
+      <div class="page-subnav">
+        <h1>USDD Data</h1>
+        <div class="tab-bar">
+          <button class="tab-btn active">Overview</button>
+          <button class="tab-btn">Tron</button>
+          <button class="tab-btn">Ethereum</button>
+          <button class="tab-btn">BNB Chain</button>
+        </div>
+      </div>
+
+      <!-- Overview Stats -->
+      <div class="overview-stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Supply</div>
+          <div class="stat-value">$1.53B</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Savings TVL</div>
+          <div class="stat-value">$404.05M</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Collateral Value</div>
+          <div class="stat-value">$2.2B</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">
+            Smart Allocator Earnings
+            <a href="sa.html" style="margin-left:6px;font-size:11px;color:#a78bfa;">↗ Go</a>
+          </div>
+          <div class="stat-value">$14.45M</div>
+        </div>
+      </div>
+
+      <!-- Total Supply Chart -->
+      <div class="chart-panel">
+        <div class="chart-panel-header">
+          <h3>Total Supply</h3>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <div class="tab-bar">
+              <button class="tab-btn active">All</button>
+              <button class="tab-btn">Tron</button>
+              <button class="tab-btn">ETH</button>
+              <button class="tab-btn">BSC</button>
+            </div>
+            <div class="chart-toggle">
+              <button class="active">Total Supply</button>
+              <button>sUSDD supply</button>
+            </div>
+          </div>
+        </div>
+        <div class="chart-area">Total Supply Chart</div>
+      </div>
+
+      <!-- Collateral Value Chart -->
+      <div class="chart-panel">
+        <div class="chart-panel-header">
+          <h3>Collateral Value</h3>
+          <div class="tab-bar">
+            <button class="tab-btn active">All</button>
+            <button class="tab-btn">Tron</button>
+            <button class="tab-btn">ETH</button>
+            <button class="tab-btn">BSC</button>
+          </div>
+        </div>
+        <div class="chart-area">Collateral Value Chart</div>
+        <div>
+          <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:16px;margin-bottom:10px;">Assets Breakdown</p>
+          <div class="breakdown-list">
+            <div class="breakdown-item">
+              <span class="name">Spark</span>
+              <span>— <em>Yield Protocol</em></span>
+            </div>
+            <div class="breakdown-item">
+              <span class="name">Aave</span>
+              <span>— <em>Lending Protocol</em></span>
+            </div>
+            <div class="breakdown-item">
+              <span class="name">JustLend</span>
+              <span>— <em>Lending Protocol</em></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APY Chain Cards -->
+      <div class="apy-chain-grid">
+        <div class="apy-chain-card">
+          <div class="apy-chain-card-header">
+            <span class="apy-chain-name">Tron — APY</span>
+            <span class="apy-chain-period">90D</span>
+          </div>
+          <div class="chart-area" style="height:120px;">Tron APY Chart</div>
+          <button class="btn-outline" style="margin-top:12px;width:100%;justify-content:center;">Explore</button>
+        </div>
+        <div class="apy-chain-card">
+          <div class="apy-chain-card-header">
+            <span class="apy-chain-name">Ethereum — APY</span>
+            <span class="apy-chain-period">90D</span>
+          </div>
+          <div class="chart-area" style="height:120px;">Ethereum APY Chart</div>
+          <button class="btn-outline" style="margin-top:12px;width:100%;justify-content:center;">Explore</button>
+        </div>
+        <div class="apy-chain-card">
+          <div class="apy-chain-card-header">
+            <span class="apy-chain-name">BNB Chain — APY</span>
+            <span class="apy-chain-period">90D</span>
+          </div>
+          <div class="chart-area" style="height:120px;">BNB Chain APY Chart</div>
+          <button class="btn-outline" style="margin-top:12px;width:100%;justify-content:center;">Explore</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ====== Footer ====== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-socials">
+            <a href="https://x.com/usddio" class="social-link">𝕏</a>
+            <a href="#" class="social-link">●</a>
+            <a href="https://discord.com/invite/NurKn6KEqx" class="social-link">D</a>
+          </div>
+          <div class="footer-brand">
+            <div class="brand-name">Decentralized USD</div>
+            <div class="brand-desc">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</div>
+            <a href="mailto:support@usdd.io" class="brand-email">support@usdd.io</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copy">Copyright © 2026 USDD. All rights reserved</div>
+    </div>
+  </footer>
+
+</body>
+</html>
