@@ -1,1211 +1,1027 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" style="color-scheme: dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>USDD — Skeleton · home.usdd.io</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USDD — 骨架屏</title>
+<style>
 
-    /* ─── Reset ─── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0c0c0e;
-      color: #fff;
-      overflow-x: hidden;
-    }
+/* ============================================================
+   DESIGN TOKENS
+   深色为唯一主题；prefers-color-scheme: dark 显式加固；
+   亮色环境下保留适配但不改变骨架主色调
+   ============================================================ */
+:root {
+  --bg:    #0c0c0e;
+  --sk:    rgba(255, 255, 255, 0.03);
+  --sk-hi: rgba(255, 255, 255, 0.06);
+}
 
-    /* ─── Container ─── */
-    .w {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+/* 显式加固：深色系统环境下确保变量不被 UA 覆盖 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:    #0c0c0e;
+    --sk:    rgba(255, 255, 255, 0.03);
+    --sk-hi: rgba(255, 255, 255, 0.06);
+  }
+}
 
-    /* ─── Shimmer ─── */
-    @keyframes shimmer {
-      0%   { background-position: -900px 0; }
-      100% { background-position:  900px 0; }
-    }
+/* ============================================================
+   RESET
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    /* Base skeleton atom */
-    .sk {
-      display: block;
-      background: rgba(255,255,255,0.06);
-      background-image: linear-gradient(
-        90deg,
-        rgba(255,255,255,0.00)  0%,
-        rgba(255,255,255,0.05) 35%,
-        rgba(255,255,255,0.10) 50%,
-        rgba(255,255,255,0.05) 65%,
-        rgba(255,255,255,0.00) 100%
-      );
-      background-size: 900px 100%;
-      background-repeat: no-repeat;
-      animation: shimmer 1.8s infinite linear;
-      border-radius: 8px;
-    }
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 0;
+  font-size: 0;
+}
 
-    /* Green-tinted card shell — mirrors real page border */
-    .sk-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(33, 108, 88, 0.18);
-      border-radius: 24px;
-    }
+/* ============================================================
+   SHIMMER  90deg · 2s · infinite
+   ============================================================ */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 
-    /* Chart bars container */
-    .chart-wrap {
-      width: 100%;
-      background: rgba(255,255,255,0.02);
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      overflow: hidden;
-      padding: 16px 12px 8px;
-    }
-    .chart-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 100%;
-    }
-    .cb {
-      flex: 1;
-      border-radius: 2px 2px 0 0;
-      background: rgba(255,255,255,0.07);
-      background-image: linear-gradient(90deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.06) 50%,
-        rgba(255,255,255,0) 100%);
-      background-size: 200% 100%;
-      animation: shimmer 2.2s infinite linear;
-    }
+.sk {
+  display: block;
+  background-color: var(--sk);
+  background-image: linear-gradient(
+    90deg,
+    var(--sk)    0%,
+    var(--sk-hi) 50%,
+    var(--sk)    100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
 
-    /* ══════════════════════════════
-       HEADER
-    ══════════════════════════════ */
-    .sk-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      height: 80px;
-      background: rgba(12,12,14,0.92);
-      border-bottom: 1px solid rgba(33,108,88,0.12);
-      backdrop-filter: blur(12px);
-    }
-    .sk-header .w {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-    }
-    .hd-logo {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-shrink: 0;
-    }
-    .hd-nav {
-      display: flex;
-      gap: 4px;
-      flex: 1;
-    }
-    .hd-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 20px;
-    }
+@media (prefers-reduced-motion: reduce) {
+  .sk {
+    animation: none;
+    background-image: none;
+  }
+}
 
-    /* ══════════════════════════════
-       BANNER
-    ══════════════════════════════ */
-    .sk-banner {
-      position: relative;
-      overflow: hidden;
-      min-height: 838px;
-      /* Green radial glow matching real page */
-      background:
-        radial-gradient(ellipse 60% 70% at 75% 30%, rgba(33,108,88,0.13) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 50% at 20% 80%, rgba(33,108,88,0.06) 0%, transparent 60%),
-        #0c0c0e;
-    }
-    .banner-inner {
-      padding-top: 130px;
-      padding-bottom: 60px;
-    }
-    .banner-title-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
-      max-width: 660px;
-    }
-    .banner-btns {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 64px;
-    }
-    .banner-data {
-      display: flex;
-      gap: 24px;
-    }
-    .banner-data-item {
-      flex: 1;
-      height: 177px;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
+/* ============================================================
+   CONTAINER  响应式规则
+   ============================================================ */
+.container {
+  width: 1440px;
+  margin: 0 auto;
+}
 
-    /* ══════════════════════════════
-       BANNER CAROUSEL
-    ══════════════════════════════ */
-    .sk-carousel {
-      height: 133px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      padding: 0 24px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.015);
-      border-top: 1px solid rgba(33,108,88,0.08);
-      border-bottom: 1px solid rgba(33,108,88,0.08);
-    }
+/* Desktop  1200~1472px */
+@media (max-width: 1472px) {
+  .container { width: 1200px; }
+}
 
-    /* ══════════════════════════════
-       EARN
-    ══════════════════════════════ */
-    .sk-earn {
-      padding: 80px 0 80px;
-    }
-    .section-hd {
-      text-align: center;
-      margin-bottom: 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-    .earn-grid {
-      display: flex;
-      gap: 24px;
-    }
-    .earn-card {
-      flex: 1;
-      min-height: 763px;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-      position: relative;
-      overflow: hidden;
-    }
-    /* Green glow inside left earn card */
-    .earn-card:first-child::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 10%, rgba(33,108,88,0.10) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .earn-card-hd {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .chain-tabs {
-      display: flex;
-      gap: 6px;
-    }
-    .apy-nums {
-      display: flex;
-      gap: 40px;
-    }
-    .apy-item {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .chart-box {
-      flex: 1;
-      min-height: 320px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .chart-axis {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 4px;
-    }
-    .calc-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .calc-row {
-      display: flex;
-      gap: 16px;
-    }
-    .calc-field {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .calc-actions {
-      display: flex;
-      gap: 12px;
-    }
-    .calc-result {
-      display: flex;
-      gap: 16px;
-      padding: 20px;
-      background: rgba(255,255,255,0.02);
-      border-radius: 12px;
-    }
-    .calc-result-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+/* Pad + Mobile  ≤ 1199px */
+@media (max-width: 1200px) {
+  .container {
+    width: auto;
+    padding: 0 20px;
+  }
+}
 
-    /* ══════════════════════════════
-       WHY USE USDD
-    ══════════════════════════════ */
-    .sk-usecase {
-      padding: 120px 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(33,108,88,0.07) 0%, transparent 60%),
-        #0c0c0e;
-    }
-    .uc-main {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-    .uc-main-card {
-      flex: 1;
-      height: 377px;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .uc-visual {
-      flex: 1;
-      border-radius: 12px;
-    }
-    .uc-sub {
-      display: flex;
-      gap: 24px;
-    }
-    .uc-sub-card {
-      flex: 1;
-      height: 318px;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+/* ============================================================
+   NAV  全宽 80px
+   ============================================================ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
 
-    /* ══════════════════════════════
-       TRANSITION
-    ══════════════════════════════ */
-    .sk-transition {
-      padding: 80px 0 142px;
-      background:
-        radial-gradient(ellipse 100% 60% at 50% 50%, rgba(33,108,88,0.10) 0%, transparent 70%),
-        #0c0c0e;
-    }
-    .tc-grid {
-      display: flex;
-      gap: 24px;
-      margin-top: 48px;
-    }
-    .tc-card {
-      flex: 1;
-      min-height: 550px;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .tc-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      flex-shrink: 0;
-    }
-    .tc-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
+.nav__inner {
+  width: 1440px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
 
-    /* ══════════════════════════════
-       TOKENS
-    ══════════════════════════════ */
-    .sk-tokens {
-      padding: 80px 0;
-    }
-    .token-row {
-      width: 100%;
-      padding: 48px;
-      display: flex;
-      gap: 48px;
-      align-items: center;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.02);
-      margin-bottom: 24px;
-      min-height: 351px;
-      position: relative;
-      overflow: hidden;
-    }
-    .token-left {
-      width: 588px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .token-name-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .token-chain-icons {
-      display: flex;
-      gap: 8px;
-    }
-    .token-desc {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-    .token-right {
-      flex: 1;
-      display: flex;
-      gap: 24px;
-    }
-    .token-feat-card {
-      flex: 1;
-      border-radius: 20px;
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      min-height: 200px;
-    }
+@media (max-width: 1472px) { .nav__inner { width: 1200px; } }
+@media (max-width: 1200px) { .nav__inner { width: auto; padding: 0 20px; flex: 1; } }
 
-    /* ══════════════════════════════
-       NEWS
-    ══════════════════════════════ */
-    .sk-news {
-      padding: 0 0 80px;
-    }
-    .news-grid {
-      display: flex;
-      gap: 24px;
-    }
-    .news-item {
-      flex: 1;
-      height: 240px;
-      padding: 32px;
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    }
-    .news-thumb {
-      width: 176px;
-      height: 176px;
-      border-radius: 16px;
-      flex-shrink: 0;
-    }
-    .news-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .news-text-lines {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+/* Logo 左侧：圆形图标 48px + 文字列 */
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-    /* ══════════════════════════════
-       MARKETS
-    ══════════════════════════════ */
-    .sk-markets {
-      padding-bottom: 80px;
-      overflow: hidden;
-    }
-    /* Full-bleed sprite strip */
-    .market-sprite {
-      height: 154px;
-      display: flex;
-      align-items: center;
-      gap: 40px;
-      padding: 0 40px;
-      overflow: hidden;
-      margin-bottom: 48px;
-      background: rgba(255,255,255,0.015);
-    }
-    .market-partner-row {
-      height: 90px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .market-tag {
-      flex-shrink: 0;
-      height: 52px;
-      border-radius: 12px;
-    }
+/* 头像圆形 → border-radius: 50% */
+.nav__brand-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
 
-    /* ══════════════════════════════
-       FOOTER
-    ══════════════════════════════ */
-    .sk-footer {
-      border-top: 1px solid rgba(33,108,88,0.12);
-      padding: 72px 120px 0;
-    }
-    .footer-body {
-      display: flex;
-      gap: 0;
-      margin-bottom: 48px;
-      align-items: flex-start;
-    }
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      flex: 1;
-    }
-    .footer-socials {
-      display: flex;
-      gap: 16px;
-    }
-    .footer-copy {
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
+.nav__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-    /* Responsive */
-    @media (max-width: 1199px) {
-      .earn-grid, .uc-main, .tc-grid { flex-direction: column; }
-      .earn-card { min-height: 500px; }
-      .uc-main-card { height: auto; min-height: 320px; }
-      .uc-sub { flex-wrap: wrap; }
-      .uc-sub-card { min-width: calc(50% - 12px); flex: none; }
-      .token-row { flex-direction: column; align-items: flex-start; }
-      .token-left { width: 100%; }
-      .sk-footer { padding: 48px 24px 0; }
-    }
-    @media (max-width: 767px) {
-      .hd-nav { display: none; }
-      .banner-data { flex-direction: column; }
-      .news-grid { flex-direction: column; }
-      .news-item { height: auto; flex-direction: column; }
-      .news-thumb { width: 100%; height: 160px; }
-      .uc-sub-card { min-width: 100%; height: auto; min-height: 240px; }
-      .footer-body { flex-direction: column; gap: 32px; }
-    }
+.nav__brand-name { width: 58px;  height: 24px; border-radius: 8px; }
+.nav__brand-sub  { width: 130px; height: 18px; border-radius: 8px; }
 
-  </style>
+/* 导航链接：水平居中绝对定位 */
+.nav__links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 40px;
+}
+
+/* 文字行 → border-radius: 4px */
+.nav__link { width: 58px; height: 20px; border-radius: 4px; }
+
+/* CTA 按钮 → border-radius: 8px */
+.nav__cta {
+  width: 156px;
+  height: 40px;
+  border-radius: 8px;
+  margin-left: auto;
+}
+
+@media (max-width: 767px) {
+  .nav__links { display: none; }
+}
+
+/* ============================================================
+   HERO  (top:220，相对于 Nav 底边 gap=140px)
+   ============================================================ */
+.hero {
+  padding-top: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* h1 row: 846×48 */
+.hero__h1 { width: 846px; max-width: 100%; height: 48px; border-radius: 8px; }
+
+/* h2 row: 372×48  gap=20px */
+.hero__h2 { width: 372px; max-width: 90%; height: 48px; border-radius: 8px; margin-top: 20px; }
+
+/* desc: 950×20  gap=40px */
+.hero__desc { width: 950px; max-width: 100%; height: 20px; border-radius: 4px; margin-top: 40px; }
+
+/* CTA 按钮组  gap=140px */
+.hero__btns {
+  display: flex;
+  gap: 16px;
+  margin-top: 140px;
+}
+
+.hero__btn { width: 200px; height: 48px; border-radius: 8px; }
+
+/* ============================================================
+   SECTION 1 — STATS CARDS  3列 180px 高  gap=80px 于 hero 下
+   ============================================================ */
+.s-stats {
+  margin-top: 80px;
+}
+
+.s-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.s-stats__card { height: 180px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-stats__grid { grid-template-columns: 1fr; }
+  .s-stats__card { height: 120px; }
+}
+
+/* ============================================================
+   SECTION HEADER — 通用居中标题 + 副标题
+   ============================================================ */
+.sec-hd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+/* 文字行圆角统一 4px */
+.sk-text { border-radius: 4px; }
+
+/* ============================================================
+   SECTION 2 — FEATURE  2列 760px 高
+   gap from s-stats bottom = 120px
+   ============================================================ */
+.s-feature { margin-top: 120px; }
+
+.s-feature__title    { width: 710px; max-width: 100%; height: 72px; border-radius: 8px; }
+.s-feature__subtitle { width: 604px; max-width: 100%; height: 20px; border-radius: 4px; }
+
+.s-feature__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.s-feature__card { height: 760px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-feature__cards { grid-template-columns: 1fr; }
+  .s-feature__card  { height: 300px; }
+}
+
+/* ============================================================
+   SECTION 3 — EARN  上2张360 + 下4张300
+   ============================================================ */
+.s-earn { margin-top: 120px; }
+
+.s-earn__title { width: 410px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-earn__top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.s-earn__top-card { height: 360px; border-radius: 24px; }
+
+.s-earn__bottom {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.s-earn__btm-card { height: 300px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-earn__top    { grid-template-columns: 1fr; }
+  .s-earn__top-card { height: 200px; }
+  .s-earn__bottom { grid-template-columns: 1fr 1fr; }
+  .s-earn__btm-card { height: 180px; }
+}
+
+/* ============================================================
+   SECTION 4 — TRADE  3列交错：中间高出 40px（flex-end 对齐）
+   gap = 240px（Figma 原始间距）
+   ============================================================ */
+.s-trade { margin-top: 240px; }
+
+.s-trade__title { width: 410px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-trade__cards {
+  display: flex;
+  align-items: flex-end;  /* 底部对齐，中间高出 40px 自然上移 */
+  gap: 24px;
+}
+
+.s-trade__card { flex: 1; border-radius: 24px; }
+.s-trade__card--side { height: 560px; }
+.s-trade__card--mid  { height: 600px; }
+
+@media (max-width: 767px) {
+  .s-trade__cards { flex-direction: column; align-items: stretch; }
+  .s-trade__card--side,
+  .s-trade__card--mid { height: 200px; }
+}
+
+/* ============================================================
+   SECTION 5 — NEWS  3行全宽 336px
+   gap = 240px（Figma 原始间距）
+   ============================================================ */
+.s-news { margin-top: 240px; }
+
+.s-news__title { width: 200px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-news__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.s-news__row { height: 336px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-news__row { height: 180px; }
+}
+
+/* ============================================================
+   SECTION 6 — TOKENS  2列 238px
+   gap = 120px
+   ============================================================ */
+.s-tokens { margin-top: 120px; }
+
+.s-tokens__title { width: 200px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-tokens__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.s-tokens__card { height: 238px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-tokens__cards { grid-template-columns: 1fr; }
+  .s-tokens__card  { height: 160px; }
+}
+
+/* ============================================================
+   SECTION 7 — STATS GRID  6列 × 2行 88px
+   列宽：180 + 240×4 + 180 = 1320，5个 24px gap = 120，共 1440px
+   gap = 120px，section 底部距 footer = 270px
+   ============================================================ */
+.s-statgrid {
+  margin-top: 120px;
+  margin-bottom: 270px;
+}
+
+.s-statgrid__title { width: 200px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-statgrid__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.s-statgrid__row {
+  display: grid;
+  grid-template-columns: 180px repeat(4, 1fr) 180px;
+  gap: 24px;
+}
+
+.s-statgrid__cell { height: 88px; border-radius: 8px; }
+
+/* 1200px 以下改为等宽 6列 */
+@media (max-width: 1472px) {
+  .s-statgrid__row { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Pad */
+@media (max-width: 1200px) {
+  .s-statgrid__row { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .s-statgrid__row { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================
+   FOOTER  全宽 473px
+   结构：主行（左社交圆×3 | 中 logo+3行文字 | 右 CTA）
+         + 分割线 + 底部版权行
+   ============================================================ */
+.footer {
+  width: 100%;
+  height: 473px;
+  background-color: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+}
+
+/* 三栏横排：左/中/右 */
+.footer__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 左：3 个社交图标圆 */
+.footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer__social {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+/* 中：logo 圆 + 3 行文字 */
+.footer__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__logo         { width: 36px;  height: 36px;  border-radius: 50%; }
+.footer__ctr-title    { width: 240px; height: 20px;  border-radius: 4px; }
+.footer__ctr-desc     { width: 320px; height: 16px;  border-radius: 4px; }
+.footer__ctr-sub      { width: 160px; height: 14px;  border-radius: 4px; }
+
+/* 右：pill 形 CTA 按钮 */
+.footer__cta {
+  width: 140px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+/* 分割线 */
+.footer__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-top: auto;
+  margin-bottom: 24px;
+}
+
+/* 底部版权 */
+.footer__bottom {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 44px;
+}
+
+.footer__copy { width: 260px; height: 14px; border-radius: 4px; }
+
+@media (max-width: 767px) {
+  .footer__main { flex-direction: column; gap: 32px; }
+  .footer__inner { padding-top: 48px; }
+}
+
+/* ============================================================
+   MOBILE OVERRIDES — 按 Figma home_Mobile 校正
+   仅覆盖移动端；桌面/平板规则保持不变
+   ============================================================ */
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .nav {
+    height: 56px;
+  }
+
+  .nav__inner {
+    padding: 0 20px;
+  }
+
+  .nav__brand {
+    gap: 12px;
+  }
+
+  .nav__brand-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 100px;
+  }
+
+  .nav__brand-text {
+    gap: 0;
+  }
+
+  .nav__brand-name {
+    width: 58px;
+    height: 16px;
+    border-radius: 8px;
+  }
+
+  .nav__brand-sub,
+  .nav__links {
+    display: none;
+  }
+
+  .nav__cta {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+  }
+
+  .hero {
+    padding-top: 48px;
+  }
+
+  .hero__h1 {
+    width: 320px;
+    height: 20px;
+    border-radius: 8px;
+  }
+
+  .hero__h2 {
+    width: 280px;
+    max-width: 280px;
+    height: 20px;
+    margin-top: 19px;
+    border-radius: 8px;
+  }
+
+  .hero__desc,
+  .s-feature__subtitle {
+    position: relative;
+    height: 10px;
+    border-radius: 8px;
+  }
+
+  .hero__desc::before,
+  .hero__desc::after,
+  .s-feature__subtitle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    height: 10px;
+    border-radius: 8px;
+    background-color: inherit;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    animation: inherit;
+  }
+
+  .hero__desc {
+    width: 280px;
+    max-width: 280px;
+    margin-top: 34px;
+  }
+
+  .hero__desc::before {
+    top: -18px;
+    width: 218px;
+  }
+
+  .hero__desc::after {
+    top: 18px;
+    width: 76px;
+  }
+
+  .hero__btns {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 87px;
+  }
+
+  .hero__btn {
+    width: 167px;
+    height: 48px;
+    border-radius: 8px;
+  }
+
+  .s-stats {
+    margin-top: 48px;
+  }
+
+  .s-stats__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .s-stats__card {
+    height: 130px;
+    border-radius: 16px;
+  }
+
+  .sec-hd {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .s-feature {
+    margin-top: 60px;
+  }
+
+  .s-feature__title {
+    width: 280px;
+    height: 20px;
+    border-radius: 8px;
+  }
+
+  .s-feature__subtitle {
+    width: 280px;
+    max-width: 280px;
+  }
+
+  .s-feature__subtitle::after {
+    top: 18px;
+    width: 152px;
+  }
+
+  .s-feature__cards {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .s-feature__card {
+    height: 642px;
+    border-radius: 16px;
+  }
+
+  .s-feature__card:nth-child(2) {
+    height: 764px;
+  }
+
+  .s-earn {
+    margin-top: 60px;
+  }
+
+  .s-earn__title,
+  .s-trade__title,
+  .s-news__title,
+  .s-tokens__title,
+  .s-statgrid__title {
+    width: 216px;
+    height: 20px;
+    border-radius: 8px;
+  }
+
+  .s-earn__top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .s-earn__top-card {
+    height: 282px;
+    border-radius: 16px;
+  }
+
+  .s-earn__bottom {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .s-earn__btm-card {
+    height: 174px;
+    border-radius: 16px;
+  }
+
+  .s-trade {
+    margin-top: 60px;
+  }
+
+  .s-trade__cards {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .s-trade__card,
+  .s-trade__card--side,
+  .s-trade__card--mid {
+    height: 400px;
+    border-radius: 16px;
+  }
+
+  .s-news {
+    margin-top: 60px;
+  }
+
+  .s-news__rows {
+    gap: 24px;
+  }
+
+  .s-news__row {
+    height: 600px;
+    border-radius: 16px;
+  }
+
+  .s-tokens {
+    margin-top: 60px;
+  }
+
+  .s-tokens__cards {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .s-tokens__card {
+    height: 282px;
+    border-radius: 16px;
+  }
+
+  .s-statgrid {
+    margin-top: 60px;
+    margin-bottom: 204px;
+  }
+
+  .s-statgrid__rows {
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .s-statgrid__row {
+    width: max-content;
+    grid-template-columns: repeat(6, 130px);
+    gap: 8px;
+  }
+
+  .s-statgrid__row:nth-child(1) {
+    margin-left: -202px;
+  }
+
+  .s-statgrid__row:nth-child(2) {
+    margin-left: -267px;
+  }
+
+  .s-statgrid__cell {
+    width: 130px;
+    height: 50px;
+    border-radius: 8px;
+  }
+
+  .footer {
+    height: 484px;
+    background-color: var(--bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer__inner {
+    padding-top: 47px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .footer__main {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .footer__center {
+    order: 1;
+    gap: 0;
+  }
+
+  .footer__logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+  }
+
+  .footer__ctr-title {
+    width: 260px;
+    height: 20px;
+    margin-top: 43px;
+    border-radius: 8px;
+  }
+
+  .footer__ctr-desc {
+    width: 334px;
+    height: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+
+  .footer__ctr-sub {
+    width: 180px;
+    height: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+
+  .footer__socials {
+    order: 2;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .footer__social {
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+  }
+
+  .footer__cta {
+    order: 3;
+    width: 280px;
+    height: 48px;
+    margin-top: 31px;
+    border-radius: 100px;
+  }
+
+  .footer__divider {
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 27px;
+  }
+
+  .footer__bottom {
+    padding-bottom: 28px;
+  }
+
+  .footer__copy {
+    width: 334px;
+    height: 10px;
+    border-radius: 8px;
+  }
+}
+
+</style>
 </head>
+
 <body>
 
+<div role="status" aria-label="加载中">
 
-<!-- ══════════ HEADER ══════════ -->
-<header class="sk-header">
-  <div class="w">
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  NAV  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <header class="nav">
+    <div class="nav__inner">
 
-    <!-- Logo -->
-    <div class="hd-logo">
-      <div class="sk" style="width:48px;height:48px;border-radius:50%;"></div>
-      <div style="display:flex;flex-direction:column;gap:7px;">
-        <div class="sk" style="width:52px;height:17px;"></div>
-        <div class="sk" style="width:116px;height:13px;animation-delay:.08s;"></div>
+      <div class="nav__brand">
+        <!-- 品牌 logo 圆形 50% -->
+        <div class="sk nav__brand-icon"></div>
+        <div class="nav__brand-text">
+          <div class="sk nav__brand-name"></div>
+          <div class="sk nav__brand-sub"></div>
+        </div>
       </div>
+
+      <!-- 导航链接，绝对居中 -->
+      <nav class="nav__links" aria-hidden="true">
+        <div class="sk nav__link"></div>
+        <div class="sk nav__link"></div>
+        <div class="sk nav__link"></div>
+        <div class="sk nav__link"></div>
+      </nav>
+
+      <!-- 右侧 CTA -->
+      <div class="sk nav__cta"></div>
+
     </div>
+  </header>
 
-    <!-- Nav links -->
-    <nav class="hd-nav">
-      <div class="hd-nav-item">
-        <div class="sk" style="width:55px;height:17px;border-radius:4px;"></div>
-      </div>
-      <div class="hd-nav-item">
-        <div class="sk" style="width:80px;height:17px;border-radius:4px;animation-delay:.05s;"></div>
-        <div class="sk" style="width:10px;height:10px;border-radius:2px;animation-delay:.05s;"></div>
-      </div>
-      <div class="hd-nav-item">
-        <div class="sk" style="width:100px;height:17px;border-radius:4px;animation-delay:.1s;"></div>
-        <div class="sk" style="width:10px;height:10px;border-radius:2px;animation-delay:.1s;"></div>
-      </div>
-      <div class="hd-nav-item">
-        <div class="sk" style="width:86px;height:17px;border-radius:4px;animation-delay:.15s;"></div>
-        <div class="sk" style="width:10px;height:10px;border-radius:2px;animation-delay:.15s;"></div>
-      </div>
-    </nav>
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  HERO  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="hero container">
+    <div class="sk hero__h1"></div>
+    <div class="sk hero__h2"></div>
+    <div class="sk hero__desc"></div>
+    <div class="hero__btns">
+      <div class="sk hero__btn"></div>
+      <div class="sk hero__btn"></div>
+    </div>
+  </section>
 
-    <!-- CTA button -->
-    <div class="sk" style="width:155px;height:40px;border-radius:8px;flex-shrink:0;
-      background:rgba(22,119,255,0.22);animation-delay:.1s;"></div>
-
-  </div>
-</header>
-
-
-<!-- ══════════ BANNER ══════════ -->
-<div class="sk-banner">
-  <div class="w">
-    <div class="banner-inner">
-
-      <!-- Hero title — 2 lines, 40px -->
-      <div class="banner-title-group">
-        <div class="sk" style="height:52px;width:100%;"></div>
-        <div class="sk" style="height:52px;width:78%;animation-delay:.08s;"></div>
-      </div>
-
-      <!-- Subtitle -->
-      <div style="margin-bottom:32px;">
-        <div class="sk" style="height:20px;width:58%;animation-delay:.05s;"></div>
-      </div>
-
-      <!-- 2 CTA buttons (200×48 each) -->
-      <div class="banner-btns">
-        <div class="sk" style="width:200px;height:48px;border-radius:8px;
-          background:rgba(255,255,255,0.07);"></div>
-        <div class="sk" style="width:200px;height:48px;border-radius:8px;
-          background:rgba(22,119,255,0.25);animation-delay:.08s;"></div>
-      </div>
-
-      <!-- 3 data cards (equal, 177px tall, border-radius 24px) -->
-      <div class="banner-data">
-
-        <div class="banner-data-item sk-card">
-          <div>
-            <div class="sk" style="height:16px;width:60%;margin-bottom:14px;"></div>
-            <div class="sk" style="height:52px;width:70%;animation-delay:.06s;border-radius:6px;"></div>
-          </div>
-          <div class="sk" style="width:28px;height:28px;border-radius:50%;
-            animation-delay:.1s;align-self:flex-end;"></div>
-        </div>
-
-        <div class="banner-data-item sk-card">
-          <div>
-            <div class="sk" style="height:16px;width:55%;margin-bottom:14px;animation-delay:.04s;"></div>
-            <div class="sk" style="height:52px;width:65%;animation-delay:.08s;border-radius:6px;"></div>
-          </div>
-          <div class="sk" style="width:28px;height:28px;border-radius:50%;
-            animation-delay:.12s;align-self:flex-end;"></div>
-        </div>
-
-        <div class="banner-data-item sk-card">
-          <div>
-            <div class="sk" style="height:16px;width:62%;margin-bottom:14px;animation-delay:.08s;"></div>
-            <div class="sk" style="height:52px;width:75%;animation-delay:.12s;border-radius:6px;"></div>
-          </div>
-          <div class="sk" style="width:28px;height:28px;border-radius:50%;
-            animation-delay:.16s;align-self:flex-end;"></div>
-        </div>
-
-      </div>
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 1  STATS CARDS  ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="s-stats container">
+    <div class="s-stats__grid">
+      <div class="sk s-stats__card"></div>
+      <div class="sk s-stats__card"></div>
+      <div class="sk s-stats__card"></div>
     </div>
   </div>
-</div>
 
-
-<!-- ══════════ BANNER CAROUSEL ══════════ -->
-<div class="sk-carousel">
-  <!-- Marquee-style asset / partner logos -->
-  <div class="sk" style="width:340px;height:80px;border-radius:16px;flex-shrink:0;
-    background:rgba(255,255,255,0.04);"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.04s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.08s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.12s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.16s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.20s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.24s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.28s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.32s;"></div>
-  <div class="sk" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;animation-delay:.36s;"></div>
-</div>
-
-
-<!-- ══════════ EARN ══════════ -->
-<section class="sk-earn">
-  <div class="w">
-
-    <!-- Section title -->
-    <div class="section-hd">
-      <div class="sk" style="height:64px;width:380px;max-width:90%;border-radius:8px;"></div>
-      <div class="sk" style="height:22px;width:480px;max-width:90%;animation-delay:.06s;"></div>
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 2  FEATURE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-feature container">
+    <div class="sec-hd">
+      <div class="sk s-feature__title"></div>
+      <div class="sk s-feature__subtitle"></div>
     </div>
+    <div class="s-feature__cards">
+      <div class="sk s-feature__card"></div>
+      <div class="sk s-feature__card"></div>
+    </div>
+  </section>
 
-    <div class="earn-grid">
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 3  EARN  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-earn container">
+    <div class="sec-hd">
+      <div class="sk s-earn__title"></div>
+    </div>
+    <div class="s-earn__top">
+      <div class="sk s-earn__top-card"></div>
+      <div class="sk s-earn__top-card"></div>
+    </div>
+    <div class="s-earn__bottom">
+      <div class="sk s-earn__btm-card"></div>
+      <div class="sk s-earn__btm-card"></div>
+      <div class="sk s-earn__btm-card"></div>
+      <div class="sk s-earn__btm-card"></div>
+    </div>
+  </section>
 
-      <!-- ─ APY Card ─ -->
-      <div class="earn-card sk-card">
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 4  TRADE（交错高度）  ━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-trade container">
+    <div class="sec-hd">
+      <div class="sk s-trade__title"></div>
+    </div>
+    <div class="s-trade__cards">
+      <div class="sk s-trade__card s-trade__card--side"></div>
+      <div class="sk s-trade__card s-trade__card--mid"></div>
+      <div class="sk s-trade__card s-trade__card--side"></div>
+    </div>
+  </section>
 
-        <div class="earn-card-hd">
-          <div class="sk" style="height:26px;width:130px;"></div>
-          <div class="chain-tabs">
-            <div class="sk" style="height:30px;width:52px;border-radius:6px;animation-delay:.04s;"></div>
-            <div class="sk" style="height:30px;width:72px;border-radius:6px;animation-delay:.08s;"></div>
-            <div class="sk" style="height:30px;width:82px;border-radius:6px;animation-delay:.12s;"></div>
-          </div>
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 5  NEWS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-news container">
+    <div class="sec-hd">
+      <div class="sk s-news__title"></div>
+    </div>
+    <div class="s-news__rows">
+      <div class="sk s-news__row"></div>
+      <div class="sk s-news__row"></div>
+      <div class="sk s-news__row"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 6  TOKENS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-tokens container">
+    <div class="sec-hd">
+      <div class="sk s-tokens__title"></div>
+    </div>
+    <div class="s-tokens__cards">
+      <div class="sk s-tokens__card"></div>
+      <div class="sk s-tokens__card"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 7  STATS GRID（6×2）  ━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-statgrid container">
+    <div class="sec-hd">
+      <div class="sk s-statgrid__title"></div>
+    </div>
+    <div class="s-statgrid__rows">
+      <div class="s-statgrid__row">
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+      </div>
+      <div class="s-statgrid__row">
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  FOOTER  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <footer class="footer">
+    <div class="footer__inner container">
+
+      <!-- 主行：左社交 | 中品牌 | 右 CTA -->
+      <div class="footer__main">
+
+        <!-- 左：3 个社交圆形图标 -->
+        <div class="footer__socials">
+          <div class="sk footer__social"></div>
+          <div class="sk footer__social"></div>
+          <div class="sk footer__social"></div>
         </div>
 
-        <!-- Description lines -->
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.04s;"></div>
-          <div class="sk" style="height:15px;width:85%;animation-delay:.08s;"></div>
-          <div class="sk" style="height:15px;width:70%;animation-delay:.12s;"></div>
+        <!-- 中：logo 圆 + 3 行文字 -->
+        <div class="footer__center">
+          <div class="sk footer__logo"></div>
+          <div class="sk footer__ctr-title"></div>
+          <div class="sk footer__ctr-desc"></div>
+          <div class="sk footer__ctr-sub"></div>
         </div>
 
-        <!-- APY numbers: 4.5% / 7.78% -->
-        <div class="apy-nums">
-          <div class="apy-item">
-            <div class="sk" style="height:56px;width:88px;border-radius:6px;"></div>
-            <div class="sk" style="height:13px;width:72px;animation-delay:.06s;"></div>
-          </div>
-          <div class="apy-item">
-            <div class="sk" style="height:56px;width:96px;border-radius:6px;animation-delay:.06s;"></div>
-            <div class="sk" style="height:13px;width:60px;animation-delay:.1s;"></div>
-          </div>
-        </div>
-
-        <!-- Line chart area -->
-        <div class="chart-box">
-          <div class="chart-wrap" style="flex:1;">
-            <div class="chart-bars">
-              <div class="cb" style="height:32%;animation-delay:.00s;"></div>
-              <div class="cb" style="height:48%;animation-delay:.04s;"></div>
-              <div class="cb" style="height:62%;animation-delay:.08s;"></div>
-              <div class="cb" style="height:44%;animation-delay:.12s;"></div>
-              <div class="cb" style="height:75%;animation-delay:.16s;"></div>
-              <div class="cb" style="height:54%;animation-delay:.20s;"></div>
-              <div class="cb" style="height:88%;animation-delay:.24s;"></div>
-              <div class="cb" style="height:65%;animation-delay:.28s;"></div>
-              <div class="cb" style="height:48%;animation-delay:.32s;"></div>
-              <div class="cb" style="height:72%;animation-delay:.36s;"></div>
-              <div class="cb" style="height:40%;animation-delay:.40s;"></div>
-              <div class="cb" style="height:58%;animation-delay:.44s;"></div>
-              <div class="cb" style="height:92%;animation-delay:.48s;"></div>
-              <div class="cb" style="height:68%;animation-delay:.52s;"></div>
-              <div class="cb" style="height:42%;animation-delay:.56s;"></div>
-              <div class="cb" style="height:55%;animation-delay:.60s;"></div>
-              <div class="cb" style="height:76%;animation-delay:.64s;"></div>
-              <div class="cb" style="height:50%;animation-delay:.68s;"></div>
-              <div class="cb" style="height:62%;animation-delay:.72s;"></div>
-              <div class="cb" style="height:38%;animation-delay:.76s;"></div>
-            </div>
-          </div>
-          <div class="chart-axis">
-            <div class="sk" style="height:11px;width:48px;animation-delay:.00s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.04s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.08s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.12s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.16s;"></div>
-          </div>
-        </div>
+        <!-- 右：CTA pill 按钮 -->
+        <div class="sk footer__cta"></div>
 
       </div>
 
-      <!-- ─ Yield Simulator Card ─ -->
-      <div class="earn-card sk-card">
+      <!-- 分割线 -->
+      <div class="footer__divider"></div>
 
-        <div class="earn-card-hd">
-          <div class="sk" style="height:26px;width:160px;"></div>
-          <div class="chain-tabs">
-            <div class="sk" style="height:30px;width:52px;border-radius:6px;animation-delay:.04s;"></div>
-            <div class="sk" style="height:30px;width:72px;border-radius:6px;animation-delay:.08s;"></div>
-            <div class="sk" style="height:30px;width:82px;border-radius:6px;animation-delay:.12s;"></div>
-          </div>
-        </div>
-
-        <!-- Form -->
-        <div class="calc-form">
-          <div class="calc-row">
-            <div class="calc-field">
-              <div class="sk" style="height:13px;width:80px;"></div>
-              <div class="sk" style="height:48px;width:100%;border-radius:10px;
-                animation-delay:.06s;background:rgba(255,255,255,0.04);"></div>
-            </div>
-            <div class="calc-field">
-              <div class="sk" style="height:13px;width:56px;animation-delay:.04s;"></div>
-              <div class="sk" style="height:48px;width:100%;border-radius:10px;
-                animation-delay:.08s;background:rgba(255,255,255,0.04);"></div>
-            </div>
-          </div>
-          <div class="calc-actions">
-            <div class="sk" style="flex:1;height:44px;border-radius:8px;opacity:.45;"></div>
-            <div class="sk" style="flex:1;height:44px;border-radius:8px;
-              background:rgba(22,119,255,0.20);animation-delay:.06s;"></div>
-          </div>
-          <div class="calc-result">
-            <div class="calc-result-item">
-              <div class="sk" style="height:13px;width:75%;"></div>
-              <div class="sk" style="height:28px;width:55%;animation-delay:.06s;"></div>
-            </div>
-            <div class="calc-result-item">
-              <div class="sk" style="height:13px;width:65%;animation-delay:.04s;"></div>
-              <div class="sk" style="height:28px;width:45%;animation-delay:.08s;"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Projected chart (ascending) -->
-        <div class="chart-box" style="flex:1;">
-          <div class="chart-wrap" style="flex:1;">
-            <div class="chart-bars">
-              <div class="cb" style="height:12%;animation-delay:.00s;"></div>
-              <div class="cb" style="height:18%;animation-delay:.04s;"></div>
-              <div class="cb" style="height:26%;animation-delay:.08s;"></div>
-              <div class="cb" style="height:35%;animation-delay:.12s;"></div>
-              <div class="cb" style="height:44%;animation-delay:.16s;"></div>
-              <div class="cb" style="height:53%;animation-delay:.20s;"></div>
-              <div class="cb" style="height:62%;animation-delay:.24s;"></div>
-              <div class="cb" style="height:70%;animation-delay:.28s;"></div>
-              <div class="cb" style="height:77%;animation-delay:.32s;"></div>
-              <div class="cb" style="height:83%;animation-delay:.36s;"></div>
-              <div class="cb" style="height:88%;animation-delay:.40s;"></div>
-              <div class="cb" style="height:93%;animation-delay:.44s;"></div>
-              <div class="cb" style="height:97%;animation-delay:.48s;"></div>
-            </div>
-          </div>
-          <div class="chart-axis">
-            <div class="sk" style="height:11px;width:48px;animation-delay:.00s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.04s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.08s;"></div>
-            <div class="sk" style="height:11px;width:48px;animation-delay:.12s;"></div>
-          </div>
-        </div>
-
+      <!-- 底部版权行 -->
+      <div class="footer__bottom">
+        <div class="sk footer__copy"></div>
       </div>
 
     </div>
-  </div>
-</section>
+  </footer>
 
-
-<!-- ══════════ WHY USE USDD ══════════ -->
-<section class="sk-usecase">
-  <div class="w">
-
-    <!-- Section title -->
-    <div style="margin-bottom:48px;">
-      <div class="sk" style="height:64px;width:300px;border-radius:8px;"></div>
-    </div>
-
-    <!-- Row 1: 2 main cards (708×377) with visual area -->
-    <div class="uc-main">
-
-      <div class="uc-main-card sk-card">
-        <!-- Visual / image area -->
-        <div class="sk uc-visual" style="flex:1;min-height:170px;border-radius:16px;"></div>
-        <div class="sk" style="height:24px;width:65%;animation-delay:.06s;"></div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div class="sk" style="height:14px;width:100%;animation-delay:.08s;"></div>
-          <div class="sk" style="height:14px;width:88%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:14px;width:68%;animation-delay:.16s;"></div>
-        </div>
-      </div>
-
-      <div class="uc-main-card sk-card">
-        <div class="sk uc-visual" style="flex:1;min-height:170px;border-radius:16px;animation-delay:.05s;"></div>
-        <div class="sk" style="height:24px;width:72%;animation-delay:.1s;"></div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div class="sk" style="height:14px;width:100%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:14px;width:80%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:14px;width:55%;animation-delay:.20s;"></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Row 2: 4 sub cards (342×318) -->
-    <div class="uc-sub">
-
-      <div class="uc-sub-card sk-card">
-        <div class="sk" style="width:48px;height:48px;border-radius:12px;"></div>
-        <div class="sk" style="height:22px;width:68%;animation-delay:.06s;"></div>
-        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
-          <div class="sk" style="height:14px;width:100%;animation-delay:.08s;"></div>
-          <div class="sk" style="height:14px;width:90%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:14px;width:72%;animation-delay:.16s;"></div>
-        </div>
-      </div>
-
-      <div class="uc-sub-card sk-card">
-        <div class="sk" style="width:48px;height:48px;border-radius:12px;animation-delay:.05s;"></div>
-        <div class="sk" style="height:22px;width:78%;animation-delay:.1s;"></div>
-        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
-          <div class="sk" style="height:14px;width:100%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:14px;width:82%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:14px;width:60%;animation-delay:.20s;"></div>
-        </div>
-      </div>
-
-      <div class="uc-sub-card sk-card">
-        <div class="sk" style="width:48px;height:48px;border-radius:12px;animation-delay:.10s;"></div>
-        <div class="sk" style="height:22px;width:62%;animation-delay:.14s;"></div>
-        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
-          <div class="sk" style="height:14px;width:100%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:14px;width:85%;animation-delay:.20s;"></div>
-          <div class="sk" style="height:14px;width:66%;animation-delay:.24s;"></div>
-        </div>
-      </div>
-
-      <div class="uc-sub-card sk-card">
-        <div class="sk" style="width:48px;height:48px;border-radius:12px;animation-delay:.15s;"></div>
-        <div class="sk" style="height:22px;width:70%;animation-delay:.18s;"></div>
-        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
-          <div class="sk" style="height:14px;width:100%;animation-delay:.20s;"></div>
-          <div class="sk" style="height:14px;width:76%;animation-delay:.24s;"></div>
-          <div class="sk" style="height:14px;width:52%;animation-delay:.28s;"></div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ══════════ TRANSITION ══════════ -->
-<section class="sk-transition">
-  <div class="w">
-
-    <div class="sk" style="height:64px;width:420px;max-width:90%;border-radius:8px;"></div>
-
-    <div class="tc-grid">
-
-      <!-- Card 1 -->
-      <div class="tc-card sk-card">
-        <div class="sk tc-icon"></div>
-        <div class="sk" style="height:24px;width:80%;animation-delay:.06s;"></div>
-        <div class="tc-body">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.08s;"></div>
-          <div class="sk" style="height:15px;width:96%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:15px;width:85%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:15px;width:72%;animation-delay:.20s;"></div>
-        </div>
-        <div class="sk" style="height:44px;width:160px;border-radius:8px;animation-delay:.12s;"></div>
-      </div>
-
-      <!-- Card 2 (middle — active/highlighted) -->
-      <div class="tc-card sk-card" style="background:rgba(33,108,88,0.08);
-        border-color:rgba(33,108,88,0.35);">
-        <div class="sk tc-icon" style="animation-delay:.04s;"></div>
-        <div class="sk" style="height:24px;width:72%;animation-delay:.10s;"></div>
-        <div class="tc-body">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:15px;width:92%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:15px;width:80%;animation-delay:.20s;"></div>
-          <div class="sk" style="height:15px;width:65%;animation-delay:.24s;"></div>
-        </div>
-        <div class="sk" style="height:44px;width:160px;border-radius:8px;
-          animation-delay:.16s;background:rgba(22,119,255,0.22);"></div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="tc-card sk-card">
-        <div class="sk tc-icon" style="animation-delay:.08s;"></div>
-        <div class="sk" style="height:24px;width:85%;animation-delay:.14s;"></div>
-        <div class="tc-body">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:15px;width:88%;animation-delay:.20s;"></div>
-          <div class="sk" style="height:15px;width:75%;animation-delay:.24s;"></div>
-        </div>
-        <div class="sk" style="height:44px;width:160px;border-radius:8px;animation-delay:.20s;"></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════ TOKENS ══════════ -->
-<section class="sk-tokens">
-  <div class="w">
-
-    <div style="margin-bottom:48px;">
-      <div class="sk" style="height:64px;width:140px;border-radius:8px;"></div>
-    </div>
-
-    <!-- USDD row -->
-    <div class="token-row">
-      <div class="token-left">
-        <div class="token-name-row">
-          <div class="sk" style="height:34px;width:100px;border-radius:8px;"></div>
-          <div class="token-chain-icons">
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.04s;"></div>
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.08s;"></div>
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.12s;"></div>
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.16s;"></div>
-          </div>
-        </div>
-        <div class="token-desc">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.06s;"></div>
-          <div class="sk" style="height:15px;width:92%;animation-delay:.10s;"></div>
-          <div class="sk" style="height:15px;width:78%;animation-delay:.14s;"></div>
-        </div>
-        <div class="sk" style="height:40px;width:120px;border-radius:8px;animation-delay:.10s;"></div>
-      </div>
-      <div class="token-right">
-        <div class="token-feat-card sk-card">
-          <div class="sk" style="width:40px;height:40px;border-radius:10px;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div class="sk" style="height:20px;width:70%;animation-delay:.06s;"></div>
-            <div class="sk" style="height:14px;width:100%;animation-delay:.10s;"></div>
-            <div class="sk" style="height:14px;width:85%;animation-delay:.14s;"></div>
-          </div>
-        </div>
-        <div class="token-feat-card sk-card">
-          <div class="sk" style="width:40px;height:40px;border-radius:10px;animation-delay:.06s;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div class="sk" style="height:20px;width:60%;animation-delay:.10s;"></div>
-            <div class="sk" style="height:14px;width:100%;animation-delay:.14s;"></div>
-            <div class="sk" style="height:14px;width:80%;animation-delay:.18s;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- sUSDD row -->
-    <div class="token-row">
-      <div class="token-left">
-        <div class="token-name-row">
-          <div class="sk" style="height:34px;width:120px;border-radius:8px;animation-delay:.04s;"></div>
-          <div class="token-chain-icons">
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.08s;"></div>
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.12s;"></div>
-          </div>
-        </div>
-        <div class="token-desc">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.08s;"></div>
-          <div class="sk" style="height:15px;width:95%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:15px;width:82%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:15px;width:65%;animation-delay:.20s;"></div>
-        </div>
-        <div class="sk" style="height:40px;width:130px;border-radius:8px;animation-delay:.12s;"></div>
-      </div>
-      <div class="token-right">
-        <div class="token-feat-card sk-card">
-          <div class="sk" style="width:40px;height:40px;border-radius:10px;animation-delay:.06s;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div class="sk" style="height:20px;width:80%;animation-delay:.10s;"></div>
-            <div class="sk" style="height:14px;width:100%;animation-delay:.14s;"></div>
-            <div class="sk" style="height:14px;width:75%;animation-delay:.18s;"></div>
-          </div>
-        </div>
-        <div class="token-feat-card sk-card">
-          <div class="sk" style="width:40px;height:40px;border-radius:10px;animation-delay:.12s;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div class="sk" style="height:20px;width:66%;animation-delay:.16s;"></div>
-            <div class="sk" style="height:14px;width:100%;animation-delay:.20s;"></div>
-            <div class="sk" style="height:14px;width:88%;animation-delay:.24s;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- JST row -->
-    <div class="token-row">
-      <div class="token-left">
-        <div class="token-name-row">
-          <div class="sk" style="height:34px;width:72px;border-radius:8px;animation-delay:.08s;"></div>
-          <div class="token-chain-icons">
-            <div class="sk" style="width:24px;height:24px;border-radius:50%;animation-delay:.12s;"></div>
-          </div>
-        </div>
-        <div class="token-desc">
-          <div class="sk" style="height:15px;width:100%;animation-delay:.12s;"></div>
-          <div class="sk" style="height:15px;width:88%;animation-delay:.16s;"></div>
-          <div class="sk" style="height:15px;width:70%;animation-delay:.20s;"></div>
-        </div>
-        <div class="sk" style="height:40px;width:110px;border-radius:8px;animation-delay:.16s;"></div>
-      </div>
-      <div class="token-right">
-        <div class="token-feat-card sk-card">
-          <div class="sk" style="width:40px;height:40px;border-radius:10px;animation-delay:.10s;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div class="sk" style="height:20px;width:55%;animation-delay:.14s;"></div>
-            <div class="sk" style="height:14px;width:100%;animation-delay:.18s;"></div>
-            <div class="sk" style="height:14px;width:80%;animation-delay:.22s;"></div>
-          </div>
-        </div>
-        <div class="token-feat-card sk-card">
-          <div class="sk" style="width:40px;height:40px;border-radius:10px;animation-delay:.16s;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div class="sk" style="height:20px;width:70%;animation-delay:.20s;"></div>
-            <div class="sk" style="height:14px;width:100%;animation-delay:.24s;"></div>
-            <div class="sk" style="height:14px;width:72%;animation-delay:.28s;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ══════════ NEWS ══════════ -->
-<section class="sk-news">
-  <div class="w">
-
-    <div style="margin-bottom:48px;">
-      <div class="sk" style="height:64px;width:110px;border-radius:8px;"></div>
-    </div>
-
-    <div class="news-grid">
-
-      <div class="news-item sk-card">
-        <!-- Thumbnail -->
-        <div class="sk news-thumb"></div>
-        <div class="news-content">
-          <div class="sk" style="height:22px;width:80%;"></div>
-          <div class="news-text-lines">
-            <div class="sk" style="height:14px;width:100%;animation-delay:.06s;"></div>
-            <div class="sk" style="height:14px;width:94%;animation-delay:.10s;"></div>
-            <div class="sk" style="height:14px;width:78%;animation-delay:.14s;"></div>
-          </div>
-          <div class="sk" style="height:12px;width:80px;animation-delay:.10s;"></div>
-        </div>
-      </div>
-
-      <div class="news-item sk-card">
-        <div class="sk news-thumb" style="animation-delay:.05s;"></div>
-        <div class="news-content">
-          <div class="sk" style="height:22px;width:88%;animation-delay:.05s;"></div>
-          <div class="news-text-lines">
-            <div class="sk" style="height:14px;width:100%;animation-delay:.10s;"></div>
-            <div class="sk" style="height:14px;width:90%;animation-delay:.14s;"></div>
-            <div class="sk" style="height:14px;width:72%;animation-delay:.18s;"></div>
-          </div>
-          <div class="sk" style="height:12px;width:80px;animation-delay:.14s;"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════ MARKETS ══════════ -->
-<section class="sk-markets">
-
-  <!-- Full-bleed exchange sprite strip -->
-  <div class="market-sprite">
-    <div class="sk" style="width:120px;height:56px;border-radius:12px;flex-shrink:0;"></div>
-    <div class="sk" style="width:90px; height:56px;border-radius:12px;flex-shrink:0;animation-delay:.04s;"></div>
-    <div class="sk" style="width:80px; height:56px;border-radius:12px;flex-shrink:0;animation-delay:.08s;"></div>
-    <div class="sk" style="width:100px;height:56px;border-radius:12px;flex-shrink:0;animation-delay:.12s;"></div>
-    <div class="sk" style="width:80px; height:56px;border-radius:12px;flex-shrink:0;animation-delay:.16s;"></div>
-    <div class="sk" style="width:110px;height:56px;border-radius:12px;flex-shrink:0;animation-delay:.20s;"></div>
-    <div class="sk" style="width:90px; height:56px;border-radius:12px;flex-shrink:0;animation-delay:.24s;"></div>
-    <div class="sk" style="width:100px;height:56px;border-radius:12px;flex-shrink:0;animation-delay:.28s;"></div>
-    <div class="sk" style="width:85px; height:56px;border-radius:12px;flex-shrink:0;animation-delay:.32s;"></div>
-    <div class="sk" style="width:95px; height:56px;border-radius:12px;flex-shrink:0;animation-delay:.36s;"></div>
-  </div>
-
-  <div class="w">
-
-    <div style="margin-bottom:40px;">
-      <div class="sk" style="height:64px;width:240px;border-radius:8px;"></div>
-    </div>
-
-    <!-- Scrolling exchange logo rows -->
-    <div class="market-partner-row">
-      <div class="sk market-tag" style="width:120px;"></div>
-      <div class="sk market-tag" style="width:72px; animation-delay:.03s;"></div>
-      <div class="sk market-tag" style="width:80px; animation-delay:.06s;"></div>
-      <div class="sk market-tag" style="width:96px; animation-delay:.09s;"></div>
-      <div class="sk market-tag" style="width:80px; animation-delay:.12s;"></div>
-      <div class="sk market-tag" style="width:88px; animation-delay:.15s;"></div>
-      <div class="sk market-tag" style="width:72px; animation-delay:.18s;"></div>
-      <div class="sk market-tag" style="width:100px;animation-delay:.21s;"></div>
-      <div class="sk market-tag" style="width:80px; animation-delay:.24s;"></div>
-      <div class="sk market-tag" style="width:90px; animation-delay:.27s;"></div>
-    </div>
-
-    <div class="market-partner-row">
-      <div class="sk market-tag" style="width:108px;animation-delay:.04s;"></div>
-      <div class="sk market-tag" style="width:82px; animation-delay:.07s;"></div>
-      <div class="sk market-tag" style="width:64px; animation-delay:.10s;"></div>
-      <div class="sk market-tag" style="width:88px; animation-delay:.13s;"></div>
-      <div class="sk market-tag" style="width:76px; animation-delay:.16s;"></div>
-      <div class="sk market-tag" style="width:96px; animation-delay:.19s;"></div>
-      <div class="sk market-tag" style="width:80px; animation-delay:.22s;"></div>
-      <div class="sk market-tag" style="width:72px; animation-delay:.25s;"></div>
-      <div class="sk market-tag" style="width:88px; animation-delay:.28s;"></div>
-      <div class="sk market-tag" style="width:100px;animation-delay:.31s;"></div>
-    </div>
-
-    <!-- Disclaimer text -->
-    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
-      <div class="sk" style="height:13px;width:500px;max-width:90%;"></div>
-      <div class="sk" style="height:13px;width:320px;max-width:75%;animation-delay:.05s;"></div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ══════════ FOOTER ══════════ -->
-<footer class="sk-footer">
-  <div class="footer-body">
-
-    <div class="footer-brand">
-      <!-- Social icons: X, Telegram, Discord -->
-      <div class="footer-socials">
-        <div class="sk" style="width:36px;height:36px;border-radius:50%;"></div>
-        <div class="sk" style="width:36px;height:36px;border-radius:50%;animation-delay:.04s;"></div>
-        <div class="sk" style="width:36px;height:36px;border-radius:50%;animation-delay:.08s;"></div>
-      </div>
-      <!-- Brand logo + name -->
-      <div class="sk" style="height:48px;width:180px;border-radius:8px;"></div>
-      <!-- Description lines -->
-      <div style="display:flex;flex-direction:column;gap:9px;max-width:320px;">
-        <div class="sk" style="height:15px;width:100%;animation-delay:.06s;"></div>
-        <div class="sk" style="height:15px;width:88%;animation-delay:.10s;"></div>
-        <div class="sk" style="height:15px;width:68%;animation-delay:.14s;"></div>
-      </div>
-    </div>
-
-    <!-- Mail / contact button (border-radius 100px) -->
-    <div class="sk" style="width:178px;height:46px;border-radius:100px;
-      flex-shrink:0;align-self:flex-start;margin-top:56px;
-      background:rgba(255,255,255,0.04);"></div>
-
-  </div>
-
-  <div class="footer-copy">
-    <div class="sk" style="height:13px;width:240px;border-radius:4px;"></div>
-  </div>
-</footer>
-
+</div><!-- /role=status -->
 
 </body>
 </html>
