@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="color-scheme: dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USDD — 骨架屏</title>
+<style>
+
+/* ============================================================
+   DESIGN TOKENS
+   深色为唯一主题；prefers-color-scheme: dark 显式加固；
+   亮色环境下保留适配但不改变骨架主色调
+   ============================================================ */
+:root {
+  --bg:    #0c0c0e;
+  --sk:    rgba(255, 255, 255, 0.03);
+  --sk-hi: rgba(255, 255, 255, 0.06);
+}
+
+/* 显式加固：深色系统环境下确保变量不被 UA 覆盖 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:    #0c0c0e;
+    --sk:    rgba(255, 255, 255, 0.03);
+    --sk-hi: rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 0;
+  font-size: 0;
+}
+
+/* ============================================================
+   SHIMMER  90deg · 2s · infinite
+   ============================================================ */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.sk {
+  display: block;
+  background-color: var(--sk);
+  background-image: linear-gradient(
+    90deg,
+    var(--sk)    0%,
+    var(--sk-hi) 50%,
+    var(--sk)    100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk {
+    animation: none;
+    background-image: none;
+  }
+}
+
+/* ============================================================
+   CONTAINER  响应式规则
+   ============================================================ */
+.container {
+  width: 1440px;
+  margin: 0 auto;
+}
+
+/* Desktop  1200~1472px */
+@media (max-width: 1472px) {
+  .container { width: 1200px; }
+}
+
+/* Pad + Mobile  ≤ 1199px */
+@media (max-width: 1200px) {
+  .container {
+    width: auto;
+    padding: 0 20px;
+  }
+}
+
+/* ============================================================
+   NAV  全宽 80px
+   ============================================================ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.nav__inner {
+  width: 1440px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+@media (max-width: 1472px) { .nav__inner { width: 1200px; } }
+@media (max-width: 1200px) { .nav__inner { width: auto; padding: 0 20px; flex: 1; } }
+
+/* Logo 左侧：圆形图标 48px + 文字列 */
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 头像圆形 → border-radius: 50% */
+.nav__brand-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.nav__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav__brand-name { width: 58px;  height: 24px; border-radius: 8px; }
+.nav__brand-sub  { width: 130px; height: 18px; border-radius: 8px; }
+
+/* 导航链接：水平居中绝对定位 */
+.nav__links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 40px;
+}
+
+/* 文字行 → border-radius: 4px */
+.nav__link { width: 58px; height: 20px; border-radius: 4px; }
+
+/* CTA 按钮 → border-radius: 8px */
+.nav__cta {
+  width: 156px;
+  height: 40px;
+  border-radius: 8px;
+  margin-left: auto;
+}
+
+@media (max-width: 767px) {
+  .nav__links { display: none; }
+}
+
+/* ============================================================
+   HERO  (top:220，相对于 Nav 底边 gap=140px)
+   ============================================================ */
+.hero {
+  padding-top: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* h1 row: 846×48 */
+.hero__h1 { width: 846px; max-width: 100%; height: 48px; border-radius: 8px; }
+
+/* h2 row: 372×48  gap=20px */
+.hero__h2 { width: 372px; max-width: 90%; height: 48px; border-radius: 8px; margin-top: 20px; }
+
+/* desc: 950×20  gap=40px */
+.hero__desc { width: 950px; max-width: 100%; height: 20px; border-radius: 4px; margin-top: 40px; }
+
+/* CTA 按钮组  gap=140px */
+.hero__btns {
+  display: flex;
+  gap: 16px;
+  margin-top: 140px;
+}
+
+.hero__btn { width: 200px; height: 48px; border-radius: 8px; }
+
+/* ============================================================
+   SECTION 1 — STATS CARDS  3列 180px 高  gap=80px 于 hero 下
+   ============================================================ */
+.s-stats {
+  margin-top: 80px;
+}
+
+.s-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.s-stats__card { height: 180px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-stats__grid { grid-template-columns: 1fr; }
+  .s-stats__card { height: 120px; }
+}
+
+/* ============================================================
+   SECTION HEADER — 通用居中标题 + 副标题
+   ============================================================ */
+.sec-hd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+/* 文字行圆角统一 4px */
+.sk-text { border-radius: 4px; }
+
+/* ============================================================
+   SECTION 2 — FEATURE  2列 760px 高
+   gap from s-stats bottom = 120px
+   ============================================================ */
+.s-feature { margin-top: 120px; }
+
+.s-feature__title    { width: 710px; max-width: 100%; height: 72px; border-radius: 8px; }
+.s-feature__subtitle { width: 604px; max-width: 100%; height: 20px; border-radius: 4px; }
+
+.s-feature__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.s-feature__card { height: 760px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-feature__cards { grid-template-columns: 1fr; }
+  .s-feature__card  { height: 300px; }
+}
+
+/* ============================================================
+   SECTION 3 — EARN  上2张360 + 下4张300
+   ============================================================ */
+.s-earn { margin-top: 120px; }
+
+.s-earn__title { width: 410px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-earn__top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.s-earn__top-card { height: 360px; border-radius: 24px; }
+
+.s-earn__bottom {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.s-earn__btm-card { height: 300px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-earn__top    { grid-template-columns: 1fr; }
+  .s-earn__top-card { height: 200px; }
+  .s-earn__bottom { grid-template-columns: 1fr 1fr; }
+  .s-earn__btm-card { height: 180px; }
+}
+
+/* ============================================================
+   SECTION 4 — TRADE  3列交错：中间高出 40px（flex-end 对齐）
+   gap = 240px（Figma 原始间距）
+   ============================================================ */
+.s-trade { margin-top: 240px; }
+
+.s-trade__title { width: 410px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-trade__cards {
+  display: flex;
+  align-items: flex-end;  /* 底部对齐，中间高出 40px 自然上移 */
+  gap: 24px;
+}
+
+.s-trade__card { flex: 1; border-radius: 24px; }
+.s-trade__card--side { height: 560px; }
+.s-trade__card--mid  { height: 600px; }
+
+@media (max-width: 767px) {
+  .s-trade__cards { flex-direction: column; align-items: stretch; }
+  .s-trade__card--side,
+  .s-trade__card--mid { height: 200px; }
+}
+
+/* ============================================================
+   SECTION 5 — NEWS  3行全宽 336px
+   gap = 240px（Figma 原始间距）
+   ============================================================ */
+.s-news { margin-top: 240px; }
+
+.s-news__title { width: 200px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-news__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.s-news__row { height: 336px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-news__row { height: 180px; }
+}
+
+/* ============================================================
+   SECTION 6 — TOKENS  2列 238px
+   gap = 120px
+   ============================================================ */
+.s-tokens { margin-top: 120px; }
+
+.s-tokens__title { width: 200px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-tokens__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.s-tokens__card { height: 238px; border-radius: 24px; }
+
+@media (max-width: 767px) {
+  .s-tokens__cards { grid-template-columns: 1fr; }
+  .s-tokens__card  { height: 160px; }
+}
+
+/* ============================================================
+   SECTION 7 — STATS GRID  6列 × 2行 88px
+   列宽：180 + 240×4 + 180 = 1320，5个 24px gap = 120，共 1440px
+   gap = 120px，section 底部距 footer = 270px
+   ============================================================ */
+.s-statgrid {
+  margin-top: 120px;
+  margin-bottom: 270px;
+}
+
+.s-statgrid__title { width: 200px; max-width: 100%; height: 72px; border-radius: 8px; }
+
+.s-statgrid__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.s-statgrid__row {
+  display: grid;
+  grid-template-columns: 180px repeat(4, 1fr) 180px;
+  gap: 24px;
+}
+
+.s-statgrid__row--mobile { display: none; }
+
+.s-statgrid__cell { height: 88px; border-radius: 8px; }
+
+/* 1200px 以下改为等宽 6列 */
+@media (max-width: 1472px) {
+  .s-statgrid__row { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Pad */
+@media (max-width: 1200px) {
+  .s-statgrid__row { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .s-statgrid__row { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================
+   FOOTER  全宽 473px
+   结构：主行（左社交圆×3 | 中 logo+3行文字 | 右 CTA）
+         + 分割线 + 底部版权行
+   ============================================================ */
+.footer {
+  width: 100%;
+  height: 473px;
+  background-color: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+}
+
+/* 三栏横排：左/中/右 */
+.footer__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 左：3 个社交图标圆 */
+.footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer__social {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+/* 中：logo 圆 + 3 行文字 */
+.footer__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__logo         { width: 36px;  height: 36px;  border-radius: 50%; }
+.footer__ctr-title    { width: 240px; height: 20px;  border-radius: 4px; }
+.footer__ctr-desc     { width: 320px; height: 16px;  border-radius: 4px; }
+.footer__ctr-sub      { width: 160px; height: 14px;  border-radius: 4px; }
+
+/* 右：pill 形 CTA 按钮 */
+.footer__cta {
+  width: 140px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+/* 分割线 */
+.footer__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-top: auto;
+  margin-bottom: 24px;
+}
+
+/* 底部版权 */
+.footer__bottom {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 44px;
+}
+
+.footer__copy { width: 260px; height: 14px; border-radius: 4px; }
+
+@media (max-width: 767px) {
+  .footer__main { flex-direction: column; gap: 32px; }
+  .footer__inner { padding-top: 48px; }
+}
+
+/* ============================================================
+   MOBILE OVERRIDES — 按 Figma home_Mobile 校正
+   仅覆盖移动端；桌面/平板规则保持不变
+   ============================================================ */
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .nav {
+    height: 56px;
+  }
+
+  .nav__inner {
+    padding: 0 20px;
+  }
+
+  .nav__brand {
+    gap: 12px;
+  }
+
+  .nav__brand-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 100px;
+  }
+
+  .nav__brand-text {
+    gap: 0;
+  }
+
+  .nav__brand-name {
+    width: 58px;
+    height: 16px;
+    border-radius: 8px;
+  }
+
+  .nav__brand-sub,
+  .nav__links {
+    display: none;
+  }
+
+  .nav__cta {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+  }
+
+  .hero {
+    padding-top: 48px;
+  }
+
+  .hero__h1 {
+    width: 320px;
+    height: 20px;
+    border-radius: 8px;
+  }
+
+  .hero__h2 {
+    width: 280px;
+    max-width: 280px;
+    height: 20px;
+    margin-top: 19px;
+    border-radius: 8px;
+  }
+
+  .hero__desc,
+  .s-feature__subtitle {
+    position: relative;
+    height: 10px;
+    border-radius: 8px;
+  }
+
+  .hero__desc::before,
+  .hero__desc::after,
+  .s-feature__subtitle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    height: 10px;
+    border-radius: 8px;
+    background-color: inherit;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    animation: inherit;
+  }
+
+  .hero__desc {
+    width: 280px;
+    max-width: 280px;
+    margin-top: 34px;
+  }
+
+  .hero__desc::before {
+    top: -18px;
+    width: 218px;
+  }
+
+  .hero__desc::after {
+    top: 18px;
+    width: 76px;
+  }
+
+  .hero__btns {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 105px;
+  }
+
+  .hero__btn {
+    width: 167px;
+    height: 48px;
+    border-radius: 8px;
+  }
+
+  .s-stats {
+    margin-top: 48px;
+  }
+
+  .s-stats__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .s-stats__card {
+    height: 130px;
+    border-radius: 16px;
+  }
+
+  .sec-hd {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .s-feature {
+    margin-top: 60px;
+  }
+
+  .s-feature .sec-hd {
+    margin-bottom: 42px;
+  }
+
+  .s-feature__title {
+    width: 280px;
+    height: 20px;
+    border-radius: 8px;
+  }
+
+  .s-feature__subtitle {
+    width: 280px;
+    max-width: 280px;
+  }
+
+  .s-feature__subtitle::after {
+    top: 18px;
+    width: 152px;
+  }
+
+  .s-feature__cards {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .s-feature__card {
+    height: 642px;
+    border-radius: 16px;
+  }
+
+  .s-feature__card:nth-child(2) {
+    height: 764px;
+  }
+
+  .s-earn {
+    margin-top: 60px;
+  }
+
+  .s-earn__title,
+  .s-trade__title,
+  .s-news__title,
+  .s-tokens__title,
+  .s-statgrid__title {
+    width: 216px;
+    height: 20px;
+    border-radius: 8px;
+  }
+
+  .s-earn__top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .s-earn__top-card {
+    height: 282px;
+    border-radius: 16px;
+  }
+
+  .s-earn__bottom {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .s-earn__btm-card {
+    height: 174px;
+    border-radius: 16px;
+  }
+
+  .s-trade {
+    margin-top: 60px;
+  }
+
+  .s-trade__cards {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .s-trade__card,
+  .s-trade__card--side,
+  .s-trade__card--mid {
+    height: 400px;
+    border-radius: 16px;
+  }
+
+  .s-news {
+    margin-top: 60px;
+  }
+
+  .s-news__rows {
+    gap: 24px;
+  }
+
+  .s-news__row {
+    height: 600px;
+    border-radius: 16px;
+  }
+
+  .s-tokens {
+    margin-top: 60px;
+  }
+
+  .s-tokens__cards {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .s-tokens__card {
+    height: 282px;
+    border-radius: 16px;
+  }
+
+  .s-statgrid {
+    margin-top: 60px;
+    margin-bottom: 99px;
+  }
+
+  .s-statgrid__rows {
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .s-statgrid__row {
+    display: grid;
+    width: max-content;
+    grid-template-columns: repeat(6, 130px);
+    gap: 8px;
+  }
+
+  .s-statgrid__row:nth-child(1),
+  .s-statgrid__row:nth-child(3) {
+    margin-left: -202px;
+  }
+
+  .s-statgrid__row:nth-child(2) {
+    margin-left: -267px;
+  }
+
+  .s-statgrid__cell {
+    width: 130px;
+    height: 50px;
+    border-radius: 8px;
+  }
+
+  .footer {
+    height: 484px;
+    background-color: var(--bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer__inner {
+    padding-top: 47px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .footer__main {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .footer__center {
+    order: 1;
+    gap: 0;
+  }
+
+  .footer__logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+  }
+
+  .footer__ctr-title {
+    width: 260px;
+    height: 20px;
+    margin-top: 42px;
+    border-radius: 8px;
+  }
+
+  .footer__ctr-desc {
+    width: 334px;
+    height: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+
+  .footer__ctr-sub {
+    width: 180px;
+    height: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+
+  .footer__socials {
+    order: 2;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .footer__social {
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+  }
+
+  .footer__cta {
+    order: 3;
+    width: 280px;
+    height: 48px;
+    margin-top: 32px;
+    border-radius: 100px;
+  }
+
+  .footer__divider {
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 27px;
+  }
+
+  .footer__bottom {
+    padding-bottom: 28px;
+  }
+
+  .footer__copy {
+    width: 334px;
+    height: 10px;
+    border-radius: 8px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div role="status" aria-label="加载中">
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  NAV  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <header class="nav">
+    <div class="nav__inner">
+
+      <div class="nav__brand">
+        <!-- 品牌 logo 圆形 50% -->
+        <div class="sk nav__brand-icon"></div>
+        <div class="nav__brand-text">
+          <div class="sk nav__brand-name"></div>
+          <div class="sk nav__brand-sub"></div>
+        </div>
+      </div>
+
+      <!-- 导航链接，绝对居中 -->
+      <nav class="nav__links" aria-hidden="true">
+        <div class="sk nav__link"></div>
+        <div class="sk nav__link"></div>
+        <div class="sk nav__link"></div>
+        <div class="sk nav__link"></div>
+      </nav>
+
+      <!-- 右侧 CTA -->
+      <div class="sk nav__cta"></div>
+
+    </div>
+  </header>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  HERO  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="hero container">
+    <div class="sk hero__h1"></div>
+    <div class="sk hero__h2"></div>
+    <div class="sk hero__desc"></div>
+    <div class="hero__btns">
+      <div class="sk hero__btn"></div>
+      <div class="sk hero__btn"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 1  STATS CARDS  ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="s-stats container">
+    <div class="s-stats__grid">
+      <div class="sk s-stats__card"></div>
+      <div class="sk s-stats__card"></div>
+      <div class="sk s-stats__card"></div>
+    </div>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 2  FEATURE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-feature container">
+    <div class="sec-hd">
+      <div class="sk s-feature__title"></div>
+      <div class="sk s-feature__subtitle"></div>
+    </div>
+    <div class="s-feature__cards">
+      <div class="sk s-feature__card"></div>
+      <div class="sk s-feature__card"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 3  EARN  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-earn container">
+    <div class="sec-hd">
+      <div class="sk s-earn__title"></div>
+    </div>
+    <div class="s-earn__top">
+      <div class="sk s-earn__top-card"></div>
+      <div class="sk s-earn__top-card"></div>
+    </div>
+    <div class="s-earn__bottom">
+      <div class="sk s-earn__btm-card"></div>
+      <div class="sk s-earn__btm-card"></div>
+      <div class="sk s-earn__btm-card"></div>
+      <div class="sk s-earn__btm-card"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 4  TRADE（交错高度）  ━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-trade container">
+    <div class="sec-hd">
+      <div class="sk s-trade__title"></div>
+    </div>
+    <div class="s-trade__cards">
+      <div class="sk s-trade__card s-trade__card--side"></div>
+      <div class="sk s-trade__card s-trade__card--mid"></div>
+      <div class="sk s-trade__card s-trade__card--side"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 5  NEWS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-news container">
+    <div class="sec-hd">
+      <div class="sk s-news__title"></div>
+    </div>
+    <div class="s-news__rows">
+      <div class="sk s-news__row"></div>
+      <div class="sk s-news__row"></div>
+      <div class="sk s-news__row"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 6  TOKENS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-tokens container">
+    <div class="sec-hd">
+      <div class="sk s-tokens__title"></div>
+    </div>
+    <div class="s-tokens__cards">
+      <div class="sk s-tokens__card"></div>
+      <div class="sk s-tokens__card"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━  SECTION 7  STATS GRID（desktop 6×2 / mobile 6×3）  ━━━━━━━━━━━━━━━━━━━━ -->
+  <section class="s-statgrid container">
+    <div class="sec-hd">
+      <div class="sk s-statgrid__title"></div>
+    </div>
+    <div class="s-statgrid__rows">
+      <div class="s-statgrid__row">
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+      </div>
+      <div class="s-statgrid__row s-statgrid__row--mobile">
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+      </div>
+      <div class="s-statgrid__row">
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+        <div class="sk s-statgrid__cell"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  FOOTER  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <footer class="footer">
+    <div class="footer__inner container">
+
+      <!-- 主行：左社交 | 中品牌 | 右 CTA -->
+      <div class="footer__main">
+
+        <!-- 左：3 个社交圆形图标 -->
+        <div class="footer__socials">
+          <div class="sk footer__social"></div>
+          <div class="sk footer__social"></div>
+          <div class="sk footer__social"></div>
+        </div>
+
+        <!-- 中：logo 圆 + 3 行文字 -->
+        <div class="footer__center">
+          <div class="sk footer__logo"></div>
+          <div class="sk footer__ctr-title"></div>
+          <div class="sk footer__ctr-desc"></div>
+          <div class="sk footer__ctr-sub"></div>
+        </div>
+
+        <!-- 右：CTA pill 按钮 -->
+        <div class="sk footer__cta"></div>
+
+      </div>
+
+      <!-- 分割线 -->
+      <div class="footer__divider"></div>
+
+      <!-- 底部版权行 -->
+      <div class="footer__bottom">
+        <div class="sk footer__copy"></div>
+      </div>
+
+    </div>
+  </footer>
+
+</div><!-- /role=status -->
+
+</body>
+</html>

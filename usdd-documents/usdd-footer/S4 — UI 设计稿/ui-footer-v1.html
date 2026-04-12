@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Footer UI v1 — usdd.io</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+    :root {
+      /* ── Background ── */
+      --color-bg-page:     #0c0c0e;
+      --color-bg-section:  #141615;
+      --color-bg-card:     #181a1c;
+      --color-bg-elevated: #212426;
+
+      /* ── Brand ── */
+      --color-brand-default:   #216c58;
+      --color-brand-hover:     #2a8c6c;
+      --color-brand-light:     #5fc693;
+      --color-brand-highlight: #81deb0;
+      --color-brand-subtle:    #c8f5e0;
+      --color-brand-bg:        rgba(33,108,88,.15);
+
+      /* ── Text ── */
+      --color-text-primary:    #ffffff;
+      --color-text-secondary:  rgba(255,255,255,.80);
+      --color-text-tertiary:   rgba(255,255,255,.60);
+      --color-text-quaternary: rgba(255,255,255,.40);
+      --color-text-disabled:   rgba(255,255,255,.20);
+
+      /* ── Border ── */
+      --color-border-strong:  rgba(255,255,255,.25);
+      --color-border-default: rgba(255,255,255,.15);
+      --color-border-subtle:  rgba(255,255,255,.08);
+
+      /* ── Fill ── */
+      --color-fill-hover:    rgba(255,255,255,.04);
+      --color-fill-disabled: rgba(255,255,255,.20);
+      --color-fill-overlay:  rgba(0,0,0,.60);
+
+      /* ── Status ── */
+      --color-success-default: #448f6a;
+      --color-warning-default: #ff8f0b;
+      --color-danger-default:  #d73133;
+      --color-info-default:    #0d9488;
+
+      /* ── Radius ── */
+      --radius-xs:   4px;
+      --radius-sm:   6px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-xl:   24px;
+      --radius-full: 999px;
+
+      /* ── Space ── */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 64px;
+      --space-9: 80px;
+    }
+
+    body {
+      font: 400 14px/1.5 Inter,-apple-system,sans-serif;
+      background: var(--color-bg-page);
+      color: var(--color-text-primary);
+    }
+
+    .container {
+      width: 1440px;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 80px;
+    }
+    @media(max-width:1471px) { .container { width: 1200px; padding: 0 60px } }
+    @media(max-width:1199px) { .container { width: auto;   padding: 0 32px } }
+    @media(max-width:767px)  { .container { padding: 0 20px } }
+
+    .main {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-disabled);
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+
+    /* ═══════════════════════════════════════════
+       FOOTER — 高保真 UI v1
+       ─────────────────────────────────────────
+       所有颜色引用 token，无裸色值
+    ════════════════════════════════════════════ */
+
+    .footer {
+      background: var(--color-bg-section);
+      border-top: 1px solid var(--color-border-subtle);
+      padding: 64px 0 0;
+    }
+
+
+    /* ──────────────────────────────────────────
+       品牌英雄区（三列）
+    ────────────────────────────────────────── */
+    .footer-hero {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: flex-start;
+      gap: var(--space-6);
+      padding-bottom: var(--space-8);
+      position: relative;
+    }
+
+
+
+    /* ──────────────────────────────────────────
+       Left — 社交图标
+    ────────────────────────────────────────── */
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 社交按钮 — 默认 / hover / active / focus */
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      background: var(--color-bg-section);
+      border: 1px solid var(--color-border-default);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 16px;
+      transition:
+        background    .15s ease,
+        border-color  .15s ease,
+        color         .15s ease,
+        transform     .10s ease;
+    }
+
+    .social-btn:hover {
+      background: var(--color-bg-elevated);
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+    }
+
+    .social-btn:active {
+      background: var(--color-bg-page);
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+      transform: scale(.92);
+    }
+
+    .social-btn:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 3px;
+    }
+
+    /* Telegram 下拉 */
+    .tg-wrap { position: relative; display: inline-flex }
+
+    .tg-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2);
+      min-width: 220px;
+      box-shadow:
+        0 12px 40px rgba(0,0,0,.45),
+        0  4px 12px rgba(0,0,0,.25),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      z-index: 200;
+    }
+
+    /* Arrow — outer (border color) */
+    .tg-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--color-border-default);
+    }
+    /* Arrow — inner (fill color) */
+    .tg-tooltip::before {
+      content: '';
+      position: absolute;
+      top: calc(100% - 1px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--color-bg-elevated);
+      z-index: 1;
+    }
+
+    .tg-wrap:hover .tg-tooltip { display: block }
+
+    /* Telegram 菜单项 — 默认 / hover / active */
+    .tg-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .tg-item:hover {
+      background: var(--color-bg-section);
+      color: var(--color-text-primary);
+    }
+
+    .tg-item:active {
+      background: var(--color-fill-hover);
+      color: var(--color-text-primary);
+    }
+
+    .tg-item i { font-size: 16px; flex-shrink: 0 }
+
+
+    /* ──────────────────────────────────────────
+       Center — 品牌标识
+    ────────────────────────────────────────── */
+    .footer-brand-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      text-align: center;
+      min-width: 320px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo-circle {
+      width: 52px;
+      height: 52px;
+      border: 2px solid var(--color-brand-highlight);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--color-brand-highlight);
+    }
+
+    .footer-brand-name {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      background: linear-gradient(90deg, #80DCAF 0%, #216C58 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-brand-name em { font-style: normal }
+
+    .footer-brand-desc {
+      font-size: 16px;
+      line-height: 22px;
+      color: var(--color-text-tertiary);
+      max-width: 480px;
+    }
+
+
+    /* ──────────────────────────────────────────
+       Right — 联系邮件
+    ────────────────────────────────────────── */
+    .footer-contact {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 胶囊按钮 — 默认 / hover / active / focus */
+    .footer-contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      height: 44px;
+      padding: 0 var(--space-3);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-full);
+      transition:
+        border-color .15s ease,
+        color         .15s ease,
+        background    .15s ease,
+        transform     .10s ease;
+      white-space: nowrap;
+    }
+
+    .footer-contact-link:hover {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+      background: var(--color-bg-elevated);
+    }
+
+    .footer-contact-link:active {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+      background: var(--color-bg-section);
+      transform: scale(.97);
+    }
+
+    .footer-contact-link:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 3px;
+    }
+
+
+    /* ──────────────────────────────────────────
+       分割线
+    ────────────────────────────────────────── */
+    .footer-divider {
+      height: 1px;
+      background: var(--color-border-subtle);
+      margin-bottom: 48px;
+    }
+
+
+    /* ──────────────────────────────────────────
+       五列导航
+    ────────────────────────────────────────── */
+    .footer-nav {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-7);
+    }
+
+    .footer-col-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      color: var(--color-text-primary);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    /* 导航链接 — body-sm: 14/20 — 默认 / hover / focus */
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--color-text-tertiary);
+      text-decoration: none;
+      transition: color .15s ease;
+      width: fit-content;
+      min-height: 24px;
+    }
+
+    .footer-link:hover { color: var(--color-text-primary) }
+
+    .footer-link:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 2px;
+      border-radius: var(--radius-xs);
+    }
+
+    /* 外链图标 — hover 时随父级联动 */
+    .footer-link-ext {
+      font-size: 12px;
+      opacity: .40;
+      transition: opacity .15s ease;
+    }
+
+    .footer-link:hover .footer-link-ext { opacity: .65 }
+
+    /* Disabled 链接 */
+    .footer-link-disabled {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      min-height: 24px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Coming soon 徽章 */
+    .footer-link-badge {
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 16px;
+      color: var(--color-text-disabled);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-xs);
+    }
+
+
+    /* ──────────────────────────────────────────
+       底栏
+    ────────────────────────────────────────── */
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-top: 0;
+    }
+
+    .footer-copyright {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-quaternary);
+    }
+
+    /* 回顶按钮 — 默认 / hover / active / focus */
+    .back-to-top {
+      width: 44px;
+      height: 44px;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      font-size: 16px;
+      text-decoration: none;
+      transition:
+        background   .15s ease,
+        border-color .15s ease,
+        color        .15s ease,
+        transform    .10s ease;
+    }
+
+    .back-to-top:hover {
+      background: var(--color-bg-card);
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+    }
+
+    .back-to-top:active {
+      background: var(--color-bg-page);
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+      transform: scale(.90);
+    }
+
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 3px;
+    }
+
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════ */
+
+    @media(max-width:1199px) {
+      .footer-nav { grid-template-columns: repeat(3,1fr) }
+      .footer-brand-name { font-size: 24px }
+
+    }
+
+    @media(max-width:767px) {
+      .container { padding: 0 32px }
+
+      .footer {
+        position: relative;
+        overflow: hidden;
+        background: var(--color-bg-section);
+        padding: 48px 0 0;
+      }
+
+      /* Mobile 顶部品牌光晕 */
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: -141px;
+        left: 50%;
+        width: 390px;
+        height: 390px;
+        transform: translateX(-50%);
+        background: radial-gradient(
+          circle,
+          color-mix(in srgb, var(--color-brand-highlight) 36%, transparent)  0%,
+          color-mix(in srgb, var(--color-brand-highlight) 13%, transparent) 34%,
+          transparent 72%
+        );
+        opacity: .1;
+        pointer-events: none;
+      }
+
+      .footer-hero {
+        position: relative;
+        z-index: 1;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 0;
+        padding-bottom: var(--space-8);
+      }
+
+      .footer-brand-center {
+        order: 1;
+        min-width: 0;
+        width: 100%;
+        gap: 0;
+      }
+
+      .footer-logo-circle {
+        width: 52px;
+        height: 52px;
+        background: transparent;
+        border-color: var(--color-brand-highlight);
+        color: var(--color-brand-highlight);
+        font-size: 24px;
+      }
+
+      .footer-brand-name {
+        margin-top: 16px;
+        font-size: 24px;
+        line-height: 1.4;
+        letter-spacing: 0;
+      }
+
+      .footer-brand-desc {
+        margin-top: 8px;
+        max-width: 350px;
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--color-text-tertiary);
+      }
+
+      .footer-socials {
+        order: 2;
+        gap: var(--space-2);
+        margin-top: var(--space-7);
+        position: relative;
+        z-index: 1;
+      }
+
+      .social-btn {
+        width: 44px;
+        height: 44px;
+        background: var(--color-bg-section);
+        border-color: var(--color-border-default);
+        color: var(--color-text-secondary);
+        font-size: 16px;
+      }
+
+      .tg-tooltip { bottom: calc(100% + 8px) }
+
+      .footer-contact {
+        order: 3;
+        justify-content: center;
+        margin-top: 32px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-contact-link { justify-content: center }
+
+      .footer-divider {
+        position: relative;
+        z-index: 1;
+        width: calc(100% + 64px);
+        margin-left: -32px;
+        margin-bottom: var(--space-7);
+        background: var(--color-border-subtle);
+      }
+
+      .footer-nav {
+        position: relative;
+        z-index: 1;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        column-gap: 20px;
+        row-gap: var(--space-6);
+        margin-bottom: 36px;
+      }
+
+      .footer-col-title {
+        margin-bottom: var(--space-4);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .footer-links { gap: var(--space-4) }
+
+      .footer-link,
+      .footer-link-disabled {
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--color-text-tertiary);
+      }
+
+      .footer-link-ext { font-size: 18px; opacity: .60 }
+
+      .footer-bottom {
+        position: relative;
+        z-index: 1;
+        justify-content: center;
+        padding: 0 0 var(--space-7);
+        border-top: 0;
+      }
+
+      .footer-copyright {
+        width: 100%;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: .02em;
+        text-align: center;
+        color: var(--color-text-quaternary);
+      }
+
+      .back-to-top { display: none }
+    }
+
+    @media(max-width:480px) {
+      .container { padding: 0 32px }
+      .footer-nav { grid-template-columns: repeat(2, minmax(0,1fr)) }
+    }
+  </style>
+</head>
+<body>
+
+<main class="main">PAGE CONTENT AREA</main>
+
+<footer class="footer">
+  <div class="container">
+
+    <!-- 品牌区：三列 -->
+    <div class="footer-hero">
+
+      <!-- 左：社交图标 -->
+      <div class="footer-socials">
+        <a href="https://x.com/usddio" target="_blank" class="social-btn" title="X (Twitter)">
+          <i class="ri-twitter-x-line"></i>
+        </a>
+        <div class="tg-wrap">
+          <button class="social-btn" aria-label="Telegram">
+            <i class="ri-telegram-line"></i>
+          </button>
+          <div class="tg-tooltip" role="tooltip">
+            <a href="javascript:void(0)" class="tg-item">
+              <i class="ri-group-line"></i>
+              <span>Telegram Group</span>
+            </a>
+            <a href="javascript:void(0)" class="tg-item">
+              <i class="ri-megaphone-line"></i>
+              <span>Telegram Announcement</span>
+            </a>
+          </div>
+        </div>
+        <a href="https://discord.com/invite/NurKn6KEqx" target="_blank" class="social-btn" title="Discord">
+          <i class="ri-discord-line"></i>
+        </a>
+      </div>
+
+      <!-- 中：品牌居中 -->
+      <div class="footer-brand-center">
+        <div class="footer-logo-circle">
+          <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="footer-brand-name">Decentralized <em>USD</em></div>
+        <p class="footer-brand-desc">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</p>
+      </div>
+
+      <!-- 右：联系邮件 -->
+      <div class="footer-contact">
+        <a href="mailto:contact@usdd.io" class="footer-contact-link">
+          <i class="ri-mail-line"></i>
+          contact@usdd.io
+        </a>
+      </div>
+
+    </div><!-- /hero -->
+
+    <div class="footer-divider"></div>
+
+    <!-- 五列导航 -->
+    <nav class="footer-nav">
+      <div>
+        <div class="footer-col-title">Developer</div>
+        <div class="footer-links">
+          <a href="https://docs.usdd.io/" target="_blank" class="footer-link">Developer Doc<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="https://docs.usdd.io/security/audits" target="_blank" class="footer-link">Audit Report<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="javascript:void(0)" class="footer-link">MCP Server Docs<i class="ri-external-link-line footer-link-ext"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Transparency</div>
+        <div class="footer-links">
+          <a href="https://usdd.io/data" target="_blank" class="footer-link">Data</a>
+          <a href="https://usdd.io/sa" target="_blank" class="footer-link">Smart Allocator</a>
+          <a href="https://usdd.io/treasury" target="_blank" class="footer-link">USDD Treasury</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Community</div>
+        <div class="footer-links">
+          <a href="https://usdd.io/news" target="_blank" class="footer-link">News</a>
+          <a href="https://usdd.io/faq" target="_blank" class="footer-link">FAQs</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <div class="footer-links">
+          <a href="https://docs.usdd.io/lrgals/terms-of-use" target="_blank" class="footer-link">Terms of Use<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="https://docs.usdd.io/lrgals/privacy-policy" target="_blank" class="footer-link">Privacy Policy<i class="ri-external-link-line footer-link-ext"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legacy</div>
+        <div class="footer-links">
+          <a href="https://legacy.usdd.io/" target="_blank" class="footer-link">USDD Legacy<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="https://legacy.usdd.io/#/psm" target="_blank" class="footer-link">USDD Old PSM<i class="ri-external-link-line footer-link-ext"></i></a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 底栏 -->
+    <div class="footer-bottom">
+      <div class="footer-copyright">Copyright © 2026 USDD. All rights reserved</div>
+      <a href="#top" class="back-to-top" title="Back to top">
+        <i class="ri-arrow-up-line"></i>
+      </a>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>

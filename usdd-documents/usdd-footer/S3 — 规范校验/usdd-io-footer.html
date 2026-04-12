@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Footer 改版 — usdd.io Prototype</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font:400 14px/1.5 Inter,-apple-system,sans-serif;background:var(--color-bg-page);color:var(--color-text-primary)}
+    :root{
+      /* C1+C2: 重命名为规范 --color- 前缀，色值对齐规范 */
+      --color-bg-page:#0c0c0e;--color-bg-section:#141615;--color-bg-card:#181a1c;--color-bg-elevated:#212426;
+      --color-text-primary:#ffffff;--color-text-secondary:rgba(255,255,255,.8);--color-text-tertiary:rgba(255,255,255,.6);--color-text-quaternary:rgba(255,255,255,.4);--color-text-disabled:rgba(255,255,255,.2);
+      --color-border-strong:rgba(255,255,255,.25);--color-border-default:rgba(255,255,255,.15);--color-border-subtle:rgba(255,255,255,.08);
+      /* C3: 删除 --accent，改用规范 token */
+      --color-brand-highlight:#81deb0;
+      /* R1: 重命名为 --radius- 前缀；R2: 补充 --radius-full */
+      --radius-xs:4px;--radius-sm:6px;--radius-md:8px;--radius-lg:16px;--radius-xl:24px;--radius-full:999px;
+    }
+    .container{width:1440px;max-width:100%;margin:0 auto;padding:0 80px}
+    @media(max-width:1471px){.container{width:1200px;padding:0 60px}}
+    @media(max-width:1199px){.container{width:auto;padding:0 32px}}
+    @media(max-width:767px){.container{padding:0 20px}}
+
+    .main{min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--color-text-disabled);font-size:12px;letter-spacing:.08em}
+
+    /* ── Footer ── */
+    .footer{background:var(--color-bg-card);border-top:1px solid var(--color-border-default);padding:48px 0 0} /* S1: 56→48px */
+
+    /* 品牌区：三列对称 */
+    .footer-hero{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:flex-start;
+      gap:32px;
+      padding-bottom:48px;
+    }
+
+    /* 左：社交图标 */
+    .footer-socials{display:flex;align-items:center;gap:8px}
+    .social-btn{
+      width:44px;height:44px; /* T1: 36→44px */
+      background:var(--color-bg-section);
+      border:1px solid var(--color-border-default);
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;color:var(--color-text-secondary);
+      text-decoration:none;font-size:16px;
+      transition:background .15s,border-color .15s,color .15s;
+    }
+    .social-btn:hover{background:var(--color-bg-elevated);border-color:var(--color-border-strong);color:var(--color-text-primary)}
+    .tg-wrap{position:relative;display:inline-flex}
+    .tg-tooltip{
+      display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+      background:var(--color-bg-elevated);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);
+      padding:8px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:200; /* S2: 6→8px */
+    }
+    .tg-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--color-border-default)}
+    .tg-tooltip::before{content:'';position:absolute;top:calc(100% - 1px);left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--color-bg-elevated);z-index:1}
+    .tg-wrap:hover .tg-tooltip{display:block}
+    .tg-item{display:flex;align-items:center;gap:8px;padding:12px 12px;border-radius:var(--radius-md);font-size:14px;color:var(--color-text-secondary);cursor:pointer;white-space:nowrap;text-decoration:none;transition:background .15s,color .15s} /* S3: 10→12px; F8: 13→14px; R1: --r-md→--radius-md; T3: 高度≥44px */
+    .tg-item:hover{background:var(--color-bg-section);color:var(--color-text-primary)}
+    .tg-item i{font-size:16px} /* F9: 15→16px */
+
+    /* 中：品牌居中 */
+    .footer-brand-center{
+      display:flex;flex-direction:column;align-items:center;gap:16px; /* S4: 14→16px */
+      text-align:center;min-width:320px;
+    }
+    .footer-logo-circle{
+      width:52px;height:52px;
+      border:2px solid var(--color-brand-highlight); /* C3: --accent→--color-brand-highlight */
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:24px;color:var(--color-brand-highlight); /* C3 */
+    }
+    .footer-brand-name{
+      font-size:32px;font-weight:700;letter-spacing:-.02em; /* F1: 28→32px */
+      line-height:1.1;color:var(--color-text-primary);
+    }
+    .footer-brand-name em{color:var(--color-text-primary);font-style:normal} /* C5: rgba(255,255,255,1)→token */
+    .footer-brand-desc{
+      font-size:14px;color:var(--color-text-secondary); /* F2: 13→14px */
+      max-width:360px;line-height:1.65;
+    }
+
+    /* 右：联系邮件，右对齐 */
+    .footer-contact{
+      display:flex;justify-content:flex-end;
+    }
+    .footer-contact-link{
+      display:inline-flex;align-items:center;gap:8px; /* S10: 7→8px */
+      height:44px;padding:0 12px; /* T2: 36→44px; S10: 14→12px */
+      font-size:14px;color:var(--color-text-secondary); /* F3: 13→14px */
+      text-decoration:none;
+      border:1px solid var(--color-border-default);
+      border-radius:var(--radius-full); /* R2: 999px→token */
+      transition:border-color .15s,color .15s,background .15s;
+      white-space:nowrap;
+    }
+    .footer-contact-link:hover{border-color:var(--color-border-strong);color:var(--color-text-primary);background:var(--color-bg-elevated)}
+
+    /* 分割线 */
+    .footer-divider{height:1px;background:var(--color-border-subtle);margin-bottom:40px}
+
+    /* 五列导航 */
+    .footer-nav{
+      display:grid;grid-template-columns:repeat(5,1fr);
+      gap:24px;
+      margin-bottom:48px;
+    }
+    .footer-col-title{
+      font-size:12px;font-weight:600; /* F4: 11→12px */
+      color:var(--color-text-primary);
+      letter-spacing:.08em;text-transform:uppercase;
+      margin-bottom:16px; /* S5: 14→16px */
+    }
+    .footer-links{display:flex;flex-direction:column;gap:8px} /* S6: 10→8px */
+    .footer-link{
+      display:inline-flex;align-items:center;gap:4px; /* S7: 5→4px */
+      font-size:14px;color:var(--color-text-tertiary); /* F5: 13.5→14px */
+      text-decoration:none;transition:color .15s;
+      width:fit-content;
+      min-height:24px;
+    }
+    .footer-link:hover{color:var(--color-text-primary)}
+    .footer-link-ext{font-size:12px;opacity:.45} /* F6: 11→12px */
+    .footer-link-disabled{
+      font-size:14px;color:var(--color-text-disabled); /* F5同款: 13.5→14px */
+      cursor:not-allowed;
+      display:inline-flex;align-items:center;gap:4px; /* S8: 6→4px */
+      min-height:24px;
+    }
+    .footer-link-badge{
+      padding:2px 8px;font-size:12px;font-weight:500; /* S9: 1px 6px→2px 8px; F7: 10→12px */
+      color:var(--color-text-disabled);
+      border:1px solid var(--color-border-subtle); /* C1: --border-weak→--color-border-subtle */
+      border-radius:var(--radius-xs); /* R1: --r-xs→--radius-xs */
+    }
+
+    /* 底栏 */
+    .footer-bottom{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 0;
+      border-top:0;
+    }
+    .footer-copyright{font-size:12px;color:var(--color-text-tertiary)}
+    .back-to-top{
+      width:44px;height:44px; /* T5: 36→44px */
+      background:var(--color-bg-elevated);
+      border:1px solid var(--color-border-default);
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;color:var(--color-text-secondary);font-size:16px;
+      text-decoration:none;
+      transition:background .15s,border-color .15s,color .15s;
+    }
+    .back-to-top:hover{background:var(--color-bg-card);border-color:var(--color-border-strong);color:var(--color-text-primary)}
+
+    /* 响应式 */
+    @media(max-width:1199px){
+      .footer-nav{grid-template-columns:repeat(3,1fr)}
+      .footer-brand-name{font-size:24px}
+    }
+    @media(max-width:767px){
+      .container{padding:0 32px}
+      .footer{
+        position:relative;
+        overflow:hidden;
+        background:var(--color-bg-section); /* C4: #141615→token */
+        padding:48px 0 0; /* S11: 47→48px */
+      }
+      .footer::before{
+        content:'';
+        position:absolute;
+        top:-141px;left:50%;
+        width:390px;height:390px;
+        transform:translateX(-50%);
+        /* C4: 品牌衍生色改用 --color-brand-highlight(#81deb0) 对应 RGB(129,222,176) */
+        background:radial-gradient(circle,rgba(129,222,176,.36) 0,rgba(129,222,176,.13) 34%,rgba(129,222,176,0) 72%);
+        opacity:.1;
+        pointer-events:none;
+      }
+      .footer-hero{
+        position:relative;
+        z-index:1;
+        grid-template-columns:1fr;
+        justify-items:center;
+        gap:0;
+        padding-bottom:64px;
+      }
+      .footer-brand-center{
+        order:1;
+        min-width:0;
+        width:100%;
+        gap:0;
+      }
+      .footer-logo-circle{
+        width:52px;height:52px;
+        background:transparent;
+        border-color:var(--color-brand-highlight); /* C3: --accent→--color-brand-highlight */
+        color:var(--color-brand-highlight); /* C3 */
+        font-size:24px;
+      }
+      .footer-brand-name{
+        margin-top:16px;
+        font-size:24px;
+        line-height:1.4;
+        letter-spacing:0;
+        background:none;
+        color:var(--color-text-primary);
+      }
+      .footer-brand-name em{color:var(--color-text-primary)} /* C5: rgba→token */
+      .footer-brand-desc{
+        margin-top:8px;
+        max-width:350px;
+        font-size:14px;
+        line-height:1.4;
+        color:var(--color-text-tertiary); /* C4: rgba(255,255,255,.6)→token */
+      }
+      .footer-socials{
+        order:2;
+        gap:8px;
+        margin-top:48px; /* S12: 49→48px */
+      }
+      .social-btn{
+        width:44px;height:44px; /* T1 mobile: 36→44px */
+        background:var(--color-bg-section);
+        border-color:var(--color-border-default);
+        color:var(--color-text-secondary);
+        font-size:16px;
+      }
+      .tg-tooltip{bottom:calc(100% + 8px)}
+      .footer-contact{
+        order:3;
+        justify-content:center;
+        margin-top:32px; /* S13: 31→32px */
+      }
+      .footer-contact-link{
+        justify-content:center;
+      }
+      .footer-divider{
+        position:relative;
+        z-index:1;
+        width:calc(100% + 64px);
+        margin-left:-32px;
+        margin-bottom:48px;
+        background:var(--color-border-subtle); /* C4: rgba(255,255,255,.1)→token */
+      }
+      .footer-nav{
+        position:relative;
+        z-index:1;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        column-gap:20px;
+        row-gap:32px;
+        margin-bottom:36px;
+      }
+      .footer-col-title{
+        margin-bottom:16px;
+        font-size:14px;
+        font-weight:400;
+        line-height:20px;
+        letter-spacing:0;
+      }
+      .footer-links{gap:16px}
+      .footer-link,
+      .footer-link-disabled{
+        font-size:14px;
+        line-height:20px;
+        color:var(--color-text-tertiary); /* C4: rgba(255,255,255,.6)→token */
+      }
+      .footer-link-ext{font-size:18px;opacity:.6}
+      .footer-bottom{
+        position:relative;
+        z-index:1;
+        justify-content:center;
+        padding:0 0 48px; /* S14: 45→48px */
+        border-top:0;
+      }
+      .footer-copyright{
+        width:100%;
+        font-size:14px;
+        line-height:20px;
+        letter-spacing:.02em;
+        text-align:center;
+        color:var(--color-text-quaternary); /* C4: rgba(255,255,255,.4)→token */
+      }
+      .back-to-top{display:none}
+    }
+    @media(max-width:480px){
+      .container{padding:0 32px}
+      .footer-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+  </style>
+</head>
+<body>
+
+<main class="main">PAGE CONTENT AREA</main>
+
+<footer class="footer">
+  <div class="container">
+
+    <!-- 品牌区：三列 -->
+    <div class="footer-hero">
+
+      <!-- 左：社交图标 -->
+      <div class="footer-socials">
+        <a href="https://x.com/usddio" target="_blank" class="social-btn" title="X (Twitter)">
+          <i class="ri-twitter-x-line"></i>
+        </a>
+        <div class="tg-wrap">
+          <button class="social-btn" aria-label="Telegram">
+            <i class="ri-telegram-line"></i>
+          </button>
+          <div class="tg-tooltip" role="tooltip">
+            <a href="javascript:void(0)" class="tg-item">
+              <i class="ri-group-line"></i>
+              <span>Telegram Group</span>
+            </a>
+            <a href="javascript:void(0)" class="tg-item">
+              <i class="ri-megaphone-line"></i>
+              <span>Telegram Announcement</span>
+            </a>
+          </div>
+        </div>
+        <a href="https://discord.com/invite/NurKn6KEqx" target="_blank" class="social-btn" title="Discord">
+          <i class="ri-discord-line"></i>
+        </a>
+      </div>
+
+      <!-- 中：品牌居中 -->
+      <div class="footer-brand-center">
+        <div class="footer-logo-circle">
+          <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="footer-brand-name">Decentralized <em>USD</em></div>
+        <p class="footer-brand-desc">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</p>
+      </div>
+
+      <!-- 右：联系邮件 -->
+      <div class="footer-contact">
+        <a href="mailto:contact@usdd.io" class="footer-contact-link">
+          <i class="ri-mail-line"></i><!-- F10: 移除内联 style="font-size:13px"，继承父级 14px -->
+          contact@usdd.io
+        </a>
+      </div>
+
+    </div><!-- /hero -->
+
+    <div class="footer-divider"></div>
+
+    <!-- 五列导航 -->
+    <nav class="footer-nav">
+      <div>
+        <div class="footer-col-title">Developer</div>
+        <div class="footer-links">
+          <a href="https://docs.usdd.io/" target="_blank" class="footer-link">Developer Doc<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="https://docs.usdd.io/security/audits" target="_blank" class="footer-link">Audit Report<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="javascript:void(0)" class="footer-link">MCP Server Docs<i class="ri-external-link-line footer-link-ext"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Transparency</div>
+        <div class="footer-links">
+          <a href="https://usdd.io/data" target="_blank" class="footer-link">Data</a>
+          <a href="https://usdd.io/sa" target="_blank" class="footer-link">Smart Allocator</a>
+          <a href="https://usdd.io/treasury" target="_blank" class="footer-link">USDD Treasury</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Community</div>
+        <div class="footer-links">
+          <a href="https://usdd.io/news" target="_blank" class="footer-link">News</a>
+          <a href="https://usdd.io/faq" target="_blank" class="footer-link">FAQs</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <div class="footer-links">
+          <a href="https://docs.usdd.io/lrgals/terms-of-use" target="_blank" class="footer-link">Terms of Use<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="https://docs.usdd.io/lrgals/privacy-policy" target="_blank" class="footer-link">Privacy Policy<i class="ri-external-link-line footer-link-ext"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legacy</div>
+        <div class="footer-links">
+          <a href="https://legacy.usdd.io/" target="_blank" class="footer-link">USDD Legacy<i class="ri-external-link-line footer-link-ext"></i></a>
+          <a href="https://legacy.usdd.io/#/psm" target="_blank" class="footer-link">USDD Old PSM<i class="ri-external-link-line footer-link-ext"></i></a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 底栏 -->
+    <div class="footer-bottom">
+      <div class="footer-copyright">Copyright © 2026 USDD. All rights reserved</div>
+      <a href="#top" class="back-to-top" title="Back to top">
+        <i class="ri-arrow-up-line"></i>
+      </a>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
