@@ -100,9 +100,10 @@
 **断点与容器**
 
 ```
-≥ 1472px    容器 width: 1440px; padding: 0 48px
-1200~1471px 容器 width: 1200px; padding: 0 48px
-< 1200px    容器 width: auto;   padding: 0 20px
+Large Desktop  ≥ 1472px      容器 width: 1440px
+Desktop        1200~1472px   容器 width: 1200px
+Pad            767~1199px    容器 width: auto，padding 0 20px
+Mobile         < 767px       容器 width: auto，padding 0 20px
 ```
 
 Header 高度：80px，主体 `padding-top: 80px`。
