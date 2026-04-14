@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Footer UI v1 — usdd.io</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.9.1/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+    :root {
+      /* ── Background ── */
+      --color-bg-page:     #0c0c0e;
+      --color-bg-section:  #141615;
+      --color-bg-card:     #181a1c;
+      --color-bg-elevated: #212426;
+
+      /* ── Brand ── */
+      --color-brand-default:   #216c58;
+      --color-brand-hover:     #2a8c6c;
+      --color-brand-light:     #5fc693;
+      --color-brand-highlight: #81deb0;
+      --color-brand-subtle:    #c8f5e0;
+      --color-brand-bg:        rgba(33,108,88,.15);
+
+      /* ── Text ── */
+      --color-text-primary:    #ffffff;
+      --color-text-secondary:  rgba(255,255,255,.80);
+      --color-text-tertiary:   rgba(255,255,255,.60);
+      --color-text-quaternary: rgba(255,255,255,.40);
+      --color-text-disabled:   rgba(255,255,255,.20);
+
+      /* ── Border ── */
+      --color-border-strong:  rgba(255,255,255,.25);
+      --color-border-default: rgba(255,255,255,.15);
+      --color-border-subtle:  rgba(255,255,255,.08);
+
+      /* ── Fill ── */
+      --color-fill-hover:    rgba(255,255,255,.04);
+      --color-fill-disabled: rgba(255,255,255,.20);
+      --color-fill-overlay:  rgba(0,0,0,.60);
+
+      /* ── Status ── */
+      --color-success-default: #448f6a;
+      --color-warning-default: #ff8f0b;
+      --color-danger-default:  #d73133;
+      --color-info-default:    #0d9488;
+
+      /* ── Radius ── */
+      --radius-xs:   4px;
+      --radius-sm:   6px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-xl:   24px;
+      --radius-full: 999px;
+
+      /* ── Space ── */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 64px;
+      --space-9: 80px;
+    }
+
+    body {
+      font: 400 14px/1.5 Inter,-apple-system,sans-serif;
+      background: var(--color-bg-page);
+      color: var(--color-text-primary);
+    }
+
+    .container {
+      width: 1440px;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 80px;
+    }
+    @media(max-width:1471px) { .container { width: 1200px; padding: 0 60px } }
+    @media(max-width:1199px) { .container { width: auto;   padding: 0 32px } }
+    @media(max-width:767px)  { .container { padding: 0 20px } }
+
+    .main {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-disabled);
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+
+    /* ═══════════════════════════════════════════
+       FOOTER — 高保真 UI v1
+       ─────────────────────────────────────────
+       所有颜色引用 token，无裸色值
+    ════════════════════════════════════════════ */
+
+    .footer {
+      background: var(--color-bg-section);
+      border-top: 1px solid var(--color-border-subtle);
+      padding: 64px 0 0;
+    }
+
+
+    /* ──────────────────────────────────────────
+       品牌英雄区（三列）
+    ────────────────────────────────────────── */
+    .footer-hero {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: flex-start;
+      gap: var(--space-6);
+      padding-bottom: var(--space-8);
+      position: relative;
+    }
+
+
+
+    /* ──────────────────────────────────────────
+       Left — 社交图标
+    ────────────────────────────────────────── */
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 社交按钮 — 默认 / hover / active / focus */
+    .social-btn {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(45deg, rgba(0,0,0,.2) 0.73%, rgba(255,255,255,.15) 101.67%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 16px;
+      transition:
+        background .15s ease,
+        color       .15s ease,
+        transform   .10s ease;
+    }
+
+    /* 渐变描边 */
+    .social-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      padding: 1px;
+      background: linear-gradient(45deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.15) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      transition: background .15s ease;
+    }
+
+    .social-btn:hover {
+      background: linear-gradient(45deg, rgba(0,0,0,.12) 0.73%, rgba(255,255,255,.22) 101.67%);
+      color: var(--color-text-primary);
+    }
+    .social-btn:hover::before {
+      background: linear-gradient(45deg, rgba(255,255,255,.25) 0%, rgba(255,255,255,.75) 100%);
+    }
+
+    .social-btn:active {
+      background: linear-gradient(45deg, rgba(0,0,0,.30) 0.73%, rgba(255,255,255,.08) 101.67%);
+      color: var(--color-text-primary);
+      transform: scale(.92);
+    }
+    .social-btn:active::before {
+      background: linear-gradient(45deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.35) 100%);
+    }
+
+    .social-btn:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 3px;
+    }
+
+    /* Telegram 下拉 */
+    .tg-wrap { position: relative; display: inline-flex }
+
+    .tg-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2);
+      min-width: 220px;
+      box-shadow:
+        0 12px 40px rgba(0,0,0,.45),
+        0  4px 12px rgba(0,0,0,.25),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      z-index: 200;
+    }
+
+    /* Arrow — outer (border color) */
+    .tg-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--color-border-default);
+    }
+    /* Arrow — inner (fill color) */
+    .tg-tooltip::before {
+      content: '';
+      position: absolute;
+      top: calc(100% - 1px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--color-bg-elevated);
+      z-index: 1;
+    }
+
+    .tg-wrap:hover .tg-tooltip { display: block }
+
+    /* Telegram 菜单项 — 默认 / hover / active */
+    .tg-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .tg-item:hover {
+      background: var(--color-bg-section);
+      color: var(--color-text-primary);
+    }
+
+    .tg-item:active {
+      background: var(--color-fill-hover);
+      color: var(--color-text-primary);
+    }
+
+    .tg-item i { font-size: 16px; flex-shrink: 0 }
+
+
+    /* ──────────────────────────────────────────
+       Center — 品牌标识
+    ────────────────────────────────────────── */
+    .footer-brand-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      text-align: center;
+      min-width: 320px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo-circle {
+      width: 64px;
+      height: 64px;
+      display: block;
+    }
+
+    .footer-brand-name {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      background: linear-gradient(90deg, #80DCAF 0%, #216C58 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-brand-name em { font-style: normal }
+
+    .footer-brand-desc {
+      font-size: 16px;
+      line-height: 22px;
+      color: var(--color-text-tertiary);
+      max-width: 480px;
+    }
+
+
+    /* ──────────────────────────────────────────
+       Right — 联系邮件
+    ────────────────────────────────────────── */
+    .footer-contact {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 胶囊按钮 — 默认 / hover / active / focus */
+    .footer-contact-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      height: 44px;
+      padding: 0 var(--space-3);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      background: linear-gradient(45deg, rgba(0,0,0,.2) 0.73%, rgba(255,255,255,.15) 101.67%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: none;
+      border-radius: var(--radius-full);
+      transition:
+        color      .15s ease,
+        background .15s ease,
+        transform  .10s ease;
+      white-space: nowrap;
+    }
+
+    /* 渐变描边 */
+    .footer-contact-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-full);
+      padding: 1px;
+      background: linear-gradient(45deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.15) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      transition: background .15s ease;
+    }
+
+    .footer-contact-link:hover {
+      background: linear-gradient(45deg, rgba(0,0,0,.12) 0.73%, rgba(255,255,255,.22) 101.67%);
+      color: var(--color-text-primary);
+    }
+    .footer-contact-link:hover::before {
+      background: linear-gradient(45deg, rgba(255,255,255,.25) 0%, rgba(255,255,255,.75) 100%);
+    }
+
+    .footer-contact-link:active {
+      background: linear-gradient(45deg, rgba(0,0,0,.30) 0.73%, rgba(255,255,255,.08) 101.67%);
+      color: var(--color-text-primary);
+      transform: scale(.97);
+    }
+    .footer-contact-link:active::before {
+      background: linear-gradient(45deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.35) 100%);
+    }
+
+    .footer-contact-link:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 3px;
+    }
+
+
+    /* ──────────────────────────────────────────
+       分割线
+    ────────────────────────────────────────── */
+    .footer-divider {
+      height: 1px;
+      background: var(--color-border-subtle);
+      margin-bottom: 48px;
+    }
+
+
+    /* ──────────────────────────────────────────
+       五列导航
+    ────────────────────────────────────────── */
+    .footer-nav {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-7);
+    }
+
+    .footer-col-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      color: var(--color-text-primary);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    /* 导航链接 — body-sm: 14/20 — 默认 / hover / focus */
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--color-text-tertiary);
+      text-decoration: none;
+      transition: color .15s ease;
+      width: fit-content;
+      min-height: 24px;
+    }
+
+    .footer-link:hover { color: var(--color-text-primary) }
+
+    .footer-link:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 2px;
+      border-radius: var(--radius-xs);
+    }
+
+    /* 外链图标 — hover 时随父级联动 */
+    .footer-link-ext {
+      font-size: 16px;
+      opacity: .40;
+      transition: opacity .15s ease;
+    }
+
+    .footer-link:hover .footer-link-ext { opacity: .65 }
+
+    /* Disabled 链接 */
+    .footer-link-disabled {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      min-height: 24px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Coming soon 徽章 */
+    .footer-link-badge {
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 16px;
+      color: var(--color-text-disabled);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-xs);
+    }
+
+
+    /* ──────────────────────────────────────────
+       底栏
+    ────────────────────────────────────────── */
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-top: 0;
+    }
+
+    .footer-copyright {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-quaternary);
+    }
+
+    /* 回顶按钮 — 默认 / hover / active / focus */
+    .back-to-top {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(45deg, rgba(0,0,0,.2) 0.73%, rgba(255,255,255,.15) 101.67%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      font-size: 18px;
+      text-decoration: none;
+      transition:
+        background .15s ease,
+        color      .15s ease,
+        transform  .10s ease;
+    }
+
+    /* 渐变描边 */
+    .back-to-top::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      padding: 1px;
+      background: linear-gradient(45deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.15) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      transition: background .15s ease;
+    }
+
+    .back-to-top:hover {
+      background: linear-gradient(45deg, rgba(0,0,0,.12) 0.73%, rgba(255,255,255,.22) 101.67%);
+      color: var(--color-text-primary);
+    }
+    .back-to-top:hover::before {
+      background: linear-gradient(45deg, rgba(255,255,255,.25) 0%, rgba(255,255,255,.75) 100%);
+    }
+
+    .back-to-top:active {
+      background: linear-gradient(45deg, rgba(0,0,0,.30) 0.73%, rgba(255,255,255,.08) 101.67%);
+      color: var(--color-text-primary);
+      transform: scale(.90);
+    }
+    .back-to-top:active::before {
+      background: linear-gradient(45deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.35) 100%);
+    }
+
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--color-brand-highlight);
+      outline-offset: 3px;
+    }
+
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════ */
+
+    @media(max-width:1199px) {
+      .footer-nav { grid-template-columns: repeat(3,1fr) }
+      .footer-brand-name { font-size: 24px }
+
+    }
+
+    @media(max-width:767px) {
+      .container { padding: 0 20px }
+
+      .footer {
+        position: relative;
+        overflow: hidden;
+        background: var(--color-bg-section);
+        padding: 48px 0 0;
+      }
+
+      /* Mobile 顶部品牌光晕 */
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: -141px;
+        left: 50%;
+        width: 390px;
+        height: 390px;
+        transform: translateX(-50%);
+        background: radial-gradient(
+          circle,
+          color-mix(in srgb, var(--color-brand-highlight) 36%, transparent)  0%,
+          color-mix(in srgb, var(--color-brand-highlight) 13%, transparent) 34%,
+          transparent 72%
+        );
+        opacity: .1;
+        pointer-events: none;
+      }
+
+      .footer-hero {
+        position: relative;
+        z-index: 1;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 0;
+        padding-bottom: var(--space-8);
+      }
+
+      .footer-brand-center {
+        order: 1;
+        min-width: 0;
+        width: 100%;
+        gap: 0;
+      }
+
+      .footer-logo-circle {
+        width: 64px;
+        height: 64px;
+      }
+
+      .footer-brand-name {
+        margin-top: 16px;
+        font-size: 24px;
+        line-height: 1.4;
+        letter-spacing: 0;
+      }
+
+      .footer-brand-desc {
+        margin-top: 8px;
+        max-width: 350px;
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--color-text-tertiary);
+      }
+
+      .footer-socials {
+        order: 2;
+        gap: var(--space-2);
+        margin-top: var(--space-7);
+        position: relative;
+        z-index: 1;
+      }
+
+      .social-btn {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(45deg, rgba(0,0,0,.2) 0.73%, rgba(255,255,255,.15) 101.67%);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: var(--color-text-secondary);
+        font-size: 14px;
+      }
+
+      .tg-tooltip { bottom: calc(100% + 8px) }
+
+      .footer-contact {
+        order: 3;
+        justify-content: center;
+        margin-top: 32px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-contact-link { justify-content: center; width: 280px }
+
+      .footer-divider {
+        position: relative;
+        z-index: 1;
+        width: calc(100% + 64px);
+        margin-left: -32px;
+        margin-bottom: var(--space-7);
+        background: var(--color-border-subtle);
+      }
+
+      .footer-nav {
+        position: relative;
+        z-index: 1;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        column-gap: 20px;
+        row-gap: var(--space-6);
+        margin-bottom: 36px;
+      }
+
+      .footer-col-title {
+        margin-bottom: var(--space-4);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .footer-links { gap: var(--space-4) }
+
+      .footer-link,
+      .footer-link-disabled {
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--color-text-tertiary);
+      }
+
+      .footer-link-ext { font-size: 14px; opacity: .60 }
+
+      .footer-bottom {
+        position: relative;
+        z-index: 1;
+        justify-content: center;
+        padding: 0 0 var(--space-7);
+        border-top: 0;
+      }
+
+      .footer-copyright {
+        width: 100%;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: .02em;
+        text-align: center;
+        color: var(--color-text-quaternary);
+      }
+
+      .back-to-top { display: none }
+    }
+
+    @media(max-width:480px) {
+      .container { padding: 0 20px }
+      .footer-nav { grid-template-columns: repeat(2, minmax(0,1fr)) }
+    }
+  </style>
+</head>
+<body>
+
+<main class="main">PAGE CONTENT AREA</main>
+
+<footer class="footer">
+  <div class="container">
+
+    <!-- 品牌区：三列 -->
+    <div class="footer-hero">
+
+      <!-- 左：社交图标 -->
+      <div class="footer-socials">
+        <a href="https://x.com/usddio" target="_blank" class="social-btn" title="X (Twitter)">
+          <i class="ri-twitter-x-line"></i>
+        </a>
+        <div class="tg-wrap">
+          <button class="social-btn" aria-label="Telegram">
+            <i class="ri-telegram-2-line"></i>
+          </button>
+          <div class="tg-tooltip" role="tooltip">
+            <a href="javascript:void(0)" class="tg-item">
+              <i class="ri-group-line"></i>
+              <span>Telegram Group</span>
+            </a>
+            <a href="javascript:void(0)" class="tg-item">
+              <i class="ri-megaphone-line"></i>
+              <span>Telegram Announcement</span>
+            </a>
+          </div>
+        </div>
+        <a href="https://discord.com/invite/NurKn6KEqx" target="_blank" class="social-btn" title="Discord">
+          <i class="ri-discord-line"></i>
+        </a>
+      </div>
+
+      <!-- 中：品牌居中 -->
+      <div class="footer-brand-center">
+        <svg class="footer-logo-circle" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="USDD Logo">
+          <g clip-path="url(#usdd-logo-clip)">
+            <rect width="64" height="64" rx="32" fill="#216C58"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 32C0 14.3333 14.3333 0 32 0C49.6667 0 64 14.3333 64 32C64 49.6667 49.6667 64 32 64C14.3333 64 0 49.6667 0 32ZM1.6 32C1.6 48.7867 15.2133 62.4 32 62.4C48.7867 62.4 62.4 48.7867 62.4 32C62.4 15.2133 48.7867 1.6 32 1.6C15.2133 1.6 1.6 15.2133 1.6 32ZM58.0262 34.3603C58.0662 33.9336 58.4128 33.6003 58.8395 33.6003C59.3062 33.6003 59.6662 34.0003 59.6262 34.4536C58.3862 48.6136 46.4928 59.7336 31.9995 59.7336C17.5062 59.7336 5.61283 48.6269 4.37283 34.4536C4.33283 33.9869 4.69283 33.6003 5.1595 33.6003C5.58616 33.6003 5.93283 33.9336 5.97283 34.3603C7.1595 47.6803 18.3595 58.1336 31.9995 58.1336C45.6395 58.1336 56.8395 47.6936 58.0262 34.3603ZM5.1595 30.4003C5.58616 30.4003 5.93283 30.0669 5.97283 29.6403C7.1595 16.3203 18.3595 5.86693 31.9995 5.86693C45.6395 5.86693 56.8395 16.3203 58.0262 29.6403C58.0662 30.0669 58.4128 30.4003 58.8395 30.4003C59.3062 30.4003 59.6662 30.0136 59.6262 29.5469C58.3862 15.3736 46.4928 4.26693 31.9995 4.26693C17.5062 4.26693 5.61283 15.3869 4.37283 29.5469C4.33283 30.0003 4.69283 30.4003 5.1595 30.4003ZM22.9339 12.2669H43.2005C43.7896 12.2669 44.2672 12.7445 44.2672 13.3336V13.8669C44.2672 14.456 43.7896 14.9336 43.2005 14.9336H22.9339C22.3448 14.9336 21.8672 14.456 21.8672 13.8669V13.3336C21.8672 12.7445 22.3448 12.2669 22.9339 12.2669ZM32 17.6V16H29.3333V17.8267C30.1867 17.7067 31.0667 17.6267 32 17.6ZM29.3333 36.3815V43.1734C29.3333 43.1734 29.3733 43.1867 29.4 43.2C30.16 43.4534 31.0267 43.6134 32 43.64V36.9794L32.7462 37.1467C33.0112 37.1997 33.2426 37.2611 33.4804 37.3243C33.5417 37.3406 33.6034 37.357 33.6662 37.3734V43.6267C34.2929 43.56 34.8529 43.44 35.3329 43.2667C35.7195 43.12 36.0529 42.9734 36.3329 42.8V38.2267C36.9995 38.52 37.5329 38.8667 37.9062 39.2534C38.3729 39.7334 38.5862 40.3067 38.5862 40.9867C38.5862 41.72 38.3329 42.3734 37.8262 42.9467C37.3195 43.5067 36.6129 43.9467 35.7062 44.28C34.7995 44.6 33.7329 44.76 32.5062 44.76C31.2795 44.76 30.1329 44.6 29.1329 44.2534C28.1595 43.9067 27.3595 43.3867 26.7729 42.7067C26.3862 42.24 26.1195 41.72 25.9462 41.1067C25.7995 40.56 25.3462 40.12 24.7995 40.12H19.8529C19.2529 40.12 18.7729 40.6267 18.8395 41.2C19.0395 42.9334 19.6129 44.4134 20.5595 45.6534C21.7195 47.1334 23.3062 48.2667 25.3595 49.0134C26.6929 49.5067 28.1995 49.8267 29.8395 50C29.7861 49.9947 29.7305 49.9936 29.6745 49.9926C29.5908 49.991 29.5061 49.9893 29.4262 49.9734V52.2934C29.4262 52.88 29.9062 53.36 30.4929 53.36H31.0262C31.6129 53.36 32.0929 52.88 32.0929 52.2934V50.16C32.0195 50.16 31.9495 50.1534 31.8795 50.1467C31.8095 50.14 31.7395 50.1334 31.6662 50.1334C31.8262 50.1334 31.9829 50.1434 32.1395 50.1534C32.2962 50.1634 32.4529 50.1734 32.6129 50.1734C33.0695 50.1734 33.4918 50.1505 33.9221 50.126C33.901 50.1282 33.8803 50.1308 33.8595 50.1334C33.8062 50.14 33.7529 50.1467 33.6929 50.1467V52.2934C33.6929 52.88 34.1729 53.36 34.7595 53.36H35.2929C35.8795 53.36 36.3595 52.88 36.3595 52.2934V49.9067C36.337 49.9067 36.3134 49.9067 36.2894 49.9073C37.5654 49.7209 38.742 49.4473 39.7729 49.04C41.7729 48.28 43.2929 47.2267 44.3329 45.8534L44.2529 45.8267C45.3195 44.44 45.8529 42.8267 45.8662 40.9467C45.8662 39.6667 45.5862 38.5467 45.0795 37.56C44.5729 36.5734 43.8529 35.7067 42.9462 34.9867C42.0262 34.2667 40.9462 33.6534 39.6929 33.1467C38.4395 32.6534 37.0662 32.2534 35.5729 31.9467L32.4929 31.2934C31.7462 31.1467 31.0529 30.96 30.3862 30.76C29.7329 30.5334 29.1595 30.28 28.6529 30C28.1462 29.6934 27.7462 29.3467 27.4662 28.9467V28.92C27.1995 28.52 27.0662 28.0534 27.0929 27.52C27.0929 26.8667 27.3062 26.2534 27.7329 25.7334C28.1195 25.2667 28.6795 24.8934 29.3862 24.6134V29.1734C29.7729 29.3867 30.2262 29.5734 30.7462 29.7467C31.1595 29.88 31.5995 30 32.0529 30.1067V24.12C32.1379 24.12 32.2262 24.1168 32.3161 24.1135C32.4094 24.1102 32.5045 24.1067 32.5995 24.1067C32.9729 24.1067 33.3195 24.1334 33.6529 24.16V30.4534L35.8262 30.92C35.9062 30.94 35.9895 30.9567 36.0729 30.9734C36.1562 30.99 36.2395 31.0067 36.3195 31.0267V24.8934C36.3731 24.9226 36.4266 24.9482 36.4795 24.9735C36.5715 25.0176 36.6615 25.0608 36.7462 25.12C37.4929 25.6 37.9995 26.2267 38.2662 27C38.4395 27.5067 38.8795 27.92 39.4262 27.92H44.3595C44.9729 27.92 45.4529 27.4267 45.3595 26.8267C45.1729 25.44 44.6529 24.2134 43.7995 23.0934C42.7329 21.72 41.2395 20.6267 39.3329 19.8534C37.4262 19.0667 35.1995 18.6934 32.6529 18.6934C30.1062 18.6934 27.9062 19.08 25.9462 19.8534C23.9729 20.6267 22.4262 21.7067 21.2929 23.0934C20.1729 24.4667 19.6262 26.0934 19.6262 27.96C19.6262 30.2267 20.4529 32.0267 22.1329 33.36C23.8129 34.6934 26.0929 35.68 28.9995 36.3067L29.3333 36.3815ZM36.2656 17.88V16H33.599V17.6133C34.519 17.6533 35.4123 17.7333 36.2656 17.88Z" fill="white"/>
+          </g>
+          <defs>
+            <clipPath id="usdd-logo-clip">
+              <rect width="64" height="64" rx="32" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+        <div class="footer-brand-name">Decentralized <em>USD</em></div>
+        <p class="footer-brand-desc">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</p>
+      </div>
+
+      <!-- 右：联系邮件 -->
+      <div class="footer-contact">
+        <a href="mailto:contact@usdd.io" class="footer-contact-link">
+          <i class="ri-mail-line"></i>
+          contact@usdd.io
+        </a>
+      </div>
+
+    </div><!-- /hero -->
+
+    <div class="footer-divider"></div>
+
+    <!-- 五列导航 -->
+    <nav class="footer-nav">
+      <div>
+        <div class="footer-col-title">Developer</div>
+        <div class="footer-links">
+          <a href="https://docs.usdd.io/" target="_blank" class="footer-link">Developer Doc<i class="ri-share-box-line footer-link-ext"></i></a>
+          <a href="https://docs.usdd.io/security/audits" target="_blank" class="footer-link">Audit Report<i class="ri-share-box-line footer-link-ext"></i></a>
+          <a href="javascript:void(0)" class="footer-link">MCP Server Docs<i class="ri-share-box-line footer-link-ext"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Transparency</div>
+        <div class="footer-links">
+          <a href="https://usdd.io/data" target="_blank" class="footer-link">Data</a>
+          <a href="https://usdd.io/sa" target="_blank" class="footer-link">Smart Allocator</a>
+          <a href="https://usdd.io/treasury" target="_blank" class="footer-link">USDD Treasury</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Community</div>
+        <div class="footer-links">
+          <a href="https://usdd.io/news" target="_blank" class="footer-link">News</a>
+          <a href="https://usdd.io/faq" target="_blank" class="footer-link">FAQs</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <div class="footer-links">
+          <a href="https://docs.usdd.io/lrgals/terms-of-use" target="_blank" class="footer-link">Terms of Use<i class="ri-share-box-line footer-link-ext"></i></a>
+          <a href="https://docs.usdd.io/lrgals/privacy-policy" target="_blank" class="footer-link">Privacy Policy<i class="ri-share-box-line footer-link-ext"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legacy</div>
+        <div class="footer-links">
+          <a href="https://legacy.usdd.io/" target="_blank" class="footer-link">USDD Legacy<i class="ri-share-box-line footer-link-ext"></i></a>
+          <a href="https://legacy.usdd.io/#/psm" target="_blank" class="footer-link">USDD Old PSM<i class="ri-share-box-line footer-link-ext"></i></a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 底栏 -->
+    <div class="footer-bottom">
+      <div class="footer-copyright">Copyright © 2026 USDD. All rights reserved</div>
+      <a href="#top" class="back-to-top" title="Back to top">
+        <i class="ri-arrow-up-s-line"></i>
+      </a>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
