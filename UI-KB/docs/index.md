@@ -1,6 +1,6 @@
 # 文档索引
 
-> 最后更新：2026-04-02
+> 最后更新：2026-04-16
 
 ## 快速导航
 
@@ -55,6 +55,15 @@
 | App V1 | `app/V1/design-spec.md` | `app/V1/figma-index.md` |
 | App V2 | `app/V2/design-spec.md` | `app/V2/figma-index.md` |
 | 管理后台 | `admin/design-spec.md` | `admin/figma-index.md` |
+
+### USDD（多端：web · app · 共享规范）
+
+> 路径前缀：`projects/USDD/`
+
+| 子端 | 设计规范 | 组件 Catalog | Figma 索引 |
+| --- | --- | --- | --- |
+| Web | `web/design-spec.md` | `web/component-catalog.md` | `web/figma-index.md` |
+| App | `app/design-spec.md` | `app/component-catalog.md` | `app/figma-index.md` |
 
 ### WINkLink（官网）
 

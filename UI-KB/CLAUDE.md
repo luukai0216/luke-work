@@ -13,6 +13,7 @@
 | TronLink | `projects/TronLink/` | app · chrome |
 | JustLend | `projects/JustLend/` | portal · app（V1/V2）· admin |
 | WINkLink | `projects/WINkLink/` | web |
+| USDD | `projects/USDD/` | web · app |
 
 ## 目录结构
 
@@ -43,8 +44,12 @@ UI-KB/
     │   │   ├── V1/                 # V1 模块规范
     │   │   └── V2/                 # V2 模块规范
     │   └── admin/                  # 后台规范
-    └── WINkLink/                   # 多端结构（当前仅官网）
-        └── web/                    # 官网规范
+    ├── WINkLink/                   # 多端结构（当前仅官网）
+    │   └── web/                    # 官网规范
+    └── USDD/                       # 多端项目（Web + App 共享规范）
+        ├── design-spec.md          # 共享设计规范（唯一来源）
+        ├── web/                    # 官网规范
+        └── app/                    # DeFi 操作界面规范
 ```
 
 ## AI 使用规则

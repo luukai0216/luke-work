@@ -63,6 +63,11 @@
 **用法**：提供 Figma URL + 实现截图（可选）→ 生成报告到桌面
 → 详见 [ui-acceptance.md](./ui-acceptance.md)
 
+### `/usdd-ui-acceptance`
+对比 Figma 设计稿与实现页面，结合 USDD 设计规范（品牌绿 `#216C58`、深色主题），覆盖 Web / App 两端，输出四维度 HTML 验收报告。
+**用法**：指定端（web/app）+ 提供 Figma URL + 实现截图（可选）→ 生成报告到桌面
+→ 详见 [usdd-ui-acceptance.md](./usdd-ui-acceptance.md)
+
 ---
 
 ## 选用速查
@@ -75,7 +80,8 @@
 | 从代码生成组件库 | `/figma-generate-library` |
 | 生成 AI 设计规范文件 | `/figma-create-design-system-rules` |
 | 关联 Figma 组件和代码 | `/figma-code-connect-components` |
-| 验收设计还原度 | `/ui-acceptance` |
+| 验收设计还原度（TRON） | `/ui-acceptance` |
+| 验收设计还原度（USDD） | `/usdd-ui-acceptance` |
 | 直接操作 Figma 画布 | `/figma-use` |
 | 批量整理图层为组件 | `/figma-componentize` |
 
