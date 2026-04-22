@@ -1,0 +1,11 @@
+{
+  "name": "tronlink-homepage-mirror",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "figma:png": "node capture-figma-reference.mjs"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.15.0"
+  }
+}
