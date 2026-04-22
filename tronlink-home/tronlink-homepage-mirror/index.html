@@ -48,6 +48,375 @@
 
     </script>
     <!-- End Google Analytics -->
+
+    <!-- =====================================================
+         VISUAL OVERRIDES — 视觉调整层 (PRD v1.2)
+         如需还原：git checkout tronlink-home/tronlink-homepage-mirror/index.html
+         ===================================================== -->
+    <style id="visual-overrides">
+
+        /* ── REQ-06  公告条：品牌深蓝 + 紧凑高度 ── */
+        .header-tip {
+            background-color: #0b2a5e !important;
+            height: 32px !important;
+            min-height: 0 !important;
+            line-height: 32px !important;
+            font-size: 12px !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative;
+        }
+        .header-tip .tip-close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            line-height: 1;
+            padding: 4px;
+            border: none;
+            background: none;
+        }
+        .header-tip .tip-close:hover { color: #fff; }
+
+        /* ── REQ-05  导航 Install 按钮：首屏起始显示 ── */
+        .nav-download-btn-wrapper.home_nav_download_btn_wrapper {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 7px 16px !important;
+            border-radius: 7px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            white-space: nowrap;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+            background: #3C7CF3 !important;
+            color: #fff !important;
+            border: 1.5px solid #3C7CF3 !important;
+            text-decoration: none;
+        }
+        /* Hero 深色背景：改为白色描边 ghost 样式 */
+        body.vo-on-hero .nav-download-btn-wrapper.home_nav_download_btn_wrapper {
+            background: transparent !important;
+            border-color: rgba(255,255,255,0.65) !important;
+            color: #fff !important;
+        }
+        .nav-download-btn-wrapper.home_nav_download_btn_wrapper img {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ── REQ-04  向下滚动引导箭头 ── */
+        @keyframes vo-float {
+            0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 0.5; }
+            50%       { transform: translateX(-50%) translateY(8px); opacity: 0.85; }
+        }
+        .scroll-cue-arrow {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            z-index: 10;
+            animation: vo-float 2.2s ease-in-out infinite;
+            user-select: none;
+        }
+        .scroll-cue-arrow svg {
+            display: block;
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.55;
+        }
+
+        /* ── REQ-23  功能区副标签：品牌蓝 · 全大写 · 宽字间距 ── */
+        .pc .secure-title {
+            color: #3C7CF3 !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.14em !important;
+            text-transform: uppercase !important;
+            margin-bottom: 6px !important;
+        }
+
+        /* ── REQ-22  Bullet 行高与间距 ── */
+        .pc .secure-info ul li {
+            display: flex !important;
+            align-items: flex-start !important;
+            margin-bottom: 20px !important;
+        }
+        .pc .secure-info ul li:last-of-type { margin-bottom: 0 !important; }
+        .pc .secure-info ul li img {
+            margin-right: 14px !important;
+            margin-top: 3px !important;
+            flex-shrink: 0 !important;
+            width: 20px !important;
+            height: 20px !important;
+        }
+        .pc .secure-info ul li p {
+            line-height: 1.7 !important;
+            margin: 0 !important;
+        }
+
+        /* ── REQ-12  次级 CTA 样式 ── */
+        .feature-secondary-cta {
+            display: inline-block;
+            margin-top: 24px;
+            color: #3C7CF3;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: opacity 0.2s;
+        }
+        .feature-secondary-cta:hover { opacity: 0.7; }
+
+        /* ── REQ-11  功能屏内容垂直居中 ── */
+        .page1-bg,
+        .page2-bg,
+        .page3-bg {
+            display: flex !important;
+            align-items: center !important;
+            min-height: 100vh !important;
+            box-sizing: border-box !important;
+        }
+
+        /* ── REQ-10  功能屏交替左右布局（屏3网络、屏5体验镜像）── */
+        #section2 .secure.displayCon,
+        #section3 .secure.displayCon {
+            flex-direction: row-reverse !important;
+        }
+
+        /* ── REQ-18  导航点：扩大热区 + Tooltip ── */
+        #fp-nav ul li {
+            width: 44px !important;
+            height: 44px !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important;
+        }
+        #fp-nav ul li a {
+            width: 44px !important;
+            height: 44px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        #fp-nav ul li::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 8px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10,20,40,0.78);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 9px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.18s;
+        }
+        #fp-nav ul li:hover::after { opacity: 1; }
+
+        /* ── REQ-02  Hero 平台图标分组 ── */
+        .tronWallet .to-dlDetail     { display: none !important; }
+        .tronWallet .qr-code-wrapper { display: none !important; }
+
+        .hero-dl-groups {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            margin-top: 14px;
+        }
+        .hero-dl-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 0 20px;
+        }
+        .hero-dl-group:first-child { padding-left: 0; }
+        .hero-dl-label {
+            font-size: 10px;
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .hero-dl-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-dl-icons .item-to img {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+        .hero-dl-sep {
+            width: 1px;
+            background: rgba(255,255,255,0.18);
+            align-self: stretch;
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+        .hero-dl-qr {
+            width: 36px;
+            height: 36px;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .hero-dl-qr canvas,
+        .hero-dl-qr img,
+        .hero-dl-qr table {
+            width: 32px !important;
+            height: 32px !important;
+            max-width: 32px !important;
+            max-height: 32px !important;
+        }
+
+        /* ── REQ-13  Footer 尾部 CTA 区块 ── */
+        .footer-cta-section {
+            background: linear-gradient(135deg, #021c31 0%, #1b4fd8 100%);
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 72px 40px;
+            text-align: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .footer-cta-eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin: 0 0 18px;
+        }
+        .footer-cta-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 36px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .footer-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            color: #1B4FD8;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 32px;
+            border-radius: 9px;
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .footer-cta-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .footer-cta-icons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            opacity: 0.65;
+        }
+        .footer-cta-icons .item-to img {
+            width: 30px;
+            height: 30px;
+            filter: brightness(0) invert(1);
+            cursor: pointer;
+        }
+        .footer-cta-email {
+            margin-top: 36px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.07);
+        }
+        .footer-cta-email input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 13px;
+            padding: 10px 16px;
+            width: 220px;
+        }
+        .footer-cta-email input::placeholder { color: rgba(255,255,255,0.35); }
+        .footer-cta-email button {
+            background: #3C7CF3;
+            border: none;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .footer-cta-email button:hover { background: #2d6ae0; }
+
+        /* ── REQ-13  Footer 多栏布局 ── */
+        .page5-footer.vo-expanded {
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 40px 60px 24px !important;
+        }
+        .footer-columns {
+            display: flex;
+            gap: 56px;
+            margin-bottom: 32px;
+        }
+        .footer-col h4 {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 0 0 14px;
+        }
+        .footer-col a {
+            display: block;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            margin-bottom: 9px;
+            transition: color 0.18s;
+        }
+        .footer-col a:hover { color: #fff; }
+        .footer-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -134,9 +503,9 @@
                     </a>
                     <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener noreferrer" class="twitter margin-r" aria-label="Twitter"></a>
                     <a href="https://t.me/TronLink" target="_blank" rel="noopener noreferrer" class="telegram margin-r" aria-label="Telegram"></a>
-                    <a class="nav-download-btn-wrapper home_nav_download_btn_wrapper margin-r" href="https://www.tronlink.org/dlDetails/" style="display: none;">
+                    <a class="nav-download-btn-wrapper home_nav_download_btn_wrapper margin-r" href="https://www.tronlink.org/dlDetails/">
                         <img alt="" src="https://www.tronlink.org/../../home/images/icon-download-white.svg"/>
-                        <span>Install</span>
+                        <span>Install TronLink</span>
                     </a>
                     <div class="language-content">
                         <div class="selectedLan" role="button" aria-expanded="false" aria-haspopup="listbox">
@@ -165,25 +534,24 @@
             <div class="bg maxWidth">
                 <section class="wallet">
                     <div class="tronWallet">
-                        <p class="title opacity bottom-top-opacity">TronLink Wallet</p>
-                        <p class="desc opacity bottom-top-opacity">Trusted by over 10,000,000 users worldwide</p>
+                        <p class="title opacity bottom-top-opacity">TronLink — Secure, Connected, and Truly Yours</p>
                         <ul class="features bottom-top-opacity">
                             <li>
-                                <span>A decentralized self-custody wallet that is secure, transparent, and stable</span>
+                                <span>Your private keys stay on your device — always.</span>
                             </li>
                             <li>
-                                <span>Fully supports the TRON network and deeply supports its staking mechanisms</span>
+                                <span>Earn staking rewards directly from your wallet.</span>
                             </li>
                             <li>
-                                <span>TronLink Extension now supports EVM networks including Ethereum, BSC, and BTTC</span>
+                                <span>Manage TRON, ETH, and BSC assets in one place.</span>
                             </li>
                             <li>
-                                <span>Offers seamless access to DApps and smooth on-chain operations, catering to various Web3 use cases</span>
+                                <span>One-tap access to DeFi, games, and Web3 apps.</span>
                             </li>
                         </ul>
                         <div class="goto-download opacity bottom-top-opacity download-contain-wrapper">
                             <a href="https://www.tronlink.org/dlDetails/">
-                                <img alt="" src="https://www.tronlink.org/home/images/icon-download.svg"/><span>Install Now</span>
+                                <img alt="" src="https://www.tronlink.org/home/images/icon-download.svg"/><span>Install TronLink</span>
                             </a>
                             <div class="qr-code-wrapper">
                                 <span class="qr-code-img"></span>
@@ -203,6 +571,30 @@
                             <span class="item-to" data-type="pc">
                                 <img alt="" src="https://www.tronlink.org/home/images/chrom-new.png">
                             </span>
+                        </div>
+                        <!-- REQ-02: 分组平台图标 Browser Extension | Mobile App -->
+                        <div class="hero-dl-groups bottom-top-opacity">
+                            <div class="hero-dl-group">
+                                <span class="hero-dl-label">Browser Extension</span>
+                                <div class="hero-dl-icons">
+                                    <span class="item-to" data-type="pc">
+                                        <img alt="Chrome" src="https://www.tronlink.org/home/images/chrom-new.png">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="hero-dl-sep"></div>
+                            <div class="hero-dl-group">
+                                <span class="hero-dl-label">Mobile App</span>
+                                <div class="hero-dl-icons">
+                                    <div class="hero-dl-qr" id="heroQrCode"></div>
+                                    <span class="item-to" data-type="android">
+                                        <img alt="Android" src="https://www.tronlink.org/home/images/andriod-new.png">
+                                    </span>
+                                    <span class="item-to" data-type="ios">
+                                        <img alt="iOS" src="https://www.tronlink.org/home/images/iOS-new.png">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -386,6 +778,10 @@
                     </div>
                 </section>
             </div>
+            <!-- REQ-04: 向下滚动引导箭头 -->
+            <div class="scroll-cue-arrow" id="scrollCueArrow" title="Scroll down">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
             <div class="animation-block">
                 <div class="ball-l-t opacity"></div>
                 <div class="ball-l-b opacity ball-l-b-animate"></div>
@@ -397,30 +793,25 @@
             <div class="page1-bg">
                 <section class="secure width displayCon">
                     <div class="secure-left">
-                        <p class="secure-title opacity page1-secure-title">Top-Notch & Full-Coverage</p>
-                        <p class="secure-desc opacity page1-secure-title">Wallet Security Protection</p>
+                        <p class="secure-title opacity page1-secure-title">End-to-End Protection</p>
+                        <p class="secure-desc opacity page1-secure-title">Wallet Security</p>
                         <div class="secure-info opacity page1-secure-info">
                             <ul>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/icon-hexagon.svg" />
-                                    <p>
-                                        From environment to transaction data, we create a comprehensive security shield for your digital assets.
-                                    </p>
+                                    <p>Every transaction is protected, from start to finish.</p>
                                 </li>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/icon-triangle.svg" />
-                                    <p>
-                                        Multidimensional tests on the running environment are conducted to ensure system security and protect your assets.
-                                    </p>
+                                    <p>Automatic security checks run every time you use the app.</p>
                                 </li>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/icon-lock.svg" />
-                                    <p>
-                                        Your private keys are dual-encrypted through the security technologies.
-                                    </p>
+                                    <p>Your private keys never leave your device.</p>
                                 </li>
                             </ul>
                         </div>
+                        <a href="https://www.tronlink.org/dlDetails/" class="feature-secondary-cta">Install Now →</a>
                     </div>
                     <div class="secure-right">
                         <div class="secure-shield">
@@ -439,26 +830,25 @@
             <div class="page2-bg">
                 <section class="secure width displayCon">
                     <div class="secure-left">
-                        <p class="secure-title opacity page2-secure-title">More Inclusive</p>
+                        <p class="secure-title opacity page2-secure-title">Multichain Ready</p>
                         <p class="secure-desc opacity page2-secure-title">Network Coverage</p>
                         <div class="secure-info opacity page2-secure-info">
                             <ul>
                                 <li>
-                                    <img alt=""  src="https://www.tronlink.org/home/images/earth.svg" />
-                                    <p>
-                                        Deep support for the TRON network: we support TRX, TRC-10, TRC-20, and TRC-721 tokens as well as unique staking mechanisms for you to obtain or delegate resources.                                    </p>
+                                    <img alt="" src="https://www.tronlink.org/home/images/earth.svg" />
+                                    <p>All TRON tokens supported — including NFTs and staking rewards.</p>
                                 </li>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/chain.svg" />
-                                    <p>
-                                        Heterogeneous EVM networks supported: TronLink Extension now supports networks including Ethereum, BSC, and BTTC.                                    </p>
+                                    <p>Use Ethereum and BSC without switching apps.</p>
                                 </li>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/ring.svg" />
-                                    <p>
-                                        Multichain HD wallet structure: this allows you to manage assets on TRON, Ethereum, BSC, and BTTC networks with a single mnemonic.                                </li>
+                                    <p>One recovery phrase. All your chains. Always.</p>
+                                </li>
                             </ul>
                         </div>
+                        <a href="https://www.tronlink.org/dlDetails/" class="feature-secondary-cta">Install Now →</a>
                     </div>
                     <div class="secure-right">
                         <div class="secure-earth">
@@ -480,30 +870,25 @@
             <div class="page3-bg">
                 <section class="secure width displayCon">
                     <div class="secure-left">
-                        <p class="secure-title opacity page5-secure-title">More Secure</p>
+                        <p class="secure-title opacity page5-secure-title">Your Assets, Your Rules</p>
                         <p class="secure-desc opacity page5-secure-title">Asset Management</p>
                         <div class="secure-info opacity page5-secure-info">
                             <ul>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/../home/images/sec_1.svg" />
-                                    <p>
-                                        Decentralized wallet: data security ensured through local storage of private key and multi-layer algorithm encryption.
-                                    </p>
+                                    <p>Your keys are stored on your device — never on any server.</p>
                                 </li>
                                 <li>
                                     <img alt="" class="secure-ring-icon" src="https://www.tronlink.org/../home/images/sec_2.svg" />
-                                    <p>
-                                        Hot and cold wallets: sign in your hot wallet and store in your cold wallet to achieve physical isolation and double protection.
-                                    </p>
+                                    <p>Keep daily funds accessible. Store savings offline.</p>
                                 </li>
                                 <li>
                                     <img alt="" class="secure-ring-icon" src="https://www.tronlink.org/../home/images/sec_3.svg" />
-                                    <p>
-                                        Node stability and reliability: free switching among nodes and auto reconnection supported.
-                                    </p>
+                                    <p>Always connected — with automatic node switching built in.</p>
                                 </li>
                             </ul>
                         </div>
+                        <a href="https://www.tronlink.org/dlDetails/" class="feature-secondary-cta">Install Now →</a>
                     </div>
                     <div class="secure-right">
                         <div class="secure-radar">
@@ -522,28 +907,25 @@
             <div class="page3-bg">
                 <section class="secure width displayCon">
                     <div class="secure-left">
-                        <p class="secure-title opacity page3-secure-title">More Convenient</p>
+                        <p class="secure-title opacity page3-secure-title">Built for Everyone</p>
                         <p class="secure-desc opacity page3-secure-title">User Experience</p>
                         <div class="secure-info opacity page3-secure-info">
                             <ul>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/sec-card.svg" />
-                                    <p>
-                                        Simple and user-friendly: we support creating/importing wallets with one click, HD wallets, importing Ledger wallets via bluetooth and creating multiple wallet accounts.
-                                    </p>
+                                    <p>Set up your wallet in under 60 seconds. Ledger supported.</p>
                                 </li>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/multisignature.svg" />
-                                    <p>
-                                        Multisignature feature: a new way of signing that enables multiple accounts to manage one set of assets in various use cases.
-                                    </p>
+                                    <p>Shared wallet control for teams, families, or organizations.</p>
                                 </li>
                                 <li>
                                     <img alt="" src="https://www.tronlink.org/home/images/sec-exc.svg" />
-                                    <p>
-                                        Web3 browser: you can access trending Web3 DApps in DeFi, social media, and gaming in a few clicks and easily add DApps to your favorites.                                </li>
+                                    <p>Browse DeFi, games, and social apps — all inside TronLink.</p>
+                                </li>
                             </ul>
                         </div>
+                        <a href="https://www.tronlink.org/dlDetails/" class="feature-secondary-cta">Install Now →</a>
                     </div>
                     <div class="secure-right">
                         <div class="secure-light">
@@ -779,7 +1161,72 @@
                 </footer>
             </div>
         </div> -->
+    <!-- REQ-13: 尾部 CTA 区块 (新 fullpage section) -->
+    <div class="section" id="sectionFooterCta">
+        <div class="footer-cta-section">
+            <p class="footer-cta-eyebrow">Get Started Today</p>
+            <h2 class="footer-cta-title">Ready to explore TRON?</h2>
+            <a href="https://www.tronlink.org/dlDetails/" class="footer-cta-btn">
+                <img alt="" src="https://www.tronlink.org/home/images/icon-download.svg" style="width:16px;height:16px;filter:none;">
+                Install TronLink
+            </a>
+            <div class="footer-cta-icons">
+                <span class="item-to" data-type="android">
+                    <img alt="Android" src="https://www.tronlink.org/home/images/andriod-new.png">
+                </span>
+                <span class="item-to" data-type="ios">
+                    <img alt="iOS" src="https://www.tronlink.org/home/images/iOS-new.png">
+                </span>
+                <span class="item-to" data-type="pc">
+                    <img alt="Chrome" src="https://www.tronlink.org/home/images/chrom-new.png">
+                </span>
+            </div>
+            <div class="footer-cta-email">
+                <input type="email" placeholder="Your email address" />
+                <button type="button">Subscribe</button>
+            </div>
+
+            <!-- Footer 内容 -->
+            <div style="width:100%;max-width:900px;margin-top:64px;">
+                <div class="footer-columns">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <a href="https://www.tronlink.org/" target="_blank" rel="noopener noreferrer">Features</a>
+                        <a href="https://www.tronlink.org/" target="_blank" rel="noopener noreferrer">Security</a>
+                        <a href="https://www.tronlink.org/dlDetails/" target="_blank" rel="noopener noreferrer">Download</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Developer</h4>
+                        <a href="https://docs.tronlink.org/" target="_blank" rel="noopener noreferrer">Developer Docs</a>
+                        <a href="https://tronweb.network/" target="_blank" rel="noopener noreferrer">TronWeb</a>
+                        <a href="https://developers.tron.network/docs/tronlink-integration" target="_blank" rel="noopener noreferrer">Integration</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <a href="https://tronlinkorg.zendesk.com/hc/en-us" target="_blank" rel="noopener noreferrer">Help Center</a>
+                        <a href="https://dapp.tronlink.org/#/useragreementen" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                        <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener noreferrer">Twitter / X</a>
+                        <a href="https://t.me/TronLink" target="_blank" rel="noopener noreferrer">Telegram</a>
+                    </div>
+                </div>
+                <div class="footer-divider"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:12px;color:rgba(255,255,255,0.35);">©Helix Tech Company Limited 2026</span>
+                    <div style="display:flex;gap:16px;">
+                        <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener noreferrer"
+                           style="font-size:12px;color:rgba(255,255,255,0.45);text-decoration:none;" aria-label="Twitter">𝕏</a>
+                        <a href="https://t.me/TronLink" target="_blank" rel="noopener noreferrer"
+                           style="font-size:12px;color:rgba(255,255,255,0.45);text-decoration:none;" aria-label="Telegram">TG</a>
+                        <a href="mailto:tronlink@tronlink.org"
+                           style="font-size:12px;color:rgba(255,255,255,0.45);text-decoration:none;" aria-label="Email">✉</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    </div>
+    </div><!-- /#fullpage -->
+
     <div class="page-footer hide pc page-nav-animate">
     </div>
     <div class="mobile">
@@ -1292,6 +1739,108 @@
 <script src="https://www.tronlink.org/lib/crypto-js.min.js"></script>
 <script src="https://www.tronlink.org/home/js/api-config.js?v=1"></script>
 <script src="https://www.tronlink.org/home/js/home.js?v=35"></script>
+<!-- =====================================================
+     REDESIGN JS — PRD v1.2
+     ===================================================== -->
+<script id="redesign-js">
+(function () {
+    'use strict';
+
+    function init() {
+        setNavDotTooltips();
+        bindScrollArrow();
+        bindAnnouncementClose();
+        trackHeroState();
+        initHeroQr();
+    }
+
+    /* REQ-18: 给导航点加 data-tooltip，触发 CSS tooltip */
+    function setNavDotTooltips() {
+        var labels = ['Home', 'Security', 'Network', 'Assets', 'Experience', 'Get Started'];
+        var nav = document.querySelector('#fp-nav ul');
+        if (!nav) return;
+        var items = nav.querySelectorAll('li');
+        items.forEach(function (li, i) {
+            if (labels[i]) li.setAttribute('data-tooltip', labels[i]);
+        });
+    }
+
+    /* REQ-04: 滚动箭头点击翻到下一屏 */
+    function bindScrollArrow() {
+        var arrow = document.getElementById('scrollCueArrow');
+        if (!arrow) return;
+        arrow.addEventListener('click', function () {
+            if (window.fullpage_api) {
+                window.fullpage_api.moveSectionDown();
+            } else if (window.$.fn.fullpage) {
+                $.fn.fullpage.moveSectionDown();
+            }
+        });
+    }
+
+    /* REQ-06: 公告条关闭按钮 */
+    function bindAnnouncementClose() {
+        var tips = document.querySelectorAll('.header-tip');
+        tips.forEach(function (tip) {
+            if (tip.querySelector('.tip-close')) return;
+            var btn = document.createElement('button');
+            btn.className = 'tip-close';
+            btn.innerHTML = '&times;';
+            btn.setAttribute('aria-label', 'Close announcement');
+            btn.addEventListener('click', function () {
+                tip.style.display = 'none';
+            });
+            tip.appendChild(btn);
+        });
+    }
+
+    /* REQ-05: Hero 深色背景时给 body 加 vo-on-hero class，控制导航按钮样式 */
+    function trackHeroState() {
+        function setClass() {
+            var idx = 0;
+            if (window.fullpage_api) {
+                var s = fullpage_api.getActiveSection();
+                if (s) idx = s.index;
+            }
+            document.body.classList.toggle('vo-on-hero', idx === 0);
+        }
+        // fullpage.js v3 事件
+        document.addEventListener('onLeave', function (e) {
+            setTimeout(setClass, 100);
+        });
+        // 轮询兜底（fullpage 初始化延迟）
+        var poll = setInterval(function () {
+            setClass();
+            if (window.fullpage_api) clearInterval(poll);
+        }, 300);
+        document.body.classList.add('vo-on-hero');
+    }
+
+    /* REQ-02: 在 Hero 新 QR 容器里生成 QR 码 */
+    function initHeroQr() {
+        var container = document.getElementById('heroQrCode');
+        if (!container) return;
+        // 等 jQuery + qrcode 插件加载完
+        var attempts = 0;
+        var t = setInterval(function () {
+            attempts++;
+            if (attempts > 40) { clearInterval(t); return; }
+            if (!window.$ || !$.fn.qrcode) return;
+            clearInterval(t);
+            try {
+                $(container).qrcode({ width: 32, height: 32, text: 'https://www.tronlink.org/dlDetails/' });
+            } catch(e) {}
+        }, 200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-75NCH26EH8"></script>
 <script>
