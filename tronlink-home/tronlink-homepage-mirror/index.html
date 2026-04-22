@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="https://www.tronlink.org/lib/jquery/bs3.css">
     <link rel="stylesheet" href="https://www.tronlink.org/lib/jquery/jquery.confirm.css">
     <link href="https://www.tronlink.org/home/css/home.css?v=32" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
     <!-- Google Analytics -->
     <script>
         (function (i, s, o, g, r, a, m) {
@@ -83,6 +84,92 @@
             background: none;
         }
         .header-tip .tip-close:hover { color: #fff; }
+        .header-tip .url {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 4px;
+            color: #fff;
+        }
+        .header-tip .copy-url {
+            display: none !important;
+        }
+        .header-tip .header-tip-copy-icon {
+            font-size: 12px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1;
+        }
+
+        .pc .header-container {
+            position: absolute;
+            inset: 0 0 auto;
+            z-index: 30;
+        }
+        .pc .header.maxWidth {
+            height: 80px !important;
+            max-width: 1200px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+        .pc .header .menu {
+            display: flex !important;
+            align-items: center !important;
+        }
+        .pc .header .menu > .margin-r {
+            margin-right: 32px !important;
+        }
+        .pc .header .menu .nav-social-link.margin-r {
+            margin-right: 32px !important;
+        }
+        .pc .header .menu .nav-social-link:last-of-type {
+            margin-right: 32px !important;
+        }
+        .pc .header .menu .home_nav_download_btn_wrapper {
+            order: 7;
+            margin-right: 0 !important;
+        }
+        .pc .nav-social-link,
+        .pc .nav-language .selectedLan {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: rgba(255,255,255,0.8) !important;
+            text-decoration: none !important;
+            width: 16px;
+            height: 16px;
+            font-size: 16px;
+            line-height: 1;
+        }
+        .pc .nav-social-link:hover,
+        .pc .nav-language .selectedLan:hover {
+            color: #fff !important;
+        }
+        .pc .nav-language {
+            position: relative;
+            order: 6;
+            margin-right: 32px !important;
+        }
+        .pc .nav-language .selectedLan {
+            width: 16px !important;
+            min-width: 16px !important;
+            height: 16px !important;
+            min-height: unset !important;
+            padding: 0 !important;
+            font-size: 16px !important;
+            border: none !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        .pc .nav-language .selectedLan .arrow {
+            display: none !important;
+        }
+        .pc .nav-language .dropdown-content {
+            top: calc(100% + 12px) !important;
+            right: -16px !important;
+            left: auto !important;
+        }
 
         /* ── REQ-05  导航 Install 按钮：首屏起始显示 ── */
         .nav-download-btn-wrapper.home_nav_download_btn_wrapper {
@@ -106,10 +193,6 @@
             border-color: rgba(255,255,255,0.65) !important;
             color: #fff !important;
         }
-        .nav-download-btn-wrapper.home_nav_download_btn_wrapper img {
-            width: 14px;
-            height: 14px;
-        }
 
         /* ── REQ-04  向下滚动引导箭头 ── */
         @keyframes vo-float {
@@ -126,21 +209,113 @@
             animation: vo-float 2.2s ease-in-out infinite;
             user-select: none;
         }
-        .scroll-cue-arrow svg {
+        .scroll-cue-arrow i {
             display: block;
             width: 26px;
             height: 26px;
-            fill: none;
-            stroke: #fff;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            opacity: 0.55;
+            color: rgba(255,255,255,0.72);
+            font-size: 26px;
+            line-height: 26px;
         }
 
-        /* Hero 主标题字号 */
-        #section0 p.title {
-            font-size: 48px !important;
+        .pc #section0 .bg.maxWidth {
+            max-width: 1200px !important;
+        }
+        .pc #section0 .wallet {
+            min-height: 1040px !important;
+            padding: 112px 0 24px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            box-sizing: border-box !important;
+        }
+        .pc #section0 .tronWallet {
+            width: 600px !important;
+        }
+        .pc #section0 .mobile-banner {
+            position: relative !important;
+            flex: 0 0 505px !important;
+            width: 505px !important;
+            min-width: 505px !important;
+            height: 900px !important;
+        }
+        .pc #section0 .mobile-banner .mobile-right,
+        .pc #section0 .mobile-banner .mobile-left {
+            position: absolute !important;
+            max-width: none !important;
+            transform: none !important;
+        }
+        .pc #section0 .mobile-banner .mobile-right {
+            right: 0 !important;
+            top: 226px !important;
+            width: 493px !important;
+            height: 448.89px !important;
+        }
+        .pc #section0 .mobile-banner .mobile-left {
+            left: 25px !important;
+            top: 148px !important;
+            width: 298px !important;
+            height: 603.2px !important;
+        }
+        .pc #section0 p.title {
+            max-width: 560px !important;
+            font-size: 56px !important;
+            line-height: 64px !important;
+            letter-spacing: 0 !important;
+            margin: 0 0 24px !important;
+            white-space: normal !important;
+        }
+        .pc #section0 .features {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 0 40px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+        }
+        .pc #section0 .features li {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            margin: 0 !important;
+        }
+        .pc #section0 .features li::before {
+            display: none !important;
+            content: none !important;
+        }
+        .pc #section0 .features .hero-bullet-icon {
+            color: #fff;
+            font-size: 18px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .pc #section0 .features li span {
+            color: rgba(255,255,255,0.9) !important;
+            font-size: 16px !important;
+            line-height: 22.86px !important;
+            letter-spacing: 0 !important;
+        }
+        .pc #section0 .goto-download {
+            margin: 0 0 28px !important;
+        }
+        .pc #section0 .goto-download a {
+            width: 226px !important;
+            height: 62px !important;
+            padding: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 10px !important;
+            background: #fff !important;
+            color: #021c31 !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            line-height: 22px !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+        .pc #section0 .goto-download a img {
+            display: none !important;
         }
 
         /* ── REQ-23  功能区副标签：品牌蓝 · 全大写 · 宽字间距 ── */
@@ -201,39 +376,99 @@
             flex-direction: row-reverse !important;
         }
 
-        /* ── REQ-18  导航点：扩大热区 + Tooltip ── */
-        #fp-nav ul li {
-            width: 44px !important;
-            height: 44px !important;
+        /* ── REQ-18  导航点：Figma spec ── */
+        #fp-nav {
+            position: fixed !important;
+            right: 40px !important;
+            left: auto !important;
+            top: 50% !important;
             margin: 0 !important;
+            transform: translateY(-50%) translate3d(0,0,0) !important;
+            width: fit-content !important;
+            color: rgba(0, 0, 0, 0.6) !important;
+        }
+        /* 黑色胶囊容器 */
+        #fp-nav ul {
+            background: #000 !important;
+            border-radius: 100px !important;
+            padding: 16px !important;
             display: flex !important;
+            flex-direction: column !important;
             align-items: center !important;
-            justify-content: center !important;
+            gap: 16px !important;
+            margin: 0 !important;
+            width: fit-content !important;
+            list-style: none !important;
+        }
+        /* li 尺寸 = 点本身大小，overflow visible 允许激活态 36px 溢出 */
+        #fp-nav ul li {
+            width: 10px !important;
+            height: 10px !important;
+            margin: 0 !important;
+            display: block !important;
             position: relative !important;
+            overflow: visible !important;
         }
-        #fp-nav ul li a {
-            width: 44px !important;
-            height: 44px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+        /* 隐藏 li 内所有子元素（a、span、tooltip 全部） */
+        #fp-nav ul li > * {
+            display: none !important;
         }
+        /* 仅恢复 a 为透明大热区，保持可点击 */
+        #fp-nav ul li > a {
+            display: block !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 42px !important;
+            height: 42px !important;
+            background: transparent !important;
+            z-index: 2 !important;
+            cursor: pointer !important;
+        }
+        /* li::before = 唯一可见指示器 */
+        #fp-nav ul li::before {
+            content: '' !important;
+            display: block !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 0 !important;
+            width: 10px !important;
+            height: 10px !important;
+            transform: translateY(-50%) !important;
+            background: rgba(255,255,255,0.3) !important;
+            border-radius: 99px !important;
+            pointer-events: none !important;
+            transition: height 0.4s cubic-bezier(0.34,1.2,0.64,1),
+                        background 0.25s ease !important;
+            z-index: 1 !important;
+        }
+        /* 激活态：胶囊 10×18，纯白 */
+        #fp-nav ul li:has(> a.active)::before,
+        #fp-nav ul li:hover::before {
+            height: 18px !important;
+            background: #fff !important;
+        }
+        /* tooltip 悬停左侧显示 */
         #fp-nav ul li::after {
             content: attr(data-tooltip);
+            display: block;
             position: absolute;
-            left: calc(100% + 8px);
+            right: calc(100% + 16px);
+            left: auto !important;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(10,20,40,0.78);
+            background: rgba(10,20,40,0.85);
             color: #fff;
             font-size: 11px;
             font-weight: 500;
-            padding: 3px 9px;
+            padding: 4px 10px;
             border-radius: 4px;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.18s;
+            z-index: 10;
         }
         #fp-nav ul li:hover::after { opacity: 1; }
 
@@ -243,59 +478,98 @@
 
         .hero-dl-groups {
             display: flex;
-            align-items: flex-start;
-            gap: 0;
-            margin-top: 14px;
+            align-items: center;
+            gap: 12px;
+            margin-top: 0;
         }
         .hero-dl-group {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 6px;
-            padding: 0 20px;
-        }
-        .hero-dl-group:first-child { padding-left: 0; }
-        .hero-dl-label {
-            font-size: 10px;
-            color: rgba(255,255,255,0.55);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            align-items: center;
+            gap: 10px;
+            padding: 0;
         }
         .hero-dl-icons {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-        .hero-dl-icons .item-to img {
+        .hero-platform-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 32px;
             height: 32px;
+            color: #fff;
             cursor: pointer;
+            font-size: 22px;
+            line-height: 1;
         }
         .hero-dl-sep {
             width: 1px;
             background: rgba(255,255,255,0.18);
             align-self: stretch;
-            margin: 0 4px;
+            margin: 0 9px;
             flex-shrink: 0;
         }
-        .hero-dl-qr {
-            width: 36px;
-            height: 36px;
-            background: #fff;
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+        .hero-platform-qr {
+            font-size: 22px;
         }
-        .hero-dl-qr canvas,
-        .hero-dl-qr img,
-        .hero-dl-qr table {
-            width: 32px !important;
-            height: 32px !important;
-            max-width: 32px !important;
-            max-height: 32px !important;
+        .hero-platform-icon[data-type="android"] {
+            font-size: 22px;
+        }
+        .pc #section0 .some-data {
+            height: 160px !important;
+            background: rgba(2,28,49,0.49) !important;
+            backdrop-filter: blur(10px);
+            display: flex !important;
+            align-items: center !important;
+        }
+        .pc #section0 .some-data section {
+            height: 100%;
+            max-width: 1200px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .pc #section0 .some-data section > div {
+            width: 300px !important;
+            height: 100%;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important;
+            text-align: center !important;
+        }
+        .pc #section0 .some-data section > div:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 1px;
+            height: 60px;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.22);
+        }
+        .pc #section0 .some-data .number {
+            margin: 0 0 10px !important;
+            font-size: 40px !important;
+            font-weight: 700 !important;
+            line-height: 57.14px !important;
+            color: #fff !important;
+            width: 100% !important;
+            text-align: center !important;
+        }
+        .pc #section0 .some-data section > div > p:last-child {
+            margin: 0 !important;
+            font-size: 20px !important;
+            line-height: 28.57px !important;
+            color: rgba(255,255,255,0.7) !important;
+            width: 100% !important;
+            text-align: center !important;
+        }
+        .pc #section0 .scroll-cue-arrow {
+            bottom: 12px !important;
         }
 
         /* ── REQ-13  Footer 尾部 CTA 区块 ── */
@@ -427,7 +701,7 @@
 <body>
     <div class="header-container pc">
         <div class="header-tip">
-            Only official website of TronLink: <span class="url">https://tronlink.org<img alt="" src="https://www.tronlink.org/home/images/copy.png" class="copy-url"><input type="hidden" value="https://tronlink.org" id="copy-url"></span> 
+            Only official website of TronLink: <span class="url">https://tronlink.org<i class="ri-file-copy-line header-tip-copy-icon" aria-hidden="true"></i><img alt="" src="https://www.tronlink.org/home/images/copy.png" class="copy-url"><input type="hidden" value="https://tronlink.org" id="copy-url"></span> 
         </div>
         <div class="header maxWidth" role="navigation" aria-label="Main navigation">
             <a href="https://www.tronlink.org/" class="flex-center"><span class="logo"></span></a>
@@ -506,15 +780,18 @@
                     <a href="https://tronlinkorg.zendesk.com/hc/en-us" target="_blank" rel="noopener noreferrer" class="margin-r">
                         Help
                     </a>
-                    <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener noreferrer" class="twitter margin-r" aria-label="Twitter"></a>
-                    <a href="https://t.me/TronLink" target="_blank" rel="noopener noreferrer" class="telegram margin-r" aria-label="Telegram"></a>
+                    <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener noreferrer" class="nav-social-link margin-r" aria-label="Twitter">
+                        <i class="ri-twitter-x-fill" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://t.me/TronLink" target="_blank" rel="noopener noreferrer" class="nav-social-link margin-r" aria-label="Telegram">
+                        <i class="ri-telegram-2-fill" aria-hidden="true"></i>
+                    </a>
                     <a class="nav-download-btn-wrapper home_nav_download_btn_wrapper margin-r" href="https://www.tronlink.org/dlDetails/">
-                        <img alt="" src="https://www.tronlink.org/../../home/images/icon-download-white.svg"/>
                         <span>Install TronLink</span>
                     </a>
-                    <div class="language-content">
+                    <div class="language-content nav-language">
                         <div class="selectedLan" role="button" aria-expanded="false" aria-haspopup="listbox">
-                            English  <span class="arrow"></span>
+                            <i class="ri-global-line" aria-hidden="true"></i><span class="arrow"></span>
                         </div>
                         <div class="dropdown-content">
                             <div class="lang-en lang-item" data-lang="">English</div>
@@ -539,24 +816,28 @@
             <div class="bg maxWidth">
                 <section class="wallet">
                     <div class="tronWallet">
-                        <p class="title opacity bottom-top-opacity">TronLink — Secure, Connected, and Truly Yours</p>
+                        <p class="title opacity bottom-top-opacity">TronLink Wallet<br>Secure, Connected,<br>and Truly Yours</p>
                         <ul class="features bottom-top-opacity">
                             <li>
+                                <i class="ri-checkbox-circle-fill hero-bullet-icon" aria-hidden="true"></i>
                                 <span>Your private keys stay on your device — always.</span>
                             </li>
                             <li>
+                                <i class="ri-checkbox-circle-fill hero-bullet-icon" aria-hidden="true"></i>
                                 <span>Earn staking rewards directly from your wallet.</span>
                             </li>
                             <li>
+                                <i class="ri-checkbox-circle-fill hero-bullet-icon" aria-hidden="true"></i>
                                 <span>Manage TRON, ETH, and BSC assets in one place.</span>
                             </li>
                             <li>
+                                <i class="ri-checkbox-circle-fill hero-bullet-icon" aria-hidden="true"></i>
                                 <span>One-tap access to DeFi, games, and Web3 apps.</span>
                             </li>
                         </ul>
                         <div class="goto-download opacity bottom-top-opacity download-contain-wrapper">
                             <a href="https://www.tronlink.org/dlDetails/">
-                                <img alt="" src="https://www.tronlink.org/home/images/icon-download.svg"/><span>Install TronLink</span>
+                                <span>Install TronLink</span>
                             </a>
                             <div class="qr-code-wrapper">
                                 <span class="qr-code-img"></span>
@@ -580,24 +861,22 @@
                         <!-- REQ-02: 分组平台图标 Browser Extension | Mobile App -->
                         <div class="hero-dl-groups bottom-top-opacity">
                             <div class="hero-dl-group">
-                                <span class="hero-dl-label">Browser Extension</span>
                                 <div class="hero-dl-icons">
-                                    <span class="item-to" data-type="pc">
-                                        <img alt="Chrome" src="https://www.tronlink.org/home/images/chrom-new.png">
+                                    <span class="item-to hero-platform-icon" data-type="pc" aria-label="Chrome">
+                                        <i class="ri-chrome-fill" aria-hidden="true"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="hero-dl-sep"></div>
                             <div class="hero-dl-group">
-                                <span class="hero-dl-label">Mobile App</span>
                                 <div class="hero-dl-icons">
-                                    <div class="hero-dl-qr" id="heroQrCode"></div>
-                                    <span class="item-to" data-type="android">
-                                        <img alt="Android" src="https://www.tronlink.org/home/images/andriod-new.png">
+                                    <span class="item-to hero-platform-icon" data-type="android" aria-label="Android">
+                                        <i class="ri-android-fill" aria-hidden="true"></i>
                                     </span>
-                                    <span class="item-to" data-type="ios">
-                                        <img alt="iOS" src="https://www.tronlink.org/home/images/iOS-new.png">
+                                    <span class="item-to hero-platform-icon" data-type="ios" aria-label="iOS">
+                                        <i class="ri-apple-fill" aria-hidden="true"></i>
                                     </span>
+                                    <span class="hero-platform-icon hero-platform-qr" aria-hidden="true"><i class="ri-qr-code-line"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -758,7 +1037,6 @@
                             src="https://www.tronlink.org/home/images/projection.png" /> -->
                         <img alt="" class="mobile-right opacity mobile-right-animate" src="https://www.tronlink.org/home/images/mobile-2-new.png?v=1" />
                         <img alt="" class="mobile-left opacity mobile-left-animate" src="https://www.tronlink.org/home/images/mobile-1-new.png" />
-                        <div class="ball-r-min opacity"></div>
                         <div class="ball-r-max opacity"></div>
                     </div>
                 </section>
@@ -785,7 +1063,7 @@
             </div>
             <!-- REQ-04: 向下滚动引导箭头 -->
             <div class="scroll-cue-arrow" id="scrollCueArrow" title="Scroll down">
-                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
             </div>
             <div class="animation-block">
                 <div class="ball-l-t opacity"></div>
@@ -1241,7 +1519,7 @@
             </div>
             <header class="mobile-header" role="navigation" aria-label="Mobile navigation">
                 <div class="header-tip">
-                    Only official website of TronLink: <span class="url">https://tronlink.org<img alt="" src="https://www.tronlink.org/home/images/copy.png" class="copy-url"><input type="hidden" value="https://tronlink.org" id="copy-url"></span> 
+                    Only official website of TronLink: <span class="url">https://tronlink.org<i class="ri-file-copy-line header-tip-copy-icon" aria-hidden="true"></i><img alt="" src="https://www.tronlink.org/home/images/copy.png" class="copy-url"><input type="hidden" value="https://tronlink.org" id="copy-url"></span> 
                 </div>
                 <div  class="header-menu">
                     <div class="logo"></div>
@@ -1756,7 +2034,6 @@
         bindScrollArrow();
         bindAnnouncementClose();
         trackHeroState();
-        initHeroQr();
     }
 
     /* REQ-18: 给导航点加 data-tooltip，触发 CSS tooltip */
@@ -1819,23 +2096,6 @@
             if (window.fullpage_api) clearInterval(poll);
         }, 300);
         document.body.classList.add('vo-on-hero');
-    }
-
-    /* REQ-02: 在 Hero 新 QR 容器里生成 QR 码 */
-    function initHeroQr() {
-        var container = document.getElementById('heroQrCode');
-        if (!container) return;
-        // 等 jQuery + qrcode 插件加载完
-        var attempts = 0;
-        var t = setInterval(function () {
-            attempts++;
-            if (attempts > 40) { clearInterval(t); return; }
-            if (!window.$ || !$.fn.qrcode) return;
-            clearInterval(t);
-            try {
-                $(container).qrcode({ width: 32, height: 32, text: 'https://www.tronlink.org/dlDetails/' });
-            } catch(e) {}
-        }, 200);
     }
 
     if (document.readyState === 'loading') {
