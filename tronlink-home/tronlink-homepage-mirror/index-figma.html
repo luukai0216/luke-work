@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TronLink Wallet | Trusted by over 10,000,000 users worldwide</title>
+  <meta name="description" content="TronLink — the safe, professional TRON wallet. Full coverage of PC browser extension and mobile app. Supports TRON, ETH, BSC.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #FFFFFF;
+      --fafeff: #FAFEFF;
+      --dark-navy: #00021A;
+      --blue: #0D1FFF;
+      --blue-cta: #1B4FD8;
+      --text-dark: #1B2540;
+      --text-dark-muted: rgba(27, 37, 64, 0.72);
+      --text-white-muted: rgba(255, 255, 255, 0.72);
+      --text-white-dim: rgba(255, 255, 255, 0.7);
+      --text-white-faint: rgba(255, 255, 255, 0.35);
+      --text-footer-label: rgba(255, 255, 255, 0.6);
+      --border-white: rgba(255, 255, 255, 0.65);
+      --border-white-soft: rgba(255, 255, 255, 0.2);
+      --border-dark: rgba(0, 0, 0, 0.2);
+      --feature-bg: rgba(13, 31, 255, 0.16);
+      --stat-divider: rgba(255, 255, 255, 0.2);
+      --footer-divider: rgba(255, 255, 255, 0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── ANNOUNCEMENT BAR ─────────────────────────── */
+    .announcement-bar {
+      position: relative;
+      background: rgba(0, 0, 0, 0.6);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      z-index: 100;
+    }
+    .announcement-bar span {
+      font-size: 12px;
+      line-height: 32px;
+      color: var(--text-white-dim);
+      letter-spacing: 0;
+    }
+    .announcement-bar a {
+      font-size: 12px;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .announcement-bar .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      opacity: 0.4;
+      cursor: pointer;
+      margin-left: 2px;
+    }
+    .announcement-bar .copy-btn img { width: 12px; height: 12px; }
+    .announcement-bar .close-btn {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .announcement-bar .close-btn img { width: 16px; height: 16px; }
+
+    /* ─── NAVIGATION ───────────────────────────────── */
+    .main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      background: transparent;
+      transition: background 0.3s;
+    }
+    .main-nav.scrolled {
+      background: rgba(0, 2, 22, 0.92);
+      backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      list-style: none;
+    }
+    .nav-links li a {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--text-white-dim);
+      text-decoration: none;
+      padding: 8px 50px 8px 0;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .nav-links li a:hover { color: var(--white); }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .btn-nav-install {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border: 1px solid var(--border-white);
+      border-radius: 7px;
+      font-size: 13.7px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .btn-nav-install:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .nav-social {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .nav-social a {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-social a:hover { opacity: 1; }
+    .nav-social img { width: 16px; height: 16px; object-fit: contain; }
+
+    /* ─── HERO SECTION ─────────────────────────────── */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      background: linear-gradient(180deg,
+        rgba(0, 2, 22, 1) 0%,
+        rgba(0, 4, 43, 1) 6%,
+        rgba(1, 31, 88, 1) 14%,
+        rgba(0, 29, 138, 1) 20%,
+        rgba(0, 61, 183, 1) 27%,
+        rgba(0, 128, 248, 1) 35%,
+        rgba(95, 189, 247, 1) 40%,
+        rgba(211, 239, 251, 1) 45%,
+        rgba(211, 239, 251, 0) 52%);
+      overflow: hidden;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 56px;
+    }
+    .hero-heading-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero-title {
+      font-size: 43.5px;
+      font-weight: 500;
+      line-height: 48px;
+      letter-spacing: -0.0106em;
+      color: var(--fafeff);
+      text-align: center;
+    }
+    .hero-subtitle {
+      margin-top: 12px;
+      font-size: 42.8px;
+      font-weight: 500;
+      line-height: 48px;
+      letter-spacing: -0.0107em;
+      color: var(--fafeff);
+      text-align: center;
+    }
+    .hero-downloads {
+      margin-top: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .download-icons-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: transparent;
+    }
+    .download-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      text-decoration: none;
+    }
+    .download-icon-btn img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+    .download-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+    .download-mobile-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+    }
+    .btn-hero-install {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px 30px;
+      background: var(--white);
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 22px;
+      color: var(--blue-cta);
+      text-decoration: none;
+      text-align: center;
+      width: 260px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .btn-hero-install:hover {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      transform: translateY(-1px);
+    }
+    .hero-image-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 1440px;
+      margin: 32px auto 0;
+    }
+    .hero-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .stats-bar {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      background: rgba(211, 239, 251, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 160px;
+      display: flex;
+      align-items: center;
+    }
+    .stat-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .stat-item + .stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50px;
+      width: 1px;
+      height: 60px;
+      background: var(--stat-divider);
+    }
+    .stat-number {
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.43;
+      color: rgba(0,0,0,0.8);
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.43;
+      color: rgba(0,0,0,0.4);
+      text-align: center;
+      margin-top: 2px;
+    }
+    .feature-bullets {
+      max-width: 944px;
+      margin: 40px auto 60px;
+      padding: 0 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .feature-bullet-item {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 16px;
+      height: 48px;
+      background: var(--feature-bg);
+      border-radius: 8px;
+    }
+    .feature-bullet-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .feature-bullet-text {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22.86px;
+      color: var(--white);
+    }
+
+    /* ─── SECTION COMMON ───────────────────────────── */
+    .section-tag {
+      font-size: 42.9px;
+      font-weight: 400;
+      line-height: 48px;
+      letter-spacing: -0.0107em;
+      margin-bottom: 0;
+    }
+    .section-heading {
+      font-size: 18.4px;
+      font-weight: 400;
+      line-height: 26px;
+      letter-spacing: -0.0054em;
+    }
+    .section-body {
+      font-size: 18.4px;
+      font-weight: 400;
+      line-height: 26px;
+      letter-spacing: -0.0054em;
+    }
+    .section-body ul {
+      list-style: none;
+      padding: 0;
+    }
+    .section-body ul li {
+      padding: 4px 0;
+    }
+    .section-body ul li::before {
+      content: '—';
+      margin-right: 6px;
+      opacity: 0.5;
+    }
+    .btn-install-now {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 7px;
+      font-size: 13.7px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      height: 36px;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-install-now img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+    .btn-install-now.dark {
+      border: 1px solid var(--border-dark);
+      color: #000000;
+      background: transparent;
+    }
+    .btn-install-now.dark:hover { background: rgba(0,0,0,0.06); }
+    .btn-install-now.light {
+      border: 1px solid var(--border-white-soft);
+      color: var(--white);
+      background: transparent;
+    }
+    .btn-install-now.light:hover { background: rgba(255,255,255,0.08); }
+
+    /* ─── WALLET SECURITY ──────────────────────────── */
+    .security-section {
+      background: #ffffff;
+      padding: 100px 0 80px;
+      overflow: hidden;
+    }
+    .security-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .security-content {
+      flex: 0 0 600px;
+    }
+    .security-content .section-tag { color: var(--text-dark); }
+    .security-content .section-heading { color: var(--text-dark-muted); margin-top: 16px; }
+    .security-content .section-body { color: var(--text-dark-muted); margin-top: 16px; }
+    .security-content .btn-install-now { margin-top: 28px; }
+    .security-visual {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+    }
+    .security-visual img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    /* ─── NETWORK COVERAGE ─────────────────────────── */
+    .network-section {
+      position: relative;
+      background: linear-gradient(180deg,
+        rgba(211, 239, 251, 0) 0%,
+        rgba(211, 239, 251, 1) 8%,
+        rgba(95, 189, 247, 1) 21%,
+        rgba(0, 128, 248, 1) 36%,
+        rgba(0, 52, 179, 1) 52%,
+        rgba(0, 19, 118, 1) 61%,
+        rgba(0, 14, 64, 1) 73%,
+        rgba(0, 6, 48, 1) 81%,
+        rgba(0, 4, 32, 1) 92%,
+        rgba(0, 2, 22, 1) 100%);
+      overflow: hidden;
+      padding-bottom: 80px;
+    }
+    .network-visual {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      display: block;
+    }
+    .network-visual img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .network-content-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .network-content {
+      max-width: 600px;
+    }
+    .network-content .section-tag { color: var(--white); }
+    .network-content .section-heading { color: var(--text-white-muted); margin-top: 16px; }
+    .network-content .section-body { color: var(--text-white-muted); margin-top: 16px; }
+    .network-content .btn-install-now { margin-top: 28px; }
+
+    /* ─── FEATURE SECTION (light bg) ──────────────── */
+    .feature-light-section {
+      background: #ffffff;
+      padding: 100px 0;
+      overflow: hidden;
+    }
+    .feature-light-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .feature-light-inner.reverse { flex-direction: row-reverse; }
+    .feature-light-content {
+      flex: 0 0 600px;
+    }
+    .feature-light-content .section-tag { color: var(--text-dark); }
+    .feature-light-content .section-heading { color: var(--text-dark-muted); margin-top: 16px; }
+    .feature-light-content .section-body { color: var(--text-dark-muted); margin-top: 16px; }
+    .feature-light-content .btn-install-now { margin-top: 28px; }
+    .feature-light-visual {
+      flex: 1;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-light-visual img {
+      max-width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: contain;
+    }
+    .halftone-orb {
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(13, 31, 255, 0.12) 0%, rgba(13, 31, 255, 0.04) 60%, transparent 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .halftone-orb-inner {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(13, 31, 255, 0.18) 0%, rgba(13, 31, 255, 0.06) 60%, transparent 100%);
+      border: 1px solid rgba(13, 31, 255, 0.1);
+    }
+
+    /* ─── CTA SECTION ──────────────────────────────── */
+    .cta-section {
+      position: relative;
+      background: linear-gradient(180deg,
+        rgba(0, 2, 22, 1) 0%,
+        rgba(0, 4, 43, 1) 20%,
+        rgba(1, 31, 88, 1) 60%);
+      padding: 120px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 100%, rgba(13,31,255,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-subtitle {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.07;
+      letter-spacing: 0.105em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-align: center;
+    }
+    .cta-heading {
+      margin-top: 20px;
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 43.2px;
+      letter-spacing: -0.018em;
+      color: var(--white);
+      text-align: center;
+    }
+    .cta-actions {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+    .btn-cta-install {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13.5px 32px;
+      background: var(--white);
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.43;
+      color: var(--blue-cta);
+      text-decoration: none;
+      box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .btn-cta-install:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+    }
+    .cta-download-group {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .cta-chrome-wrap {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+    }
+    .cta-mobile-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+    }
+    .cta-download-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────── */
+    footer {
+      background: rgba(0, 2, 22, 0.98);
+      padding: 72px 0 64px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+    .footer-links-grid {
+      display: flex;
+      justify-content: flex-end;
+      gap: 24px;
+    }
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 200px;
+    }
+    .footer-col-heading {
+      font-size: 14.2px;
+      font-weight: 400;
+      line-height: 20px;
+      color: var(--text-footer-label);
+    }
+    .footer-col-links {
+      display: flex;
+      flex-direction: column;
+    }
+    .footer-col-links a {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: var(--white);
+      text-decoration: none;
+      padding: 8px 0;
+      transition: opacity 0.2s;
+    }
+    .footer-col-links a:hover { opacity: 0.75; }
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--footer-divider);
+      margin: 56px 0 32px;
+    }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .footer-logo img {
+      width: 200px;
+      height: 48px;
+      object-fit: contain;
+      object-position: left center;
+    }
+    .footer-copyright {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 18px;
+      color: var(--text-white-faint);
+    }
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
+    .footer-social a:hover { opacity: 1; }
+    .footer-social img { width: 16px; height: 16px; object-fit: contain; }
+
+    /* ─── STICKY NAV OFFSET ─────────────────────────── */
+    .hero-section { margin-top: -80px; padding-top: 80px; }
+  </style>
+</head>
+<body>
+
+  <!-- ─── ANNOUNCEMENT BAR ──────────────────────── -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Only official website of TronLink:</span>
+    <a href="https://tronlink.org" target="_blank" rel="noopener">https://tronlink.org</a>
+    <span class="copy-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText('https://tronlink.org')" title="Copy URL">
+      <img src="images/icon-copy.png" alt="copy">
+    </span>
+    <span class="close-btn" onclick="document.getElementById('announcementBar').style.display='none'" title="Close">
+      <img src="images/icon-close.png" alt="close">
+    </span>
+  </div>
+
+  <!-- ─── NAVIGATION ──────────────────────────────── -->
+  <nav class="main-nav" id="mainNav">
+    <a href="#" class="nav-logo">
+      <img src="images/tronlink-logo-64b070.png" alt="TronLink">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#help">Help</a></li>
+      <li><a href="#developer">Developer</a></li>
+      <li><a href="https://forms.gle/5rd4ZkQvLnLRyFCU6" target="_blank" rel="noopener">AI Support</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://www.tronlink.org/install" class="btn-nav-install" target="_blank" rel="noopener">
+        Install TronLink
+      </a>
+      <div class="nav-social">
+        <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener" title="Twitter/X">
+          <img src="images/icon-twitter.png" alt="Twitter">
+        </a>
+        <a href="https://t.me/tronlinkofficial" target="_blank" rel="noopener" title="Telegram">
+          <img src="images/icon-telegram.png" alt="Telegram">
+        </a>
+        <a href="#" target="_blank" rel="noopener" title="Discord">
+          <img src="images/icon-discord.png" alt="Discord">
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────── -->
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div class="hero-heading-wrap">
+        <h1 class="hero-title">TronLink Wallet</h1>
+        <p class="hero-subtitle">Secure, Connected, and Truly Yours</p>
+      </div>
+
+      <div class="hero-downloads">
+        <!-- Chrome extension download -->
+        <div class="download-icons-row">
+          <a href="https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec" class="download-icon-btn" target="_blank" rel="noopener" title="Chrome Extension">
+            <img src="images/chrome-icon-56586a.png" alt="Chrome">
+          </a>
+        </div>
+
+        <!-- Install CTA button -->
+        <a href="https://www.tronlink.org/install" class="btn-hero-install" target="_blank" rel="noopener">
+          Install TronLink
+        </a>
+
+        <!-- Mobile download row -->
+        <div class="download-mobile-row">
+          <a href="https://play.google.com/store/apps/details?id=com.tronlinkpro.wallet" class="download-icon-btn" target="_blank" rel="noopener" title="Android">
+            <img src="images/android-icon-56586a.png" alt="Android">
+          </a>
+          <a href="https://apps.apple.com/app/tronlink-pro-trx-btc-wallet/id1453530188" class="download-icon-btn" target="_blank" rel="noopener" title="iOS">
+            <img src="images/ios-icon-56586a.png" alt="iOS">
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero visual -->
+      <div class="hero-image-wrap">
+        <img src="images/hero-bg.png" alt="TronLink Wallet interface">
+      </div>
+    </div>
+
+    <!-- Stats bar (blur) -->
+    <div class="stats-bar">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <div class="stat-number">100,000+</div>
+          <div class="stat-label">Tokens</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">5 Years</div>
+          <div class="stat-label">Proven Track Record</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">200+</div>
+          <div class="stat-label">Countries</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">10,000,000+</div>
+          <div class="stat-label">Global Users</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature bullets -->
+    <div class="feature-bullets">
+      <div class="feature-bullet-item">
+        <img class="feature-bullet-icon" src="images/feature-icon-56586a.png" alt="">
+        <span class="feature-bullet-text">Your private keys stay on your device — always.</span>
+      </div>
+      <div class="feature-bullet-item">
+        <img class="feature-bullet-icon" src="images/feature-icon-56586a.png" alt="">
+        <span class="feature-bullet-text">Earn staking rewards directly from your wallet.</span>
+      </div>
+      <div class="feature-bullet-item">
+        <img class="feature-bullet-icon" src="images/feature-icon-56586a.png" alt="">
+        <span class="feature-bullet-text">Manage TRON, ETH, and BSC assets in one place.</span>
+      </div>
+      <div class="feature-bullet-item">
+        <img class="feature-bullet-icon" src="images/feature-icon-56586a.png" alt="">
+        <span class="feature-bullet-text">One-tap access to DeFi, games, and Web3 apps.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WALLET SECURITY ──────────────────────────── -->
+  <section class="security-section">
+    <div class="security-inner">
+      <div class="security-content">
+        <p class="section-tag" style="color: var(--text-dark)">Wallet Security</p>
+        <h2 class="section-heading" style="color: var(--text-dark-muted); margin-top:16px; font-size:18.4px; font-weight:400">End-to-End Protection</h2>
+        <div class="section-body" style="color: var(--text-dark-muted); margin-top:16px">
+          <ul>
+            <li>Every transaction is protected, from start to finish.</li>
+            <li>Automatic security checks run every time you use the app.</li>
+            <li>Your private keys never leave your device.</li>
+          </ul>
+        </div>
+        <a href="https://www.tronlink.org/install" class="btn-install-now dark" style="margin-top:28px; display:inline-flex" target="_blank" rel="noopener">
+          Install Now
+          <img src="images/icon-arrow-right.png" alt="">
+        </a>
+      </div>
+      <div class="security-visual">
+        <img src="images/section-security.png" alt="Wallet security visualization">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NETWORK COVERAGE ────────────────────────── -->
+  <section class="network-section">
+    <div class="network-visual">
+      <img src="images/network-mockup.png" alt="Multichain network visualization">
+    </div>
+    <div class="network-content-wrap">
+      <div class="network-content">
+        <p class="section-tag" style="color: var(--white)">Network Coverage</p>
+        <h2 class="section-heading" style="color: var(--text-white-muted); margin-top:16px; font-size:18.4px; font-weight:400">Multichain Ready</h2>
+        <div class="section-body" style="color: var(--text-white-muted); margin-top:16px">
+          <ul>
+            <li>All TRON tokens supported — including NFTs and staking rewards.</li>
+            <li>Use Ethereum and BSC without switching apps.</li>
+            <li>One recovery phrase. All your chains. Always.</li>
+          </ul>
+        </div>
+        <a href="https://www.tronlink.org/install" class="btn-install-now light" style="margin-top:28px; display:inline-flex" target="_blank" rel="noopener">
+          Install Now
+          <img src="images/icon-arrow-right.png" alt="" style="filter:invert(1)">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ASSET MANAGEMENT ─────────────────────────── -->
+  <section class="feature-light-section" id="assets">
+    <div class="feature-light-inner">
+      <div class="feature-light-content">
+        <p class="section-tag" style="color: var(--text-dark)">Asset Management</p>
+        <h2 class="section-heading" style="color: var(--text-dark-muted); margin-top:16px; font-size:18.4px; font-weight:400">Your Assets, Your Rules</h2>
+        <div class="section-body" style="color: var(--text-dark-muted); margin-top:16px">
+          <ul>
+            <li>Your keys are stored on your device — never on any server.</li>
+            <li>Keep daily funds accessible. Store savings offline.</li>
+            <li>Always connected — with automatic node switching built in.</li>
+          </ul>
+        </div>
+        <a href="https://www.tronlink.org/install" class="btn-install-now dark" style="margin-top:28px; display:inline-flex" target="_blank" rel="noopener">
+          Install Now
+          <img src="images/icon-arrow-right.png" alt="">
+        </a>
+      </div>
+      <div class="feature-light-visual">
+        <img src="images/section-assets.png" alt="Asset management visualization">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── USER EXPERIENCE ──────────────────────────── -->
+  <section class="feature-light-section" id="ux" style="background:#f7fbff">
+    <div class="feature-light-inner reverse">
+      <div class="feature-light-content">
+        <p class="section-tag" style="color: var(--text-dark)">User Experience</p>
+        <h2 class="section-heading" style="color: var(--text-dark-muted); margin-top:16px; font-size:18.4px; font-weight:400">Built for Everyone</h2>
+        <div class="section-body" style="color: var(--text-dark-muted); margin-top:16px">
+          <ul>
+            <li>Set up your wallet in under 60 seconds. Ledger supported.</li>
+            <li>Shared wallet control for teams, families, or organizations.</li>
+            <li>Browse DeFi, games, and social apps — all inside TronLink.</li>
+          </ul>
+        </div>
+        <a href="https://www.tronlink.org/install" class="btn-install-now dark" style="margin-top:28px; display:inline-flex" target="_blank" rel="noopener">
+          Install Now
+          <img src="images/icon-arrow-right.png" alt="">
+        </a>
+      </div>
+      <div class="feature-light-visual">
+        <img src="images/section-ux.png" alt="User experience visualization">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CALL TO ACTION ───────────────────────────── -->
+  <section class="cta-section">
+    <p class="cta-subtitle">Get Started Today</p>
+    <h2 class="cta-heading">Ready to explore TronLink?</h2>
+    <div class="cta-actions">
+      <a href="https://www.tronlink.org/install" class="btn-cta-install" target="_blank" rel="noopener">
+        Install TronLink
+      </a>
+      <div class="cta-download-group">
+        <div class="cta-chrome-wrap">
+          <a href="https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec" target="_blank" rel="noopener" title="Chrome Extension">
+            <img class="cta-download-icon" src="images/chrome-icon-56586a.png" alt="Chrome">
+          </a>
+        </div>
+        <div class="download-divider"></div>
+        <div class="cta-mobile-wrap">
+          <a href="https://play.google.com/store/apps/details?id=com.tronlinkpro.wallet" target="_blank" rel="noopener" title="Android">
+            <img class="cta-download-icon" src="images/android-icon-56586a.png" alt="Android">
+          </a>
+          <a href="https://apps.apple.com/app/tronlink-pro-trx-btc-wallet/id1453530188" target="_blank" rel="noopener" title="iOS">
+            <img class="cta-download-icon" src="images/ios-icon-56586a.png" alt="iOS">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-links-grid">
+        <!-- AI Support -->
+        <div class="footer-col">
+          <span class="footer-col-heading">AI Support</span>
+          <div class="footer-col-links">
+            <a href="#">MCP Server</a>
+            <a href="#">MCP Core</a>
+            <a href="#">Skills</a>
+            <a href="#">TronLink Signer</a>
+            <a href="#">TronLink Cli</a>
+          </div>
+        </div>
+        <!-- Developer -->
+        <div class="footer-col" id="developer">
+          <span class="footer-col-heading">Developer</span>
+          <div class="footer-col-links">
+            <a href="https://developers.tron.network/docs/tronlink-introduction" target="_blank" rel="noopener">TronLink Developer Docs</a>
+            <a href="#">TronLink Integration</a>
+            <a href="#">About TronWeb</a>
+            <a href="#">About Tron Protocols</a>
+          </div>
+        </div>
+        <!-- Support -->
+        <div class="footer-col" id="help">
+          <span class="footer-col-heading">Support</span>
+          <div class="footer-col-links">
+            <a href="https://support.tronlink.org" target="_blank" rel="noopener">Help Center</a>
+            <a href="https://www.tronlink.org/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <div class="footer-logo-wrap">
+          <a href="#" class="footer-logo">
+            <img src="images/tronlink-logo-64b070.png" alt="TronLink">
+          </a>
+          <span class="footer-copyright">©Helix Tech Company Limited 2026</span>
+        </div>
+        <div class="footer-social">
+          <a href="https://twitter.com/TronLinkWallet" target="_blank" rel="noopener" title="Twitter/X">
+            <img src="images/icon-twitter.png" alt="Twitter">
+          </a>
+          <a href="https://t.me/tronlinkofficial" target="_blank" rel="noopener" title="Telegram">
+            <img src="images/icon-telegram.png" alt="Telegram">
+          </a>
+          <a href="#" target="_blank" rel="noopener" title="Discord">
+            <img src="images/icon-discord.png" alt="Discord">
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  </script>
+
+</body>
+</html>

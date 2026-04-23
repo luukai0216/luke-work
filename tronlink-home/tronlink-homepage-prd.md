@@ -1,4 +1,4 @@
-# TronLink 首页改版 PRD
+# TronLink 首页优化 PRD
 
 **文档版本：** v1.2
 **创建日期：** 2026-04-22
@@ -7,13 +7,13 @@
 
 ---
 
-## 改版总览
+## 优化总览
 
 以 **CTA 转化链路补足**为核心，辅以 Hero 区内容改写与全站视觉打磨。保留现有 fullpage.js 全屏翻页结构，共 14 项需求。
 
 ---
 
-## 一、改版目标
+## 一、优化目标
 
 
 | 目标          | 说明                                   |
@@ -51,7 +51,7 @@
 
 **Footer**
 
-- **REQ-13** Footer 增加安装 CTA 与邮件订阅
+- **REQ-13** Footer 增加安装 CTA 
 
 **基础质量**
 
@@ -59,7 +59,7 @@
 
 ---
 
-## 三、页面结构（改版后）
+## 三、页面结构（优化后）
 
 > 保留 fullpage.js 全屏翻页模式，共 5 屏，结构与现有一致，仅在 Footer 前新增尾部 CTA 区块。
 
@@ -114,7 +114,7 @@
 
 > "TronLink Wallet"（产品名称型标题，不传达用户价值）
 
-**改版要求**
+**优化要求**
 主标题确定为：
 
 > **TronLink — Secure, Connected, and Truly Yours**
@@ -136,7 +136,7 @@
 
 > "Install Now" 按钮 + QR 图标并排，下方 Android / iOS / Chrome 三个图标无说明文字，三者功能指向相同，用户无法判断区别
 
-**改版要求**
+**优化要求**
 
 主 CTA 按钮文案改为 **"Install TronLink"**。
 
@@ -167,7 +167,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 屏 1 · Hero 底部
 **问题：** 首屏无任何向下滚动提示，用户可能以为这是静态单页
 
-**改版要求**
+**优化要求**
 
 - Stats 数据栏下方增加向下箭头图标（↓）
 - 箭头有**轻微上下浮动动效**，节奏感要柔和，不要跳跃
@@ -186,7 +186,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 全局导航栏
 **问题：** 当前 Install 按钮在首屏隐藏，用户离开 Hero 后才出现；语言切换入口视觉权重与导航主项相当，占据了不必要的注意力
 
-**改版要求**
+**优化要求**
 
 **① Install 按钮**
 
@@ -216,7 +216,7 @@ Browser Extension  |              Mobile App
 
 > 黑色背景 + 白色文字，高度偏大，视觉上像警告横幅
 
-**改版要求**
+**优化要求**
 
 - 背景色改为品牌深蓝方向，不用纯黑，让它更融入品牌感
 - 高度和字号适当压缩，减轻存在感，让导航栏更突出
@@ -242,7 +242,7 @@ Browser Extension  |              Mobile App
 3. TronLink Extension now supports EVM networks including Ethereum, BSC, and BTTC
 4. Offers seamless access to DApps and smooth on-chain operations
 
-**改版要求**
+**优化要求**
 将 4 条 Bullet 改写为**用户利益声明**：
 
 
@@ -272,7 +272,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 屏 2–5（四个功能屏）
 **问题：** 四屏布局完全相同（左文字右插图），视觉疲劳
 
-**改版要求**
+**优化要求**
 
 - 屏 2（安全）/ 屏 4（资产）：左文字 / 右插图（保持现有）
 - 屏 3（网络）/ 屏 5（体验）：**右文字 / 左插图**（镜像翻转）
@@ -290,7 +290,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 屏 2–5（四个功能屏）
 **问题：** 内容集中在屏上方 40–50% 区域，下方约一半面积为空白
 
-**改版要求**
+**优化要求**
 
 - 内容区（文字 + 插图）在每屏内**垂直居中**，上下留白均衡
 - 不再让内容扎堆在屏幕上方，下方大片空白消失
@@ -307,7 +307,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 屏 2–5 各功能区块文字列底部
 **问题：** Playwright 检测确认 dlDetails 链接仅在屏 1 出现，屏 2–5 完全没有安装入口
 
-**改版要求**
+**优化要求**
 
 - 最后一条 Bullet 下方增加次级 CTA 链接
 - 样式：文字链接 + 右箭头，"Install Now →"，低调但可见
@@ -343,7 +343,7 @@ Browser Extension  |              Mobile App
 | 屏 5 体验 | More Convenient           | User Experience            | Built for Everyone      | User Experience  |
 
 
-副标签方向（改版后）：
+副标签方向（优化后）：
 
 - 字号比现在小一点，不要和主标题抢重量
 - 全大写，字间距略宽，有标签感
@@ -366,7 +366,7 @@ Browser Extension  |              Mobile App
 - 三条 Bullet 之间没有呼吸感，堆在一起
 - 图标和文字靠得有点近
 
-**改版要求**
+**优化要求**
 
 - 行高适当放开，让折行阅读舒服一些
 - 每条 Bullet 之间留出可感知的间距，不要堆叠感
@@ -386,7 +386,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 屏 2–5，每屏顶部副标签文字
 **问题：** 当前副标签为灰色（约 #999）、字号与正文接近，层级区分度低
 
-**改版要求**
+**优化要求**
 四屏副标签方向一致：字号比现在略小，颜色换成品牌蓝，全大写，字间距略宽，与主标题之间留出稍多一点的空间。整体感觉像一个低调的蓝色小标签，在主标题之前起引导作用，而不是注脚。
 
 **验收标准**
@@ -405,7 +405,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 页面 Footer 及 Footer 前尾部区块
 **问题：** 当前 Footer 只有社交图标和版权，是完整的转化断点
 
-**改版要求**
+**优化要求**
 
 **① Footer 前新增尾部 CTA 区块**
 
@@ -439,7 +439,7 @@ Browser Extension  |              Mobile App
 **所在位置：** 左侧 fullpage.js 导航点（Section 指示器）
 **问题：** Playwright 实测每个导航点 li 元素尺寸仅 **10×10px**，WCAG 2.5.5 建议最小 44×44px
 
-**改版要求**
+**优化要求**
 
 - 导航点视觉圆点尺寸不变（8–10px）
 - 可点击热区扩大至 **44×44px**（通过 CSS padding 或 ::before 伪元素实现）
@@ -455,7 +455,7 @@ Browser Extension  |              Mobile App
 
 ## 五、设计规范（本次不变）
 
-以下元素维持现状，不纳入本次改版范围：
+以下元素维持现状，不纳入本次优化范围：
 
 
 | 元素      | 现状                               |
@@ -465,7 +465,7 @@ Browser Extension  |              Mobile App
 | 字体体系    | HelveticaNeue + PingFang SC      |
 | Logo    | 现有品牌图标 + 文字                      |
 | 页面滚动方式  | fullpage.js 全屏翻页，保留              |
-| 功能区插图   | 现有 3D 图形（盾牌/行星/锁/闪电），保留        |
+| 功能区插图   | 现有 3D 图形（盾牌/行星/锁/闪电），保留          |
 | 导航结构    | AI Support / Developer / Help，保留 |
 | 社交链接    | Twitter / Telegram / Email       |
 | 多语言切换   | 下拉选择                             |
