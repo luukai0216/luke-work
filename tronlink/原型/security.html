@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TronLink 安全中心</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.sec-hero {
+  padding: var(--space-9) var(--container-pad) var(--space-7);
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 30%, rgba(43, 106, 255, 0.18), transparent 60%);
+}
+.sec-hero h1 { font-size: var(--text-5xl); font-weight: 700; margin-bottom: var(--space-4); }
+.sec-hero h1 .accent { color: var(--color-primary); }
+.sec-hero p { font-size: var(--text-xl); color: var(--text-secondary); max-width: 560px; margin: 0 auto; }
+
+.sec-stats {
+  max-width: var(--container-max); margin: 0 auto var(--space-9);
+  padding: 0 var(--container-pad);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5);
+}
+.stat-card {
+  background: var(--bg-secondary); border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;
+}
+.stat-card .num { font-size: var(--text-5xl); font-weight: 700; color: var(--color-primary); line-height: 1; margin-bottom: var(--space-2); }
+.stat-card .label { font-size: var(--text-base); color: var(--text-secondary); }
+.stat-card .sub { font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-2); }
+
+.sec-cards {
+  max-width: var(--container-max); margin: 0 auto var(--space-9);
+  padding: 0 var(--container-pad);
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5);
+}
+.sec-card {
+  background: var(--bg-secondary); border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  text-decoration: none; color: var(--text-primary); transition: all 0.2s;
+  display: flex; flex-direction: column;
+}
+.sec-card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
+.sec-card .icon {
+  width: 56px; height: 56px; background: var(--color-primary-bg);
+  border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin-bottom: var(--space-4);
+}
+.sec-card h3 { font-size: var(--text-2xl); font-weight: 700; margin-bottom: var(--space-3); }
+.sec-card p { color: var(--text-secondary); flex: 1; line-height: var(--leading-normal); }
+.sec-card .arrow { color: var(--color-primary); margin-top: var(--space-4); font-weight: 600; font-size: var(--text-sm); }
+.sec-card.placeholder {
+  background: rgba(240, 180, 0, 0.05);
+  border-style: dashed; border-color: var(--color-warning);
+}
+.sec-card.placeholder .icon { background: var(--color-warning-bg); }
+.sec-card.placeholder .pending {
+  display: inline-block; background: var(--color-warning-bg); color: var(--color-warning);
+  padding: 2px 8px; border-radius: 4px;
+  font-size: var(--text-xs); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: var(--space-3); align-self: flex-start;
+}
+
+.domains-section {
+  max-width: var(--container-max); margin: 0 auto var(--space-9);
+  padding: 0 var(--container-pad);
+  scroll-margin-top: 120px;
+}
+.domains-section h2 { font-size: var(--text-3xl); margin-bottom: var(--space-2); }
+.domains-section .subtitle { color: var(--text-secondary); margin-bottom: var(--space-6); font-size: var(--text-lg); }
+
+.domain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin-bottom: var(--space-6); }
+.domain-block {
+  background: var(--bg-secondary); border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+}
+.domain-block h4 {
+  font-size: var(--text-sm); color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-4);
+}
+.domain-block ul { list-style: none; }
+.domain-block li {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) 0; border-bottom: 1px solid var(--border-default);
+  font-family: var(--font-mono); font-size: var(--text-sm);
+  color: var(--text-primary); word-break: break-all;
+}
+.domain-block li:last-child { border-bottom: none; }
+.domain-block .check { color: var(--color-success); font-size: 16px; flex-shrink: 0; }
+.domain-block .verify-link {
+  margin-left: auto; flex-shrink: 0;
+  color: var(--color-primary); font-size: var(--text-xs);
+  background: var(--color-primary-bg); padding: 4px 8px; border-radius: 4px;
+  font-family: var(--font-en);
+}
+
+.never-card {
+  background: var(--color-danger-bg); border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-lg); padding: var(--space-6); margin-top: var(--space-6);
+}
+.never-card h3 { color: var(--color-danger); font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+.never-card ul { list-style: none; padding: 0; }
+.never-card li {
+  padding: var(--space-3) 0; border-bottom: 1px solid rgba(255, 94, 99, 0.2);
+  display: flex; gap: var(--space-3); align-items: flex-start;
+}
+.never-card li:last-child { border-bottom: none; }
+.never-card .x { color: var(--color-danger); font-weight: 700; flex-shrink: 0; font-size: 18px; }
+
+.report-buttons { display: flex; gap: var(--space-3); margin-top: var(--space-5); flex-wrap: wrap; }
+
+/* 反钓鱼专区 */
+.phishing-section {
+  max-width: var(--container-max); margin: 0 auto var(--space-9);
+  padding: 0 var(--container-pad);
+  scroll-margin-top: 120px;
+}
+.phishing-section .section-head {
+  text-align: center; margin-bottom: var(--space-7);
+}
+.phishing-section .section-head h2 {
+  font-size: var(--text-3xl); margin-bottom: var(--space-2);
+}
+.phishing-section .section-head .subtitle {
+  color: var(--text-secondary); font-size: var(--text-lg);
+  max-width: 580px; margin: 0 auto;
+}
+.trap-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4); margin-bottom: var(--space-6);
+}
+.trap-card {
+  background: var(--bg-secondary); border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+  display: flex; flex-direction: column; gap: var(--space-3);
+}
+.trap-card .head {
+  display: flex; align-items: center; gap: var(--space-3);
+}
+.trap-card .ico {
+  width: 40px; height: 40px;
+  background: rgba(255, 94, 99, 0.12);
+  border: 1px solid rgba(255, 94, 99, 0.3);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.trap-card h4 {
+  font-size: var(--text-base); font-weight: 700;
+  color: var(--text-primary);
+}
+.trap-card .desc {
+  font-size: var(--text-sm); color: var(--text-secondary);
+  line-height: var(--leading-normal); flex: 1;
+}
+.trap-card .tip {
+  font-size: var(--text-xs); color: var(--color-success);
+  background: rgba(0, 192, 135, 0.1);
+  border-left: 3px solid var(--color-success);
+  padding: 8px 12px; border-radius: 4px;
+  line-height: var(--leading-normal);
+}
+.trap-card .tip strong { color: var(--color-success); }
+
+.kb-cta {
+  background: var(--color-primary-bg); border: 1px solid var(--color-primary);
+  border-radius: var(--radius-xl); padding: var(--space-6);
+  display: flex; align-items: center; gap: var(--space-5);
+  margin-top: var(--space-6); flex-wrap: wrap;
+}
+.kb-cta .ico { font-size: 36px; flex-shrink: 0; }
+.kb-cta .body { flex: 1; min-width: 240px; }
+.kb-cta h3 { font-size: var(--text-xl); margin-bottom: var(--space-2); }
+.kb-cta p { color: var(--text-secondary); font-size: var(--text-sm); margin: 0; }
+
+.disclosure { max-width: var(--container-max); margin: 0 auto var(--space-9); padding: 0 var(--container-pad); }
+.disclosure-card {
+  background: var(--bg-secondary); border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl); padding: var(--space-7);
+  display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: center;
+}
+.disclosure-card .icon {
+  width: 96px; height: 96px; background: var(--color-primary);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 48px; color: #FFF; box-shadow: 0 16px 40px var(--color-primary-glow);
+}
+.disclosure-card h3 { font-size: var(--text-2xl); margin-bottom: var(--space-3); }
+.disclosure-card p { color: var(--text-secondary); margin-bottom: var(--space-4); }
+.disclosure-card .email-row { display: flex; gap: var(--space-3); align-items: center; }
+.email-pill {
+  background: var(--bg-elevated); border: 1px solid var(--border-default);
+  padding: 8px 16px; border-radius: var(--radius-pill);
+  font-family: var(--font-mono); font-size: var(--text-sm);
+}
+
+@media (max-width: 1024px) {
+  .sec-stats, .sec-cards, .domain-grid { grid-template-columns: 1fr; }
+  .trap-grid { grid-template-columns: repeat(2, 1fr); }
+  .disclosure-card { grid-template-columns: 1fr; text-align: center; }
+  .disclosure-card .icon { margin: 0 auto; }
+}
+@media (max-width: 640px) {
+  .trap-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body data-theme="light" data-lang="zh-CN">
+<script src="shared.js"></script>
+<script>injectControlBar('security');</script>
+
+<div id="site-nav"></div>
+
+<section class="sec-hero">
+  <h1><span class="accent">TronLink</span> 安全中心</h1>
+  <p>你的资产、你的私钥、你的安心。</p>
+</section>
+
+<section class="sec-stats">
+  <div class="stat-card">
+    <div class="num">1000W+</div>
+    <div class="label">用户信赖</div>
+    <div class="sub">覆盖 200+ 国家</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">7+</div>
+    <div class="label">年安全运营</div>
+    <div class="sub">自 2019 年起</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">0</div>
+    <div class="label">钱包攻陷事件</div>
+    <div class="sub">过去 12 个月</div>
+  </div>
+</section>
+
+<section class="sec-cards">
+  <a href="#domains" class="sec-card">
+    <div class="icon">🌐</div>
+    <h3>官方域名</h3>
+    <p>每个 TronLink 官方域名、浏览器插件 ID、应用包名、邮箱与社交账号 — 可验证、每月更新。</p>
+    <span class="arrow">信任前先验证 →</span>
+  </a>
+  <a href="#phishing" class="sec-card">
+    <div class="icon">🔍</div>
+    <h3>反钓鱼防护</h3>
+    <p>识别常见钓鱼套路、官方绝不会做的事、举报渠道，并跳转完整安全知识库。</p>
+    <span class="arrow">了解防护 →</span>
+  </a>
+</section>
+
+<section class="domains-section" id="domains">
+  <h2>TronLink 官方资源</h2>
+  <p class="subtitle">信任前请验证。最近更新于 2026-04-15。</p>
+
+  <div class="domain-grid">
+    <div class="domain-block">
+      <h4>网站</h4>
+      <ul>
+        <li><span class="check">✓</span> tronlink.org</li>
+        <li><span class="check">✓</span> www.tronlink.org</li>
+        <li><span class="check">✓</span> dapp.tronlink.org</li>
+      </ul>
+    </div>
+    <div class="domain-block">
+      <h4>浏览器插件</h4>
+      <ul>
+        <li><span class="check">✓</span><span style="flex:1;">Chrome：ibnejdfjmmkpcnlpebklmnkoeoihofec</span><a href="https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec" target="_blank" rel="noopener" class="verify-link">验证 ↗</a></li>
+        <li><span class="check">✓</span><span style="flex:1;">Edge：aheklkkgnmlknpgogcnhkbenfllfcfjb</span><a href="https://microsoftedge.microsoft.com/addons/detail/tronlink/aheklkkgnmlknpgogcnhkbenfllfcfjb" target="_blank" rel="noopener" class="verify-link">验证 ↗</a></li>
+      </ul>
+    </div>
+    <div class="domain-block">
+      <h4>iOS / Android</h4>
+      <ul>
+        <li><span class="check">✓</span><span style="flex:1;">Android：com.tronlink.global</span><a href="https://play.google.com/store/apps/details?id=com.tronlink.global" target="_blank" rel="noopener" class="verify-link">Play ↗</a></li>
+        <li><span class="check">✓</span><span style="flex:1;">Android Pro：com.tronlinkpro.wallet</span><a href="https://play.google.com/store/apps/details?id=com.tronlinkpro.wallet" target="_blank" rel="noopener" class="verify-link">Play ↗</a></li>
+        <li><span class="check">✓</span><span style="flex:1;">iOS App ID：1453530188</span><a href="https://apps.apple.com/app/id1453530188" target="_blank" rel="noopener" class="verify-link">Apple ↗</a></li>
+      </ul>
+    </div>
+    <div class="domain-block">
+      <h4>社交与联系方式</h4>
+      <ul>
+        <li><span class="check">✓</span> X：x.com/TronLinkWallet</li>
+        <li><span class="check">✓</span> Telegram：t.me/TronLink</li>
+        <li><span class="check">✓</span> tronlink@tronlink.org</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section class="phishing-section" id="phishing">
+  <div class="section-head">
+    <h2>反钓鱼防护 · 学会识别 6 类常见套路</h2>
+    <p class="subtitle">超过 90% 的资产被盗事件源于钓鱼或社工。先识破套路，再决定下一步。</p>
+  </div>
+
+  <div class="trap-grid">
+    <div class="trap-card">
+      <div class="head">
+        <div class="ico">🌐</div>
+        <h4>仿冒域名</h4>
+      </div>
+      <p class="desc">同形字（如 tronIink / tronlink-app）、相似拼写、新增子域、HTTP 不带锁等手段诱导用户登录假站。</p>
+      <p class="tip">💡 <strong>识别：</strong>对比 <code>tronlink.org</code> 主域，检查浏览器锁标与 SSL 证书颁发对象。</p>
+    </div>
+
+    <div class="trap-card">
+      <div class="head">
+        <div class="ico">📱</div>
+        <h4>仿冒 App / 插件</h4>
+      </div>
+      <p class="desc">非官方应用市场或第三方下载站提供修改版 APK / IPA，或仿冒插件 ID 上架到错误的扩展商店。</p>
+      <p class="tip">💡 <strong>识别：</strong>仅从 Google Play / App Store / Chrome Web Store / Edge Add-ons 安装；核对开发者 <strong>Helix Tech Company Limited</strong>。</p>
+    </div>
+
+    <div class="trap-card">
+      <div class="head">
+        <div class="ico">🎭</div>
+        <h4>假冒"官方客服"</h4>
+      </div>
+      <p class="desc">私信、Telegram 群、邮件或评论区中自称 TronLink 客服，索取助记词、私钥或要求屏幕共享。</p>
+      <p class="tip">💡 <strong>识别：</strong>官方<strong>从不</strong>主动私信。客服仅通过 <code>tronlink@tronlink.org</code> 邮件或 Zendesk 工单回复。</p>
+    </div>
+
+    <div class="trap-card">
+      <div class="head">
+        <div class="ico">🎁</div>
+        <h4>假空投与"领取"诈骗</h4>
+      </div>
+      <p class="desc">钱包内莫名出现的小额代币 / NFT，跳转的领取页要求"验证钱包"或签名陌生交易，往往是授权陷阱。</p>
+      <p class="tip">💡 <strong>识别：</strong>陌生空投不要互动；领取页要求签名前，先在 TronScan 检查合约地址。</p>
+    </div>
+
+    <div class="trap-card">
+      <div class="head">
+        <div class="ico">📜</div>
+        <h4>恶意 DApp 授权</h4>
+      </div>
+      <p class="desc">钓鱼 DApp 诱导用户对恶意合约授予无限额度（unlimited approval），随后批量转走通证。</p>
+      <p class="tip">💡 <strong>识别：</strong>授权额度按需设置，定期通过 TronScan「授权管理」清理多余授权。</p>
+    </div>
+
+    <div class="trap-card">
+      <div class="head">
+        <div class="ico">📋</div>
+        <h4>地址污染（尾号攻击）</h4>
+      </div>
+      <p class="desc">攻击者向你转 0 元小额，伪造与你常用收款地址<strong>首尾几位相同</strong>的地址，混入你的转账历史。</p>
+      <p class="tip">💡 <strong>识别：</strong>转账前<strong>完整核对地址</strong>，不要只看尾号；使用地址簿保存可信收款方。</p>
+    </div>
+  </div>
+
+  <div class="never-card">
+    <h3>⚠️ 我们绝不会…</h3>
+    <ul>
+      <li><span class="x">✗</span><span>通过私信、邮件或工单向您索要助记词或私钥</span></li>
+      <li><span class="x">✗</span><span>在非官方渠道（陌生 Telegram 群、评论区等）发布下载链接</span></li>
+      <li><span class="x">✗</span><span>收取任何「激活费」「验证费」或「解锁费」</span></li>
+      <li><span class="x">✗</span><span>推广需要您通过不可信表单「验证」钱包的通证空投</span></li>
+    </ul>
+    <div class="report-buttons">
+      <a href="mailto:tronlink@tronlink.org?subject=%E4%B8%BE%E6%8A%A5%E9%92%93%E9%B1%BC%E7%BD%91%E7%AB%99" class="btn btn-secondary">举报钓鱼网站</a>
+      <a href="mailto:tronlink@tronlink.org?subject=%E4%B8%BE%E6%8A%A5%E4%BB%BF%E5%86%92%20App" class="btn btn-secondary">举报仿冒 App</a>
+    </div>
+  </div>
+
+  <a href="https://support.tronlink.org/hc/zh-cn/sections/13215994853529-%E5%AE%89%E5%85%A8%E7%9F%A5%E8%AF%86" target="_blank" rel="noopener" class="kb-cta" style="text-decoration:none;color:inherit;">
+    <div class="ico">📚</div>
+    <div class="body">
+      <h3>查看完整安全知识库 ↗</h3>
+      <p>更多场景化案例、操作步骤、官方公告 — 跳转 TronLink 帮助中心。</p>
+    </div>
+    <span style="color:var(--color-primary);font-weight:600;font-size:var(--text-sm);">前往帮助中心 →</span>
+  </a>
+</section>
+
+<div id="site-footer"></div>
+
+<script>
+document.getElementById('site-nav').innerHTML = injectSiteNav('security');
+document.getElementById('site-footer').innerHTML = injectSiteFooter();
+setLang(document.body.getAttribute('data-lang') || 'zh-CN');
+</script>
+</body>
+</html>

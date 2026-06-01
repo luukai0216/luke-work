@@ -2,3 +2,4 @@
 .playwright-mcp
 node_modules/
 tronlink-home/tronlink-homepage-mirror/figma-export/
+.claude/worktrees/

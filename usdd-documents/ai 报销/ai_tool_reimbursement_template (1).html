@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 工具订阅及报销申请模板</title>
+  <style>
+:root {
+  color-scheme: light;
+  --text: #1f2933;
+  --muted: #5f6b7a;
+  --border: #d8dee8;
+  --soft: #f6f8fb;
+  --accent: #0f766e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.72;
+}
+main {
+  width: min(980px, calc(100% - 40px));
+  margin: 40px auto 56px;
+}
+h1, h2, h3 {
+  line-height: 1.35;
+  color: #111827;
+  margin: 1.6em 0 0.65em;
+}
+h1 {
+  font-size: 30px;
+  margin-top: 0;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--accent);
+}
+h2 {
+  font-size: 22px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+h3 { font-size: 18px; }
+p { margin: 0.65em 0; }
+blockquote {
+  margin: 16px 0 22px;
+  padding: 12px 16px;
+  color: var(--muted);
+  background: var(--soft);
+  border-left: 4px solid var(--accent);
+}
+blockquote strong { color: #111827; }
+.flowchart {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 10px 8px;
+  align-items: stretch;
+  margin: 22px 0 30px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+.flow-step {
+  min-height: 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid #c9d8d6;
+  border-radius: 8px;
+  background: #ffffff;
+}
+.flow-num {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--accent);
+  font-weight: 700;
+  line-height: 1;
+}
+.flow-step strong {
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.35;
+}
+.flow-step span:last-child {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.flow-arrow {
+  display: none;
+}
+ul, ol { padding-left: 1.5em; }
+li { margin: 0.2em 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 22px;
+  table-layout: auto;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  vertical-align: top;
+  text-align: left;
+  word-break: break-word;
+}
+th {
+  background: var(--soft);
+  font-weight: 650;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.92em;
+  background: #f3f4f6;
+  padding: 0.12em 0.32em;
+  border-radius: 4px;
+}
+pre {
+  overflow-x: auto;
+  background: #f3f4f6;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  white-space: pre-wrap;
+}
+pre code {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+a { color: #0f766e; }
+@media (max-width: 820px) {
+  .flowchart {
+    grid-template-columns: 1fr;
+  }
+  .flow-step {
+    min-height: auto;
+  }
+  .flow-arrow {
+    display: block;
+    text-align: center;
+    color: var(--accent);
+    font-weight: 700;
+    transform: rotate(90deg);
+  }
+}
+@media print {
+  body { font-size: 12px; }
+  main { width: auto; margin: 0; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 17px; break-after: avoid; }
+  h3 { font-size: 14px; break-after: avoid; }
+  table, pre, blockquote, .flowchart { break-inside: avoid; }
+  .flowchart { padding: 10px; gap: 6px; }
+  .flow-step { min-height: 96px; padding: 8px; }
+}
+  </style>
+</head>
+<body>
+  <main>
+<h1 id="ai">AI 工具订阅及报销申请模板</h1>
+<blockquote>
+<p>适用场景：部门内多名员工申请 AI 工具订阅费用报销，例如 Claude、Codex、Cursor 等。<br>
+<strong>使用方式：先按部门统一发送审批邮件（每月申请一次），BU 负责人审批通过后，再由个人在 FS 财务系统提交 FR 报销单。</strong></p>
+</blockquote>
+<div class="flowchart" aria-label="AI 工具报销流程">
+  <div class="flow-step">
+    <span class="flow-num">1</span>
+    <strong>部门统一发审批邮件</strong>
+    <span>说明 AI 工具报销详情，附 Excel 明细</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">
+    <span class="flow-num">2</span>
+    <strong>BU 负责人 + 采购审批</strong>
+    <span>总体金额超过 USD 200 需采购审批</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">
+    <span class="flow-num">3</span>
+    <strong>个人提交 FR 单</strong>
+    <span>登录 FS 财务系统，新建法币支付申请</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">
+    <span class="flow-num">4</span>
+    <strong>上传报销附件</strong>
+    <span>支付截图、审批邮件 PDF、Invoice、账号截图</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step">
+    <span class="flow-num">5</span>
+    <strong>财务审核报销</strong>
+    <span>按个人 FR 单据处理</span>
+  </div>
+</div>
+
+<h2 id="_1">一、部门统一审批邮件模板</h2>
+<h3 id="_2">邮件标题</h3>
+<pre><code class="language-text">[预算内报销申请] [AI 工具] 的订阅及报销申请
+</code></pre>
+<h3 id="_3">收件人 / 抄送</h3>
+<pre><code class="language-text">收件人：BU Leader （部门最高负责人）
+抄送：procurement@tron.network、部门 Leader（如需）
+</code></pre>
+<p>说明：
+- 以部门为单位统一发送审批邮件。
+- 总体金额超过 USD 200 时，需要 BU Leader + 采购审批。
+- 邮件可由部门负责人发送，也可由收集人发送并抄送部门负责人。</p>
+<h3 id="_4">邮件正文</h3>
+<pre><code class="language-text">各位好，
+
+因部门业务需要，现申请对以下 AI 工具订阅费用进行预算内报销审批。
+
+一、购买原因
+
+[请填写购买 AI 工具的业务背景、使用场景、预期价值。例如：用于产品需求分析、代码辅助开发、数据分析、文档整理、问题排查等，提高工作效率。]
+
+二、申请报销范围
+
+本次申请以部门为单位统一提交审批。审批通过后，名单内人员将分别在 FS 财务系统中提交个人 FR 报销单。
+
+支持报销的开始时间为 2026 年 1 月，2026 年 1 月以来符合审批要求的 AI 工具订阅费用可纳入本次申请。
+
+三、购买及报销明细
+
+详见附件 Excel 明细。
+
+四、预算说明
+
+- 预算金额：[总金额] [币种]
+- 人均金额：[金额] / 人 / 月
+- 支持报销开始时间：2026 年 1 月
+- 报销周期：[月度]
+- 后续安排：[例如历史费用一次性申请，后续每月续费按月申请]
+
+五、附件
+
+1. AI 工具邮件申请名单明细表 Excel
+2. 购买 / 支付截图
+3. Invoice（如有）
+4. 账号页面截图（体现账号信息、套餐类型、有效期、绑定邮箱等）
+
+请审批，谢谢。
+
+[发送人姓名]
+[部门]
+[日期]
+</code></pre>
+<h2 id="excel">二、附件 Excel 明细表字段模板</h2>
+<p>可按以下字段整理成 Excel 后附在审批邮件中：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>填写说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>序号</td>
+<td>从 1 开始编号</td>
+</tr>
+<tr>
+<td>报销人姓名</td>
+<td>与公司信息一致</td>
+</tr>
+<tr>
+<td>公司邮箱</td>
+<td>公司邮箱地址</td>
+</tr>
+<tr>
+<td>所属部门</td>
+<td>例如产品部</td>
+</tr>
+<tr>
+<td>AI 工具名称</td>
+<td>Claude / Codex / Cursor / 其他</td>
+</tr>
+<tr>
+<td>套餐类型</td>
+<td>Max / Pro / Team / 其他</td>
+</tr>
+<tr>
+<td>报销类型</td>
+<td>首次开通 / 续费</td>
+</tr>
+<tr>
+<td>购买方式</td>
+<td>官网订阅 / 第三方购买 / 成品号 / 其他</td>
+</tr>
+<tr>
+<td>订阅开始日期</td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>订阅结束日期</td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>报销周期</td>
+<td>月度</td>
+</tr>
+<tr>
+<td>金额</td>
+<td>数字</td>
+</tr>
+<tr>
+<td>币种</td>
+<td>USD / USDT / CNY 等</td>
+</tr>
+<tr>
+<td>账号 ID</td>
+<td>如有</td>
+</tr>
+<tr>
+<td>绑定邮箱</td>
+<td>AI 工具账号绑定邮箱</td>
+</tr>
+<tr>
+<td>是否有 Invoice</td>
+<td>是 / 否</td>
+</tr>
+<tr>
+<td>备注</td>
+<td>如账号被封、补充说明等</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fs-fr">三、个人 FS 财务系统 FR 报销单模板</h2>
+<h3 id="_5">提交路径</h3>
+<pre><code class="language-text">FS 财务系统 → 法币申请 → 法币支付 → 支付申请 → 新建支付
+</code></pre>
+<h3 id="_6">基本信息</h3>
+<pre><code class="language-text">申请类型：个人报销 -（临时业务垫款-采购类）
+申请主体：BVI - Global Atlas Limited
+</code></pre>
+<h3 id="fr">FR 单描述模板</h3>
+<pre><code class="language-text">AI 工具订阅费用报销
+
+使用人：[姓名]
+所属部门：[部门]
+AI 工具名称：[Claude / Codex / Cursor / 其他]
+套餐类型：[Max / Pro / Team / 其他]
+报销类型：[首次开通 / 续费]
+有效期：[YYYY-MM-DD 至 YYYY-MM-DD]
+报销周期：[月度]
+报销金额：[金额] [币种]
+Claude / AI 工具账号 ID：[账号 ID，如有]
+绑定邮箱：[邮箱]
+
+该费用已按部门统一邮件申请，并已获得部门负责人及采购审批。
+</code></pre>
+<h3 id="fr_1">FR 单附件清单</h3>
+<p>提交 FR 单时请上传：</p>
+<ul>
+<li>支付截图</li>
+<li>审批邮件 PDF 版，需体现部门负责人 / BU Leader + 采购审批</li>
+<li>Invoice，如有</li>
+<li>账号页面截图，需体现账号信息、套餐类型、有效期、绑定邮箱等</li>
+</ul>
+<h2 id="fs">四、FS 财务系统权限申请模板</h2>
+<p>如个人还没有 FS 财务系统法币用户权限，需先发邮件申请开通。</p>
+<h3 id="_7">邮件标题</h3>
+<pre><code class="language-text">申请财务系统权限-法币支付申请
+</code></pre>
+<h3 id="_8">收件人 / 抄送</h3>
+<pre><code class="language-text">收件人：部门领导
+抄送：上级经理、finance.cn@tron.network、hr-er@tron.network
+</code></pre>
+<h3 id="_9">邮件正文</h3>
+<pre><code class="language-text">您好，
+
+因需提交 AI 工具订阅费用个人报销，现申请开通 FS 财务系统法币支付申请权限，信息如下：
+
+用于登录的电子邮件地址：[公司邮箱]
+所属部门：[部门]
+申请人姓名：[姓名]
+上级经理：[上级经理姓名]
+部门领导：[部门领导姓名]
+开通主体：BVI - Global Atlas Limited
+开通用途：用于提交 AI 工具订阅费用个人报销 FR 单
+
+请审批，谢谢。
+
+[申请人姓名]
+[日期]
+</code></pre>
+<h2 id="_10">五、注意事项</h2>
+<ul>
+<li>建议按月度充值和报销，避免账号被封造成资金浪费。</li>
+<li>支持报销的开始时间为 2026 年 1 月。</li>
+<li>历史费用可以集中一次性申请，但需要在邮件或表格中写清每个人的报销周期和金额。</li>
+<li>后续续费建议每月申请一次，并在明细中标注“续费”。</li>
+<li>如账号被封，应及时通知对接财务人员。</li>
+<li>如购买方式、币种或工具类型不确定，建议在审批邮件中补充说明，避免后续 FR 单被退回。</li>
+</ul>
+  </main>
+</body>
+</html>
