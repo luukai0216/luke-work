@@ -248,13 +248,19 @@
       select {
         width: 100%;
         height: 30px;
-        background: var(--input-bg);
+        background-color: var(--input-bg);
         border: 1px solid var(--line);
         border-radius: 6px;
         color: var(--text);
         font-size: 12px;
-        padding: 0 8px;
+        padding: 0 30px 0 8px;
         cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M3 4.5 L6 7.5 L9 4.5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 11px 11px;
       }
       select:focus {
         outline: none;
@@ -275,6 +281,26 @@
       .btn:hover {
         border-color: var(--brand);
         color: var(--brand);
+      }
+
+      /* 标记 SVG 上传：两个按钮并排 */
+      .svg-btns {
+        display: flex;
+        gap: 8px;
+      }
+      .svg-btns .btn {
+        margin-top: 0;
+      }
+
+      /* 导出区间距微调：导出格式与“导出文件”靠近，“复制当前配置”分开些 */
+      #exportGroup .field {
+        margin-bottom: 6px;
+      }
+      #exportGroup #exportBtn {
+        margin-top: 0;
+      }
+      #exportGroup #copyBtn {
+        margin-top: 14px;
       }
 
       /* 右侧舞台（背景透明时露出页面的棋盘格） */
@@ -400,6 +426,7 @@
               <option value="diamond">菱形</option>
               <option value="ring">圆环</option>
               <option value="triangle">三角形</option>
+              <option value="hexagon">六边形</option>
             </select>
           </div>
           <div class="field">
@@ -446,6 +473,25 @@
             <label>标记大小 <span class="val" id="markerSizeVal">5.0</span></label>
             <input type="range" id="markerSize" min="2" max="14" step="0.5" value="5" />
           </div>
+          <div class="field">
+            <label>标记形状</label>
+            <select id="markerShape">
+              <option value="circle">圆形</option>
+              <option value="square">方形</option>
+              <option value="diamond">菱形</option>
+              <option value="triangle">三角形</option>
+              <option value="hexagon">六边形</option>
+              <option value="svg">自定义 SVG（上传）</option>
+            </select>
+          </div>
+          <div class="field" id="markerSvgField" hidden>
+            <label>SVG 图形 <span class="val" id="markerSvgName">未选择</span></label>
+            <input type="file" id="markerSvgFile" accept=".svg,image/svg+xml" hidden />
+            <div class="svg-btns">
+              <button class="btn" id="markerSvgBtn">上传 SVG</button>
+              <button class="btn" id="markerSvgClear">清除</button>
+            </div>
+          </div>
         </div>
 
         <!-- 动画 -->
@@ -464,7 +510,7 @@
         </div>
 
         <!-- 导出 -->
-        <div class="group">
+        <div class="group" id="exportGroup">
           <p class="group-title">导出</p>
           <div class="field">
             <label>导出格式</label>
@@ -473,6 +519,7 @@
               <option value="png">图片 PNG (.png)</option>
               <option value="jpg">图片 JPG (.jpg)</option>
               <option value="svg">矢量 SVG (.svg)</option>
+              <option value="mp4">视频 MP4 (.mp4)</option>
             </select>
           </div>
           <button class="btn" id="exportBtn">导出文件</button>
@@ -509,6 +556,8 @@
         speed: 0.004,
         markerSize: 5,
         markerCount: 10,
+        markerShape: "circle",
+        markerSvg: null,
         paused: false,
       };
       let config = { ...DEFAULTS };
@@ -587,6 +636,24 @@
       // 标记的屏幕空间躲避偏移（带缓动）
       const markerOffX = new Float32Array(MARKER_MAX);
       const markerOffY = new Float32Array(MARKER_MAX);
+
+      // 自定义标记图形（上传的 SVG → Image，保留原始配色）
+      let markerImg = null;
+      let markerImgReady = false;
+      function loadMarkerSvg(uri) {
+        markerImgReady = false;
+        if (!uri) {
+          markerImg = null;
+          return;
+        }
+        const im = new Image();
+        im.onload = () => {
+          markerImg = im;
+          markerImgReady = true;
+        };
+        im.src = uri;
+      }
+
       function buildMarkers() {
         markerPool = CITIES.map((c) => latLonToVec(c[0], c[1]));
         const n = landPoints.length;
@@ -673,6 +740,15 @@
             ctx.moveTo(x, y - s);
             ctx.lineTo(x + s * 0.87, y + s * 0.5);
             ctx.lineTo(x - s * 0.87, y + s * 0.5);
+            ctx.closePath();
+            break;
+          case "hexagon":
+            ctx.moveTo(x, y - s);
+            ctx.lineTo(x + s * 0.87, y - s * 0.5);
+            ctx.lineTo(x + s * 0.87, y + s * 0.5);
+            ctx.lineTo(x, y + s);
+            ctx.lineTo(x - s * 0.87, y + s * 0.5);
+            ctx.lineTo(x - s * 0.87, y - s * 0.5);
             ctx.closePath();
             break;
           default: // circle / ring
@@ -773,6 +849,9 @@
             : 0.9 + 0.1 * Math.sin(performance.now() * 0.0016);
           const ms = config.markerSize * breath;
           const count = Math.min(config.markerCount, markerPool.length);
+          // 是否使用上传的 SVG 图形（未就绪时回退为内置形状）
+          const useSvg =
+            config.markerShape === "svg" && markerImgReady && markerImg;
           // 标记躲避：范围/位移略大于点阵，配合体积更明显
           const mRepelR = cssSize * 0.16;
           const mRepelPush = cssSize * 0.06;
@@ -794,9 +873,19 @@
             const [tx, ty] = repelTarget(sx, sy, mRepelR, mRepelPush);
             markerOffX[i] += (tx - markerOffX[i]) * REPEL_EASE;
             markerOffY[i] += (ty - markerOffY[i]) * REPEL_EASE;
-            ctx.beginPath();
-            ctx.arc(sx + markerOffX[i], sy + markerOffY[i], ms, 0, Math.PI * 2);
-            ctx.fill();
+            const dx = sx + markerOffX[i];
+            const dy = sy + markerOffY[i];
+            if (useSvg) {
+              // 上传的 SVG：保留原始配色，按标记大小缩放，透明度沿用标记透明度
+              ctx.globalAlpha = config.markerA;
+              ctx.drawImage(markerImg, dx - ms, dy - ms, ms * 2, ms * 2);
+              ctx.globalAlpha = 1;
+            } else {
+              // 内置形状（圆/方/菱/三角/六边形），使用标记颜色
+              ctx.beginPath();
+              addShape(ctx, config.markerShape, dx, dy, ms);
+              ctx.fill();
+            }
           }
         }
       }
@@ -928,6 +1017,46 @@
         config.dotShape = e.target.value;
       });
 
+      // 标记形状 + 自定义 SVG 上传
+      const markerShapeSel = document.getElementById("markerShape");
+      const markerSvgField = document.getElementById("markerSvgField");
+      const markerSvgName = document.getElementById("markerSvgName");
+      markerShapeSel.addEventListener("change", (e) => {
+        config.markerShape = e.target.value;
+        markerSvgField.hidden = e.target.value !== "svg";
+      });
+      document.getElementById("markerSvgBtn").addEventListener("click", () => {
+        document.getElementById("markerSvgFile").click();
+      });
+      document
+        .getElementById("markerSvgFile")
+        .addEventListener("change", (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            config.markerSvg = reader.result; // data:image/svg+xml;base64,...
+            loadMarkerSvg(config.markerSvg);
+            markerSvgName.textContent = file.name;
+            // 上传后自动切到 SVG 形状
+            config.markerShape = "svg";
+            markerShapeSel.value = "svg";
+            markerSvgField.hidden = false;
+          };
+          reader.readAsDataURL(file);
+          e.target.value = ""; // 允许重复选择同一文件
+        });
+      document
+        .getElementById("markerSvgClear")
+        .addEventListener("click", () => {
+          config.markerSvg = null;
+          loadMarkerSvg(null);
+          markerSvgName.textContent = "未选择";
+          config.markerShape = "circle";
+          markerShapeSel.value = "circle";
+          markerSvgField.hidden = true;
+        });
+
       document.getElementById("pauseToggle").addEventListener("change", (e) => {
         config.paused = e.target.checked;
       });
@@ -996,6 +1125,8 @@
             return `<polygon points="${f(x)},${f(y - s)} ${f(x + s)},${f(y)} ${f(x)},${f(y + s)} ${f(x - s)},${f(y)}"/>`;
           case "triangle":
             return `<polygon points="${f(x)},${f(y - s)} ${f(x + s * 0.87)},${f(y + s * 0.5)} ${f(x - s * 0.87)},${f(y + s * 0.5)}"/>`;
+          case "hexagon":
+            return `<polygon points="${f(x)},${f(y - s)} ${f(x + s * 0.87)},${f(y - s * 0.5)} ${f(x + s * 0.87)},${f(y + s * 0.5)} ${f(x)},${f(y + s)} ${f(x - s * 0.87)},${f(y + s * 0.5)} ${f(x - s * 0.87)},${f(y - s * 0.5)}"/>`;
           default: // circle / ring
             return `<circle cx="${f(x)}" cy="${f(y)}" r="${s}"/>`;
         }
@@ -1054,7 +1185,10 @@
         if (config.enableMarker) {
           const ms = config.markerSize;
           const count = Math.min(config.markerCount, markerPool.length);
-          let m = `<g fill="${config.marker}" fill-opacity="${config.markerA}">`;
+          const useSvg = config.markerShape === "svg" && config.markerSvg;
+          let m = useSvg
+            ? ""
+            : `<g fill="${config.marker}" fill-opacity="${config.markerA}">`;
           for (let i = 0; i < count; i++) {
             const p = markerPool[i];
             const xr = p[0] * cp + p[2] * sp;
@@ -1064,9 +1198,15 @@
             const zt = yr * st + zr * ct;
             const xt = xr;
             if (zt <= 0.02) continue;
-            m += `<circle cx="${(cx + xt * R).toFixed(1)}" cy="${(cy - yt * R).toFixed(1)}" r="${ms}"/>`;
+            const X = cx + xt * R;
+            const Y = cy - yt * R;
+            if (useSvg) {
+              m += `<image href="${config.markerSvg}" x="${(X - ms).toFixed(1)}" y="${(Y - ms).toFixed(1)}" width="${(ms * 2).toFixed(1)}" height="${(ms * 2).toFixed(1)}" opacity="${config.markerA}"/>`;
+            } else {
+              m += svgShape(config.markerShape, X, Y, ms);
+            }
           }
-          m += `</g>`;
+          if (!useSvg) m += `</g>`;
           out += m;
         }
         out += `</svg>`;
@@ -1077,6 +1217,67 @@
           "globe.svg",
           new Blob([buildSVG()], { type: "image/svg+xml" })
         );
+      }
+
+      // 录制一段视频：时长恰好为自转一圈（phi 从当前角度走满 2π），
+      // 首尾帧重合可无缝循环。优先 MP4，浏览器不支持时回退 WebM。
+      async function exportMP4(onProgress) {
+        const fps = 60;
+        const mimeCandidates = [
+          "video/mp4;codecs=avc1.42E01E",
+          "video/mp4",
+          "video/webm;codecs=vp9",
+          "video/webm",
+        ];
+        const mime =
+          mimeCandidates.find(
+            (m) => window.MediaRecorder && MediaRecorder.isTypeSupported(m)
+          ) || "";
+        if (!window.MediaRecorder || !canvas.captureStream) {
+          alert("当前浏览器不支持视频录制");
+          return;
+        }
+
+        // 自转一圈的时长 = 屏幕上的自转速度（保持观感一致）
+        const speed = config.speed > 0 ? config.speed : 0.004;
+        const totalFrames = Math.max(2, Math.round((2 * Math.PI) / speed));
+
+        // 录制期间冻结主循环对 phi 的推进，由本函数确定性地驱动
+        const wasPaused = config.paused;
+        const startPhi = phi;
+        config.paused = true;
+
+        const stream = canvas.captureStream(0);
+        const track = stream.getVideoTracks()[0];
+        const rec = new MediaRecorder(stream, {
+          ...(mime ? { mimeType: mime } : {}),
+          videoBitsPerSecond: 12_000_000,
+        });
+        const chunks = [];
+        rec.ondataavailable = (e) => {
+          if (e.data && e.data.size) chunks.push(e.data);
+        };
+        const stopped = new Promise((res) => (rec.onstop = res));
+        rec.start();
+
+        const frameMs = 1000 / fps;
+        for (let f = 0; f < totalFrames; f++) {
+          phi = startPhi + (f / totalFrames) * 2 * Math.PI;
+          draw();
+          if (track.requestFrame) track.requestFrame();
+          if (onProgress) onProgress((f + 1) / totalFrames);
+          await new Promise((r) => setTimeout(r, frameMs));
+        }
+        rec.stop();
+        await stopped;
+
+        // 恢复现场
+        phi = startPhi;
+        config.paused = wasPaused;
+
+        const outMime = mime || "video/webm";
+        const ext = outMime.includes("mp4") ? "mp4" : "webm";
+        triggerDownload("globe." + ext, new Blob(chunks, { type: outMime }));
       }
 
       // 导出可直接给前端用的自包含 ESM 模块（initGlobe 渲染逻辑与控制台一致）
@@ -1125,6 +1326,14 @@ export function initGlobe(canvas, userConfig = {}) {
   const markerOffX = new Float32Array(MARKER_MAX);
   const markerOffY = new Float32Array(MARKER_MAX);
   let dotColors = [];
+  let markerImg = null, markerImgReady = false;
+  function loadMarkerSvg(uri) {
+    markerImgReady = false;
+    if (!uri) { markerImg = null; return; }
+    const im = new Image();
+    im.onload = () => { markerImg = im; markerImgReady = true; };
+    im.src = uri;
+  }
 
 ${fns
   .split("\n")
@@ -1179,6 +1388,7 @@ ${fns
   ro.observe(canvas);
 
   buildDotColors();
+  loadMarkerSvg(config.markerSvg);
   const img = new Image();
   img.onload = () => {
     const off = document.createElement("canvas");
@@ -1199,8 +1409,10 @@ ${fns
   return {
     setConfig(patch = {}) {
       const rebuild = "density" in patch;
+      const reloadSvg = "markerSvg" in patch;
       Object.assign(config, patch);
       buildDotColors();
+      if (reloadSvg) loadMarkerSvg(config.markerSvg);
       if (rebuild) {
         buildPoints();
         buildMarkers();
@@ -1222,14 +1434,32 @@ ${fns
         );
       }
 
-      document.getElementById("exportBtn").addEventListener("click", () => {
+      document.getElementById("exportBtn").addEventListener("click", async () => {
         const type = document.getElementById("exportType").value;
         const btn = document.getElementById("exportBtn");
+        const old = btn.textContent;
+
+        if (type === "mp4") {
+          btn.disabled = true;
+          try {
+            await exportMP4((p) => {
+              btn.textContent = "录制中… " + Math.round(p * 100) + "%";
+            });
+            btn.textContent = "已导出 ✓";
+          } catch (e) {
+            btn.textContent = "录制失败";
+            console.error(e);
+          } finally {
+            btn.disabled = false;
+            setTimeout(() => (btn.textContent = old), 1200);
+          }
+          return;
+        }
+
         if (type === "png") exportPNG();
         else if (type === "jpg") exportJPG();
         else if (type === "svg") exportSVG();
         else exportJS();
-        const old = btn.textContent;
         btn.textContent = "已导出 ✓";
         setTimeout(() => (btn.textContent = old), 1200);
       });
@@ -1265,6 +1495,13 @@ ${fns
         setAlpha("dot", "dotA");
         setAlpha("marker", "markerA");
         document.getElementById("dotShape").value = config.dotShape;
+        document.getElementById("markerShape").value = config.markerShape;
+        const msField = document.getElementById("markerSvgField");
+        if (msField) msField.hidden = config.markerShape !== "svg";
+        loadMarkerSvg(config.markerSvg);
+        document.getElementById("markerSvgName").textContent = config.markerSvg
+          ? "已上传"
+          : "未选择";
         const setRange = (id, valId, key, fmt) => {
           document.getElementById(id).value = config[key];
           document.getElementById(valId).textContent = fmt ? fmt(config[key]) : config[key];

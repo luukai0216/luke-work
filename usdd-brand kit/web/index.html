@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>USDD Brand Assets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.1/fonts/remixicon.css" rel="stylesheet" />
+<style>
+  :root{
+    --brand-default:#216c58;
+    --brand-highlight:#81deb0;
+    --susdd-green:#36b364;
+    --bg-page:#0c0c0e;
+    --bg-card:#181a1c;
+    --bg-elevated:#212426;
+    --bg-preview:#1a1d1e;
+    --text-primary:#ffffff;
+    --text-secondary:#cececf;
+    --text-tertiary:#9e9e9f;
+    --border-strong:#49494a;
+    --border-default:#303032;
+    --border-card:rgba(33,108,88,.15);
+    --danger:#d73133;
+    --card-radius:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg-page);
+    color:var(--text-primary);
+    font-size:16px;
+    line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  img{display:block}
+
+  /* container — usdd.io rule: max-width 1440, 16px side padding, centered, fluid below */
+  .wrap{max-width:1440px;margin:0 auto;padding:0 16px}
+
+  /* ============ NAV ============ */
+  .nav{
+    position:sticky;top:0;z-index:50;height:80px;
+    background:transparent;
+    transition:background .3s ease, backdrop-filter .3s ease;
+  }
+  /* blurred translucent bar appears only after scrolling down */
+  .nav.scrolled{
+    background:rgba(12,12,14,.55);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .nav-inner{max-width:1440px;margin:0 auto;height:80px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:16px}
+  .brand .mark{width:40px;height:40px}
+  .brand-text strong{display:block;font-size:20px;font-weight:600;letter-spacing:.4px;line-height:1.2}
+  .brand-text span{display:block;font-size:14px;font-weight:400;letter-spacing:.28px;color:var(--text-primary)}
+  .nav-tabs{display:flex;align-items:center;gap:8px}
+  .nav-tab{display:flex;align-items:center;gap:4px;padding:8px 20px;border-radius:8px;font-size:16px;font-weight:500;text-transform:capitalize;color:var(--text-primary);transition:background .2s}
+  .nav-tab:hover{background:rgba(255,255,255,.05)}
+  .nav-tab.active{color:var(--brand-highlight)}
+  .nav-tab svg{width:18px;height:18px}
+  /* gradient border via masked pseudo-element (green → yellow-green, like the hero title) */
+  .launch{position:relative;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 32px;border:none;border-radius:8px;background:rgba(0,0,0,.05);font-size:16px;font-weight:500;text-transform:capitalize;color:#fff;transition:background .2s,color .2s}
+  .launch::before{content:"";position:absolute;inset:0;border-radius:8px;padding:1px;background:linear-gradient(105deg,#e1dc90 0%,#81deb0 50%,#2a8c6c 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;pointer-events:none}
+  .launch:hover{background:transparent;color:var(--brand-highlight)}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;height:560px;overflow:hidden;margin-top:-80px;display:flex;align-items:center;box-shadow:inset 0 0 160px 0 rgba(33,108,88,.4)}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 560px at 36% 56%,rgba(54,179,145,.20),rgba(33,108,88,0) 70%);pointer-events:none}
+  .hero-inner{position:relative;max-width:1440px;width:100%;margin:0 auto;padding:0 16px;z-index:2}
+  .hero-copy{max-width:708px;display:flex;flex-direction:column;gap:64px}
+  .hero h1{
+    font-size:56px;line-height:1.4;font-weight:700;text-transform:capitalize;
+    background:linear-gradient(280deg,#e1dc90 0%,#81deb0 35%,#448f6a 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;width:max-content;max-width:100%;
+  }
+  .hero p.sub{font-size:16px;line-height:22px;color:var(--text-secondary);margin-top:8px;max-width:708px}
+  .hero .copy-top{display:flex;flex-direction:column}
+  .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:var(--brand-default);font-size:16px;font-weight:600;color:#fff;transition:background .2s;width:max-content}
+  .btn-primary:hover{background:#2a8c6c}
+  /* Secondary button (design system Type=Secondary): bg #212426, border #49494a, white, radius 8 */
+  .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border-strong);font-size:16px;font-weight:600;color:#fff;transition:background .2s;width:max-content}
+  .btn-outline:hover{background:#2a2e30}
+  .btn-outline:disabled,.btn-outline.disabled{opacity:.4;pointer-events:none}
+  .btn-primary svg,.btn-outline svg{width:16px;height:16px}
+  .hero-art{position:absolute;right:max(40px,calc(50% - 720px + 40px));bottom:0;width:512px;height:512px;pointer-events:none}
+  .hero-art img{width:100%;height:100%;object-fit:contain}
+
+  /* ============ SECTION LAYOUT ============ */
+  main{padding-bottom:96px}
+  .section{display:flex;justify-content:space-between;gap:48px;margin-top:160px}
+  .section-head{flex:1 1 464px;max-width:464px;min-width:0}
+  .section-head h2{font-size:40px;line-height:56px;font-weight:600;color:#fff}
+  .section-head p{margin-top:8px;font-size:16px;line-height:22px;color:var(--text-tertiary)}
+  .section-body{flex:1 1 708px;max-width:708px;min-width:0}
+
+  /* ============ CARDS ============ */
+  .card{position:relative;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:var(--card-radius);overflow:hidden}
+  .preview{position:relative;height:240px;background:var(--bg-preview);border-radius:var(--card-radius);display:flex;align-items:center;justify-content:center}
+  .preview.black{background:#000}
+  .card-foot{height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+  .card-label{font-size:16px;color:#fff}
+  .foot-pills{display:flex;gap:8px;align-items:center}
+  /* SVG / PNG / Get Inter → Secondary, Mini (h32, radius 8) */
+  .pill{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border-strong);font-size:12px;color:#fff;transition:background .2s}
+  .pill:hover{background:#2a2e30}
+  .pill:disabled,.pill.disabled{opacity:.4;pointer-events:none}
+  .pill svg{width:12px;height:12px}
+  .pill i{font-size:13px}
+  .pill.solid{background:var(--brand-default);border:none}
+  .pill.ghost{background:var(--bg-card);border:none}
+
+  /* logo grid (USDD / sUSDD) */
+  .logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px 24px}
+  .logo-grid .full{grid-column:1 / -1}
+  .wordmark{display:flex;align-items:center;gap:24px}
+  .wordmark .mark{width:64px;height:64px;flex:0 0 64px}
+  /* word SVGs use preserveAspectRatio="none" — must set exact ratio width:height */
+  .wordmark .word{width:118px;height:32px;flex:0 0 118px}
+  .wordmark.susdd .word{width:144px;height:32px;flex:0 0 144px}
+  .mark-64{width:64px;height:64px}
+
+  /* bg toggle group */
+  .bg-toggles{display:flex;gap:9px;align-items:center}
+  .bg-toggle{height:32px;padding:4px 16px;border-radius:100px;background:var(--bg-card);font-size:12px;color:#fff;transition:background .2s,color .2s}
+  .bg-toggle.active{background:var(--brand-default)}
+  .bg-toggle:not(.active){cursor:pointer}
+  .bg-toggle:not(.active):hover{color:var(--brand-highlight)}
+
+  /* third (wide) card: preview bg framed by a 24px #1a1d1e border (per design) */
+  .card.full .preview{border:24px solid var(--bg-preview)}
+  /* third (wide) card footer — tabs aligned to Figma reference */
+  .card.full .card-foot{align-items:center}
+  .card.full .foot-pills .pill{height:32px;padding:0 12px;border-radius:8px;gap:4px}
+  /* on light backgrounds (Bg: White / Bg: Grey) the white wordmark flips to black */
+  .preview.on-light .word{filter:brightness(0)}
+
+  /* multi-chain */
+  .chain-row{display:flex;align-items:center;justify-content:center;gap:64px;height:100%}
+  .token-badge{position:relative;width:48px;height:48px}
+  .token-badge>img.base{width:48px;height:48px}
+  .token-badge .chain{position:absolute;right:0;bottom:0;width:20px;height:20px;border-radius:50%}
+
+  /* color palette */
+  .swatches{display:flex;gap:24px;justify-content:center;height:100%;align-items:center}
+  .swatch{position:relative;width:147px;height:192px;border-radius:8px;cursor:pointer;overflow:hidden}
+  /* info (HEX/RGB/CMYK + copy): hidden by default, USDD Green shown by default,
+     hovering any swatch shows only that one (and hides the default) */
+  .sw-info{position:absolute;inset:0;opacity:0;transition:opacity .15s ease}
+  .swatch.is-default .sw-info{opacity:1}
+  .swatch:hover .sw-info{opacity:1}
+  .swatches:hover .swatch.is-default .sw-info{opacity:0}
+  .swatches:hover .swatch.is-default:hover .sw-info{opacity:1}
+  .sw-meta{position:absolute;top:16px;left:16px;font-size:14px;line-height:20px;white-space:pre-line;color:#fff}
+  .sw-copy{position:absolute;top:16px;right:16px;font-size:16px;line-height:1;color:#fff}
+  .swatch.dark-ink .sw-meta,.swatch.dark-ink .sw-copy{color:#0c0c0e}
+  .palette-labels{display:flex;gap:24px;justify-content:center;margin-top:0}
+  .palette-labels span{width:147px;text-align:center;font-size:16px;line-height:22px}
+  .copied-tip{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.75);color:#fff;font-size:12px;padding:4px 10px;border-radius:6px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .swatch.show-tip .copied-tip{opacity:1}
+
+  /* typography */
+  .type-preview{position:relative;overflow:hidden}
+  .type-aa{position:absolute;right:-10px;bottom:-60px;font-size:300px;font-weight:600;line-height:1;color:rgba(129,222,176,.10)}
+  .type-info{position:absolute;left:32px;top:32px}
+  .type-info .name{font-size:48px;font-weight:600;line-height:1.2}
+  .type-weights{position:absolute;left:32px;bottom:32px;font-size:16px;line-height:22px;color:var(--text-secondary)}
+  .type-weights .w400{font-weight:400}
+  .type-weights .w600{font-weight:600}
+
+  /* common mistakes — strict per design (node 393:715): two columns of bg #1a1d1e cards */
+  .mistakes{display:flex;gap:8px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:24px;padding:8px}
+  .m-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .mistake{background:var(--bg-preview);border-radius:16px;height:207px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+  .m-top{display:flex;align-items:flex-start;justify-content:space-between}
+  .m-demo{position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+  .m-demo img{width:48px;height:48px;display:block}
+  .mistake .fail{width:24px;height:24px;flex:0 0 24px}
+  .mistake p{font-size:14px;line-height:20px;color:var(--text-tertiary);margin:0}
+  /* per-demo transforms (matching the design's exact treatments) */
+  .m-demo.tilt img{transform:rotate(150deg)}
+  .m-demo.flip img{transform:rotate(180deg)}
+  .m-demo.stretch img{width:48px;height:30px}
+  .m-demo.shadow{overflow:visible}
+  .m-demo.shadow img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:108px;height:108px;max-width:none}
+  .m-demo.crop{border:2px dashed var(--danger);overflow:hidden;box-shadow:0 4px 4px rgba(0,0,0,.25)}
+  .m-demo.crop img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:62px;max-width:none}
+
+  /* press & media */
+  .press{position:relative;height:320px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--card-radius);overflow:hidden;margin-top:160px}
+  .press::before{content:"";position:absolute;left:-80px;top:-180px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(33,108,88,.45),rgba(33,108,88,0) 70%)}
+  .press::after{content:"";position:absolute;right:-60px;top:-40px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(54,179,145,.30),rgba(33,108,88,0) 70%)}
+  /* interactive canvas globe (globe.js) — size/pos per design (970px, left 538, top -12) */
+  .press .globe{position:absolute;top:-12px;left:538px;width:970px;height:970px;pointer-events:auto;z-index:1}
+  .press-copy{position:relative;z-index:2;padding:48px 64px;max-width:560px}
+  .press-copy h2{font-size:40px;line-height:56px;font-weight:600}
+  .press-copy p{margin-top:8px;font-size:16px;line-height:22px;color:var(--text-tertiary);max-width:464px}
+  .press-copy .btn-primary{margin-top:32px}
+
+  /* trademark — per design: no card bg/border, all text tertiary grey */
+  .notice{padding:24px 0;margin-top:120px}
+  .notice .n-head h3{font-size:20px;line-height:28px;font-weight:600;color:var(--text-tertiary)}
+  .notice .n-head p{margin-top:24px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
+  .n-block{margin-top:24px}
+  .n-block h4{font-size:14px;line-height:20px;font-weight:400;color:var(--text-tertiary)}
+  .n-block p{margin-top:8px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
+  .n-foot{margin-top:24px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
+  .n-foot u{text-decoration:underline}
+  .n-link{display:inline-flex;align-items:center;gap:4px;margin-top:24px;font-size:12px;color:var(--text-tertiary);text-decoration:underline;transition:color .2s}
+  .n-link:hover{color:var(--brand-highlight)}
+  .n-link svg{width:12px;height:12px}
+
+  /* footer */
+  footer{border-top:1px solid rgba(255,255,255,.1);background:var(--bg-page);margin-top:120px;padding:79px 0 40px}
+  .f-top{position:relative;display:flex;align-items:center;justify-content:center;height:64px}
+  .f-social{position:absolute;left:0;display:flex;gap:16px}
+  .f-social a{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:#fff;opacity:.85;transition:opacity .2s}
+  .f-social a:hover{opacity:1}
+  .f-social svg{width:24px;height:24px}
+  .f-logo{width:64px;height:64px;border-radius:50%;background:var(--brand-default);display:flex;align-items:center;justify-content:center}
+  .f-logo img{width:64px;height:64px}
+  .f-mail{position:absolute;right:0;display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border:1px solid rgba(255,255,255,.2);border-radius:100px;background:linear-gradient(287deg,rgba(255,255,255,.03),rgba(0,0,0,.2));font-size:16px;font-weight:500;letter-spacing:.32px;transition:border-color .2s,color .2s}
+  .f-mail:hover{border-color:var(--brand-highlight);color:var(--brand-highlight)}
+  .f-mail svg{width:18px;height:18px}
+  .f-tagline{text-align:center;margin-top:24px}
+  .f-tagline .big{font-size:40px;font-weight:600;letter-spacing:.8px;background:linear-gradient(90deg,#80dcaf,#216c58);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+  .f-tagline p{margin-top:12px;font-size:16px;line-height:24px;color:rgba(255,255,255,.6)}
+  .f-divider{height:1px;background:rgba(255,255,255,.1);margin:64px 0 40px}
+  .f-cols{display:flex;gap:25px;justify-content:center;flex-wrap:wrap}
+  .f-col{width:268px;display:flex;flex-direction:column;gap:16px}
+  .f-col h5{font-size:16px;line-height:24px;font-weight:400;text-transform:uppercase;color:#fff}
+  .f-col a{display:inline-flex;align-items:center;gap:6px;font-size:16px;line-height:24px;color:rgba(255,255,255,.6);transition:color .2s}
+  .f-col a:hover{color:#fff}
+  .f-col a svg{width:16px;height:16px;opacity:.7}
+  .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:48px}
+  .f-bottom .copyright{font-size:14px;line-height:20px;letter-spacing:.28px;color:rgba(255,255,255,.4)}
+  .to-top{width:47px;height:47px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;color:#fff;transition:border-color .2s,background .2s}
+  .to-top:hover{border-color:var(--brand-highlight);color:var(--brand-highlight);background:rgba(255,255,255,.04)}
+  .to-top svg{width:24px;height:24px}
+
+  /* Remix Icon (remixicon.com) — color follows currentColor (= text color) */
+  i[class^="ri-"],i[class*=" ri-"]{font-style:normal;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+  .nav-tab i{font-size:20px}
+  .btn-outline i,.btn-primary i{font-size:18px}
+  .f-mail i{font-size:18px}
+  .f-social a i{font-size:24px}
+  .f-col a i{font-size:15px;opacity:.7}
+  .to-top i{font-size:22px}
+  .n-link i{font-size:13px}
+
+  /* responsive */
+  /* responsive — usdd.io-style: fluid container, content stacks on tablet, nav collapses <768 */
+  @media(max-width:1180px){
+    .section{flex-direction:column;gap:24px}
+    .section-head,.section-body{max-width:100%;flex:1 1 auto}
+    .hero-art{display:none}
+    .swatches,.chain-row{flex-wrap:wrap}
+    .press .globe{opacity:.5}
+  }
+  @media(max-width:1000px){
+    .section{margin-top:96px}
+    .press,.notice,footer{margin-top:96px}
+  }
+  /* mobile (<768): collapse nav to logo + Launch APP, stack grids, scale hero */
+  @media(max-width:768px){
+    .nav-tabs{display:none}
+    .logo-grid{grid-template-columns:1fr}
+    .mistakes{flex-direction:column}
+    .hero{height:auto;padding:96px 0 64px}
+    .hero h1{font-size:40px}
+    .hero-copy{gap:40px}
+    .press-copy{padding:32px 24px;max-width:100%}
+    .f-cols{gap:24px}
+    .notice{padding:24px 0}
+  }
+  @media(max-width:480px){
+    .hero h1{font-size:32px}
+    .section-head h2{font-size:32px;line-height:1.2}
+    .f-top{flex-direction:column;gap:24px;height:auto}
+    .f-social,.f-mail{position:static}
+  }
+</style>
+</head>
+<body>
+
+<!-- Reusable USDD mark (disc = --disc, ink ring/$ = --ink) for Common Mistakes demos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="usddMark" viewBox="0 0 64 64">
+<rect width="64" height="64" rx="32" fill="var(--disc,#216C58)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 32C0 14.3333 14.3333 0 32 0C49.6667 0 64 14.3333 64 32C64 49.6667 49.6667 64 32 64C14.3333 64 0 49.6667 0 32ZM1.6 32C1.6 48.7867 15.2133 62.4 32 62.4C48.7867 62.4 62.4 48.7867 62.4 32C62.4 15.2133 48.7867 1.6 32 1.6C15.2133 1.6 1.6 15.2133 1.6 32ZM58.0262 34.3603C58.0662 33.9336 58.4128 33.6003 58.8395 33.6003C59.3062 33.6003 59.6662 34.0003 59.6262 34.4536C58.3862 48.6136 46.4928 59.7336 31.9995 59.7336C17.5062 59.7336 5.61283 48.6269 4.37283 34.4536C4.33283 33.9869 4.69283 33.6003 5.1595 33.6003C5.58616 33.6003 5.93283 33.9336 5.97283 34.3603C7.1595 47.6803 18.3595 58.1336 31.9995 58.1336C45.6395 58.1336 56.8395 47.6936 58.0262 34.3603ZM5.1595 30.4003C5.58616 30.4003 5.93283 30.0669 5.97283 29.6403C7.1595 16.3203 18.3595 5.86693 31.9995 5.86693C45.6395 5.86693 56.8395 16.3203 58.0262 29.6403C58.0662 30.0669 58.4128 30.4003 58.8395 30.4003C59.3062 30.4003 59.6662 30.0136 59.6262 29.5469C58.3862 15.3736 46.4928 4.26693 31.9995 4.26693C17.5062 4.26693 5.61283 15.3869 4.37283 29.5469C4.33283 30.0003 4.69283 30.4003 5.1595 30.4003ZM22.9339 12.2669H43.2005C43.7896 12.2669 44.2672 12.7445 44.2672 13.3336V13.8669C44.2672 14.456 43.7896 14.9336 43.2005 14.9336H22.9339C22.3448 14.9336 21.8672 14.456 21.8672 13.8669V13.3336C21.8672 12.7445 22.3448 12.2669 22.9339 12.2669ZM32 17.6V16H29.3333V17.8267C30.1867 17.7067 31.0667 17.6267 32 17.6ZM29.3333 36.3815V43.1734C29.3333 43.1734 29.3733 43.1867 29.4 43.2C30.16 43.4534 31.0267 43.6134 32 43.64V36.9794L32.7462 37.1467C33.0112 37.1997 33.2426 37.2611 33.4804 37.3243C33.5417 37.3406 33.6034 37.357 33.6662 37.3734V43.6267C34.2929 43.56 34.8529 43.44 35.3329 43.2667C35.7195 43.12 36.0529 42.9734 36.3329 42.8V38.2267C36.9995 38.52 37.5329 38.8667 37.9062 39.2534C38.3729 39.7334 38.5862 40.3067 38.5862 40.9867C38.5862 41.72 38.3329 42.3734 37.8262 42.9467C37.3195 43.5067 36.6129 43.9467 35.7062 44.28C34.7995 44.6 33.7329 44.76 32.5062 44.76C31.2795 44.76 30.1329 44.6 29.1329 44.2534C28.1595 43.9067 27.3595 43.3867 26.7729 42.7067C26.3862 42.24 26.1195 41.72 25.9462 41.1067C25.7995 40.56 25.3462 40.12 24.7995 40.12H19.8529C19.2529 40.12 18.7729 40.6267 18.8395 41.2C19.0395 42.9334 19.6129 44.4134 20.5595 45.6534C21.7195 47.1334 23.3062 48.2667 25.3595 49.0134C26.6929 49.5067 28.1995 49.8267 29.8395 50C29.7861 49.9947 29.7305 49.9936 29.6745 49.9926C29.5908 49.991 29.5061 49.9893 29.4262 49.9734V52.2934C29.4262 52.88 29.9062 53.36 30.4929 53.36H31.0262C31.6129 53.36 32.0929 52.88 32.0929 52.2934V50.16C32.0195 50.16 31.9495 50.1534 31.8795 50.1467C31.8095 50.14 31.7395 50.1334 31.6662 50.1334C31.8262 50.1334 31.9829 50.1434 32.1395 50.1534C32.2962 50.1634 32.4529 50.1734 32.6129 50.1734C33.0695 50.1734 33.4918 50.1505 33.9221 50.126C33.901 50.1282 33.8803 50.1308 33.8595 50.1334C33.8062 50.14 33.7529 50.1467 33.6929 50.1467V52.2934C33.6929 52.88 34.1729 53.36 34.7595 53.36H35.2929C35.8795 53.36 36.3595 52.88 36.3595 52.2934V49.9067C36.337 49.9067 36.3134 49.9067 36.2894 49.9073C37.5654 49.7209 38.742 49.4473 39.7729 49.04C41.7729 48.28 43.2929 47.2267 44.3329 45.8534L44.2529 45.8267C45.3195 44.44 45.8529 42.8267 45.8662 40.9467C45.8662 39.6667 45.5862 38.5467 45.0795 37.56C44.5729 36.5734 43.8529 35.7067 42.9462 34.9867C42.0262 34.2667 40.9462 33.6534 39.6929 33.1467C38.4395 32.6534 37.0662 32.2534 35.5729 31.9467L32.4929 31.2934C31.7462 31.1467 31.0529 30.96 30.3862 30.76C29.7329 30.5334 29.1595 30.28 28.6529 30C28.1462 29.6934 27.7462 29.3467 27.4662 28.9467V28.92C27.1995 28.52 27.0662 28.0534 27.0929 27.52C27.0929 26.8667 27.3062 26.2534 27.7329 25.7334C28.1195 25.2667 28.6795 24.8934 29.3862 24.6134V29.1734C29.7729 29.3867 30.2262 29.5734 30.7462 29.7467C31.1595 29.88 31.5995 30 32.0529 30.1067V24.12C32.1379 24.12 32.2262 24.1168 32.3161 24.1135C32.4094 24.1102 32.5045 24.1067 32.5995 24.1067C32.9729 24.1067 33.3195 24.1334 33.6529 24.16V30.4534L35.8262 30.92C35.9062 30.94 35.9895 30.9567 36.0729 30.9734C36.1562 30.99 36.2395 31.0067 36.3195 31.0267V24.8934C36.3731 24.9226 36.4266 24.9482 36.4795 24.9735C36.5715 25.0176 36.6615 25.0608 36.7462 25.12C37.4929 25.6 37.9995 26.2267 38.2662 27C38.4395 27.5067 38.8795 27.92 39.4262 27.92H44.3595C44.9729 27.92 45.4529 27.4267 45.3595 26.8267C45.1729 25.44 44.6529 24.2134 43.7995 23.0934C42.7329 21.72 41.2395 20.6267 39.3329 19.8534C37.4262 19.0667 35.1995 18.6934 32.6529 18.6934C30.1062 18.6934 27.9062 19.08 25.9462 19.8534C23.9729 20.6267 22.4262 21.7067 21.2929 23.0934C20.1729 24.4667 19.6262 26.0934 19.6262 27.96C19.6262 30.2267 20.4529 32.0267 22.1329 33.36C23.8129 34.6934 26.0929 35.68 28.9995 36.3067L29.3333 36.3815ZM36.2656 17.88V16H33.599V17.6133C34.519 17.6533 35.4123 17.7333 36.2656 17.88Z" fill="var(--ink,#fff)"/>
+</symbol></defs></svg>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <img class="mark" src="assets/usdd-mark.svg" alt="USDD" />
+      <div class="brand-text"><strong>USDD</strong><span>Decentralized USD</span></div>
+    </div>
+    <nav class="nav-tabs">
+      <a class="nav-tab" href="#">Home</a>
+      <a class="nav-tab" href="#">Developer
+        <i class="ri-arrow-down-s-line"></i></a>
+      <a class="nav-tab" href="#">Transparency
+        <i class="ri-arrow-down-s-line"></i></a>
+      <a class="nav-tab active" href="#">Community
+        <i class="ri-arrow-down-s-line"></i></a>
+    </nav>
+    <button class="launch">Launch APP</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="copy-top">
+        <h1>USDD Brand Assets</h1>
+        <p class="sub">Official logos, token marks, colors, and type — everything you need to represent USDD and sUSDD accurately. Download the full kit or grab any asset below.</p>
+      </div>
+      <button class="btn-outline">
+        <i class="ri-download-line"></i>
+        Download All Brand Kit
+      </button>
+    </div>
+  </div>
+  <div class="hero-art"><img src="assets/hero-3d.png" alt="" /></div>
+</section>
+
+<main class="wrap">
+
+  <!-- ============ USDD LOGO ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2>USDD Logo</h2>
+      <p>The USDD wordmark is our primary brand identifier. Use the version that provides the strongest contrast against the background. Don't recolor, redraw, rotate, or distort it. If the USDD wordmark needs to appear on different backgrounds, switch the background color and download the appropriate version.</p>
+    </div>
+    <div class="section-body">
+      <div class="logo-grid">
+        <!-- wordmark -->
+        <div class="card">
+          <div class="preview">
+            <div class="wordmark">
+              <img class="mark" src="assets/usdd-mark.svg" alt="" />
+              <img class="word" src="assets/usdd-word.svg" alt="USDD" />
+            </div>
+          </div>
+          <div class="card-foot">
+            <span class="card-label">Wordmark</span>
+            <div class="foot-pills">
+              <button class="pill">SVG<i class="ri-download-line"></i></button>
+              <button class="pill">PNG<i class="ri-download-line"></i></button>
+            </div>
+          </div>
+        </div>
+        <!-- logomark -->
+        <div class="card">
+          <div class="preview">
+            <img class="mark-64" src="assets/usdd-mark.svg" alt="" />
+          </div>
+          <div class="card-foot">
+            <span class="card-label">Logomark</span>
+            <div class="foot-pills">
+              <button class="pill">SVG<i class="ri-download-line"></i></button>
+              <button class="pill">PNG<i class="ri-download-line"></i></button>
+            </div>
+          </div>
+        </div>
+        <!-- wide with bg toggles -->
+        <div class="card full">
+          <div class="preview black" data-preview>
+            <div class="wordmark">
+              <img class="mark" src="assets/usdd-mark.svg" alt="" />
+              <img class="word" src="assets/usdd-word.svg" alt="USDD" />
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="bg-toggles" data-bg-group>
+              <button class="bg-toggle active" data-bg="#000000" data-ink="light">Bg: Black</button>
+              <button class="bg-toggle" data-bg="#ffffff" data-ink="dark">Bg: White</button>
+              <button class="bg-toggle" data-bg="#216c58" data-ink="light">Bg: Green</button>
+              <button class="bg-toggle" data-bg="#d0d0d0" data-ink="dark">Bg: Grey</button>
+            </div>
+            <div class="foot-pills">
+              <button class="pill">SVG<i class="ri-download-line"></i></button>
+              <button class="pill">PNG<i class="ri-download-line"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ sUSDD LOGO ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2>sUSDD Logo</h2>
+      <p>sUSDD is the yield-bearing token of USDD. The sUSDD wordmark is our primary brand identifier. Use the version that provides the strongest contrast against the background. Don't recolor, redraw, rotate, or distort it. If the sUSDD wordmark needs to appear on different backgrounds, switch the background color and download the appropriate version.</p>
+    </div>
+    <div class="section-body">
+      <div class="logo-grid">
+        <div class="card">
+          <div class="preview">
+            <div class="wordmark susdd">
+              <img class="mark" src="assets/susdd-mark.svg" alt="" />
+              <img class="word" src="assets/susdd-word.svg" alt="sUSDD" />
+            </div>
+          </div>
+          <div class="card-foot">
+            <span class="card-label">Wordmark</span>
+            <div class="foot-pills">
+              <button class="pill">SVG<i class="ri-download-line"></i></button>
+              <button class="pill">PNG<i class="ri-download-line"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="preview">
+            <img class="mark-64" src="assets/susdd-mark.svg" alt="" />
+          </div>
+          <div class="card-foot">
+            <span class="card-label">Logomark</span>
+            <div class="foot-pills">
+              <button class="pill">SVG<i class="ri-download-line"></i></button>
+              <button class="pill">PNG<i class="ri-download-line"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="card full">
+          <div class="preview black" data-preview>
+            <div class="wordmark susdd">
+              <img class="mark" src="assets/susdd-mark.svg" alt="" />
+              <img class="word" src="assets/susdd-word.svg" alt="sUSDD" />
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="bg-toggles" data-bg-group>
+              <button class="bg-toggle active" data-bg="#000000" data-ink="light">Bg: Black</button>
+              <button class="bg-toggle" data-bg="#ffffff" data-ink="dark">Bg: White</button>
+              <button class="bg-toggle" data-bg="#216c58" data-ink="light">Bg: Green</button>
+              <button class="bg-toggle" data-bg="#d0d0d0" data-ink="dark">Bg: Grey</button>
+            </div>
+            <div class="foot-pills">
+              <button class="pill">SVG<i class="ri-download-line"></i></button>
+              <button class="pill">PNG<i class="ri-download-line"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MULTI-CHAIN TOKENS ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Multi-chain Tokens</h2>
+      <p>Use for: CEX listings, wallet integrations, DeFi protocol UI, and any multi-chain interface where the specific deployment chain matters. Each token has variants per chain with the chain logo as a badge.</p>
+    </div>
+    <div class="section-body">
+      <div class="card" style="height:320px">
+        <div class="preview">
+          <div class="chain-row">
+            <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-tron.png" alt=""></div>
+            <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-bnb.png" alt=""></div>
+            <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-eth.png" alt=""></div>
+            <div class="token-badge"><img class="base" src="assets/susdd-mark.svg" alt=""><img class="chain" src="assets/chain-bnb.png" alt=""></div>
+            <div class="token-badge"><img class="base" src="assets/susdd-mark.svg" alt=""><img class="chain" src="assets/chain-eth.png" alt=""></div>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="card-label">Multi-chain</span>
+          <div class="foot-pills">
+            <button class="pill">SVG<i class="ri-download-line"></i></button>
+            <button class="pill">PNG<i class="ri-download-line"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COLOR PALETTE ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Color Palette</h2>
+      <p>USDD Green is the signature color. This primary palette forms the fundamental color scheme of the brand. Click any swatch to copy the HEX code.</p>
+    </div>
+    <div class="section-body">
+      <div class="card" style="height:320px">
+        <div class="preview">
+          <div class="swatches">
+            <div class="swatch is-default" style="background:#216c58" data-hex="#216C58">
+              <div class="sw-info">
+                <div class="sw-meta">HEX:
+#216C58
+
+RGB:
+33 / 108 / 88
+
+CMYK:
+69 / 0 / 19 / 58</div>
+                <i class="ri-file-copy-line sw-copy"></i>
+              </div>
+              <span class="copied-tip">Copied!</span>
+            </div>
+            <div class="swatch dark-ink" style="background:#ffffff" data-hex="#FFFFFF">
+              <div class="sw-info">
+                <div class="sw-meta">HEX:
+#FFFFFF
+
+RGB:
+255 / 255 / 255
+
+CMYK:
+0 / 0 / 0 / 0</div>
+                <i class="ri-file-copy-line sw-copy"></i>
+              </div>
+              <span class="copied-tip">Copied!</span>
+            </div>
+            <div class="swatch" style="background:#0c0c0e" data-hex="#000000">
+              <div class="sw-info">
+                <div class="sw-meta">HEX:
+#000000
+
+RGB:
+0 / 0 / 0
+
+CMYK:
+0 / 0 / 0 / 100</div>
+                <i class="ri-file-copy-line sw-copy"></i>
+              </div>
+              <span class="copied-tip">Copied!</span>
+            </div>
+            <div class="swatch" style="background:#36b364" data-hex="#36B364">
+              <div class="sw-info">
+                <div class="sw-meta">HEX:
+#36B364
+
+RGB:
+54 / 179 / 100
+
+CMYK:
+70 / 0 / 44 / 30</div>
+                <i class="ri-file-copy-line sw-copy"></i>
+              </div>
+              <span class="copied-tip">Copied!</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-foot" style="height:80px;align-items:center">
+          <div class="palette-labels" style="width:100%">
+            <span>USDD Green</span><span>White</span><span>Black</span><span>sUSDD Green</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TYPOGRAPHY ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Typography</h2>
+      <p>Inter is the only typeface we use, in two weights — Regular (400) and Semi Bold (600). It carries our voice across all surfaces.</p>
+    </div>
+    <div class="section-body">
+      <div class="card" style="height:320px">
+        <div class="preview type-preview" style="display:block">
+          <div class="type-aa">Aa</div>
+          <div class="type-info"><div class="name">Inter</div></div>
+          <div class="type-weights">
+            <div class="w400">Regular (400)</div>
+            <div class="w600">Semi Bold (600)</div>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="card-label"></span>
+          <div class="foot-pills">
+            <button class="pill">Get Inter
+              <i class="ri-share-box-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMMON MISTAKES ============ -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Common Mistakes</h2>
+      <p>Common mistakes to avoid when using the USDD logo. When in doubt, use assets as provided in the brand kit without modification.</p>
+    </div>
+    <div class="section-body">
+      <div class="mistakes">
+        <div class="m-col">
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo"><img src="assets/mistakes/color.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't change the color. Use colors from the brand palette.</p>
+          </div>
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo"><img src="assets/mistakes/delete.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't delete or alter elements of the logo.</p>
+          </div>
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo tilt"><img src="assets/mistakes/tilt.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't tilt or rotate the logo.</p>
+          </div>
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo"><img src="assets/mistakes/opacity.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't reduce the logo's opacity or apply a transparent tint.</p>
+          </div>
+        </div>
+        <div class="m-col">
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo crop"><img src="assets/mistakes/crop.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't crop the logo or place it inside a square mask.</p>
+          </div>
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo shadow"><img src="assets/mistakes/shadow.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't add shadows, glows, or other visual effects.</p>
+          </div>
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo flip"><img src="assets/mistakes/flip.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't flip, mirror, or otherwise modify the graphic.</p>
+          </div>
+          <div class="mistake">
+            <div class="m-top">
+              <div class="m-demo stretch"><img src="assets/mistakes/stretch.svg" alt="" /></div>
+              <img class="fail" src="assets/mistakes/fail.svg" alt="" />
+            </div>
+            <p>Don't squeeze, stretch, or change the logo's aspect ratio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRESS & MEDIA ============ -->
+  <section class="press">
+    <canvas class="globe" id="press-globe"></canvas>
+    <div class="press-copy">
+      <h2>Press &amp; Media</h2>
+      <p>For press, interviews, and partnership coverage, get in touch with the USDD team directly.</p>
+      <a class="btn-primary" href="mailto:press@usdd.io">
+        <i class="ri-mail-line"></i>
+        press@usdd.io
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ TRADEMARK NOTICE ============ -->
+  <section class="notice">
+    <div class="n-head">
+      <h3>Brand Usage &amp; Trademark Notice</h3>
+      <p>By downloading or using any asset on this page, you agree to the terms below. These guidelines protect the integrity of the USDD brand and the clarity of communications across the ecosystem.</p>
+    </div>
+    <div class="n-block">
+      <h4>Ownership &amp; Trademarks</h4>
+      <p>The USDD name, wordmark, and token symbols (USDD / sUSDD) are trademarks of the USDD protocol. Downloading these assets does not transfer ownership, nor does it imply USDD's endorsement of your product or service.</p>
+    </div>
+    <div class="n-block">
+      <h4>Permitted Use</h4>
+      <p>You may use these assets without prior written permission for editorial coverage, educational content, exchange and wallet listings, and DeFi protocol integrations — provided you follow the usage guidelines on this page (see Common Mistakes).</p>
+    </div>
+    <div class="n-block">
+      <h4>Prohibited Use</h4>
+      <p>Do not modify, recolor, or distort the marks; do not use them to imply official partnership or endorsement where none exists; do not incorporate them into your product name, trademark, or domain without written permission.</p>
+    </div>
+    <div class="n-block">
+      <h4>Commercial Licensing &amp; Contact</h4>
+      <p>For commercial co-branding, paid partnerships, or use cases outside the above, reach out to legal@usdd.io.</p>
+    </div>
+    <p class="n-foot">This notice supplements (and does not replace) the USDD <u>Terms of Use</u>.</p>
+    <a class="n-link" href="#">Read full Brand Usage Terms
+      <i class="ri-share-box-line"></i>
+    </a>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="f-top">
+      <div class="f-social">
+        <a href="#" aria-label="X"><i class="ri-twitter-x-fill"></i></a>
+        <a href="#" aria-label="Telegram"><i class="ri-telegram-2-fill"></i></a>
+        <a href="#" aria-label="Discord"><i class="ri-discord-fill"></i></a>
+      </div>
+      <div class="f-logo"><img src="assets/usdd-mark.svg" alt="USDD" /></div>
+      <a class="f-mail" href="mailto:contact@usdd.io">
+        <i class="ri-mail-line"></i>
+        contact@usdd.io
+      </a>
+    </div>
+    <div class="f-tagline">
+      <div class="big">Decentralized USD</div>
+      <p>USDD is a fully Decentralized stablecoin pegged to the US Dollar<br>through crypto reserves.</p>
+    </div>
+    <div class="f-divider"></div>
+    <div class="f-cols">
+      <div class="f-col">
+        <h5>Developer</h5>
+        <a href="#">Developer Doc <i class="ri-external-link-line"></i></a>
+        <a href="#">Audit Report <i class="ri-external-link-line"></i></a>
+        <a href="#">MCP Server Docs <i class="ri-external-link-line"></i></a>
+      </div>
+      <div class="f-col">
+        <h5>Transparency</h5>
+        <a href="#">Data</a>
+        <a href="#">Smart Allocator</a>
+        <a href="#">USDD Treasury</a>
+      </div>
+      <div class="f-col">
+        <h5>Community</h5>
+        <a href="#">News</a>
+        <a href="#">FAQs</a>
+        <a href="#">Brand Kit</a>
+      </div>
+      <div class="f-col">
+        <h5>Legal</h5>
+        <a href="#">Terms of Use <i class="ri-external-link-line"></i></a>
+        <a href="#">Privacy Policy <i class="ri-external-link-line"></i></a>
+      </div>
+      <div class="f-col">
+        <h5>Legacy</h5>
+        <a href="#">USDD Legacy <i class="ri-external-link-line"></i></a>
+        <a href="#">USDD Old PSM <i class="ri-external-link-line"></i></a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span class="copyright">Copyright © 2026 USDD. All rights reserved</span>
+      <a class="to-top" href="#top" aria-label="Back to top"><i class="ri-arrow-up-s-line"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav: transparent at top, blurred translucent bar after scrolling down
+  const nav=document.querySelector('.nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>8);
+  onScroll();
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  // Bg toggle for wordmark preview (third / wide card)
+  document.querySelectorAll('[data-bg-group]').forEach(group=>{
+    const preview=group.closest('.card-foot').previousElementSibling;
+    group.querySelectorAll('.bg-toggle').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        group.querySelectorAll('.bg-toggle').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        preview.style.background=btn.dataset.bg;
+        preview.classList.toggle('on-light', btn.dataset.ink==='dark');
+      });
+    });
+  });
+  // Copy hex on swatch click
+  document.querySelectorAll('.swatch').forEach(sw=>{
+    sw.addEventListener('click',()=>{
+      const hex=sw.dataset.hex;
+      navigator.clipboard&&navigator.clipboard.writeText(hex);
+      sw.classList.add('show-tip');
+      setTimeout(()=>sw.classList.remove('show-tip'),1100);
+    });
+  });
+</script>
+<script type="module">
+  import { initGlobe } from "./globe.js";
+  const c = document.getElementById("press-globe");
+  if (c) initGlobe(c, { speed: 0.003, markerSize: 11 });
+</script>
+</body>
+</html>
