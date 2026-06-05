@@ -6,7 +6,7 @@
 <title>USDD Brand Assets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@600&display=swap" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.1/fonts/remixicon.css" rel="stylesheet" />
 <style>
   :root{
@@ -39,8 +39,12 @@
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
   img{display:block}
 
-  /* container — usdd.io rule: max-width 1440, 16px side padding, centered, fluid below */
-  .wrap{max-width:1440px;margin:0 auto;padding:0 16px}
+  /* container
+     Large Desktop ≥ 1472px → width 1440px, centered
+     Desktop      1200~1471px → width 1200px, centered
+     Pad          767~1199px  → fluid, padding 0 20px
+     Mobile       < 767px     → fluid, padding 0 20px */
+  .wrap{width:1440px;margin:0 auto;padding:0}
 
   /* ============ NAV ============ */
   .nav{
@@ -53,7 +57,7 @@
     background:rgba(12,12,14,.55);
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   }
-  .nav-inner{max-width:1440px;margin:0 auto;height:80px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}
+  .nav-inner{width:1440px;margin:0 auto;height:80px;padding:0;display:flex;align-items:center;justify-content:space-between}
   .brand{display:flex;align-items:center;gap:16px}
   .brand .mark{width:40px;height:40px}
   .brand-text strong{display:block;font-size:20px;font-weight:600;letter-spacing:.4px;line-height:1.2}
@@ -71,7 +75,7 @@
   /* ============ HERO ============ */
   .hero{position:relative;height:560px;overflow:hidden;margin-top:-80px;display:flex;align-items:center;box-shadow:inset 0 0 160px 0 rgba(33,108,88,.4)}
   .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 560px at 36% 56%,rgba(54,179,145,.20),rgba(33,108,88,0) 70%);pointer-events:none}
-  .hero-inner{position:relative;max-width:1440px;width:100%;margin:0 auto;padding:0 16px;z-index:2}
+  .hero-inner{position:relative;width:1440px;margin:0 auto;padding:0;z-index:2}
   .hero-copy{max-width:708px;display:flex;flex-direction:column;gap:64px}
   .hero h1{
     font-size:56px;line-height:1.4;font-weight:700;text-transform:capitalize;
@@ -83,8 +87,8 @@
   .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:var(--brand-default);font-size:16px;font-weight:600;color:#fff;transition:background .2s;width:max-content}
   .btn-primary:hover{background:#2a8c6c}
   /* Secondary button (design system Type=Secondary): bg #212426, border #49494a, white, radius 8 */
-  .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border-strong);font-size:16px;font-weight:600;color:#fff;transition:background .2s;width:max-content}
-  .btn-outline:hover{background:#2a2e30}
+  .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:transparent;border:1px solid var(--border-strong);font-size:16px;font-weight:600;color:#fff;transition:border-color .2s;width:max-content}
+  .btn-outline:hover{border-color:rgba(255,255,255,.4)}
   .btn-outline:disabled,.btn-outline.disabled{opacity:.4;pointer-events:none}
   .btn-primary svg,.btn-outline svg{width:16px;height:16px}
   .hero-art{position:absolute;right:max(40px,calc(50% - 720px + 40px));bottom:0;width:512px;height:512px;pointer-events:none}
@@ -140,7 +144,8 @@
   .preview.on-light .word{filter:brightness(0)}
 
   /* multi-chain */
-  .chain-row{display:flex;align-items:center;justify-content:center;gap:64px;height:100%}
+  .chain-grid{display:flex;align-items:center;justify-content:center;gap:64px;height:100%}
+  .chain-row{display:flex;align-items:center;gap:64px}
   .token-badge{position:relative;width:48px;height:48px}
   .token-badge>img.base{width:48px;height:48px}
   .token-badge .chain{position:absolute;right:0;bottom:0;width:20px;height:20px;border-radius:50%}
@@ -165,7 +170,9 @@
 
   /* typography */
   .type-preview{position:relative;overflow:hidden}
-  .type-aa{position:absolute;right:-10px;bottom:-60px;font-size:300px;font-weight:600;line-height:1;color:rgba(129,222,176,.10)}
+  .type-aa{position:absolute;right:-10px;top:10px;bottom:-60px;font-size:300px;font-weight:600;line-height:1;color:rgba(129,222,176,.10)}
+  /* type-left is a wrapper for desktop — contents are absolutely positioned so wrapper is invisible */
+  .type-left{position:absolute;inset:0;pointer-events:none}
   .type-info{position:absolute;left:32px;top:32px}
   .type-info .name{font-size:48px;font-weight:600;line-height:1.2}
   .type-weights{position:absolute;left:32px;bottom:32px;font-size:16px;line-height:22px;color:var(--text-secondary)}
@@ -195,11 +202,11 @@
   .press::before{content:"";position:absolute;left:-80px;top:-180px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(33,108,88,.45),rgba(33,108,88,0) 70%)}
   .press::after{content:"";position:absolute;right:-60px;top:-40px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(54,179,145,.30),rgba(33,108,88,0) 70%)}
   /* interactive canvas globe (globe.js) — size/pos per design (970px, left 538, top -12) */
-  .press .globe{position:absolute;top:-12px;left:538px;width:970px;height:970px;pointer-events:auto;z-index:1}
+  .press .globe{position:absolute;top:10px;left:540px;width:970px;height:970px;pointer-events:auto;z-index:1}
   .press-copy{position:relative;z-index:2;padding:48px 64px;max-width:560px}
   .press-copy h2{font-size:40px;line-height:56px;font-weight:600}
   .press-copy p{margin-top:8px;font-size:16px;line-height:22px;color:var(--text-tertiary);max-width:464px}
-  .press-copy .btn-primary{margin-top:32px}
+  .press-copy .btn-primary{margin-top:48px}
 
   /* trademark — per design: no card bg/border, all text tertiary grey */
   .notice{padding:24px 0;margin-top:120px}
@@ -214,74 +221,339 @@
   .n-link:hover{color:var(--brand-highlight)}
   .n-link svg{width:12px;height:12px}
 
-  /* footer */
-  footer{border-top:1px solid rgba(255,255,255,.1);background:var(--bg-page);margin-top:120px;padding:79px 0 40px}
-  .f-top{position:relative;display:flex;align-items:center;justify-content:center;height:64px}
-  .f-social{position:absolute;left:0;display:flex;gap:16px}
-  .f-social a{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:#fff;opacity:.85;transition:opacity .2s}
-  .f-social a:hover{opacity:1}
-  .f-social svg{width:24px;height:24px}
-  .f-logo{width:64px;height:64px;border-radius:50%;background:var(--brand-default);display:flex;align-items:center;justify-content:center}
-  .f-logo img{width:64px;height:64px}
-  .f-mail{position:absolute;right:0;display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border:1px solid rgba(255,255,255,.2);border-radius:100px;background:linear-gradient(287deg,rgba(255,255,255,.03),rgba(0,0,0,.2));font-size:16px;font-weight:500;letter-spacing:.32px;transition:border-color .2s,color .2s}
-  .f-mail:hover{border-color:var(--brand-highlight);color:var(--brand-highlight)}
-  .f-mail svg{width:18px;height:18px}
-  .f-tagline{text-align:center;margin-top:24px}
-  .f-tagline .big{font-size:40px;font-weight:600;letter-spacing:.8px;background:linear-gradient(90deg,#80dcaf,#216c58);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
-  .f-tagline p{margin-top:12px;font-size:16px;line-height:24px;color:rgba(255,255,255,.6)}
-  .f-divider{height:1px;background:rgba(255,255,255,.1);margin:64px 0 40px}
-  .f-cols{display:flex;gap:25px;justify-content:center;flex-wrap:wrap}
-  .f-col{width:268px;display:flex;flex-direction:column;gap:16px}
-  .f-col h5{font-size:16px;line-height:24px;font-weight:400;text-transform:uppercase;color:#fff}
-  .f-col a{display:inline-flex;align-items:center;gap:6px;font-size:16px;line-height:24px;color:rgba(255,255,255,.6);transition:color .2s}
-  .f-col a:hover{color:#fff}
-  .f-col a svg{width:16px;height:16px;opacity:.7}
-  .f-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:48px}
-  .f-bottom .copyright{font-size:14px;line-height:20px;letter-spacing:.28px;color:rgba(255,255,255,.4)}
-  .to-top{width:47px;height:47px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;color:#fff;transition:border-color .2s,background .2s}
-  .to-top:hover{border-color:var(--brand-highlight);color:var(--brand-highlight);background:rgba(255,255,255,.04)}
-  .to-top svg{width:24px;height:24px}
+  /* ============ FOOTER (per usdd_home_footer_pc) ============ */
+  .footer{width:100%;background:#0C0C0E;border-top:1px solid rgba(255,255,255,0.1);margin-top:120px}
+  .footer-inner{width:1440px;margin:0 auto;padding:0;display:flex;flex-direction:column}
+
+  /* top: social / logo / contact */
+  .footer-top{display:flex;align-items:center;justify-content:space-between;padding:64px 0 0}
+  .footer .social-icons{display:flex;gap:16px;align-items:center;position:relative}
+  .footer .social-icon{width:48px;height:48px;display:block;cursor:pointer;transition:opacity 0.2s;text-decoration:none}
+  .footer .social-icon:hover{opacity:0.8}
+
+  /* Telegram dropdown */
+  .footer .tele-wrapper{position:relative}
+  .footer .tele-dropdown{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:232px;background:rgba(255,255,255,0.05);border:1px solid rgba(33,108,88,0.15);border-radius:16px;padding:15px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden;flex-direction:column;gap:8px;z-index:100}
+  .footer .tele-dropdown.is-open{display:flex}
+  .footer .tele-item{display:flex;align-items:center;justify-content:center;height:40px;background:rgba(255,255,255,0.05);border-radius:8px;font-size:14px;font-weight:400;line-height:1.4;color:#fff;text-decoration:none;white-space:nowrap;transition:background 0.18s,color 0.18s}
+  .footer .tele-item:hover{background:rgba(255,255,255,0.1);color:#81DEB0}
+  .footer .tele-item--accent{color:#fff}
+
+  .footer .usdd-logo{width:64px;height:64px;border-radius:100px;overflow:hidden;flex-shrink:0;margin-bottom:24px}
+
+  .footer .contact-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:100px;border:1px solid rgba(255,255,255,0.2);background:linear-gradient(-72.97deg,rgba(255,255,255,0.03) 0%,rgba(0,0,0,0.2) 100%);cursor:pointer;text-decoration:none;overflow:hidden;transition:border-color 0.2s,background 0.2s;flex-shrink:0;color:#fff}
+  .footer .contact-btn:hover{border-color:rgba(255,255,255,0.4)}
+  .footer .contact-btn span{font-size:16px;font-weight:500;line-height:20px;letter-spacing:0.32px;white-space:nowrap;text-align:right;display:inline-flex;overflow:hidden}
+  .footer .contact-btn .char{display:inline-block;transform:translateY(0);transition:transform 0.25s ease,opacity 0.25s ease}
+  .footer .contact-btn:hover .char{animation:char-bounce 0.4s ease forwards}
+  @keyframes char-bounce{0%{transform:translateY(0)}40%{transform:translateY(-5px)}100%{transform:translateY(0)}}
+
+  /* brand description (centered) */
+  .footer-brand{display:flex;flex-direction:column;align-items:center;gap:0;padding:0 0 80px;text-align:center}
+  .footer .usdd-title{margin-bottom:16px;font-family:'Lexend',sans-serif;font-size:40px;font-weight:600;letter-spacing:0.8px;line-height:normal;white-space:nowrap;background:linear-gradient(to right,#c8f5e0,#80dcaf,#216c58,#80dcaf,#c8f5e0);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradient-flow 8s ease-in-out infinite alternate}
+  @keyframes gradient-flow{0%{background-position:0% center}100%{background-position:100% center}}
+  .footer .usdd-subtitle{font-size:16px;font-weight:400;line-height:24px;color:rgba(255,255,255,0.6);max-width:595px}
+
+  /* divider */
+  .footer .divider{width:100%;height:1px;background:rgba(255,255,255,0.1)}
+
+  /* nav columns */
+  .nav-sections{display:grid;grid-template-columns:repeat(5,1fr);padding:56px 0 0}
+  .nav-section{display:flex;flex-direction:column}
+  .nav-section-title{font-size:16px;font-weight:400;line-height:24px;color:#fff;text-transform:uppercase;margin-bottom:13px}
+  .nav-link{display:flex;align-items:center;gap:4px;font-size:16px;font-weight:400;line-height:24px;color:rgba(255,255,255,0.6);text-decoration:none;margin-bottom:15px;cursor:pointer;transition:color 0.2s;width:fit-content}
+  .nav-link:hover{color:rgba(255,255,255,0.9)}
+  .nav-link svg{flex-shrink:0;opacity:0.6;transform:translate(0,0);transition:opacity 0.2s ease,transform 0.2s ease}
+  .nav-link:hover svg{opacity:0.9;animation:arrow-fly 0.3s ease forwards}
+  @keyframes arrow-fly{0%{transform:translate(-5px,5px);opacity:0}100%{transform:translate(0,0);opacity:0.9}}
+
+  /* bottom bar */
+  .footer-bottom-bar{display:flex;align-items:center;justify-content:space-between;margin-top:80px;padding-bottom:40px}
+  .footer .copyright{font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.28px;color:rgba(255,255,255,0.4);white-space:nowrap}
+  .scroll-top{width:48px;height:48px;cursor:pointer;transition:opacity 0.2s;flex-shrink:0}
+  .scroll-top:hover{opacity:1}
+  .scroll-arrow{fill:white;transition:fill 0.2s ease;transform-box:fill-box;transform-origin:center}
+  .scroll-top:hover .scroll-arrow{fill:#81DEB0;animation:arrow-up 0.35s cubic-bezier(0.2,0,0,1.4) forwards}
+  @keyframes arrow-up{0%{transform:translateY(6px);opacity:0}60%{opacity:1}100%{transform:translateY(0);opacity:1}}
+
+  /* PC: hide mobile-only block */
+  .footer .mobile-social-contact{display:none}
 
   /* Remix Icon (remixicon.com) — color follows currentColor (= text color) */
   i[class^="ri-"],i[class*=" ri-"]{font-style:normal;line-height:1;display:inline-flex;align-items:center;justify-content:center}
   .nav-tab i{font-size:20px}
   .btn-outline i,.btn-primary i{font-size:18px}
-  .f-mail i{font-size:18px}
-  .f-social a i{font-size:24px}
-  .f-col a i{font-size:15px;opacity:.7}
-  .to-top i{font-size:22px}
   .n-link i{font-size:13px}
 
-  /* responsive */
-  /* responsive — usdd.io-style: fluid container, content stacks on tablet, nav collapses <768 */
-  @media(max-width:1180px){
+  /* mobile color palette — hidden on desktop */
+  .palette-m{display:none}
+
+  /* hamburger — hidden on desktop, shown on mobile */
+  .nav-hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;border:1px solid var(--border-strong);color:#fff;flex-shrink:0}
+  .nav-hamburger i{font-size:20px}
+  /* mobile globe container & canvas — hidden on desktop */
+  .press-globe-img{display:none}
+  .globe-m{display:none}
+
+  /* bg-select trigger — hidden on desktop */
+  .bg-select{display:none}
+  .bg-select-trigger{display:flex;align-items:center;gap:4px;color:var(--brand-highlight);font-size:16px;line-height:22px}
+  .bg-select-trigger i{font-size:16px}
+
+  /* shared dropdown panel (appended to body by JS, position:fixed) */
+  .bg-select-panel{
+    position:fixed;z-index:9999;
+    background:#212426;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    padding:6px;
+    box-shadow:0 8px 20px -2px rgba(0,0,0,.36);
+    width:200px;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  /* display:flex 优先级高于 UA [hidden]{display:none}，必须显式覆盖 */
+  .bg-select-panel[hidden]{display:none!important}
+  .bg-option{
+    height:40px;padding:0 10px;border-radius:8px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:14px;line-height:20px;color:rgba(255,255,255,.8);
+    text-align:left;width:100%;
+    transition:background .15s;
+  }
+  .bg-option:not(.active):hover{background:rgba(255,255,255,.05)}
+  .bg-option.active{background:rgba(33,108,88,.12);color:#81deb0}
+  .bg-option-dot{width:6px;height:6px;border-radius:50%;background:#81deb0;flex-shrink:0}
+
+  /* ── Responsive ────────────────────────────────────────────── */
+
+  /* Desktop  1200~1471px → container 1200px */
+  @media(max-width:1471px){
+    .wrap,.nav-inner,.hero-inner,.footer-inner{width:1200px}
+  }
+
+  /* Pad  767~1199px → fluid, padding 0 20px; sections stack */
+  @media(max-width:1199px){
+    .wrap,.nav-inner,.hero-inner,.footer-inner{width:auto;padding:0 20px}
     .section{flex-direction:column;gap:24px}
     .section-head,.section-body{max-width:100%;flex:1 1 auto}
     .hero-art{display:none}
-    .swatches,.chain-row{flex-wrap:wrap}
+    .swatches,.chain-grid{flex-wrap:wrap}
     .press .globe{opacity:.5}
   }
   @media(max-width:1000px){
     .section{margin-top:96px}
     .press,.notice,footer{margin-top:96px}
   }
-  /* mobile (<768): collapse nav to logo + Launch APP, stack grids, scale hero */
-  @media(max-width:768px){
+
+  /* Mobile  < 767px */
+  @media(max-width:767px){
+
+    /* container */
+    .wrap,.nav-inner,.hero-inner{width:auto;padding:0 20px}
+
+    /* ── NAV ── */
+    .nav{height:64px}
+    .nav-inner{height:64px;padding:0 16px}
+    .brand{flex:1}                            /* brand 撑开，把右侧两个按钮推到最右 */
+    .brand .mark{width:32px;height:32px}
+    .brand-text span{display:none}            /* hide "Decentralized USD" subtitle */
     .nav-tabs{display:none}
-    .logo-grid{grid-template-columns:1fr}
+    .launch{font-size:14px;height:40px;padding:0 24px}  /* 保持渐变描边，同 desktop */
+    .nav-hamburger{display:inline-flex;margin-left:8px} /* 与 Launch APP 间距 8px */
+
+    /* ── HERO ── */
+    .hero{
+      height:618px;
+      margin-top:-64px;           /* match mobile nav height */
+      align-items:flex-start;
+      padding-top:112px;          /* push content below nav + gap */
+    }
+    .hero-inner{padding:0 20px}
+    .hero-copy{
+      align-items:center;
+      text-align:center;
+      gap:24px;
+      max-width:100%
+    }
+    .copy-top{align-items:center}
+    .hero h1{
+      font-size:32px;
+      line-height:46px;
+      width:100%;
+      white-space:normal
+    }
+    .hero p.sub{font-size:14px;line-height:20px;text-align:center}
+    /* hero art: show on mobile, centered & scaled down */
+    .hero-art{
+      display:block;
+      position:absolute;
+      left:50%;right:auto;bottom:auto;
+      transform:translateX(-50%);
+      top:338px;
+      width:280px;height:280px
+    }
+
+    /* ── SECTIONS ── */
+    .section{margin-top:64px;gap:24px}
+    .section-head h2{font-size:24px;line-height:34px}
+    .section-head p{font-size:14px;line-height:20px}
+
+    /* ── LOGO CARDS ── */
+    .logo-grid{grid-template-columns:1fr;gap:16px}
+    .preview{height:160px}
+    /* logo 尺寸：mark 48px（64×0.75），word 等比缩小，间距 16px */
+    .wordmark{gap:16px}
+    .wordmark .mark{width:48px;height:48px;flex:0 0 48px}
+    .wordmark .word{width:88.5px;height:24px;flex:0 0 88.5px}
+    .wordmark.susdd .word{width:108px;height:24px;flex:0 0 108px}
+    .mark-64{width:48px;height:48px}
+    /* bg toggle: tabs → dropdown on mobile */
+    .bg-toggles{display:none}
+    .bg-select{display:block}
+
+    /* ── MULTI-CHAIN 2-row layout ── */
+    .chain-grid{flex-direction:column;gap:16px;height:auto}
+    .chain-row{gap:40px;justify-content:center}
+    .token-badge{width:40px;height:40px}
+    .token-badge>img.base{width:40px;height:40px}
+    .token-badge .chain{width:17px;height:17px}
+
+    /* ── COLOR PALETTE (mobile card) ── */
+    .section-body .card{height:auto!important}
+    .palette-card-desktop{display:none}          /* hide desktop card on mobile */
+    .palette-m{
+      display:flex;flex-direction:column;gap:16px;
+      background:var(--bg-preview);
+      border-radius:16px;padding:16px;
+    }
+    .pm-group{display:flex;flex-direction:column;gap:10px;width:100%}
+    .pm-row{display:flex;align-items:flex-start;gap:8px;height:192px;width:100%}
+    .pm-swatch{
+      flex:1 0 0;height:100%;
+      border-radius:8px;padding:16px;
+      display:flex;align-items:center;   /* 内容垂直居中，horizontal flex */
+      min-width:0;
+      position:relative;cursor:pointer;overflow:hidden;
+    }
+    .pm-info{
+      flex:1;min-width:0;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:4px;
+    }
+    .pm-meta{font-size:14px;line-height:20px;color:#fff;white-space:pre-line;flex:1;min-width:0}
+    .pm-dark .pm-meta,.pm-dark .pm-copy-icon{color:#0c0c0e}
+    .pm-copy-icon{font-size:16px;color:#fff;flex-shrink:0}
+    .pm-copied-tip{
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      background:rgba(0,0,0,.75);color:#fff;font-size:12px;
+      padding:4px 10px;border-radius:6px;opacity:0;transition:opacity .2s;pointer-events:none;
+    }
+    .pm-swatch.show-tip .pm-copied-tip{opacity:1}
+    .pm-labels{display:flex;align-items:center;gap:8px;width:100%}
+    .pm-labels span{flex:1 0 0;height:32px;display:flex;align-items:center;font-size:14px;color:#fff}
+
+    /* ── TYPOGRAPHY (mobile horizontal layout) ── */
+    .type-preview{
+      display:flex!important;
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      padding:24px;gap:24px;overflow:hidden;
+    }
+    .type-left{
+      order:1;
+      position:static;pointer-events:auto;
+      display:flex;flex-direction:column;gap:24px;flex-shrink:0;
+    }
+    .type-info{position:static}
+    .type-info .name{font-size:48px}
+    .type-weights{
+      position:static;
+      font-size:16px;line-height:22px;color:var(--text-secondary);
+    }
+    .type-aa{
+      order:2;
+      position:static;
+      font-size:160px;line-height:1;
+      color:#216c58;opacity:.20;
+      right:auto;bottom:auto;flex-shrink:0;
+    }
+
+    /* ── COMMON MISTAKES ── */
     .mistakes{flex-direction:column}
-    .hero{height:auto;padding:96px 0 64px}
-    .hero h1{font-size:40px}
-    .hero-copy{gap:40px}
-    .press-copy{padding:32px 24px;max-width:100%}
-    .f-cols{gap:24px}
-    .notice{padding:24px 0}
-  }
-  @media(max-width:480px){
-    .hero h1{font-size:32px}
-    .section-head h2{font-size:32px;line-height:1.2}
-    .f-top{flex-direction:column;gap:24px;height:auto}
-    .f-social,.f-mail{position:static}
+
+    /* ── PRESS & MEDIA ── */
+    .press{
+      height:auto;margin-top:64px;
+      display:flex;flex-direction:column;gap:64px;
+      padding-top:24px;
+      border-radius:16px;
+      overflow:hidden
+    }
+    .press::before,.press::after{display:none}
+    .press .globe{display:none}
+    .press-copy{
+      position:static;padding:0 24px;
+      max-width:100%;z-index:auto;
+      order:1;
+      display:flex;flex-direction:column;gap:32px
+    }
+    .press-text{display:flex;flex-direction:column;gap:8px}
+    .press-copy h2{font-size:24px;line-height:34px}
+    .press-copy p{font-size:14px;line-height:20px;margin-top:0;max-width:100%}
+    .press-copy .btn-primary{margin-top:0}
+    .press-globe-img{
+      display:block;
+      height:204px;
+      overflow:hidden;
+      position:relative;
+      order:2
+    }
+    .globe-m{
+      display:block;
+      position:absolute;
+      left:calc(50% + 37.5px);
+      top:0;
+      width:425px;
+      height:425px;
+      transform:translateX(-50%);
+      pointer-events:none;
+    }
+
+    /* ── NOTICE ── */
+    .notice{margin-top:64px;padding:24px 0}
+
+    /* ── FOOTER (per usdd_home_footer_pc mobile) ── */
+    .footer{margin-top:64px}
+    .footer-inner{display:flex;flex-direction:column;width:auto;padding:0 20px}
+    /* order: top(logo) > brand > social/contact > divider > nav > bottom */
+    .footer-top{order:1}
+    .footer-brand{order:2}
+    .footer .mobile-social-contact{order:3}
+    .footer .divider{order:4}
+    .nav-sections{order:5}
+    .footer-bottom-bar{order:6}
+    .footer-top{flex-direction:column;align-items:center;padding:40px 0 0;justify-content:center}
+    .footer-top .social-icons,
+    .footer-top .tele-wrapper,
+    .footer-top .contact-btn{display:none}
+    .footer .usdd-logo{width:48px;height:48px;margin-bottom:0}
+    .footer .usdd-logo svg{width:48px;height:48px}
+    .footer-brand{padding:16px 0 0;align-items:center}
+    .footer .usdd-title{font-size:24px;font-weight:700;letter-spacing:0}
+    .footer .usdd-subtitle{font-size:14px;line-height:1.4;width:100%;margin:0 auto;text-align:center;white-space:normal}
+    .footer .mobile-social-contact{display:flex;flex-direction:column;align-items:center;gap:32px;padding:24px 0 40px}
+    .footer .mobile-social-contact .social-icons{display:flex;justify-content:center;gap:16px}
+    .footer .mobile-social-contact .contact-btn{display:inline-flex;width:280px;justify-content:center}
+    .footer .mobile-social-contact .contact-btn span{font-size:14px;letter-spacing:0.28px}
+    .footer .divider{margin-top:0}
+    .nav-sections{grid-template-columns:1fr 1fr;padding:40px 0 0;gap:32px 32px;justify-items:start}
+    .nav-section:last-child{grid-column:1 / 2}
+    .nav-section-title{font-size:14px;margin-bottom:12px;text-align:left}
+    .nav-link{font-size:14px;line-height:1.4;margin-bottom:12px;text-align:left}
+    .nav-section{align-items:flex-start;width:100%}
+    .footer-bottom-bar{justify-content:center;margin-top:48px;padding:0 0 32px}
+    .scroll-top{display:none}
+    .footer .tele-dropdown{top:calc(100% + 12px);bottom:auto}
   }
 </style>
 </head>
@@ -311,6 +583,7 @@
         <i class="ri-arrow-down-s-line"></i></a>
     </nav>
     <button class="launch">Launch APP</button>
+    <button class="nav-hamburger" aria-label="Menu"><i class="ri-menu-line"></i></button>
   </div>
 </header>
 
@@ -379,11 +652,19 @@
             </div>
           </div>
           <div class="card-foot">
+            <!-- desktop: pill tabs -->
             <div class="bg-toggles" data-bg-group>
               <button class="bg-toggle active" data-bg="#000000" data-ink="light">Bg: Black</button>
               <button class="bg-toggle" data-bg="#ffffff" data-ink="dark">Bg: White</button>
               <button class="bg-toggle" data-bg="#216c58" data-ink="light">Bg: Green</button>
               <button class="bg-toggle" data-bg="#d0d0d0" data-ink="dark">Bg: Grey</button>
+            </div>
+            <!-- mobile: dropdown trigger -->
+            <div class="bg-select" data-select-group>
+              <button class="bg-select-trigger" data-select-trigger>
+                <span class="bg-select-label">Bg: Black</span>
+                <i class="ri-arrow-down-s-line"></i>
+              </button>
             </div>
             <div class="foot-pills">
               <button class="pill">SVG<i class="ri-download-line"></i></button>
@@ -438,11 +719,19 @@
             </div>
           </div>
           <div class="card-foot">
+            <!-- desktop: pill tabs -->
             <div class="bg-toggles" data-bg-group>
               <button class="bg-toggle active" data-bg="#000000" data-ink="light">Bg: Black</button>
               <button class="bg-toggle" data-bg="#ffffff" data-ink="dark">Bg: White</button>
               <button class="bg-toggle" data-bg="#216c58" data-ink="light">Bg: Green</button>
               <button class="bg-toggle" data-bg="#d0d0d0" data-ink="dark">Bg: Grey</button>
+            </div>
+            <!-- mobile: dropdown trigger -->
+            <div class="bg-select" data-select-group>
+              <button class="bg-select-trigger" data-select-trigger>
+                <span class="bg-select-label">Bg: Black</span>
+                <i class="ri-arrow-down-s-line"></i>
+              </button>
             </div>
             <div class="foot-pills">
               <button class="pill">SVG<i class="ri-download-line"></i></button>
@@ -463,12 +752,18 @@
     <div class="section-body">
       <div class="card" style="height:320px">
         <div class="preview">
-          <div class="chain-row">
-            <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-tron.png" alt=""></div>
-            <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-bnb.png" alt=""></div>
-            <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-eth.png" alt=""></div>
-            <div class="token-badge"><img class="base" src="assets/susdd-mark.svg" alt=""><img class="chain" src="assets/chain-bnb.png" alt=""></div>
-            <div class="token-badge"><img class="base" src="assets/susdd-mark.svg" alt=""><img class="chain" src="assets/chain-eth.png" alt=""></div>
+          <div class="chain-grid">
+            <!-- row 1: USDD × 3 chains -->
+            <div class="chain-row">
+              <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-tron.png" alt=""></div>
+              <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-bnb.png" alt=""></div>
+              <div class="token-badge"><img class="base" src="assets/usdd-mark.svg" alt=""><img class="chain" src="assets/chain-eth.png" alt=""></div>
+            </div>
+            <!-- row 2: sUSDD × 2 chains -->
+            <div class="chain-row">
+              <div class="token-badge"><img class="base" src="assets/susdd-mark.svg" alt=""><img class="chain" src="assets/chain-bnb.png" alt=""></div>
+              <div class="token-badge"><img class="base" src="assets/susdd-mark.svg" alt=""><img class="chain" src="assets/chain-eth.png" alt=""></div>
+            </div>
           </div>
         </div>
         <div class="card-foot">
@@ -489,7 +784,8 @@
       <p>USDD Green is the signature color. This primary palette forms the fundamental color scheme of the brand. Click any swatch to copy the HEX code.</p>
     </div>
     <div class="section-body">
-      <div class="card" style="height:320px">
+      <!-- Desktop card -->
+      <div class="card palette-card-desktop" style="height:320px">
         <div class="preview">
           <div class="swatches">
             <div class="swatch is-default" style="background:#216c58" data-hex="#216C58">
@@ -556,6 +852,82 @@ CMYK:
           </div>
         </div>
       </div>
+
+      <!-- Mobile card (exact Figma layout) -->
+      <div class="palette-m">
+        <!-- Row 1: USDD Green + White -->
+        <div class="pm-group">
+          <div class="pm-row">
+            <div class="pm-swatch" style="background:#216c58" data-hex="#216C58">
+              <div class="pm-info">
+                <div class="pm-meta">HEX:
+#216C58
+
+RGB:
+33 / 108 / 88
+
+CMYK:
+69 / 0 / 19 / 58</div>
+                <i class="ri-file-copy-line pm-copy-icon"></i>
+              </div>
+              <span class="pm-copied-tip">Copied!</span>
+            </div>
+            <div class="pm-swatch pm-dark" style="background:#ffffff" data-hex="#FFFFFF">
+              <div class="pm-info">
+                <div class="pm-meta">HEX:
+#FFFFFF
+
+RGB:
+255 / 255 / 255
+
+CMYK:
+0 / 0 / 0 / 0</div>
+                <i class="ri-file-copy-line pm-copy-icon"></i>
+              </div>
+              <span class="pm-copied-tip">Copied!</span>
+            </div>
+          </div>
+          <div class="pm-labels">
+            <span>USDD Green</span><span>White</span>
+          </div>
+        </div>
+        <!-- Row 2: Black + sUSDD Green -->
+        <div class="pm-group">
+          <div class="pm-row">
+            <div class="pm-swatch" style="background:#0c0c0e" data-hex="#000000">
+              <div class="pm-info">
+                <div class="pm-meta">HEX:
+#000000
+
+RGB:
+0 / 0 / 0
+
+CMYK:
+0 / 0 / 0 / 100</div>
+                <i class="ri-file-copy-line pm-copy-icon"></i>
+              </div>
+              <span class="pm-copied-tip">Copied!</span>
+            </div>
+            <div class="pm-swatch" style="background:#36b364" data-hex="#36B364">
+              <div class="pm-info">
+                <div class="pm-meta">HEX:
+#36B364
+
+RGB:
+54 / 179 / 100
+
+CMYK:
+70 / 0 / 44 / 30</div>
+                <i class="ri-file-copy-line pm-copy-icon"></i>
+              </div>
+              <span class="pm-copied-tip">Copied!</span>
+            </div>
+          </div>
+          <div class="pm-labels">
+            <span>Black</span><span>sUSDD Green</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -569,10 +941,12 @@ CMYK:
       <div class="card" style="height:320px">
         <div class="preview type-preview" style="display:block">
           <div class="type-aa">Aa</div>
-          <div class="type-info"><div class="name">Inter</div></div>
-          <div class="type-weights">
-            <div class="w400">Regular (400)</div>
-            <div class="w600">Semi Bold (600)</div>
+          <div class="type-left">
+            <div class="type-info"><div class="name">Inter</div></div>
+            <div class="type-weights">
+              <div class="w400">Regular (400)</div>
+              <div class="w600">Semi Bold (600)</div>
+            </div>
           </div>
         </div>
         <div class="card-foot">
@@ -662,9 +1036,15 @@ CMYK:
   <!-- ============ PRESS & MEDIA ============ -->
   <section class="press">
     <canvas class="globe" id="press-globe"></canvas>
+    <!-- mobile: JS globe (same renderer, sized & positioned like old static PNG) -->
+    <div class="press-globe-img" aria-hidden="true">
+      <canvas id="press-globe-m" class="globe-m"></canvas>
+    </div>
     <div class="press-copy">
-      <h2>Press &amp; Media</h2>
-      <p>For press, interviews, and partnership coverage, get in touch with the USDD team directly.</p>
+      <div class="press-text">
+        <h2>Press &amp; Media</h2>
+        <p>For press, interviews, and partnership coverage, get in touch with the USDD team directly.</p>
+      </div>
       <a class="btn-primary" href="mailto:press@usdd.io">
         <i class="ri-mail-line"></i>
         press@usdd.io
@@ -703,59 +1083,224 @@ CMYK:
 </main>
 
 <!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div class="f-top">
-      <div class="f-social">
-        <a href="#" aria-label="X"><i class="ri-twitter-x-fill"></i></a>
-        <a href="#" aria-label="Telegram"><i class="ri-telegram-2-fill"></i></a>
-        <a href="#" aria-label="Discord"><i class="ri-discord-fill"></i></a>
+<footer class="footer">
+  <div class="footer-inner">
+
+    <!-- top: social / logo / contact -->
+    <div class="footer-top">
+      <div class="social-icons">
+        <!-- X -->
+        <a class="social-icon" href="https://x.com/usddio" target="_blank" title="X">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#cx)"><mask id="mx" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+            <g mask="url(#mx)">
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#gx0)"/>
+              <path d="M29.6075 15H32.5976L26.065 22.6247L33.75 33H27.7328L23.0198 26.7073L17.6269 33H14.6351L21.6222 24.8447L14.25 15H20.4201L24.6803 20.7518L29.6075 15ZM28.5579 31.1722H30.2148L19.5198 16.7318H17.7418L28.5579 31.1722Z" fill="url(#gx3)"/>
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#gx4)" stroke-width="1.125"/>
+            </g></g>
+            <defs>
+              <linearGradient id="gx0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+              <linearGradient id="gx3" x1="33.623" y1="15.7746" x2="16.6767" y2="34.3551" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0.6"/></linearGradient>
+              <linearGradient id="gx4" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+              <clipPath id="cx"><rect width="48" height="48" fill="white"/></clipPath>
+            </defs>
+          </svg>
+        </a>
+        <!-- Telegram -->
+        <div class="tele-wrapper">
+        <a class="social-icon tele-trigger" href="#" title="Telegram" onclick="return false;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#ct)"><mask id="mt" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+            <g mask="url(#mt)">
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#gt0)"/>
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#gt1)" stroke-width="1.125"/>
+            </g>
+            <path d="M14.1331 22.5416C20.5124 19.6765 24.7652 17.7876 26.8916 16.8749C32.97 14.2689 34.2315 13.8162 35.0554 13.8009C35.2366 13.7979 35.64 13.8441 35.9032 14.0635C36.122 14.2486 36.1835 14.4989 36.2143 14.6746C36.2416 14.8501 36.2792 15.2502 36.2485 15.5625C35.9203 19.1298 34.4947 27.7864 33.7699 31.782C33.4657 33.4726 32.8606 34.0394 32.276 34.0947C31.0042 34.2153 30.0402 33.229 28.8095 32.3974C26.8848 31.0957 25.7976 30.2856 23.9276 29.0156C21.767 27.5478 23.1687 26.7409 24.3994 25.4226C24.7207 25.0775 30.3205 19.827 30.4265 19.3508C30.4402 19.2912 30.4538 19.0692 30.3239 18.9521C30.1974 18.8348 30.0094 18.8749 29.8727 18.9067C29.6778 18.9518 26.6044 21.0484 20.6423 25.1963C19.7705 25.8146 18.9808 26.1159 18.2697 26.1001C17.4903 26.0828 15.9861 25.6447 14.8682 25.2703C13.5007 24.811 12.4101 24.5681 12.5059 23.788C12.5537 23.382 13.0973 22.9664 14.1331 22.5416Z" fill="white"/>
+            </g></g>
+            <defs>
+              <linearGradient id="gt0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+              <linearGradient id="gt1" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+              <clipPath id="ct"><rect width="48" height="48" fill="white"/></clipPath>
+            </defs>
+          </svg>
+        </a>
+        <div class="tele-dropdown">
+          <a class="tele-item" href="#" target="_blank">Telegram Group</a>
+          <a class="tele-item tele-item--accent" href="#" target="_blank">Telegram Announcement</a>
+        </div>
+        </div>
+        <!-- Discord -->
+        <a class="social-icon" href="https://discord.com/invite/NurKn6KEqx" target="_blank" title="Discord">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#cd)"><mask id="md" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+            <g mask="url(#md)">
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#gd0)"/>
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#gd1)" stroke-width="1.125"/>
+              <path d="M34.0665 16.3165L33.9787 16.187L33.8368 16.1215C32.1165 15.3268 30.3004 14.7631 28.4347 14.4446L28.0416 14.3774L27.8481 14.7263C27.66 15.0656 27.4849 15.412 27.3232 15.7648C25.6128 15.5425 23.881 15.5425 22.1704 15.7648C22.0089 15.4121 21.8338 15.0656 21.6457 14.7264L21.4522 14.377L21.0585 14.4447C19.1919 14.7658 17.3749 15.3308 15.6532 16.1254L15.5097 16.1917L15.4216 16.3231C12.015 21.4085 11.0857 26.3863 11.5482 31.2838L11.5717 31.5325L11.7721 31.6817C13.7735 33.1738 16.014 34.3087 18.396 35.037L18.777 35.1535L19.0132 34.8328C19.5544 34.0984 20.0332 33.3194 20.4445 32.5042L20.5753 32.2449C21.9313 32.6216 23.3353 32.8143 24.75 32.8143C26.1631 32.8143 27.5655 32.6219 28.9201 32.246L29.0512 32.506C29.4622 33.3213 29.9412 34.0997 30.483 34.8332L30.7189 35.1529L31.0992 35.0373C33.4834 34.3119 35.7259 33.1774 37.728 31.6837L37.9278 31.5346L37.9515 31.2864C38.4945 25.6052 37.0203 20.674 34.0665 16.3165ZM20.514 27.73C19.6231 27.73 18.78 26.8895 18.78 25.7245C18.78 24.5495 19.5958 23.7088 20.5099 23.7088C21.4332 23.7088 22.264 24.5582 22.246 25.7156C22.2276 26.9009 21.4176 27.73 20.514 27.73ZM28.9858 27.73C28.0939 27.73 27.2539 26.8906 27.2539 25.7245C27.2539 24.5498 28.0693 23.7088 28.9858 23.7088C29.9091 23.7088 30.7339 24.5558 30.7159 25.7156C30.6975 26.9015 29.889 27.73 28.9858 27.73Z" fill="url(#gd3)" stroke="url(#gd3s)" stroke-width="1.125"/>
+              <path d="M20.5152 28.2946C19.2576 28.2946 18.2188 27.1432 18.2188 25.7266C18.2188 24.31 19.2216 23.1484 20.5112 23.1484C21.8009 23.1484 22.8318 24.31 22.8098 25.7266C22.7876 27.1432 21.7968 28.2946 20.5152 28.2946ZM28.9871 28.2946C27.7275 28.2946 26.6927 27.1432 26.6927 25.7266C26.6927 24.31 27.6954 23.1484 28.9871 23.1484C30.2787 23.1484 31.3018 24.31 31.2797 25.7266C31.2575 27.1432 30.2688 28.2946 28.9871 28.2946Z" fill="white"/>
+            </g></g>
+            <defs>
+              <linearGradient id="gd0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+              <linearGradient id="gd1" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+              <linearGradient id="gd3" x1="53.8929" y1="2.41981" x2="23.1661" y2="38.4364" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white" stop-opacity="0.3"/></linearGradient>
+              <linearGradient id="gd3s" x1="37.9251" y1="15.3241" x2="19.1062" y2="39.9332" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0.6"/></linearGradient>
+              <clipPath id="cd"><rect width="48" height="48" fill="white"/></clipPath>
+            </defs>
+          </svg>
+        </a>
       </div>
-      <div class="f-logo"><img src="assets/usdd-mark.svg" alt="USDD" /></div>
-      <a class="f-mail" href="mailto:contact@usdd.io">
-        <i class="ri-mail-line"></i>
-        contact@usdd.io
+
+      <!-- USDD Logo -->
+      <div class="usdd-logo">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#cl)"><rect width="64" height="64" rx="32" fill="#216C58"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0 32C0 14.3333 14.3333 0 32 0C49.6667 0 64 14.3333 64 32C64 49.6667 49.6667 64 32 64C14.3333 64 0 49.6667 0 32ZM1.6 32C1.6 48.7867 15.2133 62.4 32 62.4C48.7867 62.4 62.4 48.7867 62.4 32C62.4 15.2133 48.7867 1.6 32 1.6C15.2133 1.6 1.6 15.2133 1.6 32ZM58.0262 34.3603C58.0662 33.9336 58.4128 33.6003 58.8395 33.6003C59.3062 33.6003 59.6662 34.0003 59.6262 34.4536C58.3862 48.6136 46.4928 59.7336 31.9995 59.7336C17.5062 59.7336 5.61283 48.6269 4.37283 34.4536C4.33283 33.9869 4.69283 33.6003 5.1595 33.6003C5.58616 33.6003 5.93283 33.9336 5.97283 34.3603C7.1595 47.6803 18.3595 58.1336 31.9995 58.1336C45.6395 58.1336 56.8395 47.6936 58.0262 34.3603ZM5.1595 30.4003C5.58616 30.4003 5.93283 30.0669 5.97283 29.6403C7.1595 16.3203 18.3595 5.86693 31.9995 5.86693C45.6395 5.86693 56.8395 16.3203 58.0262 29.6403C58.0662 30.0669 58.4128 30.4003 58.8395 30.4003C59.3062 30.4003 59.6662 30.0136 59.6262 29.5469C58.3862 15.3736 46.4928 4.26693 31.9995 4.26693C17.5062 4.26693 5.61283 15.3869 4.37283 29.5469C4.33283 30.0003 4.69283 30.4003 5.1595 30.4003ZM22.9339 12.2669H43.2005C43.7896 12.2669 44.2672 12.7445 44.2672 13.3336V13.8669C44.2672 14.456 43.7896 14.9336 43.2005 14.9336H22.9339C22.3448 14.9336 21.8672 14.456 21.8672 13.8669V13.3336C21.8672 12.7445 22.3448 12.2669 22.9339 12.2669ZM32 17.6V16H29.3333V17.8267C30.1867 17.7067 31.0667 17.6267 32 17.6ZM29.3333 36.3815V43.2C30.16 43.4534 31.0267 43.6134 32 43.64V36.9794L33.6662 37.3734V43.6267C34.2929 43.56 34.8529 43.44 35.3329 43.2667C35.7195 43.12 36.0529 42.9734 36.3329 42.8V38.2267C36.9995 38.52 37.5329 38.8667 37.9062 39.2534C38.3729 39.7334 38.5862 40.3067 38.5862 40.9867C38.5862 41.72 38.3329 42.3734 37.8262 42.9467C37.3195 43.5067 36.6129 43.9467 35.7062 44.28C34.7995 44.6 33.7329 44.76 32.5062 44.76C31.2795 44.76 30.1329 44.6 29.1329 44.2534C28.1595 43.9067 27.3595 43.3867 26.7729 42.7067C26.3862 42.24 26.1195 41.72 25.9462 41.1067C25.7995 40.56 25.3462 40.12 24.7995 40.12H19.8529C19.2529 40.12 18.7729 40.6267 18.8395 41.2C19.0395 42.9334 19.6129 44.4134 20.5595 45.6534C21.7195 47.1334 23.3062 48.2667 25.3595 49.0134C26.6929 49.5067 28.1995 49.8267 29.8395 50V52.2934C29.8395 52.88 30.3195 53.36 30.9062 53.36H31.4395C32.0262 53.36 32.5062 52.88 32.5062 52.2934V50.16C32.1795 50.1534 31.9329 50.1334 31.6662 50.1334C31.9329 50.1334 32.2129 50.16 32.6129 50.1734C33.0695 50.1734 33.5062 50.1334 33.9329 50.1067V52.2934C33.9329 52.88 34.4129 53.36 34.9995 53.36H35.5329C36.1195 53.36 36.5995 52.88 36.5995 52.2934V49.9067C37.8262 49.72 38.9462 49.4267 39.9329 49.04C41.9329 48.28 43.4529 47.2267 44.4929 45.8534C45.5595 44.44 46.0929 42.8267 46.1062 40.9467C46.1062 39.6667 45.8262 38.5467 45.3195 37.56C44.8129 36.5734 44.0929 35.7067 43.1862 34.9867C42.2662 34.2667 41.1862 33.6534 39.9329 33.1467C38.6795 32.6534 37.3062 32.2534 35.8129 31.9467L32.7329 31.2934C31.9862 31.1467 31.2929 30.96 30.6262 30.76C29.9729 30.5334 29.3995 30.28 28.8929 30C28.3862 29.6934 27.9862 29.3467 27.7062 28.9467C27.4395 28.52 27.3062 28.0534 27.3329 27.52C27.3329 26.8667 27.5462 26.2534 27.9729 25.7334C28.3595 25.2667 28.9195 24.8934 29.6262 24.6134V29.1734C30.0129 29.3867 30.4662 29.5734 30.9862 29.7467C31.3995 29.88 31.8395 30 32.2929 30.1067V24.12C32.5995 24.1067 32.8662 24.1067 33.1329 24.16V30.4534L35.5729 30.9734C35.7195 31.0067 35.8662 31.0267 36.0129 31.0267V24.8934C36.9195 25.52 37.5329 26.2267 37.8262 27C38.0129 27.5067 38.4529 27.92 38.9995 27.92H43.9329C44.5462 27.92 45.0262 27.4267 44.9329 26.8267C44.7462 25.44 44.2262 24.2134 43.3729 23.0934C42.3062 21.72 40.8129 20.6267 38.9062 19.8534C36.9995 19.0667 34.7729 18.6934 32.2262 18.6934C29.6795 18.6934 27.4795 19.08 25.5195 19.8534C23.5462 20.6267 21.9995 21.7067 20.8662 23.0934C19.7462 24.4667 19.1995 26.0934 19.1995 27.96C19.1995 30.2267 20.0262 32.0267 21.7062 33.36C23.3862 34.6934 25.6662 35.68 28.5729 36.3067L29.3333 36.3815ZM36.2656 17.88V16H33.599V17.6133C34.519 17.6533 35.4123 17.7333 36.2656 17.88Z" fill="white"/>
+          <defs><clipPath id="cl"><rect width="64" height="64" rx="32" fill="white"/></clipPath></defs>
+          </g>
+        </svg>
+      </div>
+
+      <!-- contact button -->
+      <a class="contact-btn" href="mailto:contact@usdd.io">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M2.25 2.25H15.75C16.1642 2.25 16.5 2.58579 16.5 3V15C16.5 15.4142 16.1642 15.75 15.75 15.75H2.25C1.83579 15.75 1.5 15.4142 1.5 15V3C1.5 2.58579 1.83579 2.25 2.25 2.25ZM15 5.42844L9.05385 10.7535L3 5.41195V14.25H15V5.42844ZM3.38359 3.75L9.04642 8.7465L14.6257 3.75H3.38359Z" fill="currentColor" fill-opacity="0.8"/>
+        </svg>
+        <span>contact@usdd.io</span>
       </a>
     </div>
-    <div class="f-tagline">
-      <div class="big">Decentralized USD</div>
-      <p>USDD is a fully Decentralized stablecoin pegged to the US Dollar<br>through crypto reserves.</p>
+
+    <!-- brand description -->
+    <div class="footer-brand">
+      <div class="usdd-title">Decentralized USD</div>
+      <p class="usdd-subtitle">USDD is a fully Decentralized stablecoin pegged to the US Dollar through crypto reserves.</p>
     </div>
-    <div class="f-divider"></div>
-    <div class="f-cols">
-      <div class="f-col">
-        <h5>Developer</h5>
-        <a href="#">Developer Doc <i class="ri-external-link-line"></i></a>
-        <a href="#">Audit Report <i class="ri-external-link-line"></i></a>
-        <a href="#">MCP Server Docs <i class="ri-external-link-line"></i></a>
+
+    <!-- Mobile only: social + contact -->
+    <div class="mobile-social-contact">
+      <div class="social-icons">
+        <!-- X -->
+        <a class="social-icon" href="https://x.com/usddio" target="_blank" title="X">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#mcx)"><mask id="mmx" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+            <g mask="url(#mmx)">
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#mgx0)"/>
+              <path d="M29.6075 15H32.5976L26.065 22.6247L33.75 33H27.7328L23.0198 26.7073L17.6269 33H14.6351L21.6222 24.8447L14.25 15H20.4201L24.6803 20.7518L29.6075 15ZM28.5579 31.1722H30.2148L19.5198 16.7318H17.7418L28.5579 31.1722Z" fill="url(#mgx3)"/>
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#mgx4)" stroke-width="1.125"/>
+            </g></g>
+            <defs>
+              <linearGradient id="mgx0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+              <linearGradient id="mgx3" x1="33.623" y1="15.7746" x2="16.6767" y2="34.3551" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0.6"/></linearGradient>
+              <linearGradient id="mgx4" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+              <clipPath id="mcx"><rect width="48" height="48" fill="white"/></clipPath>
+            </defs>
+          </svg>
+        </a>
+        <!-- Telegram -->
+        <div class="tele-wrapper">
+          <a class="social-icon tele-trigger" href="#" title="Telegram" onclick="return false;">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#mct)"><mask id="mmt" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+              <g mask="url(#mmt)">
+                <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#mgt0)"/>
+                <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#mgt1)" stroke-width="1.125"/>
+              </g>
+              <path d="M14.1331 22.5416C20.5124 19.6765 24.7652 17.7876 26.8916 16.8749C32.97 14.2689 34.2315 13.8162 35.0554 13.8009C35.2366 13.7979 35.64 13.8441 35.9032 14.0635C36.122 14.2486 36.1835 14.4989 36.2143 14.6746C36.2416 14.8501 36.2792 15.2502 36.2485 15.5625C35.9203 19.1298 34.4947 27.7864 33.7699 31.782C33.4657 33.4726 32.8606 34.0394 32.276 34.0947C31.0042 34.2153 30.0402 33.229 28.8095 32.3974C26.8848 31.0957 25.7976 30.2856 23.9276 29.0156C21.767 27.5478 23.1687 26.7409 24.3994 25.4226C24.7207 25.0775 30.3205 19.827 30.4265 19.3508C30.4402 19.2912 30.4538 19.0692 30.3239 18.9521C30.1974 18.8348 30.0094 18.8749 29.8727 18.9067C29.6778 18.9518 26.6044 21.0484 20.6423 25.1963C19.7705 25.8146 18.9808 26.1159 18.2697 26.1001C17.4903 26.0828 15.9861 25.6447 14.8682 25.2703C13.5007 24.811 12.4101 24.5681 12.5059 23.788C12.5537 23.382 13.0973 22.9664 14.1331 22.5416Z" fill="white"/>
+              </g></g>
+              <defs>
+                <linearGradient id="mgt0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+                <linearGradient id="mgt1" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+                <clipPath id="mct"><rect width="48" height="48" fill="white"/></clipPath>
+              </defs>
+            </svg>
+          </a>
+          <div class="tele-dropdown">
+            <a class="tele-item" href="#" target="_blank">Telegram Group</a>
+            <a class="tele-item tele-item--accent" href="#" target="_blank">Telegram Announcement</a>
+          </div>
+        </div>
+        <!-- Discord -->
+        <a class="social-icon" href="https://discord.com/invite/NurKn6KEqx" target="_blank" title="Discord">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#mcd)"><mask id="mmd" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+            <g mask="url(#mmd)">
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#mgd0)"/>
+              <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#mgd1)" stroke-width="1.125"/>
+              <path d="M34.0665 16.3165L33.9787 16.187L33.8368 16.1215C32.1165 15.3268 30.3004 14.7631 28.4347 14.4446L28.0416 14.3774L27.8481 14.7263C27.66 15.0656 27.4849 15.412 27.3232 15.7648C25.6128 15.5425 23.881 15.5425 22.1704 15.7648C22.0089 15.4121 21.8338 15.0656 21.6457 14.7264L21.4522 14.377L21.0585 14.4447C19.1919 14.7658 17.3749 15.3308 15.6532 16.1254L15.5097 16.1917L15.4216 16.3231C12.015 21.4085 11.0857 26.3863 11.5482 31.2838L11.5717 31.5325L11.7721 31.6817C13.7735 33.1738 16.014 34.3087 18.396 35.037L18.777 35.1535L19.0132 34.8328C19.5544 34.0984 20.0332 33.3194 20.4445 32.5042L20.5753 32.2449C21.9313 32.6216 23.3353 32.8143 24.75 32.8143C26.1631 32.8143 27.5655 32.6219 28.9201 32.246L29.0512 32.506C29.4622 33.3213 29.9412 34.0997 30.483 34.8332L30.7189 35.1529L31.0992 35.0373C33.4834 34.3119 35.7259 33.1774 37.728 31.6837L37.9278 31.5346L37.9515 31.2864C38.4945 25.6052 37.0203 20.674 34.0665 16.3165ZM20.514 27.73C19.6231 27.73 18.78 26.8895 18.78 25.7245C18.78 24.5495 19.5958 23.7088 20.5099 23.7088C21.4332 23.7088 22.264 24.5582 22.246 25.7156C22.2276 26.9009 21.4176 27.73 20.514 27.73ZM28.9858 27.73C28.0939 27.73 27.2539 26.8906 27.2539 25.7245C27.2539 24.5498 28.0693 23.7088 28.9858 23.7088C29.9091 23.7088 30.7339 24.5558 30.7159 25.7156C30.6975 26.9015 29.889 27.73 28.9858 27.73Z" fill="url(#mgd3)" stroke="url(#mgd3s)" stroke-width="1.125"/>
+              <path d="M20.5152 28.2946C19.2576 28.2946 18.2188 27.1432 18.2188 25.7266C18.2188 24.31 19.2216 23.1484 20.5112 23.1484C21.8009 23.1484 22.8318 24.31 22.8098 25.7266C22.7876 27.1432 21.7968 28.2946 20.5152 28.2946ZM28.9871 28.2946C27.7275 28.2946 26.6927 27.1432 26.6927 25.7266C26.6927 24.31 27.6954 23.1484 28.9871 23.1484C30.2787 23.1484 31.3018 24.31 31.2797 25.7266C31.2575 27.1432 30.2688 28.2946 28.9871 28.2946Z" fill="white"/>
+            </g></g>
+            <defs>
+              <linearGradient id="mgd0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+              <linearGradient id="mgd1" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+              <linearGradient id="mgd3" x1="53.8929" y1="2.41981" x2="23.1661" y2="38.4364" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white" stop-opacity="0.3"/></linearGradient>
+              <linearGradient id="mgd3s" x1="37.9251" y1="15.3241" x2="19.1062" y2="39.9332" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="white" stop-opacity="0.6"/></linearGradient>
+              <clipPath id="mcd"><rect width="48" height="48" fill="white"/></clipPath>
+            </defs>
+          </svg>
+        </a>
       </div>
-      <div class="f-col">
-        <h5>Transparency</h5>
-        <a href="#">Data</a>
-        <a href="#">Smart Allocator</a>
-        <a href="#">USDD Treasury</a>
+      <!-- contact btn -->
+      <a class="contact-btn" href="mailto:contact@usdd.io">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M2.25 2.25H15.75C16.1642 2.25 16.5 2.58579 16.5 3V15C16.5 15.4142 16.1642 15.75 15.75 15.75H2.25C1.83579 15.75 1.5 15.4142 1.5 15V3C1.5 2.58579 1.83579 2.25 2.25 2.25ZM15 5.42844L9.05385 10.7535L3 5.41195V14.25H15V5.42844ZM3.38359 3.75L9.04642 8.7465L14.6257 3.75H3.38359Z" fill="currentColor" fill-opacity="0.8"/>
+        </svg>
+        <span>contact@usdd.io</span>
+      </a>
+    </div>
+
+    <!-- divider -->
+    <div class="divider"></div>
+
+    <!-- nav columns -->
+    <div class="nav-sections">
+      <div class="nav-section">
+        <div class="nav-section-title">Developer</div>
+        <a class="nav-link" href="https://docs.usdd.io/" target="_blank">Developer Doc <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
+        <a class="nav-link" href="https://docs.usdd.io/security/audits" target="_blank">Audit Report <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
+        <a class="nav-link" href="#" target="_blank">MCP Server Docs <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
       </div>
-      <div class="f-col">
-        <h5>Community</h5>
-        <a href="#">News</a>
-        <a href="#">FAQs</a>
-        <a href="#">Brand Kit</a>
+      <div class="nav-section">
+        <div class="nav-section-title">Transparency</div>
+        <a class="nav-link" href="https://usdd.io/data">Data</a>
+        <a class="nav-link" href="https://usdd.io/sa">Smart Allocator</a>
+        <a class="nav-link" href="https://usdd.io/treasury">USDD Treasury</a>
       </div>
-      <div class="f-col">
-        <h5>Legal</h5>
-        <a href="#">Terms of Use <i class="ri-external-link-line"></i></a>
-        <a href="#">Privacy Policy <i class="ri-external-link-line"></i></a>
+      <div class="nav-section">
+        <div class="nav-section-title">Community</div>
+        <a class="nav-link" href="https://usdd.io/news">News</a>
+        <a class="nav-link" href="https://usdd.io/faq">FAQs</a>
+        <a class="nav-link" href="#">Brand Kit</a>
       </div>
-      <div class="f-col">
-        <h5>Legacy</h5>
-        <a href="#">USDD Legacy <i class="ri-external-link-line"></i></a>
-        <a href="#">USDD Old PSM <i class="ri-external-link-line"></i></a>
+      <div class="nav-section">
+        <div class="nav-section-title">Legal</div>
+        <a class="nav-link" href="https://docs.usdd.io/lrgals/terms-of-use" target="_blank">Terms of Use <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
+        <a class="nav-link" href="https://docs.usdd.io/lrgals/privacy-policy" target="_blank">Privacy Policy <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Legacy</div>
+        <a class="nav-link" href="https://legacy.usdd.io/" target="_blank">USDD Legacy <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
+        <a class="nav-link" href="https://legacy.usdd.io/#/psm" target="_blank">USDD Old PSM <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.5 2.25V3.75H3.75V14.25H14.25V10.5H15.75V15C15.75 15.4142 15.4142 15.75 15 15.75H3C2.58579 15.75 2.25 15.4142 2.25 15V3C2.25 2.58579 2.58579 2.25 3 2.25H7.5ZM13.1894 3.75H9.75V2.25H15.75V8.25H14.25V4.81066L9 10.0606L7.93935 9L13.1894 3.75Z" fill="white" fill-opacity="0.4"/></svg></a>
       </div>
     </div>
-    <div class="f-bottom">
-      <span class="copyright">Copyright © 2026 USDD. All rights reserved</span>
-      <a class="to-top" href="#top" aria-label="Back to top"><i class="ri-arrow-up-s-line"></i></a>
+
+    <!-- bottom bar -->
+    <div class="footer-bottom-bar">
+      <div class="copyright">Copyright © 2026 USDD. All rights reserved</div>
+      <a class="scroll-top" href="#top" aria-label="Back to top">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <mask id="ms" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48"><path d="M48 0H0V48H48V0Z" fill="white"/></mask>
+          <g mask="url(#ms)">
+            <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" fill="url(#gs0)"/>
+            <path d="M47.4375 24C47.4375 11.0558 36.9441 0.5625 24 0.5625C11.0558 0.5625 0.5625 11.0558 0.5625 24C0.5625 36.9441 11.0558 47.4375 24 47.4375C36.9441 47.4375 47.4375 36.9441 47.4375 24Z" stroke="url(#gs1)" stroke-width="1.125"/>
+          </g>
+          <path class="scroll-arrow" d="M23.9999 22.4442L31.7778 30.2219L34 27.9997L23.9999 17.9996L14 27.9997L16.2222 30.2219L23.9999 22.4442Z" fill="white"/>
+          <defs>
+            <linearGradient id="gs0" x1="47.5556" y1="48" x2="-0.44446" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.15"/><stop offset="1" stop-opacity="0"/></linearGradient>
+            <linearGradient id="gs1" x1="47.5556" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="white" stop-opacity="0.3"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+          </defs>
+        </svg>
+      </a>
     </div>
+
   </div>
 </footer>
 
@@ -778,7 +1323,76 @@ CMYK:
       });
     });
   });
-  // Copy hex on swatch click
+  // Mobile bg dropdown (position:fixed panel appended to body to escape overflow:hidden)
+  (function(){
+    const panel=document.createElement('div');
+    panel.className='bg-select-panel';
+    panel.hidden=true;
+    document.body.appendChild(panel);
+    let activeTrigger=null;
+
+    function closePanel(){
+      panel.hidden=true;
+      if(activeTrigger){
+        activeTrigger.querySelector('i').className='ri-arrow-down-s-line';
+        activeTrigger=null;
+      }
+    }
+
+    document.querySelectorAll('[data-select-group]').forEach(group=>{
+      const trigger=group.querySelector('[data-select-trigger]');
+      const cardFoot=group.closest('.card-foot');
+      const preview=cardFoot.previousElementSibling;
+      const bgGroup=cardFoot.querySelector('[data-bg-group]');
+
+      trigger.addEventListener('click',function(){
+        // 去掉 stopPropagation：冒泡阶段 trigger 先于 document 执行，逻辑更稳定
+        if(activeTrigger===trigger&&!panel.hidden){closePanel();return;}
+        closePanel();
+
+        // Build option list from sibling desktop toggles
+        panel.innerHTML='';
+        bgGroup.querySelectorAll('.bg-toggle').forEach(btn=>{
+          const isActive=btn.classList.contains('active');
+          const opt=document.createElement('button');
+          opt.className='bg-option'+(isActive?' active':'');
+          opt.dataset.bg=btn.dataset.bg;
+          opt.dataset.ink=btn.dataset.ink;
+          opt.dataset.label=btn.textContent.trim();
+          opt.innerHTML='<span>'+btn.textContent.trim()+'</span>'+(isActive?'<span class="bg-option-dot"></span>':'');
+          opt.addEventListener('click',function(ev){
+            ev.stopPropagation();
+            preview.style.background=opt.dataset.bg;
+            preview.classList.toggle('on-light',opt.dataset.ink==='dark');
+            trigger.querySelector('.bg-select-label').textContent=opt.dataset.label;
+            bgGroup.querySelectorAll('.bg-toggle').forEach(b=>b.classList.toggle('active',b.dataset.bg===opt.dataset.bg));
+            closePanel();
+          });
+          panel.appendChild(opt);
+        });
+
+        // Position panel below trigger
+        const rect=trigger.getBoundingClientRect();
+        panel.style.top=(rect.bottom+6)+'px';
+        panel.style.left=rect.left+'px';
+        panel.hidden=false;
+        trigger.querySelector('i').className='ri-arrow-up-s-line';
+        activeTrigger=trigger;
+      });
+    });
+
+    // 点击 trigger 时 document handler 会在 trigger handler 之后触发，
+    // 用 closest 判断排除掉，避免重复关闭
+    document.addEventListener('click',function(e){
+      if(panel.hidden)return;
+      if(panel.contains(e.target))return;
+      if(e.target.closest('[data-select-trigger]'))return;
+      closePanel();
+    });
+    window.addEventListener('scroll',closePanel,{passive:true});
+  })();
+
+  // Copy hex on swatch click (desktop)
   document.querySelectorAll('.swatch').forEach(sw=>{
     sw.addEventListener('click',()=>{
       const hex=sw.dataset.hex;
@@ -787,11 +1401,441 @@ CMYK:
       setTimeout(()=>sw.classList.remove('show-tip'),1100);
     });
   });
+  // Copy hex on mobile palette swatch click
+  document.querySelectorAll('.pm-swatch').forEach(sw=>{
+    sw.addEventListener('click',()=>{
+      const hex=sw.dataset.hex;
+      navigator.clipboard&&navigator.clipboard.writeText(hex);
+      sw.classList.add('show-tip');
+      setTimeout(()=>sw.classList.remove('show-tip'),1100);
+    });
+  });
+
+  // Footer: Telegram dropdown (hover open/close with small delay)
+  document.querySelectorAll('.footer .tele-wrapper').forEach(function(wrapper){
+    const dropdown=wrapper.querySelector('.tele-dropdown');
+    if(!dropdown)return;
+    let timer=null;
+    const show=()=>{clearTimeout(timer);dropdown.classList.add('is-open');};
+    const hide=()=>{timer=setTimeout(()=>dropdown.classList.remove('is-open'),120);};
+    wrapper.addEventListener('mouseenter',show);
+    wrapper.addEventListener('mouseleave',hide);
+    dropdown.addEventListener('mouseenter',show);
+    dropdown.addEventListener('mouseleave',hide);
+  });
+
+  // Footer: split contact email into chars for bounce animation
+  document.querySelectorAll('.footer .contact-btn span').forEach(function(span){
+    const text=span.textContent;
+    span.textContent='';
+    text.split('').forEach(function(char,i){
+      const el=document.createElement('span');
+      el.className='char';
+      el.textContent=char===' '?'\u00A0':char;
+      el.style.animationDelay=(i*0.03)+'s';
+      span.appendChild(el);
+    });
+  });
 </script>
-<script type="module">
-  import { initGlobe } from "./globe.js";
-  const c = document.getElementById("press-globe");
-  if (c) initGlobe(c, { speed: 0.003, markerSize: 11 });
+<script>
+// Globe 渲染器 — 内嵌版（原 globe.js）
+(function () {
+const DEFAULT_CONFIG = {
+  "bg": "#181a1c",
+  "sphere": "#181a1c",
+  "dot": "#216c58",
+  "marker": "#ff0000",
+  "bgA": 1,
+  "sphereA": 1,
+  "dotA": 1,
+  "markerA": 1,
+  "enableBg": true,
+  "enableSphere": true,
+  "enableDot": true,
+  "enableMarker": true,
+  "dotShape": "circle",
+  "dotSize": 1,
+  "density": 30000,
+  "brightness": 0.8,
+  "diffuse": 1,
+  "theta": 0.26,
+  "speed": 0.007,
+  "markerSize": 9,
+  "markerCount": 8,
+  "markerShape": "svg",
+  "markerSvg": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiMyMTZDNTgiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wIDMyQzAgMTQuMzMzMyAxNC4zMzMzIDAgMzIgMEM0OS42NjY3IDAgNjQgMTQuMzMzMyA2NCAzMkM2NCA0OS42NjY3IDQ5LjY2NjcgNjQgMzIgNjRDMTQuMzMzMyA2NCAwIDQ5LjY2NjcgMCAzMlpNMS42IDMyQzEuNiA0OC43ODY3IDE1LjIxMzMgNjIuNCAzMiA2Mi40QzQ4Ljc4NjcgNjIuNCA2Mi40IDQ4Ljc4NjcgNjIuNCAzMkM2Mi40IDE1LjIxMzMgNDguNzg2NyAxLjYgMzIgMS42QzE1LjIxMzMgMS42IDEuNiAxNS4yMTMzIDEuNiAzMlpNNTguMDI2MiAzNC4zNjAzQzU4LjA2NjIgMzMuOTMzNiA1OC40MTI4IDMzLjYwMDMgNTguODM5NSAzMy42MDAzQzU5LjMwNjIgMzMuNjAwMyA1OS42NjYyIDM0LjAwMDMgNTkuNjI2MiAzNC40NTM2QzU4LjM4NjIgNDguNjEzNiA0Ni40OTI4IDU5LjczMzYgMzEuOTk5NSA1OS43MzM2QzE3LjUwNjIgNTkuNzMzNiA1LjYxMjgzIDQ4LjYyNjkgNC4zNzI4MyAzNC40NTM2QzQuMzMyODMgMzMuOTg2OSA0LjY5MjgzIDMzLjYwMDMgNS4xNTk1IDMzLjYwMDNDNS41ODYxNiAzMy42MDAzIDUuOTMyODMgMzMuOTMzNiA1Ljk3MjgzIDM0LjM2MDNDNy4xNTk1IDQ3LjY4MDMgMTguMzU5NSA1OC4xMzM2IDMxLjk5OTUgNTguMTMzNkM0NS42Mzk1IDU4LjEzMzYgNTYuODM5NSA0Ny42OTM2IDU4LjAyNjIgMzQuMzYwM1pNNS4xNTk1IDMwLjQwMDNDNS41ODYxNiAzMC40MDAzIDUuOTMyODMgMzAuMDY2OSA1Ljk3MjgzIDI5LjY0MDNDNy4xNTk1IDE2LjMyMDMgMTguMzU5NSA1Ljg2NjkzIDMxLjk5OTUgNS44NjY5M0M0NS42Mzk1IDUuODY2OTMgNTYuODM5NSAxNi4zMjAzIDU4LjAyNjIgMjkuNjQwM0M1OC4wNjYyIDMwLjA2NjkgNTguNDEyOCAzMC40MDAzIDU4LjgzOTUgMzAuNDAwM0M1OS4zMDYyIDMwLjQwMDMgNTkuNjY2MiAzMC4wMTM2IDU5LjYyNjIgMjkuNTQ2OUM1OC4zODYyIDE1LjM3MzYgNDYuNDkyOCA0LjI2NjkzIDMxLjk5OTUgNC4yNjY5M0MxNy41MDYyIDQuMjY2OTMgNS42MTI4MyAxNS4zODY5IDQuMzcyODMgMjkuNTQ2OUM0LjMzMjgzIDMwLjAwMDMgNC42OTI4MyAzMC40MDAzIDUuMTU5NSAzMC40MDAzWk0yMi45MzM5IDEyLjI2NjlINDMuMjAwNUM0My43ODk2IDEyLjI2NjkgNDQuMjY3MiAxMi43NDQ1IDQ0LjI2NzIgMTMuMzMzNlYxMy44NjY5QzQ0LjI2NzIgMTQuNDU2IDQzLjc4OTYgMTQuOTMzNiA0My4yMDA1IDE0LjkzMzZIMjIuOTMzOUMyMi4zNDQ4IDE0LjkzMzYgMjEuODY3MiAxNC40NTYgMjEuODY3MiAxMy44NjY5VjEzLjMzMzZDMjEuODY3MiAxMi43NDQ1IDIyLjM0NDggMTIuMjY2OSAyMi45MzM5IDEyLjI2NjlaTTMyIDE3LjZWMTZIMjkuMzMzM1YxNy44MjY3QzMwLjE4NjcgMTcuNzA2NyAzMS4wNjY3IDE3LjYyNjcgMzIgMTcuNlpNMjkuMzMzMyAzNi4zODE1VjQzLjE3MzRDMjkuMzMzMyA0My4xNzM0IDI5LjM3MzMgNDMuMTg2NyAyOS40IDQzLjJDMzAuMTYgNDMuNDUzNCAzMS4wMjY3IDQzLjYxMzQgMzIgNDMuNjRWMzYuOTc5NEwzMi43NDYyIDM3LjE0NjdDMzMuMDExMiAzNy4xOTk3IDMzLjI0MjYgMzcuMjYxMSAzMy40ODA0IDM3LjMyNDNDMzMuNTQxNyAzNy4zNDA2IDMzLjYwMzQgMzcuMzU3IDMzLjY2NjIgMzcuMzczNFY0My42MjY3QzM0LjI5MjkgNDMuNTYgMzQuODUyOSA0My40NCAzNS4zMzI5IDQzLjI2NjdDMzUuNzE5NSA0My4xMiAzNi4wNTI5IDQyLjk3MzQgMzYuMzMyOSA0Mi44VjM4LjIyNjdDMzYuOTk5NSAzOC41MiAzNy41MzI5IDM4Ljg2NjcgMzcuOTA2MiAzOS4yNTM0QzM4LjM3MjkgMzkuNzMzNCAzOC41ODYyIDQwLjMwNjcgMzguNTg2MiA0MC45ODY3QzM4LjU4NjIgNDEuNzIgMzguMzMyOSA0Mi4zNzM0IDM3LjgyNjIgNDIuOTQ2N0MzNy4zMTk1IDQzLjUwNjcgMzYuNjEyOSA0My45NDY3IDM1LjcwNjIgNDQuMjhDMzQuNzk5NSA0NC42IDMzLjczMjkgNDQuNzYgMzIuNTA2MiA0NC43NkMzMS4yNzk1IDQ0Ljc2IDMwLjEzMjkgNDQuNiAyOS4xMzI5IDQ0LjI1MzRDMjguMTU5NSA0My45MDY3IDI3LjM1OTUgNDMuMzg2NyAyNi43NzI5IDQyLjcwNjdDMjYuMzg2MiA0Mi4yNCAyNi4xMTk1IDQxLjcyIDI1Ljk0NjIgNDEuMTA2N0MyNS43OTk1IDQwLjU2IDI1LjM0NjIgNDAuMTIgMjQuNzk5NSA0MC4xMkgxOS44NTI5QzE5LjI1MjkgNDAuMTIgMTguNzcyOSA0MC42MjY3IDE4LjgzOTUgNDEuMkMxOS4wMzk1IDQyLjkzMzQgMTkuNjEyOSA0NC40MTM0IDIwLjU1OTUgNDUuNjUzNEMyMS43MTk1IDQ3LjEzMzQgMjMuMzA2MiA0OC4yNjY3IDI1LjM1OTUgNDkuMDEzNEMyNi42OTI5IDQ5LjUwNjcgMjguMTk5NSA0OS44MjY3IDI5LjgzOTUgNTBDMjkuNzg2MSA0OS45OTQ3IDI5LjczMDUgNDkuOTkzNiAyOS42NzQ1IDQ5Ljk5MjZDMjkuNTkwOCA0OS45OTEgMjkuNTA2MSA0OS45ODkzIDI5LjQyNjIgNDkuOTczNFY1Mi4yOTM0QzI5LjQyNjIgNTIuODggMjkuOTA2MiA1My4zNiAzMC40OTI5IDUzLjM2SDMxLjAyNjJDMzEuNjEyOSA1My4zNiAzMi4wOTI5IDUyLjg4IDMyLjA5MjkgNTIuMjkzNFY1MC4xNkMzMi4wMTk1IDUwLjE2IDMxLjk0OTUgNTAuMTUzNCAzMS44Nzk1IDUwLjE0NjdDMzEuODA5NSA1MC4xNCAzMS43Mzk1IDUwLjEzMzQgMzEuNjY2MiA1MC4xMzM0QzMxLjgyNjIgNTAuMTMzNCAzMS45ODI5IDUwLjE0MzQgMzIuMTM5NSA1MC4xNTM0QzMyLjI5NjIgNTAuMTYzNCAzMi40NTI5IDUwLjE3MzQgMzIuNjEyOSA1MC4xNzM0QzMzLjA2OTUgNTAuMTczNCAzMy40OTE4IDUwLjE1MDUgMzMuOTIyMSA1MC4xMjZDMzMuOTAxIDUwLjEyODIgMzMuODgwMyA1MC4xMzA4IDMzLjg1OTUgNTAuMTMzNEMzMy44MDYyIDUwLjE0IDMzLjc1MjkgNTAuMTQ2NyAzMy42OTI5IDUwLjE0NjdWNTIuMjkzNEMzMy42OTI5IDUyLjg4IDM0LjE3MjkgNTMuMzYgMzQuNzU5NSA1My4zNkgzNS4yOTI5QzM1Ljg3OTUgNTMuMzYgMzYuMzU5NSA1Mi44OCAzNi4zNTk1IDUyLjI5MzRWNDkuOTA2N0MzNi4zMzcgNDkuOTA2NyAzNi4zMTM0IDQ5LjkwNjcgMzYuMjg5NCA0OS45MDczQzM3LjU2NTQgNDkuNzIwOSAzOC43NDIgNDkuNDQ3MyAzOS43NzI5IDQ5LjA0QzQxLjc3MjkgNDguMjggNDMuMjkyOSA0Ny4yMjY3IDQ0LjMzMjkgNDUuODUzNEw0NC4yNTI5IDQ1LjgyNjdDNDUuMzE5NSA0NC40NCA0NS44NTI5IDQyLjgyNjcgNDUuODY2MiA0MC45NDY3QzQ1Ljg2NjIgMzkuNjY2NyA0NS41ODYyIDM4LjU0NjcgNDUuMDc5NSAzNy41NkM0NC41NzI5IDM2LjU3MzQgNDMuODUyOSAzNS43MDY3IDQyLjk0NjIgMzQuOTg2N0M0Mi4wMjYyIDM0LjI2NjcgNDAuOTQ2MiAzMy42NTM0IDM5LjY5MjkgMzMuMTQ2N0MzOC40Mzk1IDMyLjY1MzQgMzcuMDY2MiAzMi4yNTM0IDM1LjU3MjkgMzEuOTQ2N0wzMi40OTI5IDMxLjI5MzRDMzEuNzQ2MiAzMS4xNDY3IDMxLjA1MjkgMzAuOTYgMzAuMzg2MiAzMC43NkMyOS43MzI5IDMwLjUzMzQgMjkuMTU5NSAzMC4yOCAyOC42NTI5IDMwQzI4LjE0NjIgMjkuNjkzNCAyNy43NDYyIDI5LjM0NjcgMjcuNDY2MiAyOC45NDY3VjI4LjkyQzI3LjE5OTUgMjguNTIgMjcuMDY2MiAyOC4wNTM0IDI3LjA5MjkgMjcuNTJDMjcuMDkyOSAyNi44NjY3IDI3LjMwNjIgMjYuMjUzNCAyNy43MzI5IDI1LjczMzRDMjguMTE5NSAyNS4yNjY3IDI4LjY3OTUgMjQuODkzNCAyOS4zODYyIDI0LjYxMzRWMjkuMTczNEMyOS43NzI5IDI5LjM4NjcgMzAuMjI2MiAyOS41NzM0IDMwLjc0NjIgMjkuNzQ2N0MzMS4xNTk1IDI5Ljg4IDMxLjU5OTUgMzAgMzIuMDUyOSAzMC4xMDY3VjI0LjEyQzMyLjEzNzkgMjQuMTIgMzIuMjI2MiAyNC4xMTY4IDMyLjMxNjEgMjQuMTEzNUMzMi40MDk0IDI0LjExMDIgMzIuNTA0NSAyNC4xMDY3IDMyLjU5OTUgMjQuMTA2N0MzMi45NzI5IDI0LjEwNjcgMzMuMzE5NSAyNC4xMzM0IDMzLjY1MjkgMjQuMTZWMzAuNDUzNEwzNS44MjYyIDMwLjkyQzM1LjkwNjIgMzAuOTQgMzUuOTg5NSAzMC45NTY3IDM2LjA3MjkgMzAuOTczNEMzNi4xNTYyIDMwLjk5IDM2LjIzOTUgMzEuMDA2NyAzNi4zMTk1IDMxLjAyNjdWMjQuODkzNEMzNi4zNzMxIDI0LjkyMjYgMzYuNDI2NiAyNC45NDgyIDM2LjQ3OTUgMjQuOTczNUMzNi41NzE1IDI1LjAxNzYgMzYuNjYxNSAyNS4wNjA4IDM2Ljc0NjIgMjUuMTJDMzcuNDkyOSAyNS42IDM3Ljk5OTUgMjYuMjI2NyAzOC4yNjYyIDI3QzM4LjQzOTUgMjcuNTA2NyAzOC44Nzk1IDI3LjkyIDM5LjQyNjIgMjcuOTJINDQuMzU5NUM0NC45NzI5IDI3LjkyIDQ1LjQ1MjkgMjcuNDI2NyA0NS4zNTk1IDI2LjgyNjdDNDUuMTcyOSAyNS40NCA0NC42NTI5IDI0LjIxMzQgNDMuNzk5NSAyMy4wOTM0QzQyLjczMjkgMjEuNzIgNDEuMjM5NSAyMC42MjY3IDM5LjMzMjkgMTkuODUzNEMzNy40MjYyIDE5LjA2NjcgMzUuMTk5NSAxOC42OTM0IDMyLjY1MjkgMTguNjkzNEMzMC4xMDYyIDE4LjY5MzQgMjcuOTA2MiAxOS4wOCAyNS45NDYyIDE5Ljg1MzRDMjMuOTcyOSAyMC42MjY3IDIyLjQyNjIgMjEuNzA2NyAyMS4yOTI5IDIzLjA5MzRDMjAuMTcyOSAyNC40NjY3IDE5LjYyNjIgMjYuMDkzNCAxOS42MjYyIDI3Ljk2QzE5LjYyNjIgMzAuMjI2NyAyMC40NTI5IDMyLjAyNjcgMjIuMTMyOSAzMy4zNkMyMy44MTI5IDM0LjY5MzQgMjYuMDkyOSAzNS42OCAyOC45OTk1IDM2LjMwNjdMMjkuMzMzMyAzNi4zODE1Wk0zNi4yNjU2IDE3Ljg4VjE2SDMzLjU5OVYxNy42MTMzQzM0LjUxOSAxNy42NTMzIDM1LjQxMjMgMTcuNzMzMyAzNi4yNjU2IDE3Ljg4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==",
+  "paused": false
+};
+const CITIES = [[39.9042,116.4074],[40.7128,-74.006],[51.5074,-0.1278],[1.3521,103.8198],[25.2048,55.2708]];
+const LEVELS = 14;
+const MARKER_MAX = 60;
+const REPEL_EASE = 0.18;
+const LIGHT = [-0.4854368932038835,0.4368932038834951,0.7572815533980582];
+const MAP_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAACAAQAAAADMzoqnAAAAAXNSR0IArs4c6QAABA5JREFUeNrV179uHEUAx/Hf3JpbF+E2VASBsmVKTBcpKJs3SMEDcDwBiVJAAewYEBUivIHT0uUBIt0YCovKD0CRjUC4QfHYh8hYXu+P25vZ2Zm9c66gMd/GJ/tz82d3bk8GN4SrByYF2366FNTACIAkivVAAazQdnf3MvAlbNUQfOPAdQDvSAimMWhwy4I2g4SU+Kp04ISLpPBAKLxPyic3O/CCi+Y7rUJbiodcpDOFY7CgxCEXmdYD2EYK2s5lApOx5pEDDYCUwM1XdJUwBV11QQMg59kePSCaPAASQMEL2hwo6TJFgxpg+TgC2ymXPbuvc40awr3D1QCFfbH9kcoqAOkZozpQo0aqAGQRKCog/+tjkgbNFEtg2FffBvBGlSxHoAaAa1u6X4PBAwDiR8FFsrQgeUhfJTSALaB9jy5NCybJPn1SVFiWk7ywN+KzhH1aKAuydhGkbEF4lWohLXDXavlyFgHY7LBnLRdlAP6BS5Cc8RfVDXbkwN/oIvmY+6obbNeBP0JwTuMGu9gTzy1Q4RS/cWpfzszeYwd+CAFrtBW/Hur0gLbJGlD+/OjVwe/drfBxkbbg63dndEDfiEBlAd7ac0BPe1D6Jd8dfbLH+RI0OzseFB5s01/M+gMdAeluLOCAuaUA9Lezo/vSgXoCX9rtEiXnp7Q1W/CNyWcd8DXoS6jH/YZ5vAJEWY2dXFQe2TUgaFaNejCzJ98g6HnlVrsE58sDcYqg+9XY75fPqdoh/kRQWiXKg8MWlJQxUFMPjqnyujhFBE7UxIMjyszk0QwQlFsezImsyvUYYYVED2pk6m0Tg8T04Fwjk2kdAwSACqlM6gRRt3vQYAFGX0Ah7Ebx1H+MDRI5ui0QldH4j7FGcm90XdxD2Jg1AOEAVAKhEFXSn4cKUELurIAKwJ3MArypPscQaLhJFICJ0ohjDySAdH8AhDtCiTuMycH8CXzhH9jUACAO5uMhoAwA5i+T6WAKmmAqnLy80wxHqIPFYpqCwxGaYLt4Dyievg5kEoVEUAhs6pqKgFtDQYOuaXypaWKQfIuwwoGSZgfLsu/XAtI8cGN+h7Cc1A5oLOMhwlIPXuhu48AIvsSBkvtV9wsJRKCyYLfq5lTrQMFd1a262oqBck9K1V0YjQg0iEYYgpS1A9GlXQV5cykwm4A7BzVsxQqo7E+zCegO7Ma7yKgsuOcfKbMBwLC8wvVNYDsANYalEpOAa6zpWjTeMKGwEwC1CiQewJc5EKfgy7GmRAZA4vUVGwE2dPM/g0xuAInE/yG5aZ8ISxWGfYigUVbdyBElTHh2uCwGdfCkOLGgQVBh3Ewp+/QK4CDlR5Ws/Zf7yhCf8pH7vinWAvoVCQ6zz0NX5V/6GkAVV+2/5qsJ/gU8bsxpM8IeAQAAAABJRU5ErkJggg==";
+
+function initGlobe(canvas, userConfig = {}) {
+  const config = { ...DEFAULT_CONFIG, ...userConfig };
+  const ctx = canvas.getContext("2d");
+  let dpr = 1, cssSize = 600, phi = 0;
+  let pointerInteracting = null, pointerMovement = 0, dragDelta = 0;
+  let mouseX = null, mouseY = null;
+  let mapData = null, mapW = 0, mapH = 0;
+  let landPoints = [], offX = new Float32Array(0), offY = new Float32Array(0);
+  let markerPool = [];
+  const markerOffX = new Float32Array(MARKER_MAX);
+  const markerOffY = new Float32Array(MARKER_MAX);
+  let dotColors = [];
+  let markerImg = null, markerImgReady = false;
+  function loadMarkerSvg(uri) {
+    markerImgReady = false;
+    if (!uri) { markerImg = null; return; }
+    const im = new Image();
+    im.onload = () => { markerImg = im; markerImgReady = true; };
+    im.src = uri;
+  }
+
+  function hexToRgb(hex) {
+          const v = hex.replace("#", "");
+          return [
+            parseInt(v.slice(0, 2), 16),
+            parseInt(v.slice(2, 4), 16),
+            parseInt(v.slice(4, 6), 16),
+          ];
+        }
+  
+  function latLonToVec(latDeg, lonDeg) {
+          const lat = (latDeg * Math.PI) / 180;
+          const lon = (lonDeg * Math.PI) / 180;
+          const cl = Math.cos(lat);
+          return [cl * Math.sin(lon), Math.sin(lat), cl * Math.cos(lon)];
+        }
+  
+  function isLand(vec) {
+          // vec: 单位向量 -> 经纬度 -> 等距柱状 uv -> 采样
+          const lat = Math.asin(Math.max(-1, Math.min(1, vec[1])));
+          const lon = Math.atan2(vec[0], vec[2]);
+          const u = (lon + Math.PI) / (2 * Math.PI);
+          const v = (Math.PI / 2 - lat) / Math.PI;
+          const sx = Math.min(mapW - 1, Math.max(0, Math.floor(u * mapW)));
+          const sy = Math.min(mapH - 1, Math.max(0, Math.floor(v * mapH)));
+          return mapData[(sy * mapW + sx) * 4] > 128;
+        }
+  
+  function buildPoints() {
+          const n = config.density;
+          const pts = [];
+          const golden = Math.PI * (3 - Math.sqrt(5));
+          for (let i = 0; i < n; i++) {
+            const y = 1 - (i / (n - 1)) * 2;
+            const r = Math.sqrt(Math.max(0, 1 - y * y));
+            const th = golden * i;
+            const x = Math.cos(th) * r;
+            const z = Math.sin(th) * r;
+            const v = [x, y, z];
+            if (isLand(v)) pts.push(v);
+          }
+          landPoints = pts;
+          offX = new Float32Array(pts.length);
+          offY = new Float32Array(pts.length);
+        }
+  
+  function buildMarkers() {
+          markerPool = CITIES.map((c) => latLonToVec(c[0], c[1]));
+          const n = landPoints.length;
+          if (!n) return;
+          const extra = MARKER_MAX - markerPool.length;
+          for (let j = 0; j < extra; j++) {
+            const idx = Math.floor(((j + 0.5) / extra) * n);
+            markerPool.push(landPoints[idx]);
+          }
+        }
+  
+  function buildDotColors() {
+          const [r, g, b] = hexToRgb(config.dot);
+          dotColors = [];
+          for (let k = 0; k < LEVELS; k++) {
+            // 点阵始终用所选原色，亮度/光照用透明度表现
+            // （这样在浅色背景下也能清晰看到颜色，调色立即生效）
+            // 再乘以用户设置的点阵透明度
+            const a = (k / (LEVELS - 1)) * config.dotA;
+            dotColors.push(`rgba(${r},${g},${b},${a})`);
+          }
+        }
+  
+  function repelTarget(sx, sy, radius, push) {
+          if (mouseX === null) return [0, 0];
+          const ddx = sx - mouseX;
+          const ddy = sy - mouseY;
+          const dist = Math.hypot(ddx, ddy);
+          if (dist >= radius) return [0, 0];
+          const f = 0.5 * (1 + Math.cos((Math.PI * dist) / radius));
+          const inv = dist > 0.001 ? 1 / dist : 0;
+          return [ddx * inv * f * push, ddy * inv * f * push];
+        }
+  
+  function addShape(ctx, shape, x, y, s) {
+          switch (shape) {
+            case "square":
+              ctx.rect(x - s, y - s, s * 2, s * 2);
+              break;
+            case "diamond":
+              ctx.moveTo(x, y - s);
+              ctx.lineTo(x + s, y);
+              ctx.lineTo(x, y + s);
+              ctx.lineTo(x - s, y);
+              ctx.closePath();
+              break;
+            case "triangle":
+              ctx.moveTo(x, y - s);
+              ctx.lineTo(x + s * 0.87, y + s * 0.5);
+              ctx.lineTo(x - s * 0.87, y + s * 0.5);
+              ctx.closePath();
+              break;
+            case "hexagon":
+              ctx.moveTo(x, y - s);
+              ctx.lineTo(x + s * 0.87, y - s * 0.5);
+              ctx.lineTo(x + s * 0.87, y + s * 0.5);
+              ctx.lineTo(x, y + s);
+              ctx.lineTo(x - s * 0.87, y + s * 0.5);
+              ctx.lineTo(x - s * 0.87, y - s * 0.5);
+              ctx.closePath();
+              break;
+            default: // circle / ring
+              ctx.moveTo(x + s, y);
+              ctx.arc(x, y, s, 0, Math.PI * 2);
+          }
+        }
+  
+  function draw() {
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, cssSize, cssSize);
+  
+          const cx = cssSize / 2;
+          const cy = cssSize / 2;
+          const R = cssSize * 0.45;
+  
+          const cp = Math.cos(phi + dragDelta);
+          const sp = Math.sin(phi + dragDelta);
+          const ct = Math.cos(config.theta);
+          const st = Math.sin(config.theta);
+  
+          // 球体本体（纯色实心圆，颜色独立于点阵）
+          if (config.enableSphere) {
+            const [pr, pg, pb] = hexToRgb(config.sphere);
+            ctx.fillStyle = `rgba(${pr},${pg},${pb},${config.sphereA})`;
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, Math.PI * 2);
+            ctx.fill();
+          }
+  
+          // 点阵（陆地点）
+          if (config.enableDot && landPoints.length) {
+            const buckets = Array.from({ length: LEVELS }, () => []);
+            const diff = config.diffuse;
+            const bright = config.brightness;
+            // 躲避作用范围与最大位移（按球体尺寸自适应，柔和小范围）
+            const repelR = cssSize * 0.13;
+            const repelPush = cssSize * 0.035;
+            for (let i = 0; i < landPoints.length; i++) {
+              const p = landPoints[i];
+              // 绕 Y 自转
+              const xr = p[0] * cp + p[2] * sp;
+              const zr = -p[0] * sp + p[2] * cp;
+              const yr = p[1];
+              // 绕 X 倾斜
+              const yt = yr * ct - zr * st;
+              const zt = yr * st + zr * ct;
+              const xt = xr;
+              if (zt <= 0) {
+                // 背面：偏移缓动归零，避免转回正面时突跳
+                offX[i] += -offX[i] * REPEL_EASE;
+                offY[i] += -offY[i] * REPEL_EASE;
+                continue;
+              }
+              // 光照
+              let lambert = xt * LIGHT[0] + yt * LIGHT[1] + zt * LIGHT[2];
+              lambert = lambert < 0 ? 0 : lambert;
+              let b = (0.35 + 0.65 * Math.pow(lambert, diff)) * bright;
+              b = b < 0 ? 0 : b > 1 ? 1 : b;
+              const lvl = (b * (LEVELS - 1)) | 0;
+              const sx = cx + xt * R;
+              const sy = cy - yt * R;
+              // 鼠标躲避：柔和气泡式位移
+              const [tx, ty] = repelTarget(sx, sy, repelR, repelPush);
+              offX[i] += (tx - offX[i]) * REPEL_EASE;
+              offY[i] += (ty - offY[i]) * REPEL_EASE;
+              buckets[lvl].push(sx + offX[i], sy + offY[i]);
+            }
+            const s = config.dotSize;
+            const ring = config.dotShape === "ring";
+            if (ring) {
+              ctx.lineWidth = Math.max(0.6, s * 0.45);
+              ctx.lineJoin = "round";
+            }
+            for (let k = 1; k < LEVELS; k++) {
+              const arr = buckets[k];
+              if (!arr.length) continue;
+              ctx.beginPath();
+              for (let j = 0; j < arr.length; j += 2)
+                addShape(ctx, config.dotShape, arr[j], arr[j + 1], s);
+              if (ring) {
+                ctx.strokeStyle = dotColors[k];
+                ctx.stroke();
+              } else {
+                ctx.fillStyle = dotColors[k];
+                ctx.fill();
+              }
+            }
+          }
+  
+          // 标记（城市）
+          if (config.enableMarker) {
+            const [mr, mg, mb] = hexToRgb(config.marker);
+            ctx.fillStyle = `rgba(${mr},${mg},${mb},${config.markerA})`;
+            // 呼吸动效：标记大小在 80%~100% 之间循环（约 4 秒一次，较慢）
+            const breath = config.paused
+              ? 1
+              : 0.9 + 0.1 * Math.sin(performance.now() * 0.0016);
+            const ms = config.markerSize * breath;
+            const count = Math.min(config.markerCount, markerPool.length);
+            // 是否使用上传的 SVG 图形（未就绪时回退为内置形状）
+            const useSvg =
+              config.markerShape === "svg" && markerImgReady && markerImg;
+            // 标记躲避：范围/位移略大于点阵，配合体积更明显
+            const mRepelR = cssSize * 0.16;
+            const mRepelPush = cssSize * 0.06;
+            for (let i = 0; i < count; i++) {
+              const p = markerPool[i];
+              const xr = p[0] * cp + p[2] * sp;
+              const zr = -p[0] * sp + p[2] * cp;
+              const yr = p[1];
+              const yt = yr * ct - zr * st;
+              const zt = yr * st + zr * ct;
+              const xt = xr;
+              if (zt <= 0.02) {
+                markerOffX[i] += -markerOffX[i] * REPEL_EASE;
+                markerOffY[i] += -markerOffY[i] * REPEL_EASE;
+                continue;
+              }
+              const sx = cx + xt * R;
+              const sy = cy - yt * R;
+              const [tx, ty] = repelTarget(sx, sy, mRepelR, mRepelPush);
+              markerOffX[i] += (tx - markerOffX[i]) * REPEL_EASE;
+              markerOffY[i] += (ty - markerOffY[i]) * REPEL_EASE;
+              const dx = sx + markerOffX[i];
+              const dy = sy + markerOffY[i];
+              if (useSvg) {
+                // 上传的 SVG：保留原始配色，按标记大小缩放，透明度沿用标记透明度
+                ctx.globalAlpha = config.markerA;
+                ctx.drawImage(markerImg, dx - ms, dy - ms, ms * 2, ms * 2);
+                ctx.globalAlpha = 1;
+              } else {
+                // 内置形状（圆/方/菱/三角/六边形），使用标记颜色
+                ctx.beginPath();
+                addShape(ctx, config.markerShape, dx, dy, ms);
+                ctx.fill();
+              }
+            }
+          }
+        }
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    cssSize = Math.max(1, Math.round(rect.width || 600));
+    canvas.width = Math.round(cssSize * dpr);
+    canvas.height = Math.round(cssSize * dpr);
+  }
+
+  let raf = 0;
+  function loop() {
+    if (pointerInteracting === null && !config.paused) phi += config.speed;
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  canvas.style.cursor = "grab";
+  canvas.addEventListener("pointerdown", (e) => {
+    pointerInteracting = e.clientX - pointerMovement;
+    canvas.style.cursor = "grabbing";
+  });
+  const endDrag = () => {
+    if (pointerInteracting !== null) {
+      phi += dragDelta;
+      dragDelta = 0;
+      pointerMovement = 0;
+    }
+    pointerInteracting = null;
+    canvas.style.cursor = "grab";
+  };
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointerout", endDrag);
+  canvas.addEventListener("pointermove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+    if (pointerInteracting === null) return;
+    const delta = e.clientX - pointerInteracting;
+    pointerMovement = delta;
+    dragDelta = delta / 200;
+  });
+  canvas.addEventListener("pointerleave", () => {
+    mouseX = null;
+    mouseY = null;
+  });
+  const ro = new ResizeObserver(resize);
+  ro.observe(canvas);
+
+  buildDotColors();
+  loadMarkerSvg(config.markerSvg);
+  const img = new Image();
+  img.onload = () => {
+    const off = document.createElement("canvas");
+    off.width = img.width;
+    off.height = img.height;
+    const octx = off.getContext("2d");
+    octx.drawImage(img, 0, 0);
+    mapData = octx.getImageData(0, 0, img.width, img.height).data;
+    mapW = img.width;
+    mapH = img.height;
+    resize();
+    buildPoints();
+    buildMarkers();
+    loop();
+  };
+  img.src = MAP_SRC;
+
+  return {
+    setConfig(patch = {}) {
+      const rebuild = "density" in patch;
+      const reloadSvg = "markerSvg" in patch;
+      Object.assign(config, patch);
+      buildDotColors();
+      if (reloadSvg) loadMarkerSvg(config.markerSvg);
+      if (rebuild) {
+        buildPoints();
+        buildMarkers();
+      }
+    },
+    getConfig() {
+      return { ...config };
+    },
+    destroy() {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    },
+  };
+}
+
+const c = document.getElementById("press-globe");
+if (c) initGlobe(c, { speed: 0.003, markerSize: 11 });
+
+// Mobile globe — same renderer, initialized only when the canvas is visible
+const cm = document.getElementById("press-globe-m");
+if (cm && window.matchMedia("(max-width:767px)").matches) {
+  initGlobe(cm, { speed: 0.003, markerSize: 11 });
+}
+})();
 </script>
 </body>
 </html>
