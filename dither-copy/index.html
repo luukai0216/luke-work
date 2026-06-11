@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dither — 浏览器图片抖动编辑器</title>
+<style>
+  /* ===== 设计令牌（取自原站配色） ===== */
+  :root{
+    --bg:#0d0d0f;          /* 应用底色 */
+    --panel:#141417;       /* 右侧控制面板 */
+    --panel-2:#1b1b1f;     /* 卡片/输入 */
+    --line:#26262b;        /* 分隔线 */
+    --text:#f8f8f8;        /* 主文字 */
+    --muted:#8a8a92;       /* 次要文字 */
+    --muted-2:#5d5d66;     /* 更弱 */
+    --accent:#f8f8f8;
+    --chip:#232328;
+    --chip-active:#34343b;
+    --radius:10px;
+    --font:'Geist','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--font);
+    font-size:13px;overflow:hidden;-webkit-font-smoothing:antialiased;
+  }
+  button{font-family:inherit;color:inherit;cursor:pointer;border:none;background:none}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#2c2c32;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+
+  /* ===== 顶栏 ===== */
+  .topbar{
+    height:52px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;border-bottom:1px solid var(--line);position:relative;z-index:5;
+  }
+  .brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;letter-spacing:.2px}
+  .brand .logo{display:grid;grid-template-columns:repeat(3,3px);grid-auto-rows:3px;gap:2px}
+  .brand .logo i{background:var(--text);border-radius:1px;opacity:.85}
+  .brand .logo i:nth-child(2),.brand .logo i:nth-child(4),.brand .logo i:nth-child(6),.brand .logo i:nth-child(8){opacity:.3}
+
+  .topcenter{display:flex;align-items:center;gap:6px;position:absolute;left:50%;transform:translateX(-50%)}
+  .seg{display:flex;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{padding:7px 14px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;transition:.15s}
+  .seg button:hover{color:var(--text);background:#202024}
+  .seg button+button{border-left:1px solid var(--line)}
+  .iconbtn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px solid var(--line);background:var(--panel-2)}
+  .iconbtn:hover{color:var(--text)}
+
+  .topright{display:flex;align-items:center;gap:8px}
+  .btn{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:500;border:1px solid var(--line);background:var(--panel-2);color:var(--text);transition:.15s}
+  .btn:hover{background:#202024}
+  .btn.primary{background:var(--text);color:#0d0d0f;border-color:var(--text)}
+  .btn.primary:hover{background:#e2e2e2}
+  .lang{min-width:42px;justify-content:center}
+
+  /* ===== 主体 ===== */
+  .main{display:flex;height:calc(100% - 52px)}
+  .stage{flex:1;position:relative;display:flex;align-items:center;justify-content:center;padding:32px;overflow:hidden;
+    background:
+      radial-gradient(900px 600px at 50% 40%, #16161a 0%, #0d0d0f 70%);
+  }
+  #canvas{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.55);image-rendering:auto;display:none;
+    /* 棋盘格：用于显示透明区域 */
+    background-color:#16161a;
+    background-image:
+      linear-gradient(45deg,#26262c 25%,transparent 25%),
+      linear-gradient(-45deg,#26262c 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#26262c 75%),
+      linear-gradient(-45deg,transparent 75%,#26262c 75%);
+    background-size:18px 18px;
+    background-position:0 0,0 9px,9px -9px,-9px 0}
+
+  /* 拾色器 */
+  input[type=color]{width:46px;height:28px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);cursor:pointer;padding:2px}
+  input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+  input[type=color]::-webkit-color-swatch{border:none;border-radius:5px}
+  .hint{font-size:11px;color:var(--muted-2);line-height:1.5;margin-top:2px}
+
+  /* 空状态 */
+  .empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+  .empty h2{font-size:14px;color:var(--muted);font-weight:500}
+  .droplink{color:var(--muted);font-size:12px;border:1px dashed var(--line);padding:14px 26px;border-radius:10px;cursor:pointer;transition:.15s}
+  .droplink:hover{color:var(--text);border-color:#3a3a40}
+  .stage.drag .droplink{border-color:var(--text);color:var(--text)}
+
+  /* ===== 右侧面板 ===== */
+  .panel{width:336px;flex:none;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;padding:0 0 60px}
+
+  /* Tab 切换 */
+  .tabs{display:flex;position:sticky;top:0;z-index:4;background:var(--panel);border-bottom:1px solid var(--line);padding:0 10px}
+  .tab{flex:1;padding:13px 0 11px;font-size:12.5px;color:var(--muted);border-bottom:2px solid transparent;transition:.15s;text-align:center}
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--text);border-bottom-color:var(--text)}
+  .tabpane{display:none}
+  .tabpane.active{display:block}
+  .section{padding:14px 18px;border-bottom:1px solid var(--line)}
+  .section>h3{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+  .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .row:last-child{margin-bottom:0}
+  .row label{font-size:12.5px;color:#cfcfd4}
+  .val{font-size:12px;color:var(--muted);min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
+
+  /* 下拉（自定义外观） */
+  .select{position:relative}
+  select{appearance:none;background:var(--panel-2);border:1px solid var(--line);color:var(--text);
+    padding:8px 30px 8px 11px;border-radius:8px;font-size:12.5px;font-family:inherit;width:150px;cursor:pointer}
+  .select::after{content:"";position:absolute;right:11px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+
+  /* 滑块 */
+  .slider{width:100%;margin:2px 0 0}
+  .srow{display:block;margin-bottom:16px}
+  .srow:last-child{margin-bottom:0}
+  .srow .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:#2e2e34;border-radius:3px;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--text);cursor:pointer;border:0;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--text);cursor:pointer;border:0}
+
+  /* chip 网格（滤镜/字符预设） */
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{padding:7px 12px;background:var(--chip);border:1px solid transparent;border-radius:8px;font-size:12px;color:#cfcfd4;transition:.13s}
+  .chip:hover{background:#2c2c33}
+  .chip.active{background:var(--chip-active);border-color:#46464d;color:var(--text)}
+
+  .customrow{margin-top:10px;display:none}
+  .customrow.show{display:block}
+  .customrow input{width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--text);padding:8px 11px;border-radius:8px;font-family:'Geist Mono',monospace;font-size:12px}
+
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶栏 ===== -->
+<div class="topbar">
+  <div class="brand">
+    <span class="logo"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    Dither
+  </div>
+
+  <div class="topcenter">
+    <div class="seg">
+      <button id="btnShuffle" title="随机参数">🎲 <span data-i18n="shuffle">随机</span></button>
+      <button id="btnRemix">✦ <span data-i18n="remix">混合</span></button>
+    </div>
+    <button class="iconbtn" id="btnUndo" title="撤销">↺</button>
+    <button class="iconbtn" id="btnRedo" title="重做">↻</button>
+  </div>
+
+  <div class="topright">
+    <button class="btn lang" id="btnLang">EN</button>
+    <button class="btn" id="btnUpload">⬆ <span data-i18n="upload">上传图片</span></button>
+    <button class="btn primary" id="btnDownload">⬇ <span data-i18n="download">下载</span></button>
+    <input type="file" id="fileInput" accept="image/*" class="hidden">
+  </div>
+</div>
+
+<!-- ===== 主体 ===== -->
+<div class="main">
+  <div class="stage" id="stage">
+    <canvas id="canvas"></canvas>
+
+    <div class="empty" id="empty">
+      <div class="droplink" id="droplink" data-i18n="dropHint">上传或拖入你自己的图片</div>
+    </div>
+
+  </div>
+
+  <!-- ===== 右侧控制面板 ===== -->
+  <div class="panel" id="controls">
+
+    <!-- Tab 切换 -->
+    <div class="tabs">
+      <button class="tab active" data-tab="default" data-i18n="tabDefault">默认设置</button>
+      <button class="tab" data-tab="anim" data-i18n="tabAnim">动效设置</button>
+    </div>
+
+    <!-- ===== 默认设置 面板 ===== -->
+    <div class="tabpane active" id="paneDefault">
+
+    <!-- Effects -->
+    <div class="section">
+      <h3 data-i18n="effects">效果</h3>
+      <div class="row">
+        <label data-i18n="mode">模式</label>
+        <div class="select"><select id="mode"></select></div>
+      </div>
+      <div class="row">
+        <label data-i18n="blendingMode">混合模式</label>
+        <div class="select"><select id="blend"></select></div>
+      </div>
+
+      <!-- 字符预设（仅 ASCII 模式相关，但常驻显示） -->
+      <div id="charBlock" class="hidden" style="margin:6px 0 16px">
+        <div class="chips" id="charChips"></div>
+        <div class="customrow" id="customRow"><input id="customChars" value="@%#*+=-:. "></div>
+      </div>
+
+      <div class="srow"><div class="top"><label data-i18n="size">尺寸</label><span class="val" id="vSize">10</span></div><input type="range" class="slider" id="size" min="2" max="40" value="10"></div>
+      <div class="srow"><div class="top"><label data-i18n="spread">扩散</label><span class="val" id="vSpread">50%</span></div><input type="range" class="slider" id="spread" min="0" max="100" value="50"></div>
+      <div class="srow"><div class="top"><label data-i18n="amount">数量</label><span class="val" id="vAmount">5</span></div><input type="range" class="slider" id="amount" min="2" max="16" value="5"></div>
+      <div class="srow"><div class="top"><label data-i18n="exposure">曝光</label><span class="val" id="vExposure">100%</span></div><input type="range" class="slider" id="exposure" min="20" max="200" value="100"></div>
+      <div class="srow"><div class="top"><label data-i18n="scatter">散布</label><span class="val" id="vScatter">0%</span></div><input type="range" class="slider" id="scatter" min="0" max="100" value="0"></div>
+      <div class="srow"><div class="top"><label data-i18n="opacity">不透明度</label><span class="val" id="vOpacity">100%</span></div><input type="range" class="slider" id="opacity" min="0" max="100" value="100"></div>
+    </div>
+
+    <!-- Background 背景 -->
+    <div class="section">
+      <h3 data-i18n="bg">背景</h3>
+      <div class="row">
+        <label data-i18n="bgColor">颜色</label>
+        <input type="color" id="bgColor" value="#0d0d0f">
+      </div>
+      <div class="srow"><div class="top"><label data-i18n="bgOpacity">不透明度</label><span class="val" id="vBgAlpha">100%</span></div><input type="range" class="slider" id="bgAlpha" min="0" max="100" value="100"></div>
+      <p class="hint" data-i18n="bgHint">不透明度设为 0 即可导出透明背景 PNG（仅字符画 / 半调 / 圆点模式可见）</p>
+    </div>
+
+    <!-- Graphic Color 图形颜色 -->
+    <div class="section">
+      <h3 data-i18n="fg">图形颜色</h3>
+      <div class="row">
+        <label data-i18n="fgMode">取色</label>
+        <div class="select"><select id="fgMode"></select></div>
+      </div>
+      <div class="row" id="fgColorRow">
+        <label data-i18n="fgColor">颜色</label>
+        <input type="color" id="fgColor" value="#f8f8f8">
+      </div>
+      <p class="hint" data-i18n="fgHint">作用于字符 / 圆点 / 半调 / 乐高等生成图形，独立于背景色</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="section">
+      <h3 data-i18n="filters">滤镜</h3>
+      <div class="select"><select id="filter" style="width:100%"></select></div>
+    </div>
+
+    <!-- Tone -->
+    <div class="section">
+      <h3 data-i18n="tone">色调</h3>
+      <div class="srow"><div class="top"><label data-i18n="brightness">亮度</label><span class="val" id="vBrightness">100%</span></div><input type="range" class="slider" id="brightness" min="0" max="200" value="100"></div>
+      <div class="srow"><div class="top"><label data-i18n="contrast">对比度</label><span class="val" id="vContrast">100%</span></div><input type="range" class="slider" id="contrast" min="0" max="200" value="100"></div>
+      <div class="srow"><div class="top"><label data-i18n="saturate">饱和度</label><span class="val" id="vSaturate">100%</span></div><input type="range" class="slider" id="saturate" min="0" max="200" value="100"></div>
+      <div class="srow"><div class="top"><label data-i18n="hue">色相</label><span class="val" id="vHue">0°</span></div><input type="range" class="slider" id="hue" min="0" max="360" value="0"></div>
+    </div>
+
+    </div><!-- /paneDefault -->
+
+    <!-- ===== 动效设置 面板 ===== -->
+    <div class="tabpane" id="paneAnim">
+      <div class="section">
+        <h3 data-i18n="anim">动效</h3>
+        <div class="row"><label data-i18n="autoAnim">默认动效</label><div class="select"><select id="anim"></select></div></div>
+        <div class="row"><label data-i18n="animDir">方向</label><div class="select"><select id="animDir"></select></div></div>
+        <div class="row"><label data-i18n="cursorAnim">鼠标动效</label><div class="select"><select id="cursor"></select></div></div>
+        <div class="srow" style="margin-top:4px"><div class="top"><label data-i18n="cursorRadius">鼠标范围</label><span class="val" id="vCursorRadius">30%</span></div><input type="range" class="slider" id="cursorRadius" min="10" max="100" value="30"></div>
+        <div class="srow"><div class="top"><label data-i18n="animSpeed">速度</label><span class="val" id="vAnimSpeed">50%</span></div><input type="range" class="slider" id="animSpeed" min="0" max="100" value="50"></div>
+        <div class="srow"><div class="top"><label data-i18n="animIntensity">强度</label><span class="val" id="vAnimIntensity">100%</span></div><input type="range" class="slider" id="animIntensity" min="0" max="100" value="100"></div>
+        <p class="hint" data-i18n="animHint">作用于字符画 / 半调 / 圆点 / 乐高模式</p>
+        <p class="hint" data-i18n="animHint2" style="margin-top:8px">鼠标动效：把光标移到画布上触发，可与默认动效叠加</p>
+      </div>
+    </div><!-- /paneAnim -->
+
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Dither Copy — 原创实现的图片抖动编辑器
+   作者注：本文件为离线单文件应用，双击即可在浏览器打开。
+   ============================================================ */
+
+/* ---------- 多语言（默认中文 zh） ---------- */
+const I18N = {
+  zh:{
+    shuffle:"随机", remix:"混合", upload:"上传图片", download:"下载",
+    effects:"效果", mode:"模式", blendingMode:"混合模式",
+    bg:"背景", bgColor:"颜色", bgOpacity:"不透明度", bgHint:"不透明度设为 0 即可导出透明背景 PNG（仅字符画 / 半调 / 圆点模式可见）",
+    fg:"图形颜色", fgMode:"取色", fgColor:"颜色", fgHint:"作用于字符 / 圆点 / 半调 / 乐高等生成图形，独立于背景色",
+    anim:"动效", animSpeed:"速度", animHint:"作用于字符画 / 半调 / 圆点 / 乐高模式",
+    tabDefault:"默认设置", tabAnim:"动效设置", autoAnim:"默认动效", cursorAnim:"鼠标动效", animHint2:"鼠标动效：把光标移到画布上触发，可与默认动效叠加",
+    animIntensity:"强度", animDir:"方向", cursorRadius:"鼠标范围",
+    size:"尺寸", spread:"扩散", amount:"数量", exposure:"曝光", scatter:"散布", opacity:"不透明度",
+    filters:"滤镜", tone:"色调", brightness:"亮度", contrast:"对比度", saturate:"饱和度", hue:"色相",
+    color:"颜色", grayscale:"灰度", sepia:"怀旧", invert:"反相",
+    texture:"纹理", noise:"噪点", grain:"颗粒", lens:"镜头", vignette:"暗角", blur:"模糊",
+    dropHint:"上传或拖入你自己的图片",
+    card1:"混合模式", card1d:"对比滑杆", card2:"前后对比", card3:"新字符预设",
+    title:"Dither — 浏览器图片抖动编辑器"
+  },
+  en:{
+    shuffle:"Shuffle", remix:"Remix", upload:"Upload image", download:"Download",
+    effects:"Effects", mode:"Mode", blendingMode:"Blending Mode",
+    bg:"Background", bgColor:"Color", bgOpacity:"Opacity", bgHint:"Set opacity to 0 to export a transparent PNG (visible in ASCII / Halftone / Dots only)",
+    fg:"Graphic Color", fgMode:"Source", fgColor:"Color", fgHint:"Applies to ASCII / Dots / Halftone / Lego graphics, independent of the background color",
+    anim:"Animation", animSpeed:"Speed", animHint:"Applies to ASCII / Halftone / Dots / Lego modes",
+    tabDefault:"Default", tabAnim:"Animation", autoAnim:"Auto", cursorAnim:"Cursor", animHint2:"Cursor: move your pointer over the canvas to trigger — stacks with the auto animation",
+    animIntensity:"Intensity", animDir:"Direction", cursorRadius:"Cursor Range",
+    size:"Size", spread:"Spread", amount:"Amount", exposure:"Exposure", scatter:"Scatter", opacity:"Opacity",
+    filters:"Filters", tone:"Tone", brightness:"Brightness", contrast:"Contrast", saturate:"Saturate", hue:"Hue",
+    color:"Color", grayscale:"Grayscale", sepia:"Sepia", invert:"Invert",
+    texture:"Texture", noise:"Noise", grain:"Grain", lens:"Lens", vignette:"Vignette", blur:"Blur",
+    dropHint:"Upload or drop your own image here",
+    card1:"Blending modes", card1d:"compare slider", card2:"Before / after", card3:"New character presets",
+    title:"Dither — Browser-based Image Editor"
+  }
+};
+// 选项标签（下拉与 chip）
+const LABELS = {
+  modes:{
+    none:{zh:"无",en:"None"}, dither:{zh:"抖动",en:"Dither"}, bayer:{zh:"拜耳矩阵",en:"Bayer Matrix"},
+    ascii:{zh:"字符画",en:"ASCII"}, halftone:{zh:"半调",en:"Halftone"}, lego:{zh:"乐高",en:"Lego"}, dots:{zh:"圆点",en:"Dots"}
+  },
+  blends:{
+    "source-over":{zh:"正常",en:"Normal"}, screen:{zh:"滤色",en:"Screen"}, overlay:{zh:"叠加",en:"Overlay"},
+    "color-dodge":{zh:"颜色减淡",en:"Color Dodge"}, multiply:{zh:"正片叠底",en:"Multiply"}
+  },
+  filters:{
+    none:{zh:"无",en:"None"}, noir:{zh:"黑色",en:"Noir"}, neon:{zh:"霓虹",en:"Neon"}, golden:{zh:"黄金时刻",en:"Golden Hour"},
+    moonlight:{zh:"月光",en:"Moonlight"}, dusted:{zh:"褪色",en:"Dusted"}, dreamy:{zh:"梦幻",en:"Dreamy"}, cinematic:{zh:"电影感",en:"Cinematic"}
+  },
+  chars:{
+    classic:{zh:"经典",en:"Classic"}, numeric:{zh:"数字",en:"Numeric"}, hacker:{zh:"黑客",en:"Hacker"},
+    symbols:{zh:"符号",en:"Symbols"}, alpha:{zh:"字母",en:"Alpha"}, custom:{zh:"自定义",en:"Custom"}
+  },
+  autoAnims:{
+    none:{zh:"关闭",en:"Off"}, chase:{zh:"接力流动",en:"Chase"}, turbulence:{zh:"噪声涌动",en:"Turbulence"},
+    wave:{zh:"波动",en:"Wave"}, pulse:{zh:"脉动",en:"Pulse"},
+    ripple:{zh:"涟漪",en:"Ripple"}, flicker:{zh:"闪烁",en:"Flicker"}
+  },
+  cursorAnims:{
+    none:{zh:"关闭",en:"Off"}, spotlight:{zh:"光圈",en:"Spotlight"}, ripple:{zh:"涟漪",en:"Ripple"},
+    magnify:{zh:"放大镜",en:"Magnify"}, repel:{zh:"排斥",en:"Repel"}, attract:{zh:"吸附",en:"Attract"}
+  },
+  fgModes:{
+    image:{zh:"原图",en:"From Image"}, solid:{zh:"纯色",en:"Solid"}
+  },
+  animDirs:{
+    diag:{zh:"对角 ↘",en:"Diagonal ↘"}, diag2:{zh:"反对角 ↗",en:"Anti-diag ↗"},
+    h:{zh:"横向 →",en:"Horizontal →"}, v:{zh:"纵向 ↓",en:"Vertical ↓"}
+  }
+};
+let lang = "zh";
+
+/* ---------- 状态 ---------- */
+const state = {
+  mode:"ascii", blend:"source-over", filter:"none",
+  bgColor:"#0d0d0f", bgAlpha:100,
+  fgMode:"image", fgColor:"#f8f8f8",
+  anim:"none", cursor:"none", animSpeed:50, animIntensity:100, animDir:"diag", cursorRadius:30,
+  size:10, spread:50, amount:5, exposure:100, scatter:0, opacity:100,
+  brightness:100, contrast:100, saturate:100, hue:0,
+  grayscale:0, sepia:0, invert:0, blur:0,
+  charset:"classic", customChars:"@%#*+=-:. "
+};
+const CHARSETS = {
+  classic:"@%#*+=-:. ", numeric:"9876543210 ", hacker:"01 ",
+  symbols:"@#&$%*+!=~-. ", alpha:"WMBHKADPXmwkbf|/!;:. "
+};
+let srcImage = null;
+const history = []; let histPos = -1;
+
+/* ---------- DOM ---------- */
+const $ = s=>document.querySelector(s);
+const canvas = $("#canvas"), ctx = canvas.getContext("2d",{willReadFrequently:true});
+const base = document.createElement("canvas");
+const small = document.createElement("canvas");
+const fx = document.createElement("canvas");
+
+/* ---------- 渲染管线 ---------- */
+function cssFilter(){
+  // Tone + Color + Lens(blur) 用原生 filter 字符串实现
+  return `brightness(${state.brightness}%) contrast(${state.contrast}%) saturate(${state.saturate}%) `
+       + `hue-rotate(${state.hue}deg) grayscale(${state.grayscale}%) sepia(${state.sepia}%) `
+       + `invert(${state.invert}%) blur(${state.blur}px)`;
+}
+const lum = (r,g,b)=>0.299*r+0.587*g+0.114*b;
+const clamp = v=>v<0?0:v>255?255:v;
+// 生成图形的取色：纯色模式用统一颜色，原图模式按图像像素取色（colored=false 时回退为白）
+function markColor(d,i,colored){
+  if(state.fgMode==="solid") return state.fgColor;
+  return colored ? `rgb(${d[i]},${d[i+1]},${d[i+2]})` : "#f8f8f8";
+}
+
+// 8x8 拜耳矩阵（归一化 0~1）
+const BAYER8 = (()=>{
+  const m=[[0,32,8,40,2,34,10,42],[48,16,56,24,50,18,58,26],[12,44,4,36,14,46,6,38],
+  [60,28,52,20,62,30,54,22],[3,35,11,43,1,33,9,41],[51,19,59,27,49,17,57,25],
+  [15,47,7,39,13,45,5,37],[63,31,55,23,61,29,53,21]];
+  return m.map(r=>r.map(v=>(v+0.5)/64));
+})();
+
+let curW=0, curH=0;
+
+// 底图层：套用 tone/color/blur 滤镜（仅在参数变化时重建，动画时不必每帧重跑）
+function buildBase(){
+  if(!srcImage) return;
+  let W=srcImage.naturalWidth||srcImage.width, H=srcImage.naturalHeight||srcImage.height;
+  const cap=1100; if(W>cap){H=Math.round(H*cap/W);W=cap;}
+  curW=W; curH=H;
+  canvas.width=W; canvas.height=H;
+  base.width=W; base.height=H;
+  const bctx=base.getContext("2d");
+  bctx.clearRect(0,0,W,H);
+  bctx.filter=cssFilter();
+  bctx.drawImage(srcImage,0,0,W,H);
+  bctx.filter="none";
+}
+
+// 合成层：背景 + 效果 + 纹理（动画每帧只跑这里）
+function compose(){
+  if(!srcImage) return;
+  const W=curW, H=curH;
+  ctx.clearRect(0,0,W,H);
+
+  // 背景层：用户设定的颜色 + 不透明度（设为 0 即完全透明）
+  if(state.bgAlpha>0){
+    ctx.save();
+    ctx.globalAlpha=state.bgAlpha/100;
+    ctx.fillStyle=state.bgColor;
+    ctx.fillRect(0,0,W,H);
+    ctx.restore();
+  }
+
+  // 效果层
+  // 稀疏模式（字符画/半调/圆点）：标记画在背景上，间隙保留背景（可透明）
+  const sparse = state.mode==="ascii"||state.mode==="halftone"||state.mode==="dots";
+  if(state.mode==="none"){
+    ctx.drawImage(base,0,0);                 // 直接显示底图
+  } else if(sparse){
+    renderEffect(W,H);
+    ctx.save();
+    ctx.globalAlpha=state.opacity/100;
+    ctx.globalCompositeOperation=state.blend;
+    ctx.drawImage(fx,0,0);
+    ctx.restore();
+  } else {
+    // 全覆盖模式（抖动/拜耳/乐高）：先底图，再叠效果
+    ctx.drawImage(base,0,0);
+    renderEffect(W,H);
+    ctx.save();
+    ctx.globalAlpha=state.opacity/100;
+    ctx.globalCompositeOperation=state.blend;
+    ctx.drawImage(fx,0,0);
+    ctx.restore();
+  }
+}
+
+function render(){ if(!srcImage)return; buildBase(); compose(); }
+
+/* ---------- 动效 ---------- */
+let animTime=0, animRAF=null, animStart=0;
+// 鼠标位置（归一化 0~1，相对画布），供鼠标动效使用
+const mouse={nx:0.5, ny:0.5, active:false};
+const clamp01=v=>v<0?0:v>1?1:v;
+
+// 方向投影：决定接力流动 / 波动等有方向动效的走向
+function proj(x,y){
+  switch(state.animDir){
+    case "h": return x;
+    case "v": return y;
+    case "diag2": return x-y;
+  }
+  return x+y;   // diag 对角（默认）
+}
+
+// 鼠标动效（原始）：返回每个单元格的 {scale 缩放, dx/dy 像素位移}
+function rawCursorMod(x,y,gw,gh,cell){
+  if(animRAF===null || state.cursor==="none" || !mouse.active) return {scale:1,dx:0,dy:0};
+  const gx=mouse.nx*gw, gy=mouse.ny*gh;
+  const ax=x-gx, ay=y-gy, d=Math.hypot(ax,ay);
+  const t=animTime*(0.4+state.animSpeed/100*3.6);
+  const rad=Math.max(gw,gh)*(state.cursorRadius/100);   // 鼠标范围：影响半径
+  switch(state.cursor){
+    case "spotlight":{ const f=Math.max(0,1-d/rad); return {scale:0.2+0.8*f*f,dx:0,dy:0}; }      // 光圈：聚光
+    case "ripple":{ return {scale:0.3+0.7*(0.5+0.5*Math.sin(d*0.55 - t*3)),dx:0,dy:0}; }          // 涟漪：扩散环
+    case "magnify":{ const f=Math.max(0,1-d/rad); return {scale:1+1.8*f*f,dx:0,dy:0}; }            // 放大镜：局部放大
+    case "repel":{ const f=Math.max(0,1-d/rad); const nx=d>0.01?ax/d:0,ny=d>0.01?ay/d:0; const p=f*f*cell*3.6; return {scale:1-0.4*f,dx:nx*p,dy:ny*p}; }   // 排斥：推开
+    case "attract":{ const f=Math.max(0,1-d/rad); const nx=d>0.01?ax/d:0,ny=d>0.01?ay/d:0; const p=f*f*cell*2.4; return {scale:1+0.4*f,dx:-nx*p,dy:-ny*p}; } // 吸附：聚拢
+  }
+  return {scale:1,dx:0,dy:0};
+}
+// 鼠标动效（叠加强度）：以 1 为中性值按强度插值，位移按强度缩放
+function cursorMod(x,y,gw,gh,cell){
+  const c=rawCursorMod(x,y,gw,gh,cell);
+  const k=state.animIntensity/100;
+  return {scale:1+(c.scale-1)*k, dx:c.dx*k, dy:c.dy*k};
+}
+
+// 默认动效（原始）：返回每个单元格随时间变化的调制系数（0~1）
+function rawAnimMod(x,y,gw,gh){
+  if(animRAF===null || state.anim==="none") return 1;
+  const t=animTime*(0.4+state.animSpeed/100*3.6);
+  const cl=clamp01;
+  switch(state.anim){
+    // 接力流动：一条高亮光带沿设定方向一格格传递（跑马灯 / 流水灯）
+    case "chase":{ const w=Math.sin(t*2 - proj(x,y)*0.5); return 0.15+0.85*Math.pow((w+1)/2,4); }
+    // 噪声涌动：多层正弦叠成流动噪声，相邻元素协同起伏（呼吸的沙丘 / 流动等高线）
+    case "turbulence":{
+      const f=0.28;
+      const n = Math.sin(x*f + t*1.1)
+              + Math.sin(y*f*1.3 - t*0.9)
+              + Math.sin((x+y)*f*0.7 + t*0.7)
+              + Math.sin(Math.hypot(x-gw/2,y-gh/2)*f*0.6 - t);
+      return cl(0.5 + 0.16*n);
+    }
+    case "wave":   return 0.55+0.45*Math.sin(t + proj(x,y)*0.45);             // 方向波浪
+    case "pulse":  return 0.62+0.38*Math.sin(t*2);                           // 整体脉动
+    case "ripple":{ const d=Math.hypot(x-gw/2,y-gh/2); return 0.55+0.45*Math.sin(t*2 - d*0.35); } // 中心涟漪
+    case "flicker":{ const r=Math.sin(x*12.9898+y*78.233)*43758.5453; const ph=r-Math.floor(r); return 0.2+0.8*(0.5+0.5*Math.sin(t*3+ph*6.283)); } // 随机闪烁
+  }
+  return 1;
+}
+// 默认动效（叠加强度）：以 1 为中性值按强度插值
+function animMod(x,y,gw,gh){
+  return 1+(rawAnimMod(x,y,gw,gh)-1)*(state.animIntensity/100);
+}
+const ANIMATABLE=["ascii","halftone","dots","lego"];
+function startAnim(){
+  if(animRAF!==null) return;
+  buildBase();
+  animStart=performance.now();
+  const loop=(now)=>{ animTime=(now-animStart)/1000; compose(); animRAF=requestAnimationFrame(loop); };
+  animRAF=requestAnimationFrame(loop);
+}
+function stopAnim(){
+  if(animRAF!==null){ cancelAnimationFrame(animRAF); animRAF=null; }
+  animTime=0; if(srcImage) render();
+}
+function updateAnim(){
+  const on = (state.anim!=="none" || state.cursor!=="none") && srcImage && ANIMATABLE.includes(state.mode);
+  if(on) startAnim(); else stopAnim();
+}
+// 鼠标移入画布 → 更新归一化坐标，驱动鼠标交互动效
+canvas.addEventListener("mousemove",e=>{
+  const r=canvas.getBoundingClientRect();
+  mouse.nx=(e.clientX-r.left)/r.width;
+  mouse.ny=(e.clientY-r.top)/r.height;
+  mouse.active=true;
+});
+canvas.addEventListener("mouseleave",()=>{ mouse.active=false; });
+
+function renderEffect(W,H){
+  fx.width=W; fx.height=H;
+  const fxc=fx.getContext("2d");
+  fxc.clearRect(0,0,W,H);
+  const cell=Math.max(2,Math.round(state.size));
+  const gw=Math.max(1,Math.round(W/cell)), gh=Math.max(1,Math.round(H/cell));
+  small.width=gw; small.height=gh;
+  const sctx=small.getContext("2d",{willReadFrequently:true});
+  sctx.imageSmoothingEnabled=true;
+  sctx.clearRect(0,0,gw,gh);
+  sctx.drawImage(base,0,0,gw,gh);
+  const id=sctx.getImageData(0,0,gw,gh), d=id.data;
+  const exp=state.exposure/100, scat=state.scatter/100;
+
+  if(state.mode==="dither"){
+    floydSteinberg(d,gw,gh,state.amount,exp,scat);
+    sctx.putImageData(id,0,0);
+    fxc.imageSmoothingEnabled=false;
+    fxc.drawImage(small,0,0,gw,gh,0,0,W,H);
+
+  } else if(state.mode==="bayer"){
+    bayerDither(d,gw,gh,state.amount,exp,state.spread/100,scat);
+    sctx.putImageData(id,0,0);
+    fxc.imageSmoothingEnabled=false;
+    fxc.drawImage(small,0,0,gw,gh,0,0,W,H);
+
+  } else if(state.mode==="ascii"){
+    drawAscii(fxc,d,gw,gh,cell,exp,scat);
+
+  } else if(state.mode==="halftone"){
+    drawHalftone(fxc,d,gw,gh,cell,exp,scat,false);
+
+  } else if(state.mode==="dots"){
+    drawHalftone(fxc,d,gw,gh,cell,exp,scat,true);
+
+  } else if(state.mode==="lego"){
+    drawLego(fxc,d,gw,gh,cell,exp);
+  }
+}
+
+/* Floyd–Steinberg 误差扩散（逐通道） */
+function floydSteinberg(d,w,h,levels,exp,scat){
+  const buf=new Float32Array(d.length);
+  for(let i=0;i<d.length;i++) buf[i]=clamp(d[i]*exp + (scat?(Math.random()-0.5)*255*scat:0));
+  const step=255/(levels-1);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    for(let c=0;c<3;c++){
+      const i=(y*w+x)*4+c, old=buf[i], nv=Math.round(old/step)*step, err=old-nv;
+      buf[i]=nv;
+      if(x+1<w)            buf[i+4]+=err*7/16;
+      if(y+1<h){
+        if(x>0)            buf[i+(w-1)*4]+=err*3/16;
+                           buf[i+w*4]   +=err*5/16;
+        if(x+1<w)          buf[i+(w+1)*4]+=err*1/16;
+      }
+    }
+  }
+  for(let i=0;i<d.length;i+=4){ d[i]=clamp(buf[i]); d[i+1]=clamp(buf[i+1]); d[i+2]=clamp(buf[i+2]); }
+}
+
+/* 拜耳有序抖动 */
+function bayerDither(d,w,h,levels,exp,spread,scat){
+  const step=255/(levels-1);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const t=(BAYER8[y&7][x&7]-0.5)*step*spread;
+    for(let c=0;c<3;c++){
+      const i=(y*w+x)*4+c;
+      let v=d[i]*exp + t + (scat?(Math.random()-0.5)*255*scat:0);
+      d[i]=clamp(Math.round(v/step)*step);
+    }
+  }
+}
+
+/* ASCII 字符画 */
+function drawAscii(fxc,d,gw,gh,cell,exp,scat){
+  const ramp = state.charset==="custom" ? (state.customChars||" ") : CHARSETS[state.charset];
+  // 不填背景，保持 fx 透明，间隙由主画布的背景层决定
+  fxc.font=`${cell}px 'Geist Mono', monospace`;
+  fxc.textBaseline="top";
+  for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){
+    const i=(y*gw+x)*4;
+    let b=lum(d[i],d[i+1],d[i+2])*exp + (scat?(Math.random()-0.5)*255*scat:0);
+    b=clamp(b)/255;
+    const idx=Math.min(ramp.length-1, Math.floor((1-b)*(ramp.length-1)));
+    const cm=cursorMod(x,y,gw,gh,cell);           // 鼠标动效（叠加）
+    const m=animMod(x,y,gw,gh)*cm.scale;          // 字母：起伏/光圈 → 调制透明度
+    fxc.globalAlpha = clamp01(m);
+    fxc.fillStyle=markColor(d,i,true);
+    fxc.fillText(ramp[idx], x*cell+cm.dx, y*cell+cm.dy);   // 排斥/吸附 → 位移
+  }
+  fxc.globalAlpha=1;
+}
+
+/* 半调 / 圆点 */
+function drawHalftone(fxc,d,gw,gh,cell,exp,scat,colored){
+  // 不填背景，保持 fx 透明，间隙由主画布的背景层决定
+  for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){
+    const i=(y*gw+x)*4;
+    let b=lum(d[i],d[i+1],d[i+2])*exp + (scat?(Math.random()-0.5)*255*scat:0);
+    b=clamp(b)/255;
+    const cm=cursorMod(x,y,gw,gh,cell);                          // 鼠标动效（叠加）
+    const r=(1-b)*(cell/2)*1.25*animMod(x,y,gw,gh)*cm.scale;     // 半调/圆点：缩放半径
+    if(r<0.3) continue;
+    fxc.beginPath();
+    fxc.arc(x*cell+cell/2+cm.dx, y*cell+cell/2+cm.dy, r, 0, Math.PI*2);   // 排斥/吸附 → 位移
+    fxc.fillStyle = markColor(d,i,colored);
+    fxc.fill();
+  }
+}
+
+/* 乐高积木 */
+function drawLego(fxc,d,gw,gh,cell,exp){
+  for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){
+    const i=(y*gw+x)*4;
+    const r=clamp(d[i]*exp),g=clamp(d[i+1]*exp),bl=clamp(d[i+2]*exp);
+    const px=x*cell,py=y*cell;
+    fxc.fillStyle = state.fgMode==="solid" ? state.fgColor : `rgb(${r},${g},${bl})`;
+    fxc.fillRect(px,py,cell,cell);
+    // 凸点（动效缩放，叠加鼠标动效）
+    const lm=animMod(x,y,gw,gh)*cursorMod(x,y,gw,gh,cell).scale;
+    fxc.beginPath();
+    fxc.arc(px+cell/2,py+cell/2,Math.max(0,cell*0.3*lm),0,Math.PI*2);
+    fxc.fillStyle=`rgba(255,255,255,0.18)`; fxc.fill();
+    fxc.fillStyle=`rgba(0,0,0,0.12)`;
+    fxc.fillRect(px,py+cell-Math.max(1,cell*0.12),cell,Math.max(1,cell*0.12));
+  }
+}
+
+/* ---------- 历史（撤销/重做） ---------- */
+function snapshot(){
+  history.splice(histPos+1);
+  history.push(JSON.stringify(state));
+  if(history.length>40) history.shift();
+  histPos=history.length-1;
+}
+function restore(s){ Object.assign(state,JSON.parse(s)); syncUI(); render(); updateAnim(); }
+$("#btnUndo").onclick=()=>{ if(histPos>0){histPos--;restore(history[histPos]);} };
+$("#btnRedo").onclick=()=>{ if(histPos<history.length-1){histPos++;restore(history[histPos]);} };
+
+/* ---------- 滤镜预设 ---------- */
+const FILTER_PRESETS={
+  none:{}, noir:{grayscale:100,contrast:130,brightness:95},
+  neon:{saturate:200,hue:280,contrast:115,brightness:105},
+  golden:{sepia:35,saturate:135,brightness:108,hue:350},
+  moonlight:{brightness:88,saturate:75,hue:210,contrast:112},
+  dusted:{sepia:42,saturate:65,contrast:90,brightness:102},
+  dreamy:{brightness:112,saturate:125,contrast:88,blur:1},
+  cinematic:{contrast:125,saturate:88,brightness:94,sepia:8}
+};
+function applyFilter(name){
+  state.filter=name;
+  // 先重置受影响项
+  Object.assign(state,{brightness:100,contrast:100,saturate:100,hue:0,grayscale:0,sepia:0,invert:0,blur:0});
+  Object.assign(state,FILTER_PRESETS[name]);
+  syncUI(); render(); snapshot();
+}
+
+/* ---------- 构建 UI ---------- */
+function buildSelect(el,map,current,onChange){
+  el.innerHTML="";
+  for(const k in map){
+    const o=document.createElement("option"); o.value=k; o.textContent=map[k][lang]; el.appendChild(o);
+  }
+  el.value=current; el.onchange=()=>onChange(el.value);
+}
+function buildChips(container,map,current,onChange,key){
+  container.innerHTML="";
+  for(const k in map){
+    const b=document.createElement("button");
+    b.className="chip"+(current===k?" active":""); b.dataset.k=k; b.dataset.key=key;
+    b.textContent=map[k][lang];
+    b.onclick=()=>onChange(k);
+    container.appendChild(b);
+  }
+}
+function refreshChips(container,current){
+  container.querySelectorAll(".chip").forEach(c=>c.classList.toggle("active",c.dataset.k===current));
+}
+
+function buildUI(){
+  buildSelect($("#mode"),LABELS.modes,state.mode,v=>{state.mode=v;updateCharBlock();render();snapshot();updateAnim();});
+  buildSelect($("#blend"),LABELS.blends,state.blend,v=>{state.blend=v;render();snapshot();});
+  buildSelect($("#filter"),LABELS.filters,state.filter,applyFilter);
+  buildChips($("#charChips"),LABELS.chars,state.charset,v=>{
+    state.charset=v; $("#customRow").classList.toggle("show",v==="custom");
+    refreshChips($("#charChips"),v); render(); snapshot();
+  },"char");
+  buildSelect($("#fgMode"),LABELS.fgModes,state.fgMode,v=>{state.fgMode=v;updateFgRow();render();snapshot();});
+  buildSelect($("#anim"),LABELS.autoAnims,state.anim,v=>{state.anim=v;updateAnim();snapshot();});
+  buildSelect($("#animDir"),LABELS.animDirs,state.animDir,v=>{state.animDir=v;render();snapshot();});
+  buildSelect($("#cursor"),LABELS.cursorAnims,state.cursor,v=>{state.cursor=v;updateAnim();snapshot();});
+  updateCharBlock(); updateFgRow();
+}
+function updateCharBlock(){
+  $("#charBlock").classList.toggle("hidden", state.mode!=="ascii");
+}
+// 纯色模式才显示颜色选择器行
+function updateFgRow(){
+  $("#fgColorRow").classList.toggle("hidden", state.fgMode!=="solid");
+}
+
+/* 滑块绑定 */
+const SLIDERS=[
+  ["size","vSize",v=>v],["spread","vSpread",v=>v+"%"],["amount","vAmount",v=>v],
+  ["exposure","vExposure",v=>v+"%"],["scatter","vScatter",v=>v+"%"],["opacity","vOpacity",v=>v+"%"],
+  ["bgAlpha","vBgAlpha",v=>v+"%"],["animSpeed","vAnimSpeed",v=>v+"%"],
+  ["animIntensity","vAnimIntensity",v=>v+"%"],["cursorRadius","vCursorRadius",v=>v+"%"],
+  ["brightness","vBrightness",v=>v+"%"],["contrast","vContrast",v=>v+"%"],["saturate","vSaturate",v=>v+"%"],["hue","vHue",v=>v+"°"]
+];
+SLIDERS.forEach(([id,vid,fmt])=>{
+  const el=$("#"+id), out=$("#"+vid);
+  el.addEventListener("input",()=>{
+    state[id]=+el.value; out.textContent=fmt(el.value); render();
+  });
+  el.addEventListener("change",snapshot);
+});
+
+/* 把 state 同步回 UI（撤销/随机后调用） */
+function syncUI(){
+  SLIDERS.forEach(([id,vid,fmt])=>{ $("#"+id).value=state[id]; $("#"+vid).textContent=fmt(state[id]); });
+  $("#mode").value=state.mode; $("#blend").value=state.blend;
+  $("#bgColor").value=state.bgColor;
+  $("#fgMode").value=state.fgMode; $("#fgColor").value=state.fgColor; updateFgRow();
+  $("#filter").value=state.filter;
+  refreshChips($("#charChips"),state.charset);
+  $("#anim").value=state.anim; $("#cursor").value=state.cursor; $("#animDir").value=state.animDir;
+  $("#customChars").value=state.customChars;
+  $("#customRow").classList.toggle("show",state.charset==="custom");
+  updateCharBlock();
+}
+
+/* 自定义字符输入 */
+$("#customChars").addEventListener("input",e=>{ state.customChars=e.target.value; render(); });
+
+/* 背景颜色拾色器 */
+$("#bgColor").addEventListener("input",e=>{ state.bgColor=e.target.value; render(); });
+$("#bgColor").addEventListener("change",snapshot);
+
+/* 图形颜色拾色器 */
+$("#fgColor").addEventListener("input",e=>{ state.fgColor=e.target.value; render(); });
+$("#fgColor").addEventListener("change",snapshot);
+
+/* ---------- 语言切换 ---------- */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.title=I18N[lang].title;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k=el.dataset.i18n; if(I18N[lang][k]!==undefined) el.textContent=I18N[lang][k];
+  });
+  $("#btnLang").textContent = lang==="zh" ? "EN" : "中";
+  // 重建下拉/chip 文案（复用 buildUI）
+  buildUI();
+}
+$("#btnLang").onclick=()=>{ lang = lang==="zh"?"en":"zh"; applyLang(); };
+
+/* ---------- 图片加载 ---------- */
+function setImage(img){
+  srcImage=img;
+  $("#empty").style.display="none";
+  canvas.style.display="block";
+  render(); snapshot(); updateAnim();
+}
+function loadFromSrc(src){ const i=new Image(); i.onload=()=>setImage(i); i.src=src; }
+
+$("#btnUpload").onclick=()=>$("#fileInput").click();
+$("#droplink").onclick=()=>$("#fileInput").click();
+$("#fileInput").onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>loadFromSrc(r.result); r.readAsDataURL(f);
+};
+// 拖拽
+const stage=$("#stage");
+["dragenter","dragover"].forEach(ev=>stage.addEventListener(ev,e=>{e.preventDefault();stage.classList.add("drag");}));
+["dragleave","drop"].forEach(ev=>stage.addEventListener(ev,e=>{e.preventDefault();stage.classList.remove("drag");}));
+stage.addEventListener("drop",e=>{
+  const f=e.dataTransfer.files[0]; if(!f||!f.type.startsWith("image"))return;
+  const r=new FileReader(); r.onload=()=>loadFromSrc(r.result); r.readAsDataURL(f);
+});
+
+/* ---------- 下载 ---------- */
+$("#btnDownload").onclick=()=>{
+  if(!srcImage){ $("#fileInput").click(); return; }
+  const a=document.createElement("a");
+  a.download="dither.png"; a.href=canvas.toDataURL("image/png"); a.click();
+};
+
+/* ---------- 随机 / 混合 ---------- */
+const rnd=(a,b)=>Math.round(a+Math.random()*(b-a));
+const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+$("#btnShuffle").onclick=()=>{
+  state.size=rnd(4,24); state.spread=rnd(0,100); state.amount=rnd(2,12);
+  state.exposure=rnd(70,140); state.scatter=rnd(0,40); state.opacity=rnd(70,100);
+  state.brightness=rnd(85,120); state.contrast=rnd(85,140); state.saturate=rnd(60,160); state.hue=rnd(0,360);
+  syncUI(); render(); snapshot();
+};
+$("#btnRemix").onclick=()=>{
+  state.mode=pick(["dither","bayer","ascii","halftone","dots","lego"]);
+  state.filter=pick(Object.keys(FILTER_PRESETS));
+  Object.assign(state,{brightness:100,contrast:100,saturate:100,hue:0,grayscale:0,sepia:0,invert:0,blur:0});
+  Object.assign(state,FILTER_PRESETS[state.filter]);
+  syncUI(); render(); snapshot(); updateAnim();
+};
+
+/* ---------- Tab 切换 ---------- */
+document.querySelectorAll(".tab").forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===t));
+    const id=t.dataset.tab;
+    $("#paneDefault").classList.toggle("active",id==="default");
+    $("#paneAnim").classList.toggle("active",id==="anim");
+  };
+});
+
+/* ---------- 初始化 ---------- */
+buildUI();
+applyLang();
+</script>
+</body>
+</html>

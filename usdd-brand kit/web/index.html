@@ -67,6 +67,32 @@
   .nav-tab:hover{background:rgba(255,255,255,.05)}
   .nav-tab.active{color:var(--brand-highlight)}
   .nav-tab svg{width:18px;height:18px}
+  /* nav hover dropdown (Figma 516:485 / panel 284:2279) */
+  .nav-dd{position:relative;display:flex;align-items:center}
+  .nav-dd > .nav-tab i{transition:transform .18s ease}
+  .nav-dd:hover > .nav-tab{background:var(--bg-elevated);color:var(--brand-highlight)}
+  .nav-dd:hover > .nav-tab i{transform:rotate(180deg)}
+  .nav-dd-panel{
+    position:absolute;top:calc(100% + 8px);left:50%;
+    transform:translateX(-50%) translateY(6px);
+    width:350px;padding:16px;border-radius:16px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    box-shadow:0 16px 40px -8px rgba(0,0,0,.5);
+    display:flex;flex-direction:column;gap:8px;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease, visibility .18s;
+    z-index:60;
+  }
+  /* transparent bridge so cursor can cross the 8px gap without closing */
+  .nav-dd-panel::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
+  .nav-dd:hover .nav-dd-panel{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+  .nav-dd-item{display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:8px;transition:background .15s}
+  .nav-dd-item:hover{background:rgba(255,255,255,.06)}
+  .nav-dd-item .ddi-top{display:flex;align-items:center;gap:8px;padding:0 8px}
+  .nav-dd-item .ddi-top .ddi-icon{width:24px;height:24px;flex:0 0 24px;display:block}
+  .nav-dd-item .ddi-title{font-size:16px;font-weight:600;line-height:1.4;color:#fff}
+  .nav-dd-item .ddi-desc{padding-left:40px;font-size:12px;line-height:1.4;color:rgba(255,255,255,.6)}
   /* gradient border via masked pseudo-element (green → yellow-green, like the hero title) */
   .launch{position:relative;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 32px;border:none;border-radius:8px;background:rgba(0,0,0,.05);font-size:16px;font-weight:500;text-transform:capitalize;color:#fff;transition:background .2s,color .2s}
   .launch::before{content:"";position:absolute;inset:0;border-radius:8px;padding:1px;background:linear-gradient(105deg,#e1dc90 0%,#81deb0 50%,#2a8c6c 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;pointer-events:none}
@@ -84,14 +110,17 @@
   }
   .hero p.sub{font-size:16px;line-height:22px;color:var(--text-secondary);margin-top:8px;max-width:708px}
   .hero .copy-top{display:flex;flex-direction:column}
+  .hero-cta{display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+  .hero-meta{font-size:14px;line-height:20px;color:#6d6d6e;max-width:708px}
+  .m-br{display:none}
   .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:var(--brand-default);font-size:16px;font-weight:600;color:#fff;transition:background .2s;width:max-content}
   .btn-primary:hover{background:#2a8c6c}
   /* Secondary button (design system Type=Secondary): bg #212426, border #49494a, white, radius 8 */
-  .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:transparent;border:1px solid var(--border-strong);font-size:16px;font-weight:600;color:#fff;transition:border-color .2s;width:max-content}
+  .btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;background:var(--bg-card);border:1px solid var(--border-strong);font-size:16px;font-weight:600;color:#fff;transition:border-color .2s;width:max-content}
   .btn-outline:hover{border-color:rgba(255,255,255,.4)}
   .btn-outline:disabled,.btn-outline.disabled{opacity:.4;pointer-events:none}
   .btn-primary svg,.btn-outline svg{width:16px;height:16px}
-  .hero-art{position:absolute;right:max(40px,calc(50% - 720px + 40px));bottom:0;width:512px;height:512px;pointer-events:none}
+  .hero-art{position:absolute;right:max(20px,calc(50% - 720px + 29px));bottom:29px;width:454px;height:454px;pointer-events:none}
   .hero-art img{width:100%;height:100%;object-fit:contain}
 
   /* ============ SECTION LAYOUT ============ */
@@ -180,8 +209,8 @@
   .type-weights .w600{font-weight:600}
 
   /* common mistakes — strict per design (node 393:715): two columns of bg #1a1d1e cards */
-  .mistakes{display:flex;gap:8px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:24px;padding:8px}
-  .m-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .mistakes{display:flex;gap:16px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:24px;padding:16px}
+  .m-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:16px}
   .mistake{background:var(--bg-preview);border-radius:16px;height:207px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
   .m-top{display:flex;align-items:flex-start;justify-content:space-between}
   .m-demo{position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
@@ -208,18 +237,15 @@
   .press-copy p{margin-top:8px;font-size:16px;line-height:22px;color:var(--text-tertiary);max-width:464px}
   .press-copy .btn-primary{margin-top:48px}
 
-  /* trademark — per design: no card bg/border, all text tertiary grey */
-  .notice{padding:24px 0;margin-top:120px}
-  .notice .n-head h3{font-size:20px;line-height:28px;font-weight:600;color:var(--text-tertiary)}
-  .notice .n-head p{margin-top:24px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
-  .n-block{margin-top:24px}
-  .n-block h4{font-size:14px;line-height:20px;font-weight:400;color:var(--text-tertiary)}
+  /* trademark notice — numbered blocks per design */
+  .notice{padding:24px 8px;margin-top:120px;border-radius:24px}
+  .notice .n-head h3{font-size:20px;line-height:28px;font-weight:600;color:var(--text-secondary)}
+  .notice .n-head p{margin-top:8px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
+  .n-block{display:flex;gap:16px;margin-top:24px}
+  .n-num{flex:0 0 auto;font-size:16px;line-height:22px;color:var(--text-tertiary)}
+  .n-content{flex:1 1 auto;min-width:0}
+  .n-block h4{font-size:16px;line-height:22px;font-weight:400;color:var(--text-secondary)}
   .n-block p{margin-top:8px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
-  .n-foot{margin-top:24px;font-size:14px;line-height:20px;color:var(--text-tertiary)}
-  .n-foot u{text-decoration:underline}
-  .n-link{display:inline-flex;align-items:center;gap:4px;margin-top:24px;font-size:12px;color:var(--text-tertiary);text-decoration:underline;transition:color .2s}
-  .n-link:hover{color:var(--brand-highlight)}
-  .n-link svg{width:12px;height:12px}
 
   /* ============ FOOTER (per usdd_home_footer_pc) ============ */
   .footer{width:100%;background:#0C0C0E;border-top:1px solid rgba(255,255,255,0.1);margin-top:120px}
@@ -283,8 +309,6 @@
   i[class^="ri-"],i[class*=" ri-"]{font-style:normal;line-height:1;display:inline-flex;align-items:center;justify-content:center}
   .nav-tab i{font-size:20px}
   .btn-outline i,.btn-primary i{font-size:18px}
-  .n-link i{font-size:13px}
-
   /* mobile color palette — hidden on desktop */
   .palette-m{display:none}
 
@@ -363,10 +387,12 @@
 
     /* ── HERO ── */
     .hero{
-      height:618px;
-      margin-top:-64px;           /* match mobile nav height */
+      height:657px;
+      background:#202222;
+      box-shadow:inset 0 0 60px 0 rgba(33,108,88,.4);
+      margin-top:-64px;
       align-items:flex-start;
-      padding-top:112px;          /* push content below nav + gap */
+      padding-top:112px;
     }
     .hero-inner{padding:0 20px}
     .hero-copy{
@@ -375,28 +401,38 @@
       gap:24px;
       max-width:100%
     }
-    .copy-top{align-items:center}
+    .copy-top{align-items:center;gap:8px}
     .hero h1{
       font-size:32px;
       line-height:46px;
+      font-weight:600;
       width:100%;
       white-space:normal
     }
-    .hero p.sub{font-size:14px;line-height:20px;text-align:center}
-    /* hero art: show on mobile, centered & scaled down */
+    .hero p.sub{font-size:14px;line-height:20px;color:var(--text-tertiary);text-align:center}
+    .hero-cta{align-items:center;width:100%}
+    .hero .btn-outline{background:transparent}
+    .hero-meta{font-size:14px;line-height:20px;text-align:center;color:#6d6d6e}
+    .m-br{display:inline}
+    /* hero art: centered below copy */
     .hero-art{
       display:block;
       position:absolute;
       left:50%;right:auto;bottom:auto;
       transform:translateX(-50%);
-      top:338px;
+      top:377px;
       width:280px;height:280px
     }
 
     /* ── SECTIONS ── */
     .section{margin-top:64px;gap:24px}
+    .section-head{display:flex;flex-direction:column;gap:8px}
     .section-head h2{font-size:24px;line-height:34px}
-    .section-head p{font-size:14px;line-height:20px}
+    .section-head p{font-size:14px;line-height:20px;color:var(--text-tertiary)}
+
+    /* ── CARDS ── */
+    .card,.card .preview{border-radius:16px}
+    .card.full .preview{border-width:16px}
 
     /* ── LOGO CARDS ── */
     .logo-grid{grid-template-columns:1fr;gap:16px}
@@ -479,7 +515,18 @@
     }
 
     /* ── COMMON MISTAKES ── */
-    .mistakes{flex-direction:column}
+    .mistakes{flex-direction:column;border-radius:16px;padding:8px}
+    .m-col{display:contents}
+    .mistake{height:auto;border-radius:16px;padding:24px;gap:71px;justify-content:flex-start}
+    .mistake p{font-size:14px;line-height:20px}
+    .mistake[data-m-order="1"]{order:1}
+    .mistake[data-m-order="2"]{order:2}
+    .mistake[data-m-order="3"]{order:3}
+    .mistake[data-m-order="4"]{order:4}
+    .mistake[data-m-order="5"]{order:5}
+    .mistake[data-m-order="6"]{order:6}
+    .mistake[data-m-order="7"]{order:7}
+    .mistake[data-m-order="8"]{order:8}
 
     /* ── PRESS & MEDIA ── */
     .press{
@@ -520,7 +567,11 @@
     }
 
     /* ── NOTICE ── */
-    .notice{margin-top:64px;padding:24px 0}
+    .notice{margin-top:64px;padding:24px 8px;border-radius:24px}
+    .notice .n-head h3{font-size:20px;line-height:28px;color:var(--text-secondary)}
+    .notice .n-head p{margin-top:8px;color:var(--text-tertiary)}
+    .n-block h4{font-size:16px;line-height:22px;color:var(--text-secondary)}
+    .n-block p{font-size:14px;color:var(--text-tertiary)}
 
     /* ── FOOTER (per usdd_home_footer_pc mobile) ── */
     .footer{margin-top:64px}
@@ -579,8 +630,24 @@
         <i class="ri-arrow-down-s-line"></i></a>
       <a class="nav-tab" href="#">Transparency
         <i class="ri-arrow-down-s-line"></i></a>
-      <a class="nav-tab active" href="#">Community
-        <i class="ri-arrow-down-s-line"></i></a>
+      <div class="nav-dd">
+        <a class="nav-tab active" href="#">Resources
+          <i class="ri-arrow-down-s-line"></i></a>
+        <div class="nav-dd-panel">
+          <a class="nav-dd-item" href="https://usdd.io/news">
+            <div class="ddi-top"><svg class="ddi-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.1687 3.03355C19.031 2.91072 19.8566 3.02557 20.4157 3.58433C20.9437 4.11287 21.0763 4.8804 20.986 5.68687C20.8949 6.49913 20.5718 7.44056 20.0759 8.44273L20.0769 8.44566C19.0792 10.2882 17.4725 12.4094 15.4314 14.4505C12.0789 17.803 8.11131 20.4954 5.71456 20.9789C5.70649 20.9798 5.69818 20.9818 5.69015 20.9828C4.88386 21.073 4.11707 20.9402 3.58858 20.4125C3.04512 19.8689 2.922 19.0736 3.02804 18.2396C3.12911 17.4455 3.44628 16.5308 3.92843 15.556C3.51172 14.6118 3.2546 13.5807 3.19405 12.4974H3.1921V12.4652C3.19189 12.4612 3.19136 12.4565 3.19112 12.4525L3.1794 11.9984C3.1794 11.8418 3.18404 11.6852 3.1921 11.5306V11.4974H3.19503C3.45453 6.85802 7.29741 3.17627 12.0017 3.17613L12.4558 3.18785C13.555 3.24369 14.6014 3.50207 15.5583 3.92418C16.5047 3.45591 17.3932 3.14427 18.1687 3.03355ZM20.6745 10.3968C20.7698 10.9163 20.8229 11.4514 20.823 11.9984L20.8112 12.4525C20.5749 17.1136 16.7205 20.8204 12.0007 20.8207L11.5466 20.8089C11.1016 20.7864 10.6652 20.729 10.24 20.6429C10.6553 20.3809 11.0756 20.1004 11.4987 19.8031C11.6646 19.8136 11.8322 19.8207 12.0007 19.8207C16.3205 19.8204 19.8229 16.3183 19.823 11.9984C19.8229 11.881 19.8183 11.7639 19.8132 11.6478C20.119 11.2268 20.407 10.8095 20.6745 10.3968ZM4.51729 16.6693C4.24764 17.3108 4.08077 17.8827 4.01925 18.3656C3.93137 19.0573 4.06629 19.476 4.29561 19.7054C4.51886 19.9279 4.91983 20.0624 5.57882 19.9886C6.07237 19.9332 6.66417 19.7645 7.33175 19.4837C6.19357 18.7722 5.22918 17.8073 4.51729 16.6693ZM4.19796 12.4974C4.37594 15.3166 6.04584 17.7292 8.42843 18.9554C8.60564 18.8604 8.78576 18.7586 8.96847 18.6517C8.05745 17.1367 7.46022 14.9508 7.38839 12.4974H4.19796ZM8.38936 12.4974C8.4547 14.5993 8.92712 16.4504 9.61983 17.7728C9.68475 17.8967 9.75262 18.014 9.81905 18.1253C11.2696 17.1752 12.8396 15.8988 14.3708 14.3675C14.7955 13.9429 15.1997 13.5145 15.5837 13.0873C15.597 12.8932 15.6078 12.6962 15.614 12.4974H8.38936ZM9.49288 4.58922C6.55479 5.58392 4.40152 8.27473 4.19796 11.4974H7.38839C7.47327 8.59988 8.29083 6.07621 9.49288 4.58922ZM12.0017 4.17613C11.2841 4.17622 10.3918 4.75036 9.61983 6.22398C8.92732 7.54634 8.45472 9.39602 8.38936 11.4974H15.614C15.5486 9.39632 15.0759 7.5463 14.3835 6.22398C13.6118 4.75083 12.7191 4.17655 12.0017 4.17613ZM14.5095 4.58922C15.7114 6.07623 16.5301 8.59999 16.615 11.4974H16.9206C17.7583 10.4252 18.4462 9.38231 18.9597 8.42515C18.0373 6.63257 16.4432 5.24374 14.5095 4.58922ZM19.7087 4.29136C19.4725 4.05554 19.0355 3.91953 18.3103 4.02281C17.8388 4.09008 17.2869 4.25514 16.6716 4.51402C17.8101 5.22605 18.7742 6.1908 19.486 7.32945C19.7671 6.66134 19.9364 6.06939 19.9919 5.57554C20.0657 4.91631 19.9313 4.51457 19.7087 4.29136Z" fill="white" fill-opacity="0.8"/></svg><span class="ddi-title">News</span></div>
+            <div class="ddi-desc">Latest updates and announcements</div>
+          </a>
+          <a class="nav-dd-item" href="https://usdd.io/faq">
+            <div class="ddi-top"><svg class="ddi-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15.5L12 19.5L3 15.5L4.125 15L12 18.5L19.875 15L21 15.5ZM21 12L12 16L3 12L4.125 11.5L12 15L19.875 11.5L21 12ZM21 8.5L12 12.5L3 8.5L12 4.5L21 8.5Z" fill="white" fill-opacity="0.8"/></svg><span class="ddi-title">FAQs</span></div>
+            <div class="ddi-desc">Common questions answered</div>
+          </a>
+          <a class="nav-dd-item" href="#">
+            <div class="ddi-top"><svg class="ddi-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.2227 5.12012H8.9502C7.81582 5.12035 6.89648 6.05159 6.89648 7.2002C6.89659 8.34872 7.81588 9.27907 8.9502 9.2793H19.2227V19C19.2227 19.5521 18.7747 19.9998 18.2227 20H6.58008C5.70754 19.9999 5.00021 19.2838 5 18.4004V5.59961C5.00021 4.71619 5.70754 4.00009 6.58008 4H19.2227V5.12012ZM11.2227 14.667V15.5557H17.4443V14.667H11.2227ZM11.2227 12.8887H17.4443V12H11.2227V12.8887ZM18.4316 8.32031H8.9502C8.33953 8.32008 7.84385 7.81852 7.84375 7.2002C7.84375 6.58178 8.33947 6.08031 8.9502 6.08008H18.4316V8.32031Z" fill="#D9D9D9"/></svg><span class="ddi-title">Brand Kit</span></div>
+            <div class="ddi-desc">Brand assets hub</div>
+          </a>
+        </div>
+      </div>
     </nav>
     <button class="launch">Launch APP</button>
     <button class="nav-hamburger" aria-label="Menu"><i class="ri-menu-line"></i></button>
@@ -595,13 +662,16 @@
         <h1>USDD Brand Assets</h1>
         <p class="sub">Official logos, token marks, colors, and type — everything you need to represent USDD and sUSDD accurately. Download the full kit or grab any asset below.</p>
       </div>
-      <button class="btn-outline">
-        <i class="ri-download-line"></i>
-        Download All Brand Kit
-      </button>
+      <div class="hero-cta">
+        <button class="btn-outline">
+          <i class="ri-download-line"></i>
+          Download All Brand Kit
+        </button>
+        <p class="hero-meta">Last updated 2026-05-28 · Kit version 1.0 ·<br class="m-br"> Size ~2.4 MB</p>
+      </div>
     </div>
   </div>
-  <div class="hero-art"><img src="assets/hero-3d.png" alt="" /></div>
+  <div class="hero-art"><img src="assets/hero-usdd.png" alt="" /></div>
 </section>
 
 <main class="wrap">
@@ -610,7 +680,7 @@
   <section class="section">
     <div class="section-head">
       <h2>USDD Logo</h2>
-      <p>The USDD wordmark is our primary brand identifier. Use the version that provides the strongest contrast against the background. Don't recolor, redraw, rotate, or distort it. If the USDD wordmark needs to appear on different backgrounds, switch the background color and download the appropriate version.</p>
+      <p>The USDD wordmark is our primary brand identifier. Use the version that provides the strongest contrast against the background. Don't recolor, redraw, rotate, or distort it.<br>If the USDD wordmark needs to appear on different backgrounds, switch the background color and download the appropriate version.</p>
     </div>
     <div class="section-body">
       <div class="logo-grid">
@@ -680,7 +750,7 @@
   <section class="section">
     <div class="section-head">
       <h2>sUSDD Logo</h2>
-      <p>sUSDD is the yield-bearing token of USDD. The sUSDD wordmark is our primary brand identifier. Use the version that provides the strongest contrast against the background. Don't recolor, redraw, rotate, or distort it. If the sUSDD wordmark needs to appear on different backgrounds, switch the background color and download the appropriate version.</p>
+      <p>sUSDD is the yield-bearing token of USDD. The sUSDD wordmark is our primary brand identifier. Use the version that provides the strongest contrast against the background. Don't recolor, redraw, rotate, or distort it.<br>If the sUSDD wordmark needs to appear on different backgrounds, switch the background color and download the appropriate version.</p>
     </div>
     <div class="section-body">
       <div class="logo-grid">
@@ -970,28 +1040,28 @@ CMYK:
     <div class="section-body">
       <div class="mistakes">
         <div class="m-col">
-          <div class="mistake">
+          <div class="mistake" data-m-order="1">
             <div class="m-top">
               <div class="m-demo"><img src="assets/mistakes/color.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
             </div>
             <p>Don't change the color. Use colors from the brand palette.</p>
           </div>
-          <div class="mistake">
+          <div class="mistake" data-m-order="3">
             <div class="m-top">
               <div class="m-demo"><img src="assets/mistakes/delete.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
             </div>
             <p>Don't delete or alter elements of the logo.</p>
           </div>
-          <div class="mistake">
+          <div class="mistake" data-m-order="5">
             <div class="m-top">
               <div class="m-demo tilt"><img src="assets/mistakes/tilt.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
             </div>
             <p>Don't tilt or rotate the logo.</p>
           </div>
-          <div class="mistake">
+          <div class="mistake" data-m-order="7">
             <div class="m-top">
               <div class="m-demo"><img src="assets/mistakes/opacity.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
@@ -1000,28 +1070,28 @@ CMYK:
           </div>
         </div>
         <div class="m-col">
-          <div class="mistake">
+          <div class="mistake" data-m-order="2">
             <div class="m-top">
               <div class="m-demo crop"><img src="assets/mistakes/crop.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
             </div>
             <p>Don't crop the logo or place it inside a square mask.</p>
           </div>
-          <div class="mistake">
+          <div class="mistake" data-m-order="4">
             <div class="m-top">
               <div class="m-demo shadow"><img src="assets/mistakes/shadow.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
             </div>
             <p>Don't add shadows, glows, or other visual effects.</p>
           </div>
-          <div class="mistake">
+          <div class="mistake" data-m-order="6">
             <div class="m-top">
               <div class="m-demo flip"><img src="assets/mistakes/flip.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
             </div>
             <p>Don't flip, mirror, or otherwise modify the graphic.</p>
           </div>
-          <div class="mistake">
+          <div class="mistake" data-m-order="8">
             <div class="m-top">
               <div class="m-demo stretch"><img src="assets/mistakes/stretch.svg" alt="" /></div>
               <img class="fail" src="assets/mistakes/fail.svg" alt="" />
@@ -1045,9 +1115,9 @@ CMYK:
         <h2>Press &amp; Media</h2>
         <p>For press, interviews, and partnership coverage, get in touch with the USDD team directly.</p>
       </div>
-      <a class="btn-primary" href="mailto:press@usdd.io">
+      <a class="btn-primary" href="mailto:support@usdd.io">
         <i class="ri-mail-line"></i>
-        press@usdd.io
+        support@usdd.io
       </a>
     </div>
   </section>
@@ -1059,25 +1129,33 @@ CMYK:
       <p>By downloading or using any asset on this page, you agree to the terms below. These guidelines protect the integrity of the USDD brand and the clarity of communications across the ecosystem.</p>
     </div>
     <div class="n-block">
-      <h4>Ownership &amp; Trademarks</h4>
-      <p>The USDD name, wordmark, and token symbols (USDD / sUSDD) are trademarks of the USDD protocol. Downloading these assets does not transfer ownership, nor does it imply USDD's endorsement of your product or service.</p>
+      <span class="n-num">01</span>
+      <div class="n-content">
+        <h4>Ownership &amp; Trademarks</h4>
+        <p>The USDD name, wordmark, and token symbols (USDD / sUSDD) are trademarks of the USDD protocol. Downloading these assets does not transfer ownership, nor does it imply USDD's endorsement of your product or service.</p>
+      </div>
     </div>
     <div class="n-block">
-      <h4>Permitted Use</h4>
-      <p>You may use these assets without prior written permission for editorial coverage, educational content, exchange and wallet listings, and DeFi protocol integrations — provided you follow the usage guidelines on this page (see Common Mistakes).</p>
+      <span class="n-num">02</span>
+      <div class="n-content">
+        <h4>Permitted Use</h4>
+        <p>You may use these assets without prior written permission for editorial coverage, educational content, exchange and wallet listings, and DeFi protocol integrations — provided you follow the usage guidelines on this page (see Common Mistakes).</p>
+      </div>
     </div>
     <div class="n-block">
-      <h4>Prohibited Use</h4>
-      <p>Do not modify, recolor, or distort the marks; do not use them to imply official partnership or endorsement where none exists; do not incorporate them into your product name, trademark, or domain without written permission.</p>
+      <span class="n-num">03</span>
+      <div class="n-content">
+        <h4>Prohibited Use</h4>
+        <p>Do not modify, recolor, or distort the marks; do not use them to imply official partnership or endorsement where none exists; do not incorporate them into your product name, trademark, or domain without written permission.</p>
+      </div>
     </div>
     <div class="n-block">
-      <h4>Commercial Licensing &amp; Contact</h4>
-      <p>For commercial co-branding, paid partnerships, or use cases outside the above, reach out to legal@usdd.io.</p>
+      <span class="n-num">04</span>
+      <div class="n-content">
+        <h4>Commercial Licensing &amp; Contact</h4>
+        <p>For commercial co-branding, paid partnerships, or use cases outside the above, reach out to legal@usdd.io.</p>
+      </div>
     </div>
-    <p class="n-foot">This notice supplements (and does not replace) the USDD <u>Terms of Use</u>.</p>
-    <a class="n-link" href="#">Read full Brand Usage Terms
-      <i class="ri-share-box-line"></i>
-    </a>
   </section>
 
 </main>
@@ -1161,11 +1239,11 @@ CMYK:
       </div>
 
       <!-- contact button -->
-      <a class="contact-btn" href="mailto:contact@usdd.io">
+      <a class="contact-btn" href="mailto:support@usdd.io">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path d="M2.25 2.25H15.75C16.1642 2.25 16.5 2.58579 16.5 3V15C16.5 15.4142 16.1642 15.75 15.75 15.75H2.25C1.83579 15.75 1.5 15.4142 1.5 15V3C1.5 2.58579 1.83579 2.25 2.25 2.25ZM15 5.42844L9.05385 10.7535L3 5.41195V14.25H15V5.42844ZM3.38359 3.75L9.04642 8.7465L14.6257 3.75H3.38359Z" fill="currentColor" fill-opacity="0.8"/>
         </svg>
-        <span>contact@usdd.io</span>
+        <span>support@usdd.io</span>
       </a>
     </div>
 
@@ -1239,11 +1317,11 @@ CMYK:
         </a>
       </div>
       <!-- contact btn -->
-      <a class="contact-btn" href="mailto:contact@usdd.io">
+      <a class="contact-btn" href="mailto:support@usdd.io">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path d="M2.25 2.25H15.75C16.1642 2.25 16.5 2.58579 16.5 3V15C16.5 15.4142 16.1642 15.75 15.75 15.75H2.25C1.83579 15.75 1.5 15.4142 1.5 15V3C1.5 2.58579 1.83579 2.25 2.25 2.25ZM15 5.42844L9.05385 10.7535L3 5.41195V14.25H15V5.42844ZM3.38359 3.75L9.04642 8.7465L14.6257 3.75H3.38359Z" fill="currentColor" fill-opacity="0.8"/>
         </svg>
-        <span>contact@usdd.io</span>
+        <span>support@usdd.io</span>
       </a>
     </div>
 
@@ -1265,7 +1343,7 @@ CMYK:
         <a class="nav-link" href="https://usdd.io/treasury">USDD Treasury</a>
       </div>
       <div class="nav-section">
-        <div class="nav-section-title">Community</div>
+        <div class="nav-section-title">Resources</div>
         <a class="nav-link" href="https://usdd.io/news">News</a>
         <a class="nav-link" href="https://usdd.io/faq">FAQs</a>
         <a class="nav-link" href="#">Brand Kit</a>
