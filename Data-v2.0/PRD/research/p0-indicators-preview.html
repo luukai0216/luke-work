@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>USDD Data v2.0 — P0 指标原型</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0c0c0e;
+    --section: #141615;
+    --card: #181a1c;
+    --card-hover: #1e2124;
+    --border: #26292c;
+    --text: #e6e8ea;
+    --text-2: #8b9097;
+    --text-3: #5d6166;
+    --brand: #216c58;
+    --brand-hi: #81deb0;
+    --brand-lt: #5fc693;
+    --success: #448f6a;
+    --warning: #ff8f0b;
+    --danger: #d73133;
+    --info: #0d9488;
+  }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 14px;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr 360px;
+    height: 100vh;
+  }
+
+  /* === LEFT NAV === */
+  .nav {
+    background: var(--section);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    overflow-y: auto;
+  }
+  .nav h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+  .nav-item {
+    display: block;
+    padding: 12px;
+    margin-bottom: 6px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  .nav-item:hover { background: var(--card); color: var(--text); }
+  .nav-item.active {
+    background: var(--card);
+    border-color: var(--brand);
+    color: var(--text);
+  }
+  .nav-item .index {
+    display: inline-block;
+    width: 22px; height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: var(--brand);
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-right: 8px;
+    font-size: 11px;
+  }
+  .nav-item .label { font-weight: 500; }
+  .nav-item .sub {
+    display: block;
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 4px;
+    padding-left: 30px;
+  }
+  .nav-footer {
+    margin-top: 32px;
+    padding: 12px;
+    background: var(--card);
+    border-radius: 8px;
+    font-size: 11px;
+    color: var(--text-3);
+    line-height: 1.6;
+  }
+  .nav-footer strong { color: var(--brand-lt); }
+
+  /* === MIDDLE PREVIEW === */
+  .preview {
+    background: var(--bg);
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .browser-frame {
+    background: var(--section);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .browser-bar {
+    background: var(--card);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .browser-dots { display: flex; gap: 6px; }
+  .browser-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .browser-dot:nth-child(1) { background: #ff5f57; }
+  .browser-dot:nth-child(2) { background: #ffbd2e; }
+  .browser-dot:nth-child(3) { background: #28c941; }
+  .browser-url {
+    flex: 1;
+    background: var(--bg);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-2);
+    font-family: ui-monospace, monospace;
+  }
+  .browser-content {
+    padding: 28px;
+    min-height: 600px;
+  }
+
+  /* === COMMON COMPONENTS === */
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .panel-subtitle {
+    color: var(--text-2);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .kpi-card.primary {
+    background: linear-gradient(135deg, rgba(33,108,88,0.18), rgba(33,108,88,0.04));
+    border-color: var(--brand);
+  }
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .kpi-value.lg { font-size: 36px; }
+  .kpi-delta {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--success);
+  }
+  .kpi-delta.neg { color: var(--danger); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge.success { background: rgba(68,143,106,0.18); color: var(--success); }
+  .badge.warning { background: rgba(255,143,11,0.18); color: var(--warning); }
+  .badge.danger { background: rgba(215,49,51,0.18); color: var(--danger); }
+  .badge.info { background: rgba(13,148,136,0.18); color: var(--info); }
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .chart-title { font-size: 14px; font-weight: 600; }
+  .tab-group { display: flex; gap: 4px; background: var(--bg); padding: 3px; border-radius: 6px; }
+  .tab {
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--text-2);
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+  }
+  .tab.active { background: var(--brand); color: white; }
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-2);
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+  table.data-table th {
+    background: var(--bg);
+    color: var(--text-2);
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    letter-spacing: 0.05em;
+  }
+  table.data-table td {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+  }
+  table.data-table .num { text-align: right; font-family: ui-monospace, monospace; }
+  .assumption-tag {
+    display: inline-block;
+    background: rgba(255,143,11,0.12);
+    color: var(--warning);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    margin-left: 8px;
+    border: 1px solid rgba(255,143,11,0.25);
+  }
+
+  /* === RIGHT SPEC === */
+  .spec {
+    background: var(--section);
+    border-left: 1px solid var(--border);
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+  .spec h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+  .spec-block { margin-bottom: 22px; }
+  .spec-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .spec-row .k {
+    flex: 0 0 80px;
+    color: var(--text-3);
+  }
+  .spec-row .v { color: var(--text); flex: 1; }
+  .spec-row .v code {
+    background: var(--card);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: var(--brand-hi);
+  }
+  .spec-rule {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .spec-rule strong { color: var(--brand-lt); }
+  .spec ul { list-style: none; padding-left: 0; }
+  .spec ul li {
+    font-size: 12px;
+    color: var(--text-2);
+    margin-bottom: 6px;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .spec ul li::before {
+    content: "•";
+    position: absolute;
+    left: 4px;
+    color: var(--brand);
+  }
+  .spec-section-block { display: none; }
+  .spec-section-block.active { display: block; }
+
+  /* === SVG axis */
+  .axis text { fill: var(--text-3); font-size: 10px; font-family: 'Inter', sans-serif; }
+  .axis line, .axis path { stroke: var(--border); }
+  .grid line { stroke: var(--border); stroke-dasharray: 2 3; opacity: 0.4; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ===================== LEFT NAV ===================== -->
+  <aside class="nav">
+    <h2>P0 指标场景</h2>
+    <button class="nav-item active" data-target="cr">
+      <span class="index">1</span><span class="label">全局抵押率 CR</span>
+      <span class="sub">🛡️ 安全 & 锚定</span>
+    </button>
+    <button class="nav-item" data-target="collateral">
+      <span class="index">2</span><span class="label">抵押品结构占比</span>
+      <span class="sub">🛡️ 安全 & 锚定</span>
+    </button>
+    <button class="nav-item" data-target="psm">
+      <span class="index">3</span><span class="label">PSM 净流量</span>
+      <span class="sub">🛡️ 安全 & 锚定</span>
+    </button>
+    <button class="nav-item" data-target="health">
+      <span class="index">4</span><span class="label">仓位健康度分布</span>
+      <span class="sub">⚡ 风险 & 清算</span>
+    </button>
+    <button class="nav-item" data-target="dar">
+      <span class="index">5</span><span class="label">Debt at Risk</span>
+      <span class="sub">⚡ 风险 & 清算</span>
+    </button>
+    <button class="nav-item" data-target="rev">
+      <span class="index">6</span><span class="label">实时 Revenue / Earnings</span>
+      <span class="sub">📊 财务 & 经营</span>
+    </button>
+
+    <div class="nav-footer">
+      <strong>原型说明</strong><br>
+      仅含 P0 五指标前端效果预览。<br>
+      所有数字为<strong>假设数据</strong>，仅作图表样式参考。<br>
+      作者：Rain.Liu / 2026-05-22
+    </div>
+  </aside>
+
+  <!-- ===================== MIDDLE PREVIEW ===================== -->
+  <main class="preview">
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url" id="url-bar">https://usdd.io/data</div>
+      </div>
+      <div class="browser-content">
+
+        <!-- ============ 1. CR ============ -->
+        <div class="panel active" id="panel-cr">
+          <div class="panel-title">全局抵押率 CR <span class="assumption-tag">假设数据</span></div>
+          <div class="panel-subtitle">Data / Overview — 顶部 KPI 区</div>
+
+          <div class="kpi-row">
+            <div class="kpi-card primary">
+              <div class="kpi-label">Collateralization Ratio</div>
+              <div class="kpi-value lg">213.4%</div>
+              <div class="kpi-delta">▲ +1.2% (24h) <span class="badge success">Healthy</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Total Collateral USD</div>
+              <div class="kpi-value">$2.847B</div>
+              <div class="kpi-delta">▲ +$12.4M</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Total USDD Supply</div>
+              <div class="kpi-value">$1.334B</div>
+              <div class="kpi-delta neg">▼ -$2.1M</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">CR 30 日趋势</div>
+              <div class="tab-group">
+                <button class="tab">7D</button>
+                <button class="tab active">30D</button>
+                <button class="tab">90D</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 760 220" width="100%" height="220">
+              <!-- grid -->
+              <g class="grid">
+                <line x1="40" y1="40" x2="740" y2="40"/>
+                <line x1="40" y1="90" x2="740" y2="90"/>
+                <line x1="40" y1="140" x2="740" y2="140"/>
+                <line x1="40" y1="190" x2="740" y2="190"/>
+              </g>
+              <!-- y axis labels -->
+              <g class="axis">
+                <text x="32" y="44" text-anchor="end">250%</text>
+                <text x="32" y="94" text-anchor="end">200%</text>
+                <text x="32" y="144" text-anchor="end">150%</text>
+                <text x="32" y="194" text-anchor="end">110%</text>
+                <text x="40" y="208">04/22</text>
+                <text x="740" y="208" text-anchor="end">05/22</text>
+              </g>
+              <!-- warning zones -->
+              <rect x="40" y="140" width="700" height="50" fill="#ff8f0b" opacity="0.04"/>
+              <rect x="40" y="190" width="700" height="20" fill="#d73133" opacity="0.08"/>
+              <line x1="40" y1="140" x2="740" y2="140" stroke="#ff8f0b" stroke-dasharray="4 4" opacity="0.5"/>
+              <line x1="40" y1="190" x2="740" y2="190" stroke="#d73133" stroke-dasharray="4 4" opacity="0.6"/>
+              <text x="744" y="143" fill="#ff8f0b" font-size="10">150% warning</text>
+              <text x="744" y="193" fill="#d73133" font-size="10">110% critical</text>
+              <!-- line -->
+              <path d="M 40 80 L 80 78 L 120 85 L 160 82 L 200 78 L 240 72 L 280 75 L 320 70 L 360 68 L 400 72 L 440 78 L 480 82 L 520 76 L 560 70 L 600 65 L 640 68 L 680 72 L 720 75 L 740 73"
+                fill="none" stroke="#81deb0" stroke-width="2"/>
+              <!-- area fill -->
+              <path d="M 40 80 L 80 78 L 120 85 L 160 82 L 200 78 L 240 72 L 280 75 L 320 70 L 360 68 L 400 72 L 440 78 L 480 82 L 520 76 L 560 70 L 600 65 L 640 68 L 680 72 L 720 75 L 740 73 L 740 200 L 40 200 Z"
+                fill="url(#gradCR)" opacity="0.3"/>
+              <defs>
+                <linearGradient id="gradCR" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#81deb0" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="#81deb0" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- end dot -->
+              <circle cx="740" cy="73" r="4" fill="#81deb0"/>
+              <circle cx="740" cy="73" r="8" fill="#81deb0" opacity="0.3"/>
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#81deb0"></span> CR</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#ff8f0b;opacity:0.5"></span> 150% 警戒线</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#d73133;opacity:0.6"></span> 110% 红线</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:14px;">分子组成（按资产类型）</div>
+            <table class="data-table">
+              <tr><th>来源</th><th class="num">USD Value</th><th class="num">占比</th><th>说明</th></tr>
+              <tr><td>Vault 抵押品</td><td class="num">$1.892B</td><td class="num">66.4%</td><td>TRX-A/B/C + sTRX-A + WBTC-A/B</td></tr>
+              <tr><td>PSM 储备</td><td class="num">$684M</td><td class="num">24.0%</td><td>USDT / USDC × 3 链</td></tr>
+              <tr><td>Smart Allocator</td><td class="num">$271M</td><td class="num">9.6%</td><td>SA 投资头寸 NAV</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ============ 2. 抵押品结构占比 ============ -->
+        <div class="panel" id="panel-collateral">
+          <div class="panel-title">抵押品结构占比 <span class="assumption-tag">假设数据</span></div>
+          <div class="panel-subtitle">Data / Overview — 资产构成与集中度</div>
+
+          <div class="kpi-row">
+            <div class="kpi-card primary" style="border-color:var(--warning)">
+              <div class="kpi-label">最大单一资产</div>
+              <div class="kpi-value" style="color:var(--warning)">TRX 系 46.2%</div>
+              <div class="kpi-delta neg">⚠ 集中度高于警戒线 40%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Top 2 集中度</div>
+              <div class="kpi-value">70.2%</div>
+              <div class="kpi-delta">TRX 系 + 稳定币储备</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">稳定币储备占比</div>
+              <div class="kpi-value">24.0%</div>
+              <div class="kpi-delta">PSM USDT/USDC × 3 链</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">资产类别数</div>
+              <div class="kpi-value">5</div>
+              <div class="kpi-delta">TRX / WBTC / 稳定币 / SA / 其他</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">资产构成 Donut</div>
+              <div class="tab-group">
+                <button class="tab active">按资产类型</button>
+                <button class="tab">按链</button>
+                <button class="tab">按 ilk</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:center;">
+              <svg viewBox="0 0 360 320" width="100%" height="320">
+                <g id="donut-segs"></g>
+                <!-- center text -->
+                <text x="180" y="155" text-anchor="middle" fill="#8b9097" font-size="11">Total Collateral</text>
+                <text x="180" y="180" text-anchor="middle" fill="#e6e8ea" font-size="22" font-weight="700">$2.847B</text>
+                <text x="180" y="200" text-anchor="middle" fill="#81deb0" font-size="11">支撑 $1.334B USDD</text>
+              </svg>
+              <div>
+                <table class="data-table">
+                  <tr><th></th><th>资产类别</th><th class="num">USD Value</th><th class="num">占比</th></tr>
+                  <tr><td><span style="color:#216c58;font-size:18px">●</span></td><td>TRX 系（TRX + sTRX）</td><td class="num">$1.315B</td><td class="num" style="color:var(--warning)"><b>46.2%</b></td></tr>
+                  <tr><td><span style="color:#0d9488;font-size:18px">●</span></td><td>稳定币储备（PSM）</td><td class="num">$684M</td><td class="num">24.0%</td></tr>
+                  <tr><td><span style="color:#5fc693;font-size:18px">●</span></td><td>WBTC 系</td><td class="num">$524M</td><td class="num">18.4%</td></tr>
+                  <tr><td><span style="color:#81deb0;font-size:18px">●</span></td><td>Smart Allocator 投资</td><td class="num">$271M</td><td class="num">9.6%</td></tr>
+                  <tr><td><span style="color:#448f6a;font-size:18px">●</span></td><td>其他</td><td class="num">$51M</td><td class="num">1.8%</td></tr>
+                </table>
+                <div style="margin-top:16px;padding:12px;background:rgba(255,143,11,0.08);border:1px solid rgba(255,143,11,0.25);border-radius:6px;font-size:12px;line-height:1.6;color:var(--warning)">
+                  <strong>⚠ 集中度告警</strong>：TRX 系占比 46.2% 已超过预设 40% 警戒线，建议关注 TRX 价格波动对 USDD 偿付能力的连带影响，或推进 RWA / 多元抵押品上线。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">90 天构成历史变化</div>
+              <div class="tab-group">
+                <button class="tab">7D</button>
+                <button class="tab">30D</button>
+                <button class="tab active">90D</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 760 240" width="100%" height="240">
+              <g class="grid">
+                <line x1="50" y1="40" x2="740" y2="40"/>
+                <line x1="50" y1="100" x2="740" y2="100"/>
+                <line x1="50" y1="160" x2="740" y2="160"/>
+              </g>
+              <g class="axis">
+                <text x="42" y="44" text-anchor="end">100%</text>
+                <text x="42" y="104" text-anchor="end">66%</text>
+                <text x="42" y="164" text-anchor="end">33%</text>
+                <text x="42" y="200" text-anchor="end">0%</text>
+                <text x="50" y="220">02/22</text>
+                <text x="740" y="220" text-anchor="end">05/22</text>
+              </g>
+              <g id="stack-area-coll"></g>
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#216c58"></span> TRX 系</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#0d9488"></span> 稳定币储备</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#5fc693"></span> WBTC 系</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#81deb0"></span> Smart Allocator</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#448f6a"></span> 其他</div>
+            </div>
+            <div style="margin-top:12px;font-size:12px;color:var(--text-2);line-height:1.6">
+              <strong style="color:var(--brand-lt)">趋势观察</strong>：过去 90 天 TRX 系占比从 41% 升至 46.2%（+5.2pp），稳定币储备从 28% 降至 24%（-4pp），结构集中度上升。
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:14px;">按链拆分</div>
+            <table class="data-table">
+              <tr><th>链</th><th class="num">TRX 系</th><th class="num">WBTC 系</th><th class="num">稳定币</th><th class="num">SA</th><th class="num">小计</th><th class="num">链占比</th></tr>
+              <tr><td>TRON</td><td class="num">$1.315B</td><td class="num">$486M</td><td class="num">$412M</td><td class="num">$148M</td><td class="num"><b>$2.361B</b></td><td class="num">82.9%</td></tr>
+              <tr><td>Ethereum</td><td class="num">—</td><td class="num">$38M</td><td class="num">$184M</td><td class="num">$92M</td><td class="num"><b>$314M</b></td><td class="num">11.0%</td></tr>
+              <tr><td>BSC</td><td class="num">—</td><td class="num">—</td><td class="num">$88M</td><td class="num">$31M</td><td class="num"><b>$119M</b></td><td class="num">4.2%</td></tr>
+              <tr><td>BTTC</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>$53M</b></td><td class="num">1.9%</td></tr>
+            </table>
+            <div style="margin-top:12px;font-size:12px;color:var(--text-2);line-height:1.6">
+              <strong style="color:var(--warning)">⚠ 链集中度</strong>：82.9% 抵押品集中在 TRON，多链发行战略仍未在抵押资产层面落地。
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ 3. PSM ============ -->
+        <div class="panel" id="panel-psm">
+          <div class="panel-title">PSM 净流量 <span class="assumption-tag">假设数据</span></div>
+          <div class="panel-subtitle">Data / Overview — KPI 卡 + 趋势图</div>
+
+          <div class="kpi-row">
+            <div class="kpi-card primary">
+              <div class="kpi-label">PSM Net Flow (24h)</div>
+              <div class="kpi-value" style="color:var(--brand-hi)">+$12.4M</div>
+              <div class="kpi-delta"><span class="badge info">Mint 主导</span> 套利者用 PSM 买 USDD</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">7D 累计</div>
+              <div class="kpi-value">+$38.2M</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">30D 累计</div>
+              <div class="kpi-value" style="color:var(--danger)">-$84.5M</div>
+              <div class="kpi-delta neg">月度净流出</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">活跃套利地址 (24h)</div>
+              <div class="kpi-value">147</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">每日 PSM 净流量（按链 stacked）</div>
+              <div class="tab-group">
+                <button class="tab">24H</button>
+                <button class="tab">7D</button>
+                <button class="tab active">30D</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 760 240" width="100%" height="240">
+              <g class="grid">
+                <line x1="50" y1="40" x2="740" y2="40"/>
+                <line x1="50" y1="100" x2="740" y2="100"/>
+                <line x1="50" y1="120" x2="740" y2="120" stroke-dasharray="0" opacity="0.8"/>
+                <line x1="50" y1="180" x2="740" y2="180"/>
+              </g>
+              <g class="axis">
+                <text x="42" y="44" text-anchor="end">+30M</text>
+                <text x="42" y="104" text-anchor="end">+10M</text>
+                <text x="42" y="124" text-anchor="end">0</text>
+                <text x="42" y="184" text-anchor="end">-20M</text>
+                <text x="50" y="215">04/22</text>
+                <text x="740" y="215" text-anchor="end">05/22</text>
+              </g>
+              <!-- bars: 30 days. positive above 120, negative below -->
+              <!-- mock data: simulate 30 days with mix of pos/neg -->
+              <g id="psm-bars">
+                <!-- positive bars (mint dominant) -->
+                <!-- each x: 50 + i*23, width:18 -->
+                <!-- generated mock -->
+              </g>
+              <script type="text/x-svg-init"></script>
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#81deb0"></span> TRON Mint</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#5fc693"></span> Ethereum Mint</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#448f6a"></span> BSC Mint</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#ff8f0b"></span> Redeem (负值)</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:14px;">各链 24h 拆分</div>
+            <table class="data-table">
+              <tr><th>链 / PSM</th><th class="num">Mint Vol</th><th class="num">Redeem Vol</th><th class="num">Net Flow</th><th>方向</th></tr>
+              <tr><td>TRON / PSM-USDT-A</td><td class="num">$24.1M</td><td class="num">$11.3M</td><td class="num" style="color:var(--success)">+$12.8M</td><td><span class="badge success">Mint</span></td></tr>
+              <tr><td>Ethereum / PSM-USDT</td><td class="num">$3.2M</td><td class="num">$4.1M</td><td class="num" style="color:var(--danger)">-$0.9M</td><td><span class="badge danger">Redeem</span></td></tr>
+              <tr><td>BSC / PSM-USDT</td><td class="num">$1.4M</td><td class="num">$0.9M</td><td class="num" style="color:var(--success)">+$0.5M</td><td><span class="badge success">Mint</span></td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ============ 3. 健康度分布 ============ -->
+        <div class="panel" id="panel-health">
+          <div class="panel-title">仓位健康度分布 <span class="assumption-tag">假设数据</span></div>
+          <div class="panel-subtitle">Data / Chain — 风险敞口热力图</div>
+
+          <div class="kpi-row">
+            <div class="kpi-card primary" style="border-color:var(--danger)">
+              <div class="kpi-label">🔴 极危仓位 (health &lt; 1.05)</div>
+              <div class="kpi-value" style="color:var(--danger)">23</div>
+              <div class="kpi-delta neg">债务占比 4.2% / $56.0M</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">🟠 高风险 (1.05-1.20)</div>
+              <div class="kpi-value" style="color:var(--warning)">142</div>
+              <div class="kpi-delta">12.1% / $161M</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">🟡 中等 (1.20-1.50)</div>
+              <div class="kpi-value">589</div>
+              <div class="kpi-delta">34.5% / $460M</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">🟢 安全 (&gt; 1.50)</div>
+              <div class="kpi-value" style="color:var(--success)">1,247</div>
+              <div class="kpi-delta">49.2% / $657M</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">按健康度分桶 × 抵押品类型 stacked</div>
+              <div class="tab-group">
+                <button class="tab active">按债务额</button>
+                <button class="tab">按 Vault 数</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 760 280" width="100%" height="280">
+              <g class="grid">
+                <line x1="60" y1="40" x2="740" y2="40"/>
+                <line x1="60" y1="100" x2="740" y2="100"/>
+                <line x1="60" y1="160" x2="740" y2="160"/>
+                <line x1="60" y1="220" x2="740" y2="220"/>
+              </g>
+              <g class="axis">
+                <text x="52" y="44" text-anchor="end">$800M</text>
+                <text x="52" y="104" text-anchor="end">$600M</text>
+                <text x="52" y="164" text-anchor="end">$400M</text>
+                <text x="52" y="224" text-anchor="end">$200M</text>
+                <text x="52" y="244" text-anchor="end">0</text>
+              </g>
+              <!-- 4 bins, each split by ilk -->
+              <!-- bin width 130, gap 50, start x = 100 -->
+              <!-- 🔴 < 1.05 : $56M total -->
+              <g transform="translate(100,0)">
+                <rect x="0" y="227.2" width="130" height="16.8" fill="#d73133"/>
+                <rect x="0" y="232" width="130" height="12" fill="#a52427"/>
+                <rect x="0" y="237.5" width="130" height="6.5" fill="#7a1b1d"/>
+                <text x="65" y="262" text-anchor="middle" fill="#d73133" font-size="11" font-weight="600">🔴 &lt; 1.05</text>
+                <text x="65" y="276" text-anchor="middle" fill="#5d6166" font-size="10">$56M · 4.2%</text>
+              </g>
+              <!-- 🟠 1.05-1.20 : $161M -->
+              <g transform="translate(280,0)">
+                <rect x="0" y="195" width="130" height="49" fill="#ff8f0b"/>
+                <rect x="0" y="180" width="130" height="15" fill="#cc7209"/>
+                <rect x="0" y="170" width="130" height="10" fill="#995407"/>
+                <text x="65" y="262" text-anchor="middle" fill="#ff8f0b" font-size="11" font-weight="600">🟠 1.05–1.20</text>
+                <text x="65" y="276" text-anchor="middle" fill="#5d6166" font-size="10">$161M · 12.1%</text>
+              </g>
+              <!-- 🟡 1.20-1.50 : $460M -->
+              <g transform="translate(460,0)">
+                <rect x="0" y="106" width="130" height="138" fill="#0d9488"/>
+                <rect x="0" y="86" width="130" height="20" fill="#0a7268"/>
+                <rect x="0" y="68" width="130" height="18" fill="#075048"/>
+                <text x="65" y="262" text-anchor="middle" fill="#0d9488" font-size="11" font-weight="600">🟡 1.20–1.50</text>
+                <text x="65" y="276" text-anchor="middle" fill="#5d6166" font-size="10">$460M · 34.5%</text>
+              </g>
+              <!-- 🟢 > 1.50 : $657M -->
+              <g transform="translate(640,0)">
+                <rect x="0" y="47" width="100" height="197" fill="#448f6a"/>
+                <rect x="0" y="22" width="100" height="25" fill="#33724f"/>
+                <rect x="0" y="0" width="100" height="22" fill="#234c36"/>
+                <text x="50" y="262" text-anchor="middle" fill="#448f6a" font-size="11" font-weight="600">🟢 &gt; 1.50</text>
+                <text x="50" y="276" text-anchor="middle" fill="#5d6166" font-size="10">$657M · 49.2%</text>
+              </g>
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#7a1b1d"></span> WBTC-A/B</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#a52427"></span> sTRX-A</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#d73133"></span> TRX-A/B/C</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:14px;">🔴 极危仓位 Top 5（点击下钻）</div>
+            <table class="data-table">
+              <tr><th>Urn 地址</th><th>Ilk</th><th class="num">抵押品</th><th class="num">债务 USDD</th><th class="num">Health</th><th>清算价</th></tr>
+              <tr><td>TRx7...4hA9</td><td>TRX-A</td><td class="num">2.1M TRX</td><td class="num">12.3M</td><td class="num" style="color:var(--danger)">1.013</td><td>$0.084</td></tr>
+              <tr><td>TRk2...8eF1</td><td>sTRX-A</td><td class="num">1.8M sTRX</td><td class="num">9.4M</td><td class="num" style="color:var(--danger)">1.021</td><td>$0.091</td></tr>
+              <tr><td>TRm9...22kP</td><td>TRX-B</td><td class="num">3.4M TRX</td><td class="num">8.7M</td><td class="num" style="color:var(--danger)">1.028</td><td>$0.079</td></tr>
+              <tr><td>TR3v...91bX</td><td>WBTC-A</td><td class="num">0.8 BTC</td><td class="num">6.2M</td><td class="num" style="color:var(--danger)">1.034</td><td>$84,200</td></tr>
+              <tr><td>TR8q...5sLm</td><td>TRX-A</td><td class="num">1.2M TRX</td><td class="num">5.1M</td><td class="num" style="color:var(--danger)">1.041</td><td>$0.082</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ============ 4. Debt at Risk ============ -->
+        <div class="panel" id="panel-dar">
+          <div class="panel-title">Debt at Risk <span class="assumption-tag">假设数据</span></div>
+          <div class="panel-subtitle">Data / Overview — 价格冲击压力测试</div>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">价格 -5% 冲击</div>
+              <div class="kpi-value" style="color:var(--info)">$32M</div>
+              <div class="kpi-delta">2.4% of total debt</div>
+            </div>
+            <div class="kpi-card" style="border-color:var(--warning)">
+              <div class="kpi-label">价格 -10% 冲击</div>
+              <div class="kpi-value" style="color:var(--warning)">$118M</div>
+              <div class="kpi-delta">8.8% of total debt</div>
+            </div>
+            <div class="kpi-card" style="border-color:var(--danger)">
+              <div class="kpi-label">价格 -20% 冲击</div>
+              <div class="kpi-value" style="color:var(--danger)">$394M</div>
+              <div class="kpi-delta neg">29.5% — 风控预警阈值</div>
+            </div>
+            <div class="kpi-card" style="border-color:var(--danger);background:rgba(215,49,51,0.06)">
+              <div class="kpi-label">价格 -30% 冲击</div>
+              <div class="kpi-value" style="color:var(--danger)">$687M</div>
+              <div class="kpi-delta neg">51.5% — 系统性风险</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Debt at Risk 曲线（横轴价格冲击）</div>
+              <div class="tab-group">
+                <button class="tab active">全市场冲击</button>
+                <button class="tab">仅 TRX</button>
+                <button class="tab">仅 WBTC</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 760 280" width="100%" height="280">
+              <g class="grid">
+                <line x1="60" y1="40" x2="740" y2="40"/>
+                <line x1="60" y1="100" x2="740" y2="100"/>
+                <line x1="60" y1="160" x2="740" y2="160"/>
+                <line x1="60" y1="220" x2="740" y2="220"/>
+              </g>
+              <g class="axis">
+                <text x="52" y="44" text-anchor="end">$800M</text>
+                <text x="52" y="104" text-anchor="end">$600M</text>
+                <text x="52" y="164" text-anchor="end">$400M</text>
+                <text x="52" y="224" text-anchor="end">$200M</text>
+                <text x="60" y="244">0%</text>
+                <text x="200" y="244" text-anchor="middle">-10%</text>
+                <text x="400" y="244" text-anchor="middle">-20%</text>
+                <text x="600" y="244" text-anchor="middle">-30%</text>
+                <text x="740" y="244" text-anchor="end">-40%</text>
+              </g>
+              <!-- area fill -->
+              <path d="M 60 220 L 130 218 L 200 212 L 270 200 L 340 175 L 400 138 L 460 95 L 530 65 L 600 48 L 670 32 L 740 25 L 740 220 Z"
+                fill="url(#gradDAR)" opacity="0.4"/>
+              <defs>
+                <linearGradient id="gradDAR" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#d73133" stop-opacity="0.7"/>
+                  <stop offset="100%" stop-color="#d73133" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- curve -->
+              <path d="M 60 220 L 130 218 L 200 212 L 270 200 L 340 175 L 400 138 L 460 95 L 530 65 L 600 48 L 670 32 L 740 25"
+                fill="none" stroke="#d73133" stroke-width="2.5"/>
+              <!-- 关键点 markers -->
+              <g>
+                <circle cx="130" cy="218" r="5" fill="#0d9488"/>
+                <text x="130" y="208" text-anchor="middle" fill="#0d9488" font-size="11" font-weight="600">-5%</text>
+                <text x="130" y="260" text-anchor="middle" fill="#5d6166" font-size="10">$32M</text>
+
+                <circle cx="200" cy="212" r="5" fill="#ff8f0b"/>
+                <text x="200" y="198" text-anchor="middle" fill="#ff8f0b" font-size="11" font-weight="600">-10%</text>
+                <text x="200" y="260" text-anchor="middle" fill="#5d6166" font-size="10">$118M</text>
+
+                <circle cx="400" cy="138" r="6" fill="#d73133"/>
+                <text x="400" y="122" text-anchor="middle" fill="#d73133" font-size="12" font-weight="700">-20% ⚠</text>
+                <text x="400" y="260" text-anchor="middle" fill="#5d6166" font-size="10">$394M</text>
+
+                <circle cx="600" cy="48" r="6" fill="#7a1b1d"/>
+                <text x="600" y="32" text-anchor="middle" fill="#d73133" font-size="12" font-weight="700">-30% 🚨</text>
+                <text x="600" y="260" text-anchor="middle" fill="#5d6166" font-size="10">$687M</text>
+              </g>
+              <!-- threshold line at 30% -->
+              <line x1="60" y1="138" x2="740" y2="138" stroke="#ff8f0b" stroke-dasharray="4 4" opacity="0.5"/>
+              <text x="744" y="142" fill="#ff8f0b" font-size="10">30% 风控阈值</text>
+            </svg>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:14px;">按抵押品拆解（-20% 场景）</div>
+            <table class="data-table">
+              <tr><th>抵押品</th><th class="num">总债务</th><th class="num">-20% 后清算债务</th><th class="num">受影响 Vault</th><th>主导风险</th></tr>
+              <tr><td>TRX-A</td><td class="num">$542M</td><td class="num" style="color:var(--danger)">$201M</td><td class="num">86</td><td><span class="badge danger">高</span></td></tr>
+              <tr><td>TRX-B</td><td class="num">$184M</td><td class="num" style="color:var(--danger)">$92M</td><td class="num">34</td><td><span class="badge danger">极高</span></td></tr>
+              <tr><td>sTRX-A</td><td class="num">$214M</td><td class="num" style="color:var(--warning)">$71M</td><td class="num">29</td><td><span class="badge warning">中高</span></td></tr>
+              <tr><td>WBTC-A/B</td><td class="num">$298M</td><td class="num">$30M</td><td class="num">12</td><td><span class="badge info">中</span></td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ============ 5. Revenue ============ -->
+        <div class="panel" id="panel-rev">
+          <div class="panel-title">实时 Revenue / Earnings / Expenses <span class="assumption-tag">假设数据</span></div>
+          <div class="panel-subtitle">USDD Treasury — 顶部经营指标区</div>
+
+          <div class="kpi-row">
+            <div class="kpi-card primary">
+              <div class="kpi-label">24h Revenue</div>
+              <div class="kpi-value lg" style="color:var(--brand-hi)">$124.8K</div>
+              <div class="kpi-delta">▲ +8.4% vs 7D avg</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">24h Earnings</div>
+              <div class="kpi-value">$98.1K</div>
+              <div class="kpi-delta">扣激励成本后</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">30D Expenses</div>
+              <div class="kpi-value" style="color:var(--warning)">$2.4M</div>
+              <div class="kpi-delta">月均 $80K/日</div>
+            </div>
+            <div class="kpi-card" style="border-color:var(--success)">
+              <div class="kpi-label">Net Profit (30D)</div>
+              <div class="kpi-value" style="color:var(--success)">+$891K</div>
+              <div class="kpi-delta"><span class="badge success">盈利</span></div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">每日 Revenue / Earnings / Expenses 对比</div>
+              <div class="tab-group">
+                <button class="tab">7D</button>
+                <button class="tab">30D</button>
+                <button class="tab active">90D</button>
+              </div>
+            </div>
+            <svg viewBox="0 0 760 240" width="100%" height="240">
+              <g class="grid">
+                <line x1="50" y1="40" x2="740" y2="40"/>
+                <line x1="50" y1="100" x2="740" y2="100"/>
+                <line x1="50" y1="160" x2="740" y2="160"/>
+              </g>
+              <g class="axis">
+                <text x="42" y="44" text-anchor="end">$150K</text>
+                <text x="42" y="104" text-anchor="end">$100K</text>
+                <text x="42" y="164" text-anchor="end">$50K</text>
+                <text x="42" y="200" text-anchor="end">0</text>
+                <text x="50" y="220">02/22</text>
+                <text x="740" y="220" text-anchor="end">05/22</text>
+              </g>
+              <!-- Revenue (top, green) -->
+              <path d="M 50 110 L 100 105 L 150 95 L 200 90 L 250 88 L 300 82 L 350 78 L 400 75 L 450 72 L 500 68 L 550 65 L 600 60 L 650 58 L 700 56 L 740 55"
+                fill="none" stroke="#81deb0" stroke-width="2.5"/>
+              <!-- Earnings (mid, lighter) -->
+              <path d="M 50 130 L 100 125 L 150 118 L 200 113 L 250 112 L 300 105 L 350 100 L 400 98 L 450 96 L 500 92 L 550 90 L 600 85 L 650 83 L 700 81 L 740 80"
+                fill="none" stroke="#0d9488" stroke-width="2"/>
+              <!-- Expenses (orange) -->
+              <path d="M 50 165 L 100 162 L 150 158 L 200 160 L 250 155 L 300 152 L 350 148 L 400 145 L 450 143 L 500 140 L 550 138 L 600 135 L 650 134 L 700 132 L 740 130"
+                fill="none" stroke="#ff8f0b" stroke-width="2" stroke-dasharray="0"/>
+              <!-- End dots -->
+              <circle cx="740" cy="55" r="4" fill="#81deb0"/>
+              <circle cx="740" cy="80" r="4" fill="#0d9488"/>
+              <circle cx="740" cy="130" r="4" fill="#ff8f0b"/>
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#81deb0"></span> Revenue 收入</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#0d9488"></span> Earnings 净收益（扣激励）</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#ff8f0b"></span> Expenses 运营支出</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:14px;">Revenue 来源拆解（24h）</div>
+            <svg viewBox="0 0 760 60" width="100%" height="60">
+              <!-- single stacked bar showing revenue composition -->
+              <rect x="50" y="20" width="365" height="30" fill="#216c58"/>
+              <rect x="415" y="20" width="178" height="30" fill="#0d9488"/>
+              <rect x="593" y="20" width="78" height="30" fill="#5fc693"/>
+              <rect x="671" y="20" width="69" height="30" fill="#81deb0"/>
+              <!-- labels -->
+              <text x="232" y="40" text-anchor="middle" fill="white" font-size="12" font-weight="600">稳定费 52.8%</text>
+              <text x="504" y="40" text-anchor="middle" fill="white" font-size="11" font-weight="600">PSM Fee 25.7%</text>
+              <text x="632" y="40" text-anchor="middle" fill="#0c0c0e" font-size="10" font-weight="600">SA 11.3%</text>
+              <text x="705" y="40" text-anchor="middle" fill="#0c0c0e" font-size="10" font-weight="600">清算 10%</text>
+            </svg>
+            <table class="data-table" style="margin-top:10px;">
+              <tr><th>来源</th><th class="num">24h Revenue</th><th class="num">占比</th><th class="num">7D 累计</th><th class="num">30D 累计</th></tr>
+              <tr><td><span style="color:#216c58">■</span> 稳定费（Vault）</td><td class="num">$65.9K</td><td class="num">52.8%</td><td class="num">$432K</td><td class="num">$1.84M</td></tr>
+              <tr><td><span style="color:#0d9488">■</span> PSM Fee</td><td class="num">$32.1K</td><td class="num">25.7%</td><td class="num">$226K</td><td class="num">$894K</td></tr>
+              <tr><td><span style="color:#5fc693">■</span> Smart Allocator Earnings</td><td class="num">$14.1K</td><td class="num">11.3%</td><td class="num">$98K</td><td class="num">$415K</td></tr>
+              <tr><td><span style="color:#81deb0">■</span> 清算收入（chop 分润）</td><td class="num">$12.7K</td><td class="num">10.2%</td><td class="num">$54K</td><td class="num">$152K</td></tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================== RIGHT SPEC ===================== -->
+  <aside class="spec">
+
+    <!-- ===== CR spec ===== -->
+    <div class="spec-section-block active" id="spec-cr">
+      <h3>① CR 规范文档</h3>
+
+      <div class="spec-block">
+        <div class="spec-row"><div class="k">i18n key</div><div class="v"><code>data.overview.kpi.cr</code></div></div>
+        <div class="spec-row"><div class="k">页面</div><div class="v">Data / Overview 顶部</div></div>
+        <div class="spec-row"><div class="k">刷新</div><div class="v">每分钟</div></div>
+        <div class="spec-row"><div class="k">数据源</div><div class="v">Vat.urns + Spot.pip + PSM.gemBalance + SA NAV</div></div>
+      </div>
+
+      <div class="spec-block">
+        <h3>计算公式</h3>
+        <div class="spec-rule">
+          <strong>CR =</strong> [Σ(Vault.ink × pip) + Σ(PSM 储备 USD) + SA NAV] ÷ Σ(USDD totalSupply − 桥锁仓)
+        </div>
+      </div>
+
+      <div class="spec-block">
+        <h3>子状态联动</h3>
+        <ul>
+          <li>CR ≥ 200% → <strong style="color:var(--success)">Healthy</strong> 绿色徽章</li>
+          <li>150% ≤ CR &lt; 200% → <strong style="color:var(--info)">Stable</strong> 蓝色徽章</li>
+          <li>110% ≤ CR &lt; 150% → <strong style="color:var(--warning)">Warning</strong> 黄色徽章 + 风控群告警</li>
+          <li>CR &lt; 110% → <strong style="color:var(--danger)">Critical</strong> 红色徽章 + On-Call 紧急告警</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>陷阱 / 注意</h3>
+        <ul>
+          <li>价格用 OSM（带 1h hop），不是 median price，tooltip 必须明示</li>
+          <li>跨链 USDD 必须减去桥锁仓避免重复计入</li>
+          <li>SA NAV 只计 realized + 持仓本金，不计 unrealized PnL</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== Collateral spec ===== -->
+    <div class="spec-section-block" id="spec-collateral">
+      <h3>② 抵押品结构占比规范</h3>
+      <div class="spec-block">
+        <div class="spec-row"><div class="k">i18n key</div><div class="v"><code>data.overview.collateral_composition</code></div></div>
+        <div class="spec-row"><div class="k">页面</div><div class="v">Data / Overview — CR 卡片下方</div></div>
+        <div class="spec-row"><div class="k">刷新</div><div class="v">每分钟（与 CR 同步）</div></div>
+        <div class="spec-row"><div class="k">数据源</div><div class="v">Vat.ilks.Art × pip / PSM.gemBalance / SA NAV</div></div>
+      </div>
+
+      <div class="spec-block">
+        <h3>计算公式</h3>
+        <div class="spec-rule">
+          对每个 asset 类别 c：<br>
+          <strong>占比[c] =</strong> Σ(c 类资产 USD 价值) / Total Collateral USD
+        </div>
+        <div class="spec-rule">
+          <strong>资产类别归并</strong>：<br>
+          • TRX 系 = TRX-A/B/C + sTRX-A<br>
+          • WBTC 系 = WBTC-A/B<br>
+          • 稳定币储备 = 各链 PSM 持有的 USDT + USDC<br>
+          • Smart Allocator = SA 全部 strategy NAV<br>
+          • 其他 = 上述外的所有 ilk
+        </div>
+      </div>
+
+      <div class="spec-block">
+        <h3>三种视图切换</h3>
+        <ul>
+          <li><strong>按资产类型</strong>（默认）：donut 5 段，最容易识别"过度依赖谁"</li>
+          <li><strong>按链</strong>：donut 4 段（TRON / ETH / BSC / BTTC），看链发行结构</li>
+          <li><strong>按 ilk</strong>：donut N 段，给研究员细粒度数据</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>子状态联动 / 告警</h3>
+        <ul>
+          <li>单一资产占比 ≥ 40% → 该段闪烁 warning 边框 + KPI 卡红色提示</li>
+          <li>单一资产占比 ≥ 60% → 风控群告警</li>
+          <li>稳定币储备占比 &lt; 15% → 锚定弹性预警（PSM 缓冲不足）</li>
+          <li>Donut 段点击 → 下钻到该类的详细组成（TRX 系 → TRX-A/B/C/sTRX-A 拆分）</li>
+          <li>历史曲线与 donut 联动：donut 选中某段，曲线对应高亮</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>陷阱 / 注意</h3>
+        <ul>
+          <li>SA 与 PSM 概念重叠：PSM 持有的 USDT 由 SA 投资部分 → 避免重复计入。建议口径：PSM 余额仅算"未投资 idle"部分，已投资部分归 SA</li>
+          <li>sTRX 应归入"TRX 系"而非独立类，因价格强相关（&gt; 0.95）</li>
+          <li>稳定币 PSM 储备按面值（1:1 USD）计，不按预言机价 — 避免 USDT 微脱锚污染数据</li>
+          <li>跨链同名资产合并：TRON-WBTC 与 ETH-WBTC 都归 "WBTC 系"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== PSM spec ===== -->
+    <div class="spec-section-block" id="spec-psm">
+      <h3>② PSM 净流量规范</h3>
+      <div class="spec-block">
+        <div class="spec-row"><div class="k">i18n key</div><div class="v"><code>data.overview.kpi.psm_net_flow</code></div></div>
+        <div class="spec-row"><div class="k">页面</div><div class="v">Data / Overview + Data / Chain</div></div>
+        <div class="spec-row"><div class="k">数据源</div><div class="v">DssPsm.SellGem + DssPsm.BuyGem 事件</div></div>
+        <div class="spec-row"><div class="k">PSM 实例</div><div class="v">TRON PSM-USDT-A / ETH PSM-USDT / BSC PSM-USDT</div></div>
+      </div>
+
+      <div class="spec-block">
+        <h3>计算公式</h3>
+        <div class="spec-rule">
+          <strong>Net Flow =</strong> Σ_chain Σ_psm (SellGem value − BuyGem value) over window
+        </div>
+        <div class="spec-rule">
+          <strong>方向解读</strong>：正值 = Mint 主导（USDD 需求增长） / 负值 = Redeem 主导（赎回压力）
+        </div>
+      </div>
+
+      <div class="spec-block">
+        <h3>子状态联动</h3>
+        <ul>
+          <li>24h 净流量正负切换 → KPI 数字颜色切换</li>
+          <li>柱状图正值用 brand 绿色系，负值用 warning 橙色</li>
+          <li>单链单日净流出 &gt; 50M → 风控群告警 + 在该链 KPI 卡显示 ⚠️</li>
+          <li>Tab 切换 24h/7d/30d → 同步更新主图时间窗与表格</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>陷阱 / 注意</h3>
+        <ul>
+          <li>USDT decimal = 6, USDC = 6, DAI = 18 — 跨链汇总必须归一化</li>
+          <li>桥转出不算 PSM 净流量</li>
+          <li>SellGem value 是否含 fee 需链上确认</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== Health spec ===== -->
+    <div class="spec-section-block" id="spec-health">
+      <h3>③ 仓位健康度分布规范</h3>
+      <div class="spec-block">
+        <div class="spec-row"><div class="k">i18n key</div><div class="v"><code>data.chain.health_distribution</code></div></div>
+        <div class="spec-row"><div class="k">页面</div><div class="v">Data / Chain + Collateral Detail</div></div>
+        <div class="spec-row"><div class="k">数据源</div><div class="v">遍历 Vat.urns + Spot.mat + 实时 oracle</div></div>
+        <div class="spec-row"><div class="k">前置依赖</div><div class="v">需先建 CDP urn indexer</div></div>
+      </div>
+
+      <div class="spec-block">
+        <h3>计算公式</h3>
+        <div class="spec-rule">
+          <strong>health =</strong> (urn.ink × pip_price) / (urn.art × rate × Spot.ilks[i].mat)
+        </div>
+        <div class="spec-rule">
+          <strong>说明：</strong>health = 1 即将被清算；&lt; 1 已可被 Keeper 触发
+        </div>
+      </div>
+
+      <div class="spec-block">
+        <h3>分桶规则</h3>
+        <ul>
+          <li>🔴 health &lt; 1.05 — danger，红色</li>
+          <li>🟠 1.05 ≤ health &lt; 1.20 — warning，橙色</li>
+          <li>🟡 1.20 ≤ health &lt; 1.50 — info，青色</li>
+          <li>🟢 health ≥ 1.50 — success，绿色</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>子状态联动</h3>
+        <ul>
+          <li>切换"按债务额 / 按 Vault 数"时主图重排，颜色不变</li>
+          <li>点击桶 → 展开 Top 20 CDP 表格（urn 地址、抵押品、债务、health）</li>
+          <li>🔴 桶债务占比 &gt; 10% → 风控群告警；&gt; 20% → 紧急</li>
+          <li>PSM Vault 不参与该指标（1:1 锚定无清算价）</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>陷阱 / 注意</h3>
+        <ul>
+          <li>多 ilk LR 不同（TRX-A 175% / TRX-B 130%），必须先按 ilk 计算再聚合</li>
+          <li>sTRX 价格 = TRX × staking 兑换率，需用复合预言机</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== DaR spec ===== -->
+    <div class="spec-section-block" id="spec-dar">
+      <h3>④ Debt at Risk 规范</h3>
+      <div class="spec-block">
+        <div class="spec-row"><div class="k">i18n key</div><div class="v"><code>data.overview.debt_at_risk</code></div></div>
+        <div class="spec-row"><div class="k">页面</div><div class="v">Overview + Collateral Detail</div></div>
+        <div class="spec-row"><div class="k">数据源</div><div class="v">复用 ③ 健康度遍历结果 + 价格冲击模拟</div></div>
+      </div>
+
+      <div class="spec-block">
+        <h3>计算公式</h3>
+        <div class="spec-rule">
+          对每个冲击 s ∈ {-5%, -10%, -20%, -30%}：<br>
+          <strong>DaR[s] =</strong> Σ {urn.art × rate | (urn.ink × pip × (1+s)) / (urn.art × rate) &lt; mat}
+        </div>
+      </div>
+
+      <div class="spec-block">
+        <h3>冲击模式</h3>
+        <ul>
+          <li><strong>全市场冲击</strong>：所有非稳定币抵押品同跌 — Overview 默认</li>
+          <li><strong>单资产冲击</strong>：仅指定资产下跌 — Collateral Detail 默认</li>
+          <li><strong>关联冲击</strong>：TRX → sTRX 联动跌 — 高级模式</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>子状态联动</h3>
+        <ul>
+          <li>-20% DaR &gt; 总债务 30% → 风控介入</li>
+          <li>-30% DaR &gt; 总债务 50% → 系统性风险告警</li>
+          <li>Tab 切换冲击模式 → 主曲线重算，不切场景 KPI 卡数字</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>陷阱 / 注意</h3>
+        <ul>
+          <li>稳定币 PSM 不在 DaR 范畴（peg risk 是另一类）</li>
+          <li>DaR 是"进入清算的债务"，不等于"坏账"。坏账 = DaR × (1 − 拍卖回收率)</li>
+          <li>预言机 OSM hop 延迟需在 tooltip 明示</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== Revenue spec ===== -->
+    <div class="spec-section-block" id="spec-rev">
+      <h3>⑤ 实时 Revenue 规范</h3>
+      <div class="spec-block">
+        <div class="spec-row"><div class="k">i18n key</div><div class="v"><code>treasury.realtime</code></div></div>
+        <div class="spec-row"><div class="k">页面</div><div class="v">USDD Treasury 顶部</div></div>
+        <div class="spec-row"><div class="k">数据源</div><div class="v">链上事件 indexer + 链下国库账本</div></div>
+      </div>
+
+      <div class="spec-block">
+        <h3>Revenue 公式</h3>
+        <div class="spec-rule">
+          <strong>Revenue =</strong> 稳定费 (jug.drip 切片) + PSM fee + 清算 chop 分润 + SA realized yield
+        </div>
+        <div class="spec-rule">
+          <strong>Earnings =</strong> Revenue − Keeper tip/chip − sUSDD 利息支出
+        </div>
+        <div class="spec-rule">
+          <strong>Net Profit =</strong> Earnings − Expenses（链下国库支出）
+        </div>
+      </div>
+
+      <div class="spec-block">
+        <h3>子状态联动</h3>
+        <ul>
+          <li>Net Profit &gt; 0 → 绿色 + "盈利" badge；&lt; 0 → 红色 + "亏损" badge</li>
+          <li>Tab 切换 7D/30D/90D → 主图时间窗 + 全局 Time Range Picker 联动</li>
+          <li>Revenue stacked bar 鼠标 hover → 显示具体数值</li>
+          <li>来源拆解表行 → 可点击下钻 Accounting Events 明细</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h3>陷阱 / 注意</h3>
+        <ul>
+          <li>稳定费按 jug.drip time slice 摊平，不能一次性显示突增</li>
+          <li>SA earnings 只计 realized，unrealized 在 SA 页单独展示</li>
+          <li>Expenses 链下数据有 T+1 延迟，tooltip 标注</li>
+          <li>跨链 4 链分别 indexer + 全局汇总</li>
+        </ul>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+  // === Nav switching ===
+  const items = document.querySelectorAll('.nav-item');
+  const panels = document.querySelectorAll('.panel');
+  const specs = document.querySelectorAll('.spec-section-block');
+  const urlBar = document.getElementById('url-bar');
+  const urlMap = {
+    cr: 'https://usdd.io/data',
+    collateral: 'https://usdd.io/data',
+    psm: 'https://usdd.io/data',
+    health: 'https://usdd.io/data/tron',
+    dar: 'https://usdd.io/data',
+    rev: 'https://usdd.io/treasury'
+  };
+
+  items.forEach(it => {
+    it.addEventListener('click', () => {
+      const target = it.dataset.target;
+      items.forEach(x => x.classList.remove('active'));
+      it.classList.add('active');
+      panels.forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + target).classList.add('active');
+      specs.forEach(s => s.classList.remove('active'));
+      document.getElementById('spec-' + target).classList.add('active');
+      urlBar.textContent = urlMap[target] || '';
+    });
+  });
+
+  // === Generate PSM stacked bars dynamically ===
+  const psmBars = document.getElementById('psm-bars');
+  if (psmBars) {
+    // 30 days, mock pattern: first 10 positive, then 8 mixed, last 12 negative trend
+    const data = [
+      // [tron, eth, bsc, redeem] each in % of bar height (max ±60 px)
+      [12,3,1,0],[14,2,2,0],[10,4,1,0],[16,3,2,0],[18,5,3,0],
+      [11,2,1,0],[9,3,0,0],[15,4,2,0],[12,3,1,0],[13,5,2,0],
+      [8,2,1,5],[5,1,0,8],[3,0,1,12],[0,0,0,18],[2,1,0,15],
+      [1,0,0,22],[4,2,1,9],[6,3,1,4],[2,0,0,16],[1,0,0,24],
+      [0,0,0,28],[2,1,0,18],[5,2,1,8],[3,1,0,14],[1,0,0,21],
+      [0,0,0,26],[2,0,0,22],[6,3,2,5],[10,4,2,1],[14,3,2,0]
+    ];
+    const zeroY = 120; // baseline
+    const colors = ['#81deb0','#5fc693','#448f6a','#ff8f0b'];
+    let html = '';
+    data.forEach((d, i) => {
+      const x = 55 + i * 22.5;
+      const w = 16;
+      // positive stacked above zeroY
+      let acc = 0;
+      for (let j = 0; j < 3; j++) {
+        if (d[j] > 0) {
+          const h = d[j] * 2.4; // scale
+          html += `<rect x="${x}" y="${zeroY - acc - h}" width="${w}" height="${h}" fill="${colors[j]}"/>`;
+          acc += h;
+        }
+      }
+      // negative below zeroY
+      if (d[3] > 0) {
+        const h = d[3] * 2.4;
+        html += `<rect x="${x}" y="${zeroY}" width="${w}" height="${h}" fill="${colors[3]}"/>`;
+      }
+    });
+    psmBars.innerHTML = html;
+  }
+
+  // === Generate Donut chart for collateral composition ===
+  const donutSegs = document.getElementById('donut-segs');
+  if (donutSegs) {
+    const cx = 180, cy = 160, R = 100, r = 60;
+    const segments = [
+      { pct: 46.2, color: '#216c58', label: 'TRX 系' },
+      { pct: 24.0, color: '#0d9488', label: '稳定币' },
+      { pct: 18.4, color: '#5fc693', label: 'WBTC 系' },
+      { pct: 9.6,  color: '#81deb0', label: 'SA' },
+      { pct: 1.8,  color: '#448f6a', label: '其他' }
+    ];
+    let acc = 0;
+    let svg = '';
+    segments.forEach((s, i) => {
+      const a1 = (acc / 100) * 2 * Math.PI - Math.PI / 2;
+      const a2 = ((acc + s.pct) / 100) * 2 * Math.PI - Math.PI / 2;
+      acc += s.pct;
+      const large = s.pct > 50 ? 1 : 0;
+      const p1 = [cx + R * Math.cos(a1), cy + R * Math.sin(a1)];
+      const p2 = [cx + R * Math.cos(a2), cy + R * Math.sin(a2)];
+      const p3 = [cx + r * Math.cos(a2), cy + r * Math.sin(a2)];
+      const p4 = [cx + r * Math.cos(a1), cy + r * Math.sin(a1)];
+      const path = `M ${p1[0].toFixed(2)} ${p1[1].toFixed(2)} A ${R} ${R} 0 ${large} 1 ${p2[0].toFixed(2)} ${p2[1].toFixed(2)} L ${p3[0].toFixed(2)} ${p3[1].toFixed(2)} A ${r} ${r} 0 ${large} 0 ${p4[0].toFixed(2)} ${p4[1].toFixed(2)} Z`;
+      // label at middle of arc, slightly outside
+      const mid = (a1 + a2) / 2;
+      const lx = cx + (R + 18) * Math.cos(mid);
+      const ly = cy + (R + 18) * Math.sin(mid);
+      svg += `<path d="${path}" fill="${s.color}" stroke="#181a1c" stroke-width="2"/>`;
+      if (s.pct >= 5) {
+        svg += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" fill="${s.color}" font-size="11" font-weight="600">${s.label} ${s.pct}%</text>`;
+      }
+    });
+    // warning ring overlay on TRX (first segment) — pulsing border
+    donutSegs.innerHTML = svg;
+  }
+
+  // === Generate stacked area for collateral history ===
+  const stackArea = document.getElementById('stack-area-coll');
+  if (stackArea) {
+    // 13 sample points across 90 days
+    // Each: [trx, stab, wbtc, sa, other] percentages summing to 100
+    const series = [
+      [41.0, 28.0, 18.0, 11.0, 2.0],
+      [41.6, 27.6, 18.1, 10.7, 2.0],
+      [42.1, 27.2, 18.0, 10.7, 2.0],
+      [42.5, 26.8, 18.2, 10.5, 2.0],
+      [43.0, 26.4, 18.1, 10.5, 2.0],
+      [43.6, 26.0, 18.2, 10.3, 1.9],
+      [44.0, 25.7, 18.3, 10.1, 1.9],
+      [44.4, 25.4, 18.3, 10.0, 1.9],
+      [44.9, 25.0, 18.4, 9.9, 1.8],
+      [45.3, 24.7, 18.3, 9.9, 1.8],
+      [45.6, 24.5, 18.4, 9.7, 1.8],
+      [45.9, 24.2, 18.4, 9.7, 1.8],
+      [46.2, 24.0, 18.4, 9.6, 1.8]
+    ];
+    const colors = ['#216c58', '#0d9488', '#5fc693', '#81deb0', '#448f6a'];
+    const x0 = 50, x1 = 740, y0 = 200, h = 160; // 0% at y=200, 100% at y=40
+    const n = series.length;
+    const xs = series.map((_, i) => x0 + (x1 - x0) * i / (n - 1));
+    const yFor = (cum) => y0 - (cum / 100) * h;
+
+    let cumPrev = new Array(n).fill(0);
+    let svg = '';
+    for (let k = 0; k < 5; k++) {
+      // upper boundary = cumPrev + series[i][k]
+      const cumCur = series.map((s, i) => cumPrev[i] + s[k]);
+      // build polygon: lower curve (cumPrev) left->right, then upper curve (cumCur) right->left
+      let lower = '', upper = '';
+      for (let i = 0; i < n; i++) {
+        lower += (i === 0 ? `M ${xs[i]} ${yFor(cumPrev[i])} ` : `L ${xs[i]} ${yFor(cumPrev[i])} `);
+      }
+      for (let i = n - 1; i >= 0; i--) {
+        upper += `L ${xs[i]} ${yFor(cumCur[i])} `;
+      }
+      const d = lower + upper + 'Z';
+      svg += `<path d="${d}" fill="${colors[k]}" opacity="0.85"/>`;
+      cumPrev = cumCur;
+    }
+    stackArea.innerHTML = svg;
+  }
+</script>
+</body>
+</html>
