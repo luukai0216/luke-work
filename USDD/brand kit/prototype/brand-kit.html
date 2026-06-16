@@ -798,6 +798,33 @@
   }
   .section-action:hover { background: var(--color-fill-hover); color: var(--color-text-primary); border-color: var(--color-border-strong); }
 
+  /* ---- Download button: loading / done feedback ---- */
+  .is-loading,
+  .is-done {
+    pointer-events: none;          /* 防止重复点击 */
+  }
+  .is-loading { opacity: 0.88; }
+  .btn-primary.is-done { background: var(--color-brand-hover); }
+  .section-action.is-done {
+    color: var(--color-brand-default);
+    border-color: var(--color-brand-default);
+  }
+  .btn-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: btn-spin 0.6s linear infinite;
+  }
+  @keyframes btn-spin { to { transform: rotate(360deg); } }
+  .btn-check { animation: btn-check-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes btn-check-pop {
+    from { transform: scale(0.4); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
   /* ================ Logo Grid ================ */
   .logo-grid {
     display: grid;
@@ -2170,8 +2197,54 @@
     });
   });
 
+  // ---- ZIP download buttons: "Preparing…" → "Download started" feedback ----
+  // 注：这是原型演示，用定时器模拟打包/下载耗时。
+  // 真实接入时：点击即进入 loading，待下载真正开始(或文件就绪)再切换到 done。
+  document.querySelectorAll('a[data-track-format="zip"]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      // 已在反馈过程中则忽略，防止重复触发
+      if (btn.classList.contains('is-loading') || btn.classList.contains('is-done')) return;
+
+      const label = btn.textContent.trim();
+      const name = label.replace(/^Download\s+/i, '').replace(/\s*\(\.zip\)\s*$/i, '');
+
+      trackEvent('brand_kit_download_click', {
+        asset_type: btn.getAttribute('data-track-asset') || 'unknown',
+        format: 'zip',
+        section: btn.closest('section[id]')?.id || 'global',
+        label: label.slice(0, 40)
+      });
+
+      // 记住原始内容（含文案 + 下载图标），结束后还原
+      if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
+      const original = btn.dataset.originalHtml;
+
+      // ① 准备中
+      btn.classList.add('is-loading');
+      btn.setAttribute('aria-busy', 'true');
+      btn.innerHTML = 'Preparing…<span class="btn-spinner" aria-hidden="true"></span>';
+
+      // ② 下载已开始（模拟打包耗时 ~1.4s）
+      setTimeout(() => {
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-done');
+        btn.innerHTML = 'Download started<svg class="btn-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+        showToast('Download started · ' + name);
+
+        // ③ 复位
+        setTimeout(() => {
+          btn.classList.remove('is-done');
+          btn.removeAttribute('aria-busy');
+          btn.innerHTML = original;
+        }, 1400);
+      }, 1400);
+    });
+  });
+
   // ---- Placeholder links: prevent jump + show "Coming soon" toast + track ----
-  document.querySelectorAll('a[href="#"], a[href=""]').forEach(a => {
+  // (排除 .zip 下载按钮，它们由下方专门的 loading 反馈处理)
+  document.querySelectorAll('a[href="#"]:not([data-track-format="zip"]), a[href=""]:not([data-track-format="zip"])').forEach(a => {
     a.setAttribute('aria-disabled', 'true');
     a.setAttribute('title', 'Coming soon — link is being prepared');
     a.addEventListener('click', e => {
