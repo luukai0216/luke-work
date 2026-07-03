@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>点阵 / 字符 动效编辑器</title>
+<style>
+  :root {
+    --panel-bg: rgba(20, 20, 22, 0.86);
+    --panel-border: rgba(255, 255, 255, 0.10);
+    --text: rgba(255, 255, 255, 0.92);
+    --text-dim: rgba(255, 255, 255, 0.45);
+    --accent: #35d07f;
+    --accent-dim: rgba(53, 208, 127, 0.18);
+    --track: rgba(255, 255, 255, 0.10);
+    --field: rgba(255, 255, 255, 0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #0c0c0e;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: var(--text);
+  }
+
+  #stage {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #view {
+    display: block;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border-radius: 6px;
+  }
+
+  /* ---- drop hint ---- */
+  #dropHint {
+    position: fixed; inset: 0; z-index: 5;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; opacity: 0; transition: opacity .2s;
+  }
+  #dropHint.show { opacity: 1; }
+  #dropHint .box {
+    padding: 40px 60px; border: 2px dashed var(--accent);
+    border-radius: 20px; background: rgba(53,208,127,0.08);
+    font-size: 18px; color: var(--accent);
+  }
+
+  #empty {
+    position: fixed; inset: 0; z-index: 3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px; text-align: center; color: var(--text-dim); pointer-events: none;
+  }
+  #empty.hide { display: none; }
+  #empty h1 { font-size: 22px; color: var(--text); font-weight: 600; }
+  #empty p { font-size: 14px; }
+  #empty .btn { pointer-events: auto; }
+
+  /* ---- panel ---- */
+  #panel {
+    position: fixed; top: 18px; right: 18px; width: 306px;
+    max-height: calc(100vh - 36px); overflow-y: auto;
+    background: var(--panel-bg); backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--panel-border); border-radius: 16px;
+    padding: 16px 16px 20px; z-index: 10;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s;
+  }
+  #panel.collapsed { transform: translateX(calc(100% + 30px)); opacity: 0; }
+  #panel::-webkit-scrollbar { width: 8px; }
+  #panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 8px; }
+
+  .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .head .title { font-size: 14px; font-weight: 600; letter-spacing: .3px; }
+  .head .title small { display:block; font-weight:400; color: var(--text-dim); font-size: 11px; margin-top:2px; }
+
+  .group { border-top: 1px solid rgba(255,255,255,.07); padding-top: 12px; margin-top: 12px; }
+  .group:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .group > .glabel { font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--text-dim); margin-bottom: 10px; }
+
+  .row { margin-bottom: 12px; }
+  .row:last-child { margin-bottom: 0; }
+  .row label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text); margin-bottom: 6px; }
+  .row label .val { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 4px; border-radius: 4px;
+    background: var(--track); outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 2px solid #0c0c0e;
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  select, input[type=text] {
+    width: 100%; background: var(--field); border: 1px solid var(--panel-border);
+    color: var(--text); border-radius: 8px; padding: 7px 9px; font-size: 12px; outline: none;
+    font-family: inherit;
+  }
+  select:focus, input[type=text]:focus { border-color: var(--accent); }
+
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; background: var(--field); padding: 3px; border-radius: 9px; }
+  .seg button {
+    border: none; background: transparent; color: var(--text-dim); font-size: 12px;
+    padding: 6px 4px; border-radius: 7px; cursor: pointer; font-family: inherit; transition: .15s;
+  }
+  .seg button.active { background: var(--accent); color: #06120b; font-weight: 600; }
+
+  .colorrow { display: flex; align-items: center; gap: 8px; }
+  .colorrow input[type=color] {
+    -webkit-appearance: none; width: 34px; height: 30px; border: 1px solid var(--panel-border);
+    border-radius: 8px; background: none; cursor: pointer; padding: 0;
+  }
+  .colorrow input[type=color]::-webkit-color-swatch-wrapper { padding: 3px; }
+  .colorrow input[type=color]::-webkit-color-swatch { border: none; border-radius: 5px; }
+  .colorrow .code { font-size: 11px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+  .switch { display: flex; align-items: center; justify-content: space-between; }
+  .switch span { font-size: 12px; }
+  .toggle { position: relative; width: 38px; height: 22px; border-radius: 22px; background: var(--track); cursor: pointer; transition: .2s; flex: none; }
+  .toggle.on { background: var(--accent); }
+  .toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: .2s; }
+  .toggle.on::after { transform: translateX(16px); }
+
+  .btn {
+    width: 100%; border: 1px solid var(--panel-border); background: var(--field);
+    color: var(--text); border-radius: 9px; padding: 9px; font-size: 12px; cursor: pointer;
+    font-family: inherit; transition: .15s;
+  }
+  .btn:hover { background: rgba(255,255,255,.12); }
+  .btn.primary { background: var(--accent); color: #06120b; border-color: var(--accent); font-weight: 600; }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.rec.active { background: #ff4d4f; border-color:#ff4d4f; color:#fff; }
+  .btnrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* floating toolbar bottom-left */
+  #dock {
+    position: fixed; left: 18px; bottom: 18px; z-index: 10;
+    display: flex; gap: 8px; align-items: center;
+    background: var(--panel-bg); backdrop-filter: blur(18px);
+    border: 1px solid var(--panel-border); border-radius: 12px; padding: 8px;
+  }
+  #dock button {
+    border: none; background: transparent; color: var(--text); cursor: pointer;
+    width: 38px; height: 38px; border-radius: 9px; font-size: 16px; transition: .15s;
+    display:flex; align-items:center; justify-content:center;
+  }
+  #dock button:hover { background: rgba(255,255,255,.1); }
+  #dock .sep { width:1px; height:22px; background: rgba(255,255,255,.12); }
+
+  #panelToggle {
+    position: fixed; top: 18px; right: 18px; z-index: 9;
+    width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--panel-border);
+    background: var(--panel-bg); color: var(--text); cursor: pointer; font-size: 18px;
+    display: none; align-items: center; justify-content: center;
+  }
+  #panel.collapsed ~ #panelToggle { display: flex; }
+
+  .hidden { display: none !important; }
+  .hint { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <div id="stage"><canvas id="view"></canvas></div>
+
+  <div id="empty">
+    <h1>点阵 / 字符 动效编辑器</h1>
+    <p>上传一张图片，生成会动的点阵或字符效果。拖拽图片到此处，或点击下方按钮。</p>
+    <button class="btn primary" style="width:auto;padding:10px 20px" onclick="document.getElementById('file').click()">选择图片</button>
+  </div>
+
+  <div id="dropHint"><div class="box">松开鼠标载入图片</div></div>
+
+  <input type="file" id="file" accept="image/*" class="hidden" />
+
+  <div id="panel">
+    <div class="head">
+      <div class="title">动效编辑器<small>Dot / Char Animator</small></div>
+      <button class="btn" style="width:auto;padding:5px 10px" id="collapseBtn">收起</button>
+    </div>
+
+    <div class="group">
+      <div class="glabel">渲染样式</div>
+      <div class="row">
+        <div class="seg" id="modeSeg">
+          <button data-mode="dot" class="active">圆点</button>
+          <button data-mode="square">方块</button>
+          <button data-mode="ring">圆环</button>
+          <button data-mode="char">字符</button>
+        </div>
+      </div>
+      <div class="row">
+        <label>密度（列数）<span class="val" id="densityVal">90</span></label>
+        <input type="range" id="density" min="20" max="220" value="90" />
+      </div>
+      <div class="row">
+        <label>点大小 / 字号<span class="val" id="scaleVal">1.00</span></label>
+        <input type="range" id="scale" min="0.1" max="1.8" step="0.01" value="1" />
+      </div>
+      <div class="row" id="charRow">
+        <label>字符集（暗 → 亮）</label>
+        <input type="text" id="charset" value="@%#*+=-:. " />
+        <div class="hint">越靠前的字符代表越暗的区域</div>
+      </div>
+      <div class="row switch">
+        <span>反相（亮暗对调）</span>
+        <div class="toggle" id="invert"></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">图像调节</div>
+      <div class="row">
+        <label>对比度<span class="val" id="contrastVal">1.00</span></label>
+        <input type="range" id="contrast" min="0.2" max="3" step="0.01" value="1" />
+      </div>
+      <div class="row">
+        <label>亮度<span class="val" id="brightVal">0</span></label>
+        <input type="range" id="bright" min="-120" max="120" step="1" value="0" />
+      </div>
+      <div class="row">
+        <label>阈值裁切<span class="val" id="thresholdVal">0</span></label>
+        <input type="range" id="threshold" min="0" max="0.6" step="0.01" value="0" />
+        <div class="hint">忽略亮度低于阈值的单元（留出空隙）</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">颜色</div>
+      <div class="row switch">
+        <span>使用图片原色</span>
+        <div class="toggle on" id="useImgColor"></div>
+      </div>
+      <div class="row" id="fgRow">
+        <label>前景色</label>
+        <div class="colorrow">
+          <input type="color" id="fg" value="#35d07f" />
+          <span class="code" id="fgCode">#35d07f</span>
+        </div>
+      </div>
+      <div class="row">
+        <label>背景色</label>
+        <div class="colorrow">
+          <input type="color" id="bg" value="#0c0c0e" />
+          <span class="code" id="bgCode">#0c0c0e</span>
+        </div>
+      </div>
+      <div class="row">
+        <label>背景不透明度<span class="val" id="bgAlphaVal">1.00</span></label>
+        <input type="range" id="bgAlpha" min="0" max="1" step="0.01" value="1" />
+        <div class="hint">调低可产生残影拖尾</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">动效</div>
+      <div class="row">
+        <label>动效类型</label>
+        <select id="anim">
+          <option value="none">静止</option>
+          <optgroup label="元素动效（点/字符各自变化）">
+            <option value="twinkle" selected>随机闪烁</option>
+            <option value="randpulse">随机脉动</option>
+            <option value="pulse">尺寸脉冲</option>
+            <option value="sizewave">尺寸波（对角扫描）</option>
+            <option value="ripplesize">涟漪脉动（不位移）</option>
+            <option value="reveal">明暗呼吸</option>
+            <option value="sparkle">闪现出现</option>
+            <option value="sweep">波扫点亮</option>
+            <option value="huecycle">颜色流转</option>
+            <option value="jitter">微抖（原地）</option>
+            <option value="charcycle">字符跳变</option>
+            <option value="charnoise">字符噪声</option>
+            <option value="glitch">故障 Glitch</option>
+          </optgroup>
+          <optgroup label="整体动效（移动画面）">
+            <option value="wave">波浪位移</option>
+            <option value="ripple">中心涟漪</option>
+            <option value="flow">流动漂移</option>
+            <option value="rotate">旋转 / 螺旋</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="row">
+        <label>速度<span class="val" id="speedVal">1.00</span></label>
+        <input type="range" id="speed" min="0" max="4" step="0.01" value="1" />
+      </div>
+      <div class="row">
+        <label>强度 / 振幅<span class="val" id="ampVal">1.00</span></label>
+        <input type="range" id="amp" min="0" max="3" step="0.01" value="1" />
+      </div>
+      <div class="row">
+        <label>波长 / 缩放<span class="val" id="freqVal">1.00</span></label>
+        <input type="range" id="freq" min="0.2" max="4" step="0.01" value="1" />
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="glabel">导出</div>
+      <div class="row btnrow">
+        <button class="btn" id="pngBtn">保存 PNG</button>
+        <button class="btn rec" id="recBtn">录制视频</button>
+      </div>
+      <div class="row btnrow">
+        <button class="btn" id="changeImgBtn">更换图片</button>
+        <button class="btn" id="resetBtn">重置参数</button>
+      </div>
+    </div>
+  </div>
+
+  <button id="panelToggle">⚙</button>
+
+  <div id="dock">
+    <button id="playBtn" title="播放 / 暂停">⏸</button>
+    <div class="sep"></div>
+    <button id="uploadBtn" title="上传图片">🖼</button>
+    <button id="pngDock" title="保存 PNG">💾</button>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  const canvas = document.getElementById("view");
+  const ctx = canvas.getContext("2d");
+  const fileInput = document.getElementById("file");
+  const emptyEl = document.getElementById("empty");
+  const dropHint = document.getElementById("dropHint");
+
+  // ---------- state ----------
+  const S = {
+    mode: "dot",
+    density: 90,
+    scale: 1,
+    charset: "@%#*+=-:. ",
+    invert: false,
+    contrast: 1,
+    bright: 0,
+    threshold: 0,
+    useImgColor: true,
+    fg: "#35d07f",
+    bg: "#0c0c0e",
+    bgAlpha: 1,
+    anim: "twinkle",
+    speed: 1,
+    amp: 1,
+    freq: 1,
+    playing: true,
+  };
+
+  const DEFAULTS = JSON.parse(JSON.stringify(S));
+
+  let img = null;            // source Image
+  let grid = null;           // sampled data {cols, rows, cw, ch, ox, oy, drawW, drawH, data:[{r,g,b,lum}]}
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let stageW = 0, stageH = 0;
+  let startTime = performance.now();
+
+  // ---------- canvas sizing ----------
+  function resize() {
+    stageW = window.innerWidth;
+    stageH = window.innerHeight;
+    // canvas fills viewport; image is fit inside with contain
+    canvas.width = Math.floor(stageW * dpr);
+    canvas.height = Math.floor(stageH * dpr);
+    canvas.style.width = stageW + "px";
+    canvas.style.height = stageH + "px";
+    if (img) sample();
+  }
+  window.addEventListener("resize", resize);
+
+  // ---------- sampling ----------
+  const tmp = document.createElement("canvas");
+  const tctx = tmp.getContext("2d", { willReadFrequently: true });
+
+  function sample() {
+    if (!img) return;
+    // compute contain rect within viewport (with padding)
+    const pad = 40;
+    const availW = stageW - pad * 2;
+    const availH = stageH - pad * 2;
+    const ir = img.width / img.height;
+    let drawW = availW, drawH = availW / ir;
+    if (drawH > availH) { drawH = availH; drawW = availH * ir; }
+    const ox = (stageW - drawW) / 2;
+    const oy = (stageH - drawH) / 2;
+
+    const cols = Math.max(4, Math.round(S.density));
+    const cw = drawW / cols;
+    const rows = Math.max(2, Math.round(drawH / cw));
+    const ch = drawH / rows;
+
+    tmp.width = cols; tmp.height = rows;
+    tctx.clearRect(0, 0, cols, rows);
+    tctx.drawImage(img, 0, 0, cols, rows);
+    const px = tctx.getImageData(0, 0, cols, rows).data;
+
+    const data = new Array(cols * rows);
+    for (let i = 0; i < cols * rows; i++) {
+      const r = px[i*4], g = px[i*4+1], b = px[i*4+2];
+      const lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+      data[i] = { r, g, b, lum };
+    }
+    grid = { cols, rows, cw, ch, ox, oy, drawW, drawH, data };
+  }
+
+  // ---------- helpers ----------
+  function hexToRgb(hex) {
+    const h = hex.replace("#", "");
+    return { r: parseInt(h.slice(0,2),16), g: parseInt(h.slice(2,4),16), b: parseInt(h.slice(4,6),16) };
+  }
+  function adjust(lum) {
+    // brightness then contrast around 0.5
+    let v = lum + S.bright/255;
+    v = (v - 0.5) * S.contrast + 0.5;
+    if (v < 0) v = 0; else if (v > 1) v = 1;
+    return v;
+  }
+  // cheap smooth pseudo-noise
+  function noise(x, y, t) {
+    return (Math.sin(x*12.9898 + y*78.233 + t) * 43758.5453) % 1;
+  }
+  function snoise(x, y, t) {
+    return Math.sin(x*0.9 + t) * Math.cos(y*1.1 - t*0.8)
+         + 0.5 * Math.sin((x+y)*0.6 + t*1.3);
+  }
+  // stable per-cell random in [0,1)
+  function hash01(n) { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+  const TAU = Math.PI * 2;
+
+  // hue rotation on an rgb color (deg)
+  function shiftHue(r, g, b, deg) {
+    if (!deg) return [r, g, b];
+    const a = (deg % 360) * Math.PI / 180;
+    const cos = Math.cos(a), sin = Math.sin(a);
+    // luma-preserving hue rotation matrix
+    const m = [
+      0.213 + cos*0.787 - sin*0.213, 0.715 - cos*0.715 - sin*0.715, 0.072 - cos*0.072 + sin*0.928,
+      0.213 - cos*0.213 + sin*0.143, 0.715 + cos*0.285 + sin*0.140, 0.072 - cos*0.072 - sin*0.283,
+      0.213 - cos*0.213 - sin*0.787, 0.715 - cos*0.715 + sin*0.715, 0.072 + cos*0.928 + sin*0.072,
+    ];
+    const nr = r*m[0] + g*m[1] + b*m[2];
+    const ng = r*m[3] + g*m[4] + b*m[5];
+    const nb = r*m[6] + g*m[7] + b*m[8];
+    return [
+      nr < 0 ? 0 : nr > 255 ? 255 : nr,
+      ng < 0 ? 0 : ng > 255 ? 255 : ng,
+      nb < 0 ? 0 : nb > 255 ? 255 : nb,
+    ];
+  }
+
+  // ---------- render ----------
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!grid) { drawBg(); return; }
+    const t = S.playing ? (now - startTime) / 1000 : lastT;
+    if (S.playing) lastT = t;
+    render(t);
+  }
+  let lastT = 0;
+
+  function drawBg() {
+    const bg = hexToRgb(S.bg);
+    if (S.bgAlpha >= 1) {
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.fillStyle = `rgb(${bg.r},${bg.g},${bg.b})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    } else {
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.fillStyle = `rgba(${bg.r},${bg.g},${bg.b},${S.bgAlpha})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  function render(t) {
+    drawBg();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const { cols, rows, cw, ch, ox, oy, data } = grid;
+    const cell = Math.min(cw, ch);
+    const fg = hexToRgb(S.fg);
+    const speed = S.speed, amp = S.amp, freq = S.freq;
+    const cxImg = ox + grid.drawW / 2;
+    const cyImg = oy + grid.drawH / 2;
+
+    const charset = S.charset.length ? S.charset : "@#=. ";
+    if (S.mode === "char") {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = `${Math.max(4, cell * S.scale * 1.35)}px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace`;
+    }
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const d = data[r * cols + c];
+        let lum = adjust(d.lum);
+        // intensity: how "filled" this cell is (dark = filled by default)
+        let inten = S.invert ? lum : (1 - lum);
+        if (inten <= S.threshold) continue;
+
+        let x = ox + (c + 0.5) * cw;
+        let y = oy + (r + 0.5) * ch;
+        let sizeFactor = 1;
+        let extraRot = 0;
+        let charShift = 0;
+        let alpha = 1;
+        let hueShift = 0;
+
+        const tt = t * speed;
+        const seed = r * cols + c;
+        const rnd = hash01(seed);          // stable per-cell 0..1
+        const rnd2 = hash01(seed + 9137);  // a second independent value
+
+        switch (S.anim) {
+          // ---------- per-element ----------
+          case "twinkle": {
+            // each cell flickers on its own rhythm/phase
+            const sp = 2 + rnd * 5;
+            const f = 0.5 + 0.5 * Math.sin(tt * sp + rnd2 * TAU);
+            alpha = 1 - amp * (1 - f) * 0.95;
+            sizeFactor = 1 - amp * (1 - f) * 0.4;
+            break;
+          }
+          case "randpulse": {
+            const sp = 0.6 + rnd * 2.2;
+            sizeFactor = 1 + Math.sin(tt * 2 * sp + rnd2 * TAU) * 0.65 * amp;
+            break;
+          }
+          case "pulse": {
+            sizeFactor = 1 + Math.sin(tt * 3 + (r + c) * 0.25 * freq) * 0.6 * amp;
+            break;
+          }
+          case "sizewave": {
+            const w = Math.sin((c + r) * 0.3 * freq - tt * 3);
+            sizeFactor = 1 + w * 0.7 * amp;
+            alpha = Math.max(0, Math.min(1, 0.55 + w * 0.45 * amp));
+            break;
+          }
+          case "ripplesize": {
+            const dx = x - cxImg, dy = y - cyImg;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            const w = Math.sin(dist * 0.05 * freq - tt * 3);
+            sizeFactor = 1 + w * 0.7 * amp;
+            alpha = Math.max(0, Math.min(1, 0.55 + w * 0.45 * amp));
+            break;
+          }
+          case "reveal": {
+            const pulse = 0.5 + 0.5 * Math.sin(tt * 2 + (r * 0.3 + c * 0.3) * freq);
+            alpha = Math.max(0, Math.min(1, pulse * amp + (1 - amp) * 0.6));
+            sizeFactor = 0.55 + pulse * 0.75;
+            break;
+          }
+          case "sparkle": {
+            const sp = 0.5 + rnd * 1.8;
+            let v = Math.sin(tt * sp + rnd2 * TAU);
+            v = v > 0 ? Math.pow(v, 3) : 0;   // sharp on-flashes
+            alpha = Math.min(1, (1 - amp) * 0.15 + v * (0.4 + amp));
+            sizeFactor = 0.3 + v * 1.2;
+            break;
+          }
+          case "sweep": {
+            // diagonal band of light travelling across the grid
+            const u = (c / cols + r / rows) * 0.5;
+            const pos = (tt * 0.18 * (0.5 + amp)) % 1;
+            let dd = Math.abs(u - pos);
+            dd = Math.min(dd, 1 - dd);
+            const band = Math.max(0, 1 - dd / (0.12 + 0.18 / freq));
+            alpha = Math.min(1, 0.12 + band * (0.5 + amp));
+            sizeFactor = 0.45 + band * 1.1;
+            break;
+          }
+          case "huecycle": {
+            hueShift = tt * 60 * (0.4 + amp) + (r + c) * 10 * freq;
+            break;
+          }
+          case "jitter": {
+            x += (hash01(seed + Math.floor(tt * 10) * 31) - 0.5) * cell * amp * 1.4;
+            y += (hash01(seed + Math.floor(tt * 10) * 57 + 3) - 0.5) * cell * amp * 1.4;
+            break;
+          }
+          case "charcycle": {
+            charShift = Math.floor((snoise(c * 0.5, r * 0.5, tt * 2) + 2) * amp * 2);
+            break;
+          }
+          case "charnoise": {
+            const step = Math.floor(tt * (2 + amp * 8));
+            charShift = Math.floor(hash01(seed * 1.7 + step * 13) * charset.length);
+            sizeFactor = 0.85 + hash01(seed + step) * 0.5 * amp;
+            break;
+          }
+          case "glitch": {
+            const gate = hash01(r * 3.13 + Math.floor(tt * 6));
+            if (gate > 0.82) {
+              x += (hash01(r + Math.floor(tt * 6)) - 0.5) * cell * amp * 8;
+              hueShift = 120 * (hash01(seed + Math.floor(tt * 6)) - 0.5) * amp;
+              alpha = 0.6 + 0.4 * hash01(seed);
+            }
+            const step = Math.floor(tt * 12);
+            charShift = (hash01(r * 7.1 + step) > 0.7) ? Math.floor(hash01(seed + step) * charset.length) : 0;
+            break;
+          }
+          // ---------- whole-grid ----------
+          case "wave": {
+            x += Math.sin(r * 0.35 * freq + tt * 2) * cell * amp * 0.9;
+            y += Math.cos(c * 0.35 * freq + tt * 2) * cell * amp * 0.9;
+            break;
+          }
+          case "ripple": {
+            const dx = x - cxImg, dy = y - cyImg;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            const w = Math.sin(dist * 0.03 * freq - tt * 3);
+            const nx = dist ? dx/dist : 0, ny = dist ? dy/dist : 0;
+            x += nx * w * cell * amp * 1.2;
+            y += ny * w * cell * amp * 1.2;
+            sizeFactor = 1 + w * 0.35 * amp;
+            break;
+          }
+          case "flow": {
+            x += snoise(c*0.2, r*0.2, tt) * cell * amp * 1.4 + Math.sin(tt + r*0.3*freq)*cell*amp;
+            y += Math.cos(tt*0.7 + c*0.2*freq) * cell * amp * 0.8;
+            break;
+          }
+          case "rotate": {
+            const dx = x - cxImg, dy = y - cyImg;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            const ang = Math.atan2(dy, dx) + tt * 0.6 * amp * (1 + dist*0.002*freq);
+            x = cxImg + Math.cos(ang) * dist;
+            y = cyImg + Math.sin(ang) * dist;
+            extraRot = tt * amp;
+            break;
+          }
+        }
+
+        // color
+        let cr, cg, cb;
+        if (S.useImgColor) { cr = d.r; cg = d.g; cb = d.b; }
+        else { cr = fg.r; cg = fg.g; cb = fg.b; }
+        if (hueShift) { const sh = shiftHue(cr, cg, cb, hueShift); cr = sh[0]|0; cg = sh[1]|0; cb = sh[2]|0; }
+        ctx.globalAlpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
+        const colStr = `rgb(${cr},${cg},${cb})`;
+
+        if (S.mode === "char") {
+          let idx = Math.floor(inten * (charset.length - 1));
+          idx = (idx + charShift) % charset.length;
+          if (idx < 0) idx += charset.length;
+          const chch = charset[charset.length - 1 - idx]; // map so dense chars at high intensity
+          ctx.fillStyle = colStr;
+          if (extraRot) {
+            ctx.save(); ctx.translate(x, y); ctx.rotate(extraRot); ctx.fillText(chch, 0, 0); ctx.restore();
+          } else {
+            ctx.fillText(chch, x, y);
+          }
+        } else {
+          const rad = inten * cell * 0.62 * S.scale * sizeFactor;
+          if (rad <= 0.2) continue;
+          ctx.fillStyle = colStr;
+          if (S.mode === "dot") {
+            ctx.beginPath();
+            ctx.arc(x, y, rad, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (S.mode === "square") {
+            if (extraRot) {
+              ctx.save(); ctx.translate(x,y); ctx.rotate(extraRot);
+              ctx.fillRect(-rad, -rad, rad*2, rad*2); ctx.restore();
+            } else {
+              ctx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+            }
+          } else if (S.mode === "ring") {
+            ctx.lineWidth = Math.max(0.6, rad * 0.4);
+            ctx.strokeStyle = colStr;
+            ctx.beginPath();
+            ctx.arc(x, y, Math.max(0.6, rad), 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // ---------- load image ----------
+  function loadImageFromFile(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      img = im;
+      emptyEl.classList.add("hide");
+      startTime = performance.now();
+      resize();
+    };
+    im.src = url;
+  }
+
+  fileInput.addEventListener("change", e => {
+    if (e.target.files[0]) loadImageFromFile(e.target.files[0]);
+  });
+
+  // drag & drop
+  window.addEventListener("dragover", e => { e.preventDefault(); dropHint.classList.add("show"); });
+  window.addEventListener("dragleave", e => { if (e.target === document.documentElement || e.clientX===0) dropHint.classList.remove("show"); });
+  window.addEventListener("drop", e => {
+    e.preventDefault(); dropHint.classList.remove("show");
+    const f = e.dataTransfer.files[0];
+    if (f) loadImageFromFile(f);
+  });
+  // paste
+  window.addEventListener("paste", e => {
+    const items = e.clipboardData?.items || [];
+    for (const it of items) {
+      if (it.type.startsWith("image/")) { loadImageFromFile(it.getAsFile()); break; }
+    }
+  });
+
+  // ---------- controls wiring ----------
+  function bindRange(id, key, disp, fmt) {
+    const el = document.getElementById(id);
+    const out = disp ? document.getElementById(disp) : null;
+    const update = () => {
+      S[key] = parseFloat(el.value);
+      if (out) out.textContent = fmt ? fmt(S[key]) : el.value;
+      if (["density","contrast","bright","threshold"].includes(key)) { if (key==="density") sample(); }
+    };
+    el.addEventListener("input", update);
+    update();
+  }
+  bindRange("density", "density", "densityVal", v => Math.round(v));
+  bindRange("scale", "scale", "scaleVal", v => v.toFixed(2));
+  bindRange("contrast", "contrast", "contrastVal", v => v.toFixed(2));
+  bindRange("bright", "bright", "brightVal", v => Math.round(v));
+  bindRange("threshold", "threshold", "thresholdVal", v => v.toFixed(2));
+  bindRange("bgAlpha", "bgAlpha", "bgAlphaVal", v => v.toFixed(2));
+  bindRange("speed", "speed", "speedVal", v => v.toFixed(2));
+  bindRange("amp", "amp", "ampVal", v => v.toFixed(2));
+  bindRange("freq", "freq", "freqVal", v => v.toFixed(2));
+
+  // density needs resample on change
+  document.getElementById("density").addEventListener("input", () => sample());
+
+  // mode segment
+  const charRow = document.getElementById("charRow");
+  document.querySelectorAll("#modeSeg button").forEach(b => {
+    b.addEventListener("click", () => {
+      document.querySelectorAll("#modeSeg button").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      S.mode = b.dataset.mode;
+      charRow.style.display = S.mode === "char" ? "" : "none";
+    });
+  });
+  charRow.style.display = "none";
+
+  document.getElementById("charset").addEventListener("input", e => { S.charset = e.target.value; });
+
+  // toggles
+  function bindToggle(id, key, onChange) {
+    const el = document.getElementById(id);
+    el.addEventListener("click", () => {
+      S[key] = !S[key];
+      el.classList.toggle("on", S[key]);
+      onChange && onChange();
+    });
+  }
+  bindToggle("invert", "invert");
+  bindToggle("useImgColor", "useImgColor", () => {
+    document.getElementById("fgRow").style.opacity = S.useImgColor ? .4 : 1;
+  });
+
+  // colors
+  function bindColor(id, key, codeId) {
+    const el = document.getElementById(id);
+    const code = document.getElementById(codeId);
+    el.addEventListener("input", () => { S[key] = el.value; code.textContent = el.value; });
+  }
+  bindColor("fg", "fg", "fgCode");
+  bindColor("bg", "bg", "bgCode");
+
+  // anim select
+  document.getElementById("anim").addEventListener("change", e => { S.anim = e.target.value; });
+
+  // panel collapse
+  const panel = document.getElementById("panel");
+  document.getElementById("collapseBtn").addEventListener("click", () => panel.classList.add("collapsed"));
+  document.getElementById("panelToggle").addEventListener("click", () => panel.classList.remove("collapsed"));
+
+  // play/pause
+  const playBtn = document.getElementById("playBtn");
+  function togglePlay() {
+    S.playing = !S.playing;
+    playBtn.textContent = S.playing ? "⏸" : "▶";
+    if (S.playing) startTime = performance.now() - lastT * 1000;
+  }
+  playBtn.addEventListener("click", togglePlay);
+  window.addEventListener("keydown", e => { if (e.code === "Space") { e.preventDefault(); togglePlay(); } });
+
+  // upload buttons
+  const openFile = () => fileInput.click();
+  document.getElementById("uploadBtn").addEventListener("click", openFile);
+  document.getElementById("changeImgBtn").addEventListener("click", openFile);
+
+  // PNG export
+  function savePNG() {
+    const a = document.createElement("a");
+    a.download = `dot-char-${Date.now()}.png`;
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  }
+  document.getElementById("pngBtn").addEventListener("click", savePNG);
+  document.getElementById("pngDock").addEventListener("click", savePNG);
+
+  // reset
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    Object.assign(S, JSON.parse(JSON.stringify(DEFAULTS)), { playing: S.playing });
+    // reflect into UI
+    const set = (id, v) => { const el = document.getElementById(id); if (el) { el.value = v; el.dispatchEvent(new Event("input")); } };
+    set("density", S.density); set("scale", S.scale); set("contrast", S.contrast);
+    set("bright", S.bright); set("threshold", S.threshold); set("bgAlpha", S.bgAlpha);
+    set("speed", S.speed); set("amp", S.amp); set("freq", S.freq);
+    set("charset", S.charset);
+    document.getElementById("anim").value = S.anim;
+    document.getElementById("fg").value = S.fg; document.getElementById("fgCode").textContent = S.fg;
+    document.getElementById("bg").value = S.bg; document.getElementById("bgCode").textContent = S.bg;
+    document.getElementById("invert").classList.toggle("on", S.invert);
+    document.getElementById("useImgColor").classList.toggle("on", S.useImgColor);
+    document.querySelectorAll("#modeSeg button").forEach(x => x.classList.toggle("active", x.dataset.mode === S.mode));
+    charRow.style.display = S.mode === "char" ? "" : "none";
+    sample();
+  });
+
+  // ---------- recording ----------
+  let recorder = null, chunks = [];
+  const recBtn = document.getElementById("recBtn");
+  recBtn.addEventListener("click", () => {
+    if (recorder && recorder.state === "recording") { recorder.stop(); return; }
+    if (!window.MediaRecorder) { alert("当前浏览器不支持录制"); return; }
+    const stream = canvas.captureStream(60);
+    let mime = "video/webm;codecs=vp9";
+    if (!MediaRecorder.isTypeSupported(mime)) mime = "video/webm";
+    try { recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 12_000_000 }); }
+    catch (err) { alert("无法开始录制：" + err.message); return; }
+    chunks = [];
+    recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    recorder.onstop = () => {
+      const blob = new Blob(chunks, { type: "video/webm" });
+      const a = document.createElement("a");
+      a.download = `dot-char-${Date.now()}.webm`;
+      a.href = URL.createObjectURL(blob);
+      a.click();
+      recBtn.classList.remove("active"); recBtn.textContent = "录制视频";
+    };
+    recorder.start();
+    recBtn.classList.add("active"); recBtn.textContent = "停止录制";
+  });
+
+  // ---------- boot ----------
+  resize();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

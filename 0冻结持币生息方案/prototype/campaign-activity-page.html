@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原型 · USDT 零冻结收益季 · REQ-01 · v2.5.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-brand-default: #216c58;
+  --color-brand-hover: #2a8c6c;
+  --color-brand-light: #5fc693;
+  --color-brand-highlight: #81deb0;
+  --color-bg-page: #0c0c0e;
+  --color-bg-section: #141615;
+  --color-bg-card: #181a1c;
+  --color-bg-elevated: #212426;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255,255,255,0.8);
+  --color-text-tertiary: rgba(255,255,255,0.6);
+  --color-success: #448f6a;
+  --color-warning: #ff8f0b;
+  --color-danger: #d73133;
+  --color-info: #0d9488;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #090a0b;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ═══ 三栏外壳 ═══ */
+.proto-shell {
+  display: flex;
+  height: 100vh;
+}
+
+/* ─── 左栏：场景导航 ─── */
+.scene-nav {
+  width: 212px;
+  min-width: 212px;
+  background: #0f1011;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nav-header {
+  padding: 18px 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-header .proto-meta {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 5px;
+}
+.nav-header .proto-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+.nav-header .proto-req {
+  margin-top: 5px;
+  font-size: 10.5px;
+  color: var(--color-brand-highlight);
+  background: rgba(33,108,88,0.15);
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+.scene-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 7px 16px;
+}
+
+.scene-group {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.28);
+  padding: 12px 8px 5px;
+}
+
+.scene-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 9px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  font-family: inherit;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s;
+  line-height: 1.3;
+}
+.scene-btn:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); }
+.scene-btn.active { background: rgba(33,108,88,0.18); color: var(--color-brand-highlight); }
+
+.scene-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.badge-tbd {
+  margin-left: auto;
+  font-size: 8.5px;
+  background: rgba(255,143,11,0.18);
+  color: var(--color-warning);
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* ─── 中栏：浏览器预览 ─── */
+.preview-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  background: #131415;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.browser-dots { display: flex; gap: 5px; }
+.browser-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red   { background: #ff5f57; }
+.dot-yel   { background: #febc2e; }
+.dot-grn   { background: #28c840; }
+
+.browser-url {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.4);
+}
+
+.browser-viewport {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg-page);
+}
+
+/* ─── USDD 页面样式 ─── */
+
+/* Nav */
+.u-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 60px;
+  padding: 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(12,12,14,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.u-logo {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+.u-logo span { color: var(--color-brand-highlight); }
+.u-menu { display: flex; gap: 24px; }
+.u-menu a {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+.u-menu a:hover { color: #fff; }
+.u-menu a.current { color: #fff; font-weight: 600; }
+.u-nav-right { display: flex; align-items: center; gap: 10px; }
+
+.btn-wallet-connect {
+  background: var(--color-brand-default);
+  color: #fff;
+  border: none;
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-wallet-connect:hover { background: var(--color-brand-hover); }
+
+.wallet-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-full);
+  padding: 5px 13px 5px 9px;
+  font-size: 12.5px;
+  color: #fff;
+}
+.wallet-chip-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+}
+
+/* Hero */
+.u-hero {
+  padding: 52px 80px 52px;
+  background: linear-gradient(145deg, #091a13 0%, #0c2219 45%, #101e19 100%);
+  position: relative;
+  overflow: hidden;
+}
+.u-hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(33,108,88,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.u-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 15%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(129,222,176,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-left { flex: 1; max-width: 580px; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(33,108,88,0.22);
+  border: 1px solid rgba(95,198,147,0.22);
+  border-radius: var(--radius-full);
+  padding: 4px 13px;
+  font-size: 11.5px;
+  color: var(--color-brand-highlight);
+  margin-bottom: 20px;
+}
+.hero-badge-pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand-highlight);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero-title {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero-title .hl { color: var(--color-brand-highlight); }
+
+.hero-subtitle {
+  font-size: 15px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  background: var(--color-brand-default);
+  color: #fff;
+  border: none;
+  padding: 13px 26px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--color-brand-hover); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.hero-proof {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+}
+.hero-proof b { color: rgba(255,255,255,0.75); }
+
+.hero-ended-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  background: rgba(215,49,51,0.1);
+  border: 1px solid rgba(215,49,51,0.2);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 13px;
+  color: #f87171;
+}
+
+/* Countdown */
+.countdown-wrap { text-align: center; }
+.cd-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 14px;
+}
+.cd-tiles {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.cd-tile {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  width: 72px;
+  padding: 13px 6px;
+  text-align: center;
+}
+.cd-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+.cd-unit {
+  font-size: 10px;
+  color: rgba(255,255,255,0.38);
+  margin-top: 5px;
+}
+.cd-dim { opacity: 0.25; }
+
+/* Dashboard section */
+.u-dashboard {
+  background: var(--color-bg-section);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 28px 80px;
+}
+.u-dashboard-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.db-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.db-card {
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+}
+.db-card-label {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+.db-card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+.db-card-unit {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  margin-left: 5px;
+}
+.db-card-sub {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 7px;
+  line-height: 1.4;
+}
+.db-card-sub.success { color: var(--color-success); }
+.db-card-sub.info { color: var(--color-info); }
+
+.btn-claim {
+  margin-top: 12px;
+  background: var(--color-brand-default);
+  color: #fff;
+  border: none;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-claim:hover { background: var(--color-brand-hover); }
+
+/* Connect prompt card */
+.connect-prompt {
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 30px 32px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.connect-prompt .cp-icon { font-size: 28px; margin-bottom: 12px; }
+.connect-prompt h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.connect-prompt p { font-size: 13.5px; color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.5; }
+
+/* Not eligible alert */
+.not-eligible-alert {
+  background: rgba(255,143,11,0.07);
+  border: 1px solid rgba(255,143,11,0.18);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.nea-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.nea-text { font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.55; }
+.nea-text strong { color: var(--color-warning); }
+
+/* Error state */
+.db-card.error .db-card-value { color: rgba(255,255,255,0.2); }
+.error-hint {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--color-danger);
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  height: 32px; width: 80%;
+  background: linear-gradient(90deg, var(--color-bg-elevated) 25%, rgba(255,255,255,0.06) 50%, var(--color-bg-elevated) 75%);
+  background-size: 200%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-sm);
+  margin-top: 6px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* Pillars */
+.u-pillars {
+  background: var(--color-bg-page);
+  padding: 44px 80px;
+}
+.section-head { text-align: center; margin-bottom: 28px; }
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.section-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.pillar-card {
+  background: var(--color-bg-section);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.pillar-card:hover {
+  border-color: rgba(33,108,88,0.35);
+  transform: translateY(-2px);
+}
+.pillar-icon { font-size: 28px; margin-bottom: 14px; }
+.pillar-title { font-size: 18px; font-weight: 700; margin-bottom: 9px; }
+.pillar-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+/* Stats */
+.u-stats {
+  background: var(--color-bg-section);
+  padding: 40px 80px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+.stat-val {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-brand-highlight);
+  margin-bottom: 7px;
+}
+.stat-lbl { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+/* Rules */
+.u-rules {
+  background: var(--color-bg-page);
+  padding: 40px 80px;
+}
+.rules-card {
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 28px 36px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.rule-row {
+  display: flex;
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.rule-row:last-child { border-bottom: none; padding-bottom: 0; }
+.rule-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(33,108,88,0.18);
+  color: var(--color-brand-highlight);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.rule-body { flex: 1; }
+.rule-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.rule-desc { font-size: 12.5px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+.rule-tbd {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--color-warning);
+  background: rgba(255,143,11,0.12);
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+/* Bottom CTA */
+.u-bottom-cta {
+  padding: 40px 80px;
+  text-align: center;
+  background: linear-gradient(145deg, #091a13, #0c2219);
+}
+.bcta-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+.bcta-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 28px;
+}
+
+/* Footer */
+.u-footer {
+  background: var(--color-bg-section);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 28px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.5); }
+.footer-logo span { color: var(--color-brand-highlight); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; }
+
+/* ─── 右栏：规范文档 ─── */
+.spec-panel {
+  width: 332px;
+  min-width: 332px;
+  background: #0f1011;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.spec-stickyhead {
+  padding: 14px 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: #0f1011;
+  flex-shrink: 0;
+}
+.spec-stickyhead .sh-meta {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.28);
+  margin-bottom: 5px;
+}
+.spec-stickyhead .sh-scene {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-brand-highlight);
+}
+
+.spec-body { flex: 1; overflow-y: auto; }
+
+.spec-sec {
+  padding: 13px 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.spec-sec-title {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.27);
+  margin-bottom: 9px;
+}
+
+/* i18n table */
+.i18n-table { width: 100%; border-collapse: collapse; }
+.i18n-table td { padding: 4px 0; vertical-align: top; }
+.i18n-key {
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 9.5px;
+  color: var(--color-brand-highlight);
+  padding-right: 8px;
+  white-space: nowrap;
+}
+.i18n-val {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+
+/* Business rules */
+.rule-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.rule-chip:last-child { border-bottom: none; }
+.rule-chip-id {
+  font-size: 9px;
+  font-family: monospace;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  background: rgba(33,108,88,0.18);
+  color: var(--color-brand-highlight);
+}
+.rule-chip-id.err { background: rgba(215,49,51,0.15); color: #f87171; }
+.rule-chip-id.warn { background: rgba(255,143,11,0.15); color: var(--color-warning); }
+.rule-chip-text {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.45;
+}
+
+/* State transitions */
+.transition-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  font-size: 10.5px;
+}
+.transition-item:last-child { margin-bottom: 0; }
+.t-from { color: rgba(255,255,255,0.4); }
+.t-arrow { color: rgba(255,255,255,0.2); margin: 0 4px; }
+.t-to { color: var(--color-brand-highlight); }
+.t-cond {
+  margin-top: 3px;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.28);
+}
+
+/* Tracking */
+.track-item {
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.38);
+  padding: 3px 0;
+  line-height: 1.4;
+}
+
+/* TBD items */
+.tbd-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 4px 0;
+}
+.tbd-badge {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(255,143,11,0.15);
+  color: var(--color-warning);
+  flex-shrink: 0;
+}
+.tbd-text {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+/* Hero inline swap bar */
+.hero-swap-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+}
+.hsb-field {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hsb-token {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hsb-icon {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+.hsb-sep { width: 1px; height: 22px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+.hsb-amount {
+  flex: 1;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.22);
+}
+.hsb-bal {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.38);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hsb-arrow { color: rgba(255,255,255,0.3); font-size: 18px; flex-shrink: 0; }
+.hsb-btn {
+  background: var(--color-brand-default);
+  color: #fff;
+  border: none;
+  padding: 14px 26px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.hsb-btn:hover { background: var(--color-brand-hover); }
+.hero-swap-meta {
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.hero-swap-meta b { color: rgba(129,222,176,0.65); }
+
+/* Claim history */
+.u-claim-history {
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-md);
+  padding: 0;
+  margin-top: 12px;
+  max-height: 212px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.ch-head {
+  padding: 14px 20px 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.ch-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0 20px 10px;
+}
+.ch-scroll::-webkit-scrollbar { width: 3px; }
+.ch-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+.ch-tx-link {
+  color: rgba(129,222,176,0.55);
+  text-decoration: none;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 10.5px;
+  transition: color 0.1s;
+}
+.ch-tx-link:hover { color: var(--color-brand-highlight); text-decoration: underline; }
+
+/* Claim modal */
+.claim-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.claim-modal-card {
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 32px 36px;
+  width: 400px;
+  max-width: 90%;
+  position: relative;
+}
+.cm-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.3);
+  font-size: 18px; cursor: pointer;
+  line-height: 1;
+}
+.cm-close:hover { color: rgba(255,255,255,0.7); }
+.cm-title {
+  font-size: 18px; font-weight: 700;
+  margin-bottom: 22px; color: #fff;
+}
+.cm-amount-row {
+  background: rgba(33,108,88,0.12);
+  border: 1px solid rgba(33,108,88,0.25);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cm-amount-label { font-size: 12px; color: rgba(255,255,255,0.45); }
+.cm-amount-val { font-size: 24px; font-weight: 700; color: var(--color-brand-highlight); }
+.cm-amount-unit { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); margin-left: 4px; }
+.cm-field-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+}
+.cm-field-label { color: rgba(255,255,255,0.4); }
+.cm-field-val { color: rgba(255,255,255,0.75); font-family: 'SF Mono', Menlo, monospace; font-size: 12px; }
+.cm-note {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.35);
+  margin: 16px 0 20px;
+  line-height: 1.55;
+}
+.cm-actions { display: flex; gap: 10px; }
+.btn-cm-cancel {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.65);
+  padding: 11px; border-radius: var(--radius-md);
+  font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.btn-cm-cancel:hover { background: rgba(255,255,255,0.09); }
+.btn-cm-confirm {
+  flex: 2;
+  background: var(--color-brand-default);
+  border: none; color: #fff;
+  padding: 11px; border-radius: var(--radius-md);
+  font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-cm-confirm:hover { background: var(--color-brand-hover); }
+/* Signing state */
+.cm-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid rgba(33,108,88,0.2);
+  border-top-color: var(--color-brand-highlight);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 8px auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.cm-signing-text { text-align: center; font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+/* Success state */
+.cm-success-icon {
+  width: 56px; height: 56px;
+  background: rgba(68,143,106,0.18);
+  border: 2px solid rgba(68,143,106,0.35);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 18px;
+}
+.cm-success-title { text-align: center; font-size: 18px; font-weight: 700; color: var(--color-brand-highlight); margin-bottom: 6px; }
+.cm-success-sub { text-align: center; font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+.cm-tx-row {
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.cm-tx-label { font-size: 11px; color: rgba(255,255,255,0.3); }
+.cm-tx-hash { font-family: 'SF Mono', Menlo, monospace; font-size: 11px; color: rgba(129,222,176,0.7); text-decoration: none; }
+.cm-tx-hash:hover { color: var(--color-brand-highlight); }
+.btn-cm-done {
+  width: 100%;
+  background: var(--color-brand-default);
+  border: none; color: #fff;
+  padding: 12px; border-radius: var(--radius-md);
+  font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.btn-cm-done:hover { background: var(--color-brand-hover); }
+.ch-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 12px;
+}
+.ch-table { width: 100%; border-collapse: collapse; }
+.ch-table th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.22);
+  padding-bottom: 8px;
+  text-align: left;
+  font-weight: 600;
+}
+.ch-table th:last-child { text-align: right; }
+.ch-table td {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.5);
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+.ch-table td:last-child {
+  text-align: right;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 10.5px;
+  color: rgba(129,222,176,0.55);
+}
+.ch-amount { font-weight: 700; color: var(--color-brand-highlight) !important; font-size: 13px !important; }
+.ch-empty { text-align: center; padding: 14px 0; font-size: 12px; color: rgba(255,255,255,0.2); }
+
+/* Info tooltip */
+.db-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.3);
+  font-size: 9px;
+  font-style: normal;
+  cursor: help;
+  margin-left: 5px;
+  vertical-align: middle;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.1s, color 0.1s;
+}
+.db-info-btn:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); }
+.db-info-tip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  width: 210px;
+  background: #252829;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 9px 13px;
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.55;
+  z-index: 50;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.db-info-btn:hover .db-info-tip { display: block; }
+
+/* Why USDD */
+.u-why {
+  background: var(--color-bg-section);
+  padding: 40px 80px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.why-head { text-align: center; margin-bottom: 28px; }
+.compare-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.compare-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.1fr;
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.compare-header > div {
+  padding: 11px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+}
+.compare-header > div:first-child { text-align: left; color: rgba(255,255,255,0.3); }
+.compare-header .col-usdd { color: var(--color-brand-highlight); }
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: var(--color-bg-card);
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-row > div {
+  padding: 13px 18px;
+  font-size: 13px;
+  text-align: center;
+  color: rgba(255,255,255,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.compare-row > div:first-child { text-align: left; justify-content: flex-start; font-weight: 600; color: rgba(255,255,255,0.8); font-size: 12.5px; }
+.compare-row .col-usdd { background: rgba(33,108,88,0.08); color: var(--color-brand-highlight); font-weight: 600; }
+.c-yes { color: var(--color-success); font-size: 15px; }
+.c-no  { color: var(--color-danger);  font-size: 15px; }
+
+/* Embedded Swap — compact bar */
+.u-swap {
+  background: var(--color-bg-section);
+  padding: 16px 80px 14px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.swap-bar {
+  max-width: 840px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.swap-bar-field {
+  flex: 1;
+  background: var(--color-bg-card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.swap-bar-token {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.swap-tok-icon {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+}
+.tok-usdt { background: #26a17b; }
+.tok-usdd { background: var(--color-brand-default); }
+.swap-bar-sep {
+  width: 1px; height: 22px;
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.swap-bar-amount {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.22);
+}
+.swap-bar-bal {
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.swap-arrow-static {
+  color: rgba(255,255,255,0.3);
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.btn-swap-bar {
+  background: var(--color-brand-default);
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.btn-swap-bar:hover { background: var(--color-brand-hover); }
+.swap-bar-meta {
+  max-width: 840px;
+  margin: 7px auto 0;
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.swap-bar-meta b { color: rgba(129,222,176,0.7); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+</style>
+</head>
+<body>
+<div class="proto-shell">
+
+  <!-- ═══ 左栏：场景导航 ═══ -->
+  <aside class="scene-nav">
+    <div class="nav-header">
+      <div class="proto-meta">原型文档 · v2.5.1</div>
+      <div class="proto-name">USDT 零冻结收益季<br>活动落地页</div>
+      <span class="proto-req">REQ-01</span>
+    </div>
+
+    <div class="scene-list">
+      <div class="scene-group">未连接钱包</div>
+      <button class="scene-btn active" data-scene="s1" onclick="switchScene('s1')">
+        <span class="scene-dot"></span>S1 · 未连接钱包（营销态）
+      </button>
+
+      <div class="scene-group">已连接钱包</div>
+      <button class="scene-btn" data-scene="s2" onclick="switchScene('s2')">
+        <span class="scene-dot"></span>S2 · 已连接 · 无持仓
+      </button>
+      <button class="scene-btn" data-scene="s3" onclick="switchScene('s3')">
+        <span class="scene-dot"></span>S3 · 已连接 · 有收益
+      </button>
+
+      <div class="scene-group">异常 / 边界态</div>
+      <button class="scene-btn" data-scene="s4" onclick="switchScene('s4')">
+        <span class="scene-dot"></span>S4 · 活动已结束
+      </button>
+      <button class="scene-btn" data-scene="s5" onclick="switchScene('s5')">
+        <span class="scene-dot"></span>S5 · 地址不符合资格
+      </button>
+      <button class="scene-btn" data-scene="s6" onclick="switchScene('s6')">
+        <span class="scene-dot"></span>S6 · 数据加载失败
+        <span class="badge-tbd">E-04</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ 中栏：浏览器预览 ═══ -->
+  <div class="preview-col">
+
+    <!-- Claim 弹窗 -->
+    <div id="j-claim-modal" class="claim-modal-overlay" style="display:none">
+      <div class="claim-modal-card">
+        <button class="cm-close" onclick="closeClaimModal()">✕</button>
+
+        <!-- State 1: Confirm -->
+        <div id="cm-confirm">
+          <div class="cm-title">Claim Rewards</div>
+          <div class="cm-amount-row">
+            <div class="cm-amount-label">You will receive</div>
+            <div><span class="cm-amount-val" id="cm-amount-display">18.37</span><span class="cm-amount-unit">USDD</span></div>
+          </div>
+          <div class="cm-field-row">
+            <span class="cm-field-label">To wallet</span>
+            <span class="cm-field-val" id="cm-wallet-display">TN8xK...Ab4F</span>
+          </div>
+          <div class="cm-field-row" style="border-bottom:none">
+            <span class="cm-field-label">Network</span>
+            <span class="cm-field-val">TRON</span>
+          </div>
+          <div class="cm-note">Rewards will be sent to your connected wallet. A wallet signature is required to confirm. No gas fees.</div>
+          <div class="cm-actions">
+            <button class="btn-cm-cancel" onclick="closeClaimModal()">Cancel</button>
+            <button class="btn-cm-confirm" onclick="showClaimState('signing')">Confirm &amp; Sign →</button>
+          </div>
+        </div>
+
+        <!-- State 2: Signing -->
+        <div id="cm-signing" style="display:none">
+          <div class="cm-title">Waiting for Signature</div>
+          <div class="cm-spinner"></div>
+          <div class="cm-signing-text">Please confirm the transaction<br>in your TronLink wallet…</div>
+          <div class="cm-actions" style="margin-top:24px">
+            <button class="btn-cm-cancel" style="flex:1" onclick="closeClaimModal()">Cancel</button>
+            <button class="btn-cm-confirm" style="flex:2" onclick="showClaimState('success')">▶ Simulate Success</button>
+          </div>
+          <div style="text-align:center;margin-top:10px;font-size:10.5px;color:rgba(255,255,255,0.2)">(原型模拟：点击右侧按钮跳至成功态)</div>
+        </div>
+
+        <!-- State 3: Success -->
+        <div id="cm-success" style="display:none">
+          <div class="cm-success-icon">✓</div>
+          <div class="cm-success-title">Claimed Successfully</div>
+          <div class="cm-success-sub"><span id="cm-success-amount">18.37</span> USDD sent to <span id="cm-success-wallet">TN8xK...Ab4F</span></div>
+          <div class="cm-tx-row">
+            <span class="cm-tx-label">Tx Hash</span>
+            <a class="cm-tx-hash" href="https://tronscan.org/#/transaction/f9e8d7c6b5a4332211aabbcc" target="_blank">f9e8d7c6b5a433...cc ↗</a>
+          </div>
+          <button class="btn-cm-done" onclick="claimSuccess()">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="browser-bar">
+      <div class="browser-dots">
+        <span class="dot-red"></span>
+        <span class="dot-yel"></span>
+        <span class="dot-grn"></span>
+      </div>
+      <div class="browser-url" id="j-url">app.usdd.io/campaign?src=tronscan</div>
+    </div>
+    <div class="browser-viewport" id="j-viewport"></div>
+  </div>
+
+  <!-- ═══ 右栏：规范文档 ═══ -->
+  <aside class="spec-panel">
+    <div class="spec-stickyhead">
+      <div class="sh-meta">当前场景规范</div>
+      <div class="sh-scene" id="j-spec-title">S1 · 未连接钱包（营销态）</div>
+    </div>
+    <div class="spec-body" id="j-spec-body"></div>
+  </aside>
+
+</div>
+
+<script>
+// ══════════════ 场景数据 ══════════════
+const SCENES = {
+  s1: {
+    label: 'S1 · 未连接钱包（营销态）',
+    url: 'app.usdd.io/campaign?src=tronscan',
+    wallet: false,
+    holdings: null,
+    claimable: null,
+    totalEarned: null,
+    claimHistory: [],
+    ended: false,
+    notEligible: false,
+    loadError: false,
+  },
+  s2: {
+    label: 'S2 · 已连接 · 无持仓',
+    url: 'app.usdd.io/campaign',
+    wallet: 'TN8xK...Ab4F',
+    holdings: 0,
+    claimable: 0,
+    totalEarned: 0,
+    claimHistory: [],
+    ended: false,
+    notEligible: false,
+    loadError: false,
+  },
+  s3: {
+    label: 'S3 · 已连接 · 有收益（可领取）',
+    url: 'app.usdd.io/campaign',
+    wallet: 'TN8xK...Ab4F',
+    holdings: '5,200.00',
+    claimable: '18.37',
+    totalEarned: '73.80',
+    claimHistory: [
+      { date: '2026-06-30', amount: '14.33', tx: 'a1b2c3d4e5f6aa11bb22cc33dd44' },
+      { date: '2026-06-23', amount: '12.50', tx: 'e5f6g7h8i9j0bb22cc33dd44ee55' },
+      { date: '2026-06-16', amount: '10.20', tx: 'k1l2m3n4o5p6cc33dd44ee55ff66' },
+      { date: '2026-06-09', amount: '9.80',  tx: 'q7r8s9t0u1v2dd44ee55ff66gg77' },
+      { date: '2026-06-02', amount: '8.60',  tx: 'w3x4y5z6a7b8ee55ff66gg77hh88' },
+    ],
+    ended: false,
+    notEligible: false,
+    loadError: false,
+  },
+  s4: {
+    label: 'S4 · 活动已结束',
+    url: 'app.usdd.io/campaign',
+    wallet: 'TN8xK...Ab4F',
+    holdings: '5,200.00',
+    claimable: '28.61',
+    totalEarned: '98.73',
+    claimHistory: [
+      { date: '2026-09-21', amount: '35.12', tx: 'p9q0r1s2t3u4...' },
+      { date: '2026-09-07', amount: '35.00', tx: 't3u4v5w6x7y8...' },
+    ],
+    ended: true,
+    notEligible: false,
+    loadError: false,
+  },
+  s5: {
+    label: 'S5 · 地址不符合资格',
+    url: 'app.usdd.io/campaign',
+    wallet: 'TJ4kM...Cx9R',
+    holdings: null,
+    claimable: null,
+    totalEarned: null,
+    claimHistory: [],
+    ended: false,
+    notEligible: true,
+    loadError: false,
+  },
+  s6: {
+    label: 'S6 · 数据加载失败',
+    url: 'app.usdd.io/campaign',
+    wallet: 'TN8xK...Ab4F',
+    holdings: null,
+    claimable: null,
+    totalEarned: null,
+    claimHistory: [],
+    ended: false,
+    notEligible: false,
+    loadError: true,
+  },
+};
+
+// ══════════════ 规范数据 ══════════════
+const SPECS = {
+  s1: {
+    i18n: [
+      ['campaign.hero.title', 'USDT 零冻结收益季'],
+      ['campaign.hero.subtitle', '持有 USDD，年化 4% 收益，0 冻结风险'],
+      ['campaign.cta.swap', '立即兑换'],
+      ['campaign.cta.connect', '连接钱包查看收益'],
+    ],
+    rules: [
+      { id: 'BR-02', text: '未连接钱包：营销态展示，Hero / 钩子 / 规则均可见，看板替换为连接引导卡片' },
+      { id: 'BR-04', text: '立即兑换 → 跳转 /psm?from=USDT&to=USDD&chain=tron，新窗口内导航' },
+      { id: 'BR-05', text: '倒计时前端本地计时，活动截止时间由后端配置下发' },
+      { id: 'BR-08', text: '全局统计数据（参与地址数 / 净铸造量）无需连接即可显示' },
+    ],
+    transitions: [
+      { from: 'S1 未连接', arrow: '→', to: '触发全局钱包弹窗', cond: '点击「立即兑换」或「连接钱包」' },
+      { from: '连接成功（无持仓）', arrow: '→', to: 'S2 无持仓', cond: 'wallet 地址 USDD 余额 = 0' },
+      { from: '连接成功（有持仓）', arrow: '→', to: 'S3 有收益', cond: 'wallet 地址有 PSM 净铸造记录' },
+    ],
+    tracking: [
+      'campaign_page_view · src=tronscan',
+      'campaign_connect_wallet_click · location=hero',
+      'campaign_swap_cta_click · wallet_connected=false',
+    ],
+    tbds: [
+      '活动周期（建议 > 2 个月，待领导决策）',
+      '活动预算归属（建议运营组 Shelock 申请）',
+    ],
+  },
+  s2: {
+    i18n: [
+      ['campaign.dashboard.held', '当前持有 USDD'],
+      ['campaign.dashboard.accrued', '累计收益'],
+      ['campaign.dashboard.airdrop_hint', '活动结束后自动空投至钱包'],
+    ],
+    rules: [
+      { id: 'BR-03', text: '连接成功后「我的收益」看板展示，初始数值为 0' },
+      { id: 'BR-06', text: '收益数据刷新：进入时 1 次 / 回到 Tab 时 1 次 / 每 5 分钟自动刷新' },
+      { id: 'E-06', text: 'USDD 余额 = 0 时：看板显示 0 + 「立即兑换开始生息」引导按钮' },
+    ],
+    transitions: [
+      { from: 'S2', arrow: '→', to: 'PSM 兑换页', cond: '点击「立即兑换开始生息」' },
+      { from: 'PSM 兑换完成返回', arrow: '→', to: 'S3 有收益', cond: '接口返回持仓 > 0' },
+    ],
+    tracking: [
+      'campaign_dashboard_view · held_usdd=0, accrued=0',
+      'campaign_swap_cta_click · wallet_connected=true',
+    ],
+    tbds: [],
+  },
+  s3: {
+    i18n: [
+      ['campaign.dashboard.held', '当前持有 USDD'],
+      ['campaign.dashboard.accrued', '累计收益'],
+      ['campaign.dashboard.airdrop_hint', '活动结束后自动空投至钱包'],
+    ],
+    rules: [
+      { id: 'F-05', text: '看板三列：当前持有量 / 累计收益 / 收益发放方式（空投 or Claim）' },
+      { id: 'BR-06', text: '收益数据刷新：进入 / 回 Tab / 每 5 分钟' },
+      { id: 'BR-07', text: '⚠️ 待确认：空投模式无 Claim 按钮，仅展示「自动发放」提示文案' },
+    ],
+    transitions: [
+      { from: 'S3', arrow: '→', to: 'S4 活动已结束', cond: '当前时间 > 活动截止时间' },
+      { from: 'S3', arrow: '→', to: 'S5 不符合资格', cond: 'API 返回 notEligible=true' },
+      { from: 'S3', arrow: '→', to: 'S6 加载失败', cond: 'API 超时 / 报错' },
+    ],
+    tracking: [
+      'campaign_dashboard_view · held_usdd=5200, accrued=18.37',
+    ],
+    tbds: [
+      '收益领取方式：空投 vs Claim（待领导决策，影响第三列展示）',
+    ],
+  },
+  s4: {
+    i18n: [
+      ['campaign.dashboard.held', '当前持有 USDD'],
+      ['campaign.dashboard.accrued', '累计收益（最终值）'],
+    ],
+    rules: [
+      { id: 'E-02', text: 'Hero 替换「活动已结束」Banner，CTA 改为「查看历史收益」' },
+      { id: 'E-02', text: '看板继续展示最终数据，但不再自动刷新（只读态）' },
+      { id: 'BR-07', text: '空投模式：展示「活动结束后将自动空投至钱包」说明文案' },
+    ],
+    transitions: [
+      { from: 'S4', arrow: '→', to: '历史收益详情（TBD）', cond: '点击「查看历史收益」' },
+    ],
+    tracking: [
+      'campaign_page_view · status=ended',
+    ],
+    tbds: [
+      '空投发放时间线（建议活动结束 7 天内）',
+      '「查看历史收益」跳转目标页（待规划）',
+    ],
+  },
+  s5: {
+    i18n: [
+      ['campaign.error.not_eligible', '当前地址不符合活动资格'],
+    ],
+    rules: [
+      { id: 'E-05', text: '地址命中黑名单（CEX 归集 / 合约 / 机器人） → 看板替换为「不符合资格」提示卡' },
+      { id: 'BR-02', text: '营销内容（Hero / 钩子 / 规则）仍正常展示，仅看板区域替换' },
+    ],
+    transitions: [
+      { from: 'S5', arrow: '→', to: 'S2 或 S3', cond: '用户断开当前地址，连接合规普通地址' },
+    ],
+    tracking: [
+      'campaign_dashboard_view · status=not_eligible',
+    ],
+    tbds: [
+      '反女巫黑名单来源与更新频率（详见 REQ-02）',
+    ],
+  },
+  s6: {
+    i18n: [
+      ['campaign.error.load_failed', '数据加载失败，请刷新重试'],
+    ],
+    rules: [
+      { id: 'E-04', text: 'API 超时或报错 → 看板数值显示「--」，底部红色错误文案', type: 'err' },
+      { id: 'BR-06', text: '不展示空态；使用骨架屏 Skeleton（--color-bg-elevated shimmer）' },
+    ],
+    transitions: [
+      { from: 'S6', arrow: '→', to: 'S2 或 S3', cond: '用户手动刷新 / 5 分钟自动重试成功' },
+    ],
+    tracking: [
+      'api_error · module=campaign_dashboard, type=timeout',
+    ],
+    tbds: [
+      'API 超时阈值（建议 10s）与重试次数（建议 3 次）',
+    ],
+  },
+};
+
+// ══════════════ 渲染函数 ══════════════
+
+function renderNav(scene) {
+  const walletEl = scene.wallet
+    ? `<div class="wallet-chip"><span class="wallet-chip-dot"></span>${scene.wallet}</div>`
+    : `<button class="btn-wallet-connect">Connect Wallet</button>`;
+  return `
+  <nav class="u-nav">
+    <div class="u-logo">USD<span>D</span></div>
+    <div class="u-menu">
+      <a>PSM</a><a>Earn</a><a class="current">Yield Rush</a><a>Data</a>
+    </div>
+    <div class="u-nav-right">${walletEl}</div>
+  </nav>`;
+}
+
+function renderHero(scene) {
+  if (scene.ended) {
+    return `
+    <section class="u-hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <span style="width:6px;height:6px;border-radius:50%;background:#d73133;display:inline-block"></span>
+            Campaign Ended
+          </div>
+          <h1 class="hero-title">USDD <span class="hl">Hold & Earn</span> Season</h1>
+          <p class="hero-subtitle">Thank you for participating. This campaign has concluded.<br>Rewards will be airdropped to your TRON wallet within 7 days.</p>
+          <div class="hero-ended-note">⏹ Campaign ended on 2026-09-30 00:00 UTC</div>
+        </div>
+        <div class="countdown-wrap">
+          <div class="cd-label">Campaign Ended</div>
+          <div class="cd-tiles">
+            <div class="cd-tile cd-dim"><div class="cd-num">00</div><div class="cd-unit">Days</div></div>
+            <div class="cd-tile cd-dim"><div class="cd-num">00</div><div class="cd-unit">Hrs</div></div>
+            <div class="cd-tile cd-dim"><div class="cd-num">00</div><div class="cd-unit">Mins</div></div>
+            <div class="cd-tile cd-dim"><div class="cd-num">00</div><div class="cd-unit">Secs</div></div>
+          </div>
+        </div>
+      </div>
+    </section>`;
+  }
+  return `
+  <section class="u-hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="hero-badge-pulse"></span>
+          Live · TRON Exclusive
+        </div>
+        <h1 class="hero-title">USDD <span class="hl">Hold & Earn</span> Season</h1>
+        <p class="hero-subtitle">
+          Hold USDD and earn 4% APY automatically — no staking, no locking, no minimum<br>
+          Swap via PSM and start earning automatically — no staking required
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" style="font-size:16px;padding:14px 36px;border-radius:var(--radius-md)">Join Now →</button>
+        </div>
+        <div class="hero-proof" style="margin-top:14px">
+          <b>12,847</b> addresses joined &nbsp;·&nbsp; 1:1 PSM &nbsp;·&nbsp; Zero fees &nbsp;·&nbsp; Zero slippage
+        </div>
+      </div>
+      <div class="countdown-wrap">
+        <div class="cd-label">Campaign Ends In</div>
+        <div class="cd-tiles">
+          <div class="cd-tile"><div class="cd-num">47</div><div class="cd-unit">Days</div></div>
+          <div class="cd-tile"><div class="cd-num">09</div><div class="cd-unit">Hrs</div></div>
+          <div class="cd-tile"><div class="cd-num">23</div><div class="cd-unit">Mins</div></div>
+          <div class="cd-tile"><div class="cd-num">15</div><div class="cd-unit">Secs</div></div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderDashboard(scene) {
+  if (!scene.wallet) return '';
+
+  if (scene.notEligible) {
+    return `
+    <section class="u-dashboard">
+      <div class="u-dashboard-inner">
+        <div class="not-eligible-alert">
+          <div class="nea-icon">⚠️</div>
+          <div class="nea-text">
+            <strong>This address is not eligible</strong><br>
+            This address has been identified as a CEX aggregator or contract address and is excluded from reward calculation. Please use a personal TRON address to participate.
+          </div>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  if (scene.loadError) {
+    return `
+    <section class="u-dashboard">
+      <div class="u-dashboard-inner">
+        <div class="db-cards">
+          <div class="db-card error"><div class="db-card-label">USDD Holdings</div><div class="skeleton"></div></div>
+          <div class="db-card error"><div class="db-card-label">Claimable Rewards</div><div class="skeleton"></div></div>
+          <div class="db-card error"><div class="db-card-label">Total Earned</div><div class="skeleton"></div></div>
+        </div>
+        <div class="error-hint">⚠ Failed to load data. Please refresh and try again.</div>
+      </div>
+    </section>`;
+  }
+
+  const noHoldings = scene.holdings === 0;
+  const endedTag = scene.ended
+    ? `<div class="db-card-sub" style="color:rgba(255,255,255,0.28);margin-top:5px">Campaign ended · Data locked</div>` : '';
+
+  // Card 1: USDD Holdings
+  const holdingsCard = noHoldings
+    ? `<div class="db-card">
+        <div class="db-card-label" style="display:flex;align-items:center;gap:4px">USDD Holdings <span class="db-info-btn">ⓘ<span class="db-info-tip">No USDD held yet. Swap USDT via PSM to start earning rewards.</span></span></div>
+        <div class="db-card-value">0<span class="db-card-unit">USDD</span></div>
+      </div>`
+    : `<div class="db-card">
+        <div class="db-card-label">USDD Holdings</div>
+        <div class="db-card-value">${scene.holdings}<span class="db-card-unit">USDD</span></div>
+        <div class="db-card-sub success">✓ Active</div>
+        ${endedTag}
+      </div>`;
+
+  // Card 2: Claimable Rewards
+  const hasClaimable = parseFloat(scene.claimable) > 0;
+  const claimBtn = hasClaimable
+    ? `<button class="btn-claim" style="margin-top:12px;width:100%" onclick="openClaimModal('${scene.claimable}','${scene.wallet}')">Claim ${scene.claimable} USDD</button>`
+    : ``;
+  const claimableCard = `<div class="db-card">
+    <div class="db-card-label" style="display:flex;align-items:center;gap:4px">Claimable Rewards <span class="db-info-btn">ⓘ<span class="db-info-tip">Settled rewards ready to claim. Updates daily at 00:00 UTC.</span></span></div>
+    <div class="db-card-value">${scene.claimable || 0}<span class="db-card-unit">USDD</span></div>
+    ${claimBtn}
+  </div>`;
+
+  // Card 3: Total Earned
+  const totalEarnedCard = `<div class="db-card">
+    <div class="db-card-label" style="display:flex;align-items:center;gap:4px">Total Earned <span class="db-info-btn">ⓘ<span class="db-info-tip">Cumulative settled rewards only. Excludes rewards currently in settlement (not yet claimable).</span></span></div>
+    <div class="db-card-value">${scene.totalEarned || 0}<span class="db-card-unit">USDD</span></div>
+  </div>`;
+
+  // Claim history
+  const historyRows = scene.claimHistory && scene.claimHistory.length > 0
+    ? scene.claimHistory.map(h => {
+        const short = h.tx.length > 16 ? h.tx.slice(0, 16) + '...' : h.tx;
+        return `<tr>
+          <td>${h.date}</td>
+          <td class="ch-amount">${h.amount} USDD</td>
+          <td><a class="ch-tx-link" href="https://tronscan.org/#/transaction/${h.tx}" target="_blank">${short}</a></td>
+        </tr>`;
+      }).join('')
+    : `<tr><td colspan="3" class="ch-empty">No claims yet</td></tr>`;
+
+  const historySection = `
+  <div class="u-claim-history">
+    <div class="ch-head"><div class="ch-title">Claim History</div></div>
+    <div class="ch-scroll">
+      <table class="ch-table">
+        <thead><tr><th>Date</th><th>Amount</th><th style="text-align:right">Tx Hash</th></tr></thead>
+        <tbody>${historyRows}</tbody>
+      </table>
+    </div>
+  </div>`;
+
+  return `
+  <section class="u-dashboard">
+    <div class="u-dashboard-inner">
+      <div class="db-cards">
+        ${holdingsCard}
+        ${claimableCard}
+        ${totalEarnedCard}
+      </div>
+      ${historySection}
+    </div>
+  </section>`;
+}
+
+function renderPillars() {
+  return `
+  <section class="u-pillars" style="padding-top:32px;padding-bottom:32px">
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon">⏱️</div>
+        <div class="pillar-title">Only Hold</div>
+        <div class="pillar-desc">Hold USDD for any continuous 1-hour window and rewards accrue automatically — no staking, no locking, no minimum amount.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">⚡</div>
+        <div class="pillar-title">0 Fees</div>
+        <div class="pillar-desc">Swap USDT → USDD via PSM at exactly 1:1 — zero protocol fees, zero slippage, zero price impact. Swap back anytime.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">📈</div>
+        <div class="pillar-title">4% APY</div>
+        <div class="pillar-desc">Hold USDD continuously for 1+ hour and earn 4% annual yield — calculated by the hour, paid on your actual holdings.</div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderWhyUsdd() {
+  return `
+  <section class="u-why">
+    <div class="why-head">
+      <div class="section-title" style="font-size:26px">Why USDD?</div>
+      <div class="section-sub">Not all stablecoins are equal</div>
+    </div>
+    <div class="compare-wrap">
+      <div class="compare-header">
+        <div></div>
+        <div>USDT</div>
+        <div>USDC</div>
+        <div class="col-usdd">USDD ✦</div>
+      </div>
+      <div class="compare-row">
+        <div>Freeze risk</div>
+        <div><span class="c-no">✕</span></div>
+        <div><span class="c-no">✕</span></div>
+        <div class="col-usdd"><span class="c-yes">✓</span> Cannot be frozen</div>
+      </div>
+      <div class="compare-row">
+        <div>Yield on holdings</div>
+        <div>0%</div>
+        <div>0%</div>
+        <div class="col-usdd">4% APY</div>
+      </div>
+      <div class="compare-row">
+        <div>Fully decentralized</div>
+        <div><span class="c-no">✕</span></div>
+        <div><span class="c-no">✕</span></div>
+        <div class="col-usdd"><span class="c-yes">✓</span> On-chain collateral</div>
+      </div>
+      <div class="compare-row">
+        <div>On-chain exit</div>
+        <div style="font-size:11.5px">DEX only<br><span style="color:rgba(255,255,255,0.3);font-size:10.5px">fees + slippage</span></div>
+        <div style="font-size:11.5px">DEX only<br><span style="color:rgba(255,255,255,0.3);font-size:10.5px">fees + slippage</span></div>
+        <div class="col-usdd"><span class="c-yes">✓</span> PSM · 1:1 · Zero fees</div>
+      </div>
+      <div class="compare-row">
+        <div>Issuer blacklist</div>
+        <div><span class="c-no">✕</span> Tether can blacklist</div>
+        <div><span class="c-no">✕</span> Circle can blacklist</div>
+        <div class="col-usdd"><span class="c-yes">✓</span> No issuer</div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderSwap(scene) {
+  const btnLabel = scene.wallet ? 'Swap Now' : 'Connect Wallet';
+  const balBadge = scene.wallet
+    ? `<span class="swap-bar-bal">Bal: 10,240 USDT</span>`
+    : '';
+  return `
+  <section class="u-swap">
+    <div class="swap-bar">
+      <div class="swap-bar-field">
+        <span class="swap-bar-token">
+          <span class="swap-tok-icon tok-usdt">₮</span>USDT
+        </span>
+        <span class="swap-bar-sep"></span>
+        <span class="swap-bar-amount">0.00</span>
+        ${balBadge}
+      </div>
+      <span class="swap-arrow-static">→</span>
+      <div class="swap-bar-field">
+        <span class="swap-bar-token">
+          <span class="swap-tok-icon tok-usdd" style="font-size:9px">DD</span>USDD
+        </span>
+        <span class="swap-bar-sep"></span>
+        <span class="swap-bar-amount">0.00</span>
+      </div>
+      <button class="btn-swap-bar">${btnLabel}</button>
+    </div>
+    <div class="swap-bar-meta">
+      1:1 &nbsp;·&nbsp; Zero fees &nbsp;·&nbsp; Zero slippage &nbsp;·&nbsp; Available: <b>530,664,235.79 USDD</b>
+    </div>
+  </section>`;
+}
+
+function renderStats() {
+  return `
+  <section class="u-stats">
+    <div class="section-head">
+      <div class="section-title" style="font-size:26px">Live Campaign Stats</div>
+    </div>
+    <div class="stats-grid">
+      <div>
+        <div class="stat-val">12,847</div>
+        <div class="stat-lbl">Participating Addresses</div>
+      </div>
+      <div>
+        <div class="stat-val">$48.2M</div>
+        <div class="stat-lbl">Net USDD Minted via PSM</div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderRules(scene) {
+  return `
+  <section class="u-rules">
+    <div class="section-head">
+      <div class="section-title">Campaign Rules</div>
+    </div>
+    <div class="rules-card">
+      <div class="rule-row">
+        <div class="rule-num">1</div>
+        <div class="rule-body">
+          <div class="rule-title">Reward Calculation</div>
+          <div class="rule-desc">
+            Rewards settle every 1-hour fixed time slot (on the hour).
+            Reward base = min(cumulative net PSM swap amount, lowest USDD balance in that slot).
+            Annual rate 4% APY, pro-rated per hour. If balance drops to zero within any slot, that slot earns nothing.
+          </div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-num">2</div>
+        <div class="rule-body">
+          <div class="rule-title">Reward Updates</div>
+          <div class="rule-desc">
+            Rewards are calculated and settled daily at <b>00:00 UTC</b> for all completed 1-hour slots in the previous day.
+            Your <b>Claimable Rewards</b> and <b>Total Earned</b> update within 2 hours of settlement.
+            In-progress settlement is not reflected until confirmed.
+          </div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-num">3</div>
+        <div class="rule-body">
+          <div class="rule-title">Eligibility</div>
+          <div class="rule-desc">
+            TRON chain personal addresses only.
+            USDD must be obtained via PSM swap during the campaign period — only self-swapped USDD counts toward reward base.
+            CEX aggregators, contract addresses, and bots are automatically excluded.
+          </div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-num">4</div>
+        <div class="rule-body">
+          <div class="rule-title">Reward Claiming</div>
+          <div class="rule-desc">
+            Settled rewards appear in <b>Claimable Rewards</b> and can be claimed anytime during or after the campaign.
+            Claims are processed on-chain — a wallet signature is required. No expiry on claimable rewards.
+          </div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-num">5</div>
+        <div class="rule-body">
+          <div class="rule-title">Campaign Duration</div>
+          <div class="rule-desc"><span class="rule-tbd">⚠️ TBD</span>Duration TBD — recommended > 2 months. Refer to the countdown above.</div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderBottomCTA(scene) {
+  if (scene.ended) {
+    return `
+    <section class="u-bottom-cta">
+      <div class="bcta-title">Campaign Complete</div>
+      <div class="bcta-sub">Thanks for participating — claim your rewards above or check your Claim History</div>
+      <button class="btn-primary">View My Rewards ↑</button>
+    </section>`;
+  }
+  return `
+  <section class="u-bottom-cta">
+    <div class="bcta-title">Hold USDD, Start Earning</div>
+    <div class="bcta-sub">Swap USDT → USDD via PSM at 1:1, zero fees — earn 4% APY from the first hour</div>
+    <button class="btn-primary" style="font-size:16px;padding:14px 36px;border-radius:var(--radius-md)">Join Now →</button>
+  </section>`;
+}
+
+function renderFooter() {
+  return `
+  <footer class="u-footer">
+    <div class="footer-logo">USD<span>D</span></div>
+    <div class="footer-links">
+      <a>Docs</a><a>GitHub</a><a>Discord</a><a>Privacy</a>
+    </div>
+  </footer>`;
+}
+
+function renderPage(key) {
+  const scene = SCENES[key];
+  document.getElementById('j-url').textContent = scene.url;
+  document.getElementById('j-viewport').innerHTML =
+    renderNav(scene) +
+    renderHero(scene) +
+    renderDashboard(scene) +
+    renderPillars() +
+    renderRules(scene) +
+    renderWhyUsdd() +
+    renderStats() +
+    renderBottomCTA(scene) +
+    renderFooter();
+  // Scroll to top
+  document.getElementById('j-viewport').scrollTop = 0;
+}
+
+// ══════════════ 规范面板渲染 ══════════════
+function renderSpec(key) {
+  const scene = SCENES[key];
+  const spec = SPECS[key];
+  document.getElementById('j-spec-title').textContent = scene.label;
+
+  const i18nRows = spec.i18n.map(([k, v]) =>
+    `<tr><td class="i18n-key">${k}</td><td class="i18n-val">${v}</td></tr>`
+  ).join('');
+
+  const ruleItems = spec.rules.map(r =>
+    `<div class="rule-chip">
+      <span class="rule-chip-id ${r.type || ''}">${r.id}</span>
+      <span class="rule-chip-text">${r.text}</span>
+    </div>`
+  ).join('');
+
+  const transItems = spec.transitions.map(t =>
+    `<div class="transition-item">
+      <div><span class="t-from">${t.from}</span><span class="t-arrow">→</span><span class="t-to">${t.to}</span></div>
+      ${t.cond ? `<div class="t-cond">条件：${t.cond}</div>` : ''}
+    </div>`
+  ).join('');
+
+  const trackItems = spec.tracking.map(t =>
+    `<div class="track-item">${t}</div>`
+  ).join('');
+
+  const tbdItems = spec.tbds.length
+    ? spec.tbds.map(t => `<div class="tbd-item"><span class="tbd-badge">TBD</span><span class="tbd-text">${t}</span></div>`).join('')
+    : `<div class="tbd-text" style="color:rgba(255,255,255,0.28)">本场景无待确认项</div>`;
+
+  document.getElementById('j-spec-body').innerHTML = `
+    <div class="spec-sec">
+      <div class="spec-sec-title">i18n 文案 Key</div>
+      <table class="i18n-table">${i18nRows}</table>
+    </div>
+    <div class="spec-sec">
+      <div class="spec-sec-title">适用业务规则</div>
+      ${ruleItems}
+    </div>
+    <div class="spec-sec">
+      <div class="spec-sec-title">子状态联动</div>
+      ${transItems}
+    </div>
+    <div class="spec-sec">
+      <div class="spec-sec-title">数据埋点</div>
+      ${trackItems}
+    </div>
+    <div class="spec-sec">
+      <div class="spec-sec-title">待确认项</div>
+      ${tbdItems}
+    </div>
+  `;
+
+  document.getElementById('j-spec-body').scrollTop = 0;
+}
+
+// ══════════════ Claim 弹窗 ══════════════
+function openClaimModal(amount, wallet) {
+  document.getElementById('cm-amount-display').textContent = amount;
+  document.getElementById('cm-wallet-display').textContent = wallet;
+  document.getElementById('cm-success-amount').textContent = amount;
+  document.getElementById('cm-success-wallet').textContent = wallet;
+  showClaimState('confirm');
+  document.getElementById('j-claim-modal').style.display = 'flex';
+}
+
+function showClaimState(state) {
+  ['confirm', 'signing', 'success'].forEach(s => {
+    document.getElementById('cm-' + s).style.display = s === state ? 'block' : 'none';
+  });
+}
+
+function closeClaimModal() {
+  document.getElementById('j-claim-modal').style.display = 'none';
+}
+
+function claimSuccess() {
+  // 成功领取后：将 claimable 清零，新增一条 history，更新页面
+  const key = document.querySelector('.scene-btn.active').dataset.scene;
+  const scene = SCENES[key];
+  if (scene && parseFloat(scene.claimable) > 0) {
+    const today = new Date().toISOString().slice(0, 10);
+    scene.claimHistory.unshift({
+      date: today,
+      amount: scene.claimable,
+      tx: 'f9e8d7c6b5a4332211aabbcc' + Math.floor(Math.random() * 1000),
+    });
+    scene.claimable = '0';
+  }
+  closeClaimModal();
+  renderPage(key);
+  renderSpec(key);
+}
+
+// ══════════════ 场景切换 ══════════════
+function switchScene(key) {
+  document.querySelectorAll('.scene-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.scene === key);
+  });
+  renderPage(key);
+  renderSpec(key);
+}
+
+// 初始渲染
+switchScene('s1');
+</script>
+</body>
+</html>
