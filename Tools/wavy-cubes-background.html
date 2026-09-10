@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>立方体波浪背景调参器</title>
+  <style>
+    :root {
+      --overlay-opacity: 0;
+      --panel-bg: rgba(246, 246, 246, 0.88);
+      --panel-border: rgba(0, 0, 0, 0.12);
+      --text-main: #151515;
+      --text-muted: #666;
+      --control-bg: rgba(255, 255, 255, 0.72);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #e5e5e5;
+      color: var(--text-main);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "PingFang SC",
+        "Microsoft YaHei",
+        sans-serif;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at 50% 48%,
+        transparent 28%,
+        rgba(0, 0, 0, 0.08) 62%,
+        rgba(0, 0, 0, 0.42) 100%
+      );
+      mix-blend-mode: multiply;
+      opacity: var(--overlay-opacity);
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      outline: none;
+    }
+
+    .settings-panel {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      width: min(380px, calc(100vw - 32px));
+      max-height: calc(100vh - 32px);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel-bg);
+      box-shadow: 0 18px 70px rgba(0, 0, 0, 0.18);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      transition: transform 240ms ease, opacity 240ms ease;
+    }
+
+    body.panel-collapsed .settings-panel {
+      transform: translateX(calc(100% + 24px));
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panel-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 6;
+      min-width: 76px;
+      height: 36px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(246, 246, 246, 0.86);
+      color: var(--text-main);
+      font-size: 14px;
+      cursor: pointer;
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      transition: opacity 180ms ease;
+    }
+
+    body:not(.panel-collapsed) .panel-toggle {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .panel-subtitle {
+      margin: 3px 0 0;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .panel-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 14px;
+      overflow: auto;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .group-title {
+      margin: 0;
+      color: #333;
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 650;
+    }
+
+    .control-row {
+      display: grid;
+      grid-template-columns: minmax(96px, 1fr) minmax(140px, 1.45fr) 54px;
+      align-items: center;
+      gap: 10px;
+      min-height: 34px;
+      padding: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 6px;
+      background: var(--control-bg);
+    }
+
+    .control-label {
+      min-width: 0;
+      color: #2c2c2c;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .control-value {
+      padding: 3px 6px;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.055);
+      color: #4f4f4f;
+      font-variant-numeric: tabular-nums;
+      font-size: 11px;
+      line-height: 1.2;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #202020;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 28px;
+      padding: 2px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+    }
+
+    .panel-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 12px 14px 14px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    button {
+      min-height: 34px;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--text-main);
+      font: inherit;
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #fff;
+    }
+
+    .button-primary {
+      border-color: #111;
+      background: #111;
+      color: #fff;
+    }
+
+    .button-primary:hover {
+      background: #2a2a2a;
+    }
+
+    @media (max-width: 680px) {
+      .settings-panel {
+        top: auto;
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        width: auto;
+        max-height: min(72vh, 620px);
+      }
+
+      body.panel-collapsed .settings-panel {
+        transform: translateY(calc(100% + 24px));
+      }
+
+      .control-row {
+        grid-template-columns: 92px minmax(120px, 1fr) 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="wavy-cubes"></canvas>
+
+  <button class="panel-toggle" id="panel-toggle" type="button">设置</button>
+
+  <aside class="settings-panel" id="settings-panel">
+    <div class="panel-header">
+      <div>
+        <h1 class="panel-title">背景参数</h1>
+        <p class="panel-subtitle">立方体波浪 / Three.js</p>
+      </div>
+      <button id="collapse-panel" type="button">收起</button>
+    </div>
+
+    <div class="panel-content" id="controls"></div>
+
+    <div class="panel-actions">
+      <button id="reset-settings" type="button">恢复默认</button>
+      <button class="button-primary" id="export-js" type="button">导出 JS</button>
+    </div>
+  </aside>
+
+  <script type="module">
+    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js";
+
+    const defaultSettings = {
+      backgroundColor: "#e5e5e5",
+      baseColor: "#ffffff",
+      lowColor: "#ffffff",
+      highColor: "#0055ff",
+      overlayOpacity: 0,
+      exposure: 1.95,
+      gridSize: 40,
+      cubeWidth: 0.8,
+      gap: 0.01,
+      baseHeight: 3,
+      maxWaveHeight: 0.4,
+      speed: 6,
+      frequency: 1.2,
+      width: 3,
+      amplitude: 0.4,
+      fadeTime: 2,
+      jitter: 0.2,
+      maxRipples: 128,
+      randomEvery: 1.5,
+      cameraRadius: 12,
+      mobileCameraRadius: 15.5,
+      cameraTilt: 0.03,
+      cameraOrbit: 0.05,
+      cameraSmoothing: 0.04,
+      ambientIntensity: 0.5,
+      keyIntensity: 4,
+      fillIntensity: 1,
+      roughness: 1,
+      emissiveIntensity: 0
+    };
+
+    const settings = { ...defaultSettings };
+    const canvas = document.getElementById("wavy-cubes");
+    const scene = new THREE.Scene();
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      powerPreference: "high-performance"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+    camera.up.set(0, 0, -1);
+
+    const positions = [];
+    const ripples = [];
+    const dummy = new THREE.Object3D();
+    const baseColor = new THREE.Color(settings.baseColor);
+    const lowColor = new THREE.Color(settings.lowColor);
+    const highColor = new THREE.Color(settings.highColor);
+    const pointer = new THREE.Vector2();
+    const smoothPointer = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+    const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const hitPoint = new THREE.Vector3();
+
+    let material;
+    let materialShader;
+    let cubes;
+    let waveHeightAttribute;
+    let count = 0;
+    let bounds = 0;
+    let spacing = 0;
+    let lastTrailPoint = null;
+    let randomTimer = 0;
+    let idleTimer = 0;
+    let isPointerActive = false;
+    let lastTime = performance.now();
+    let rebuildTimer = null;
+    const shouldFreeze = new URLSearchParams(window.location.search).has("freeze");
+
+    const ambient = new THREE.AmbientLight(0xffffff, settings.ambientIntensity);
+    scene.add(ambient);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, settings.keyIntensity);
+    keyLight.position.set(-20, 10, 6);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    keyLight.shadow.radius = 6;
+    keyLight.shadow.camera.near = 0.1;
+    keyLight.shadow.camera.far = 60;
+    keyLight.shadow.camera.left = -22;
+    keyLight.shadow.camera.right = 22;
+    keyLight.shadow.camera.top = 22;
+    keyLight.shadow.camera.bottom = -22;
+    keyLight.shadow.bias = 0.0001;
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0xffffff, settings.fillIntensity);
+    fillLight.position.set(12, 5, -4);
+    scene.add(fillLight);
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    const controlGroups = [
+      {
+        title: "基础外观",
+        controls: [
+          { key: "backgroundColor", label: "背景颜色", type: "color" },
+          { key: "baseColor", label: "方块颜色", type: "color" },
+          { key: "lowColor", label: "低谷颜色", type: "color" },
+          { key: "highColor", label: "波峰颜色", type: "color" },
+          { key: "overlayOpacity", label: "暗角强度", min: 0, max: 1, step: 0.01 },
+          { key: "exposure", label: "整体亮度", min: 0.5, max: 3, step: 0.01 }
+        ]
+      },
+      {
+        title: "网格形态",
+        controls: [
+          { key: "gridSize", label: "方块数量", min: 16, max: 64, step: 1, integer: true, rebuild: true, suffix: "x" },
+          { key: "cubeWidth", label: "方块宽度", min: 0.3, max: 1.3, step: 0.01, rebuild: true },
+          { key: "gap", label: "方块缝隙", min: 0, max: 0.3, step: 0.01, rebuild: true },
+          { key: "baseHeight", label: "方块厚度", min: 0.6, max: 5, step: 0.05, rebuild: true },
+          { key: "maxWaveHeight", label: "最大起伏", min: 0.05, max: 2, step: 0.01 }
+        ]
+      },
+      {
+        title: "波浪运动",
+        controls: [
+          { key: "amplitude", label: "波浪强度", min: 0, max: 3, step: 0.01 },
+          { key: "speed", label: "扩散速度", min: 0.5, max: 15, step: 0.1 },
+          { key: "frequency", label: "波纹密度", min: 0.1, max: 4, step: 0.01 },
+          { key: "width", label: "影响范围", min: 0.5, max: 8, step: 0.05 },
+          { key: "fadeTime", label: "停留时间", min: 0.3, max: 6, step: 0.05 },
+          { key: "jitter", label: "自然随机", min: 0, max: 1, step: 0.01, rebuild: true },
+          { key: "randomEvery", label: "自动频率", min: 0.3, max: 5, step: 0.05 },
+          { key: "maxRipples", label: "波纹上限", min: 10, max: 200, step: 1, integer: true }
+        ]
+      },
+      {
+        title: "镜头与灯光",
+        controls: [
+          { key: "cameraRadius", label: "镜头距离", min: 8, max: 24, step: 0.1 },
+          { key: "cameraTilt", label: "上下视差", min: 0, max: 0.12, step: 0.001 },
+          { key: "cameraOrbit", label: "左右视差", min: 0, max: 0.16, step: 0.001 },
+          { key: "cameraSmoothing", label: "跟随缓动", min: 0.01, max: 0.18, step: 0.005 },
+          { key: "ambientIntensity", label: "环境光", min: 0, max: 4, step: 0.01 },
+          { key: "keyIntensity", label: "主光", min: 0, max: 8, step: 0.01 },
+          { key: "fillIntensity", label: "补光", min: 0, max: 5, step: 0.01 },
+          { key: "roughness", label: "表面粗糙度", min: 0, max: 1, step: 0.01 },
+          { key: "emissiveIntensity", label: "自发光", min: 0, max: 1, step: 0.01 }
+        ]
+      }
+    ];
+
+    function createMaterial() {
+      material = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: settings.roughness,
+        metalness: 0,
+        emissive: settings.baseColor,
+        emissiveIntensity: settings.emissiveIntensity
+      });
+
+      material.onBeforeCompile = (shader) => {
+        shader.uniforms.uColorBase = { value: new THREE.Color(settings.baseColor) };
+        shader.uniforms.uColorLow = { value: new THREE.Color(settings.lowColor) };
+        shader.uniforms.uColorHigh = { value: new THREE.Color(settings.highColor) };
+        shader.uniforms.uMaxHeight = { value: settings.maxWaveHeight };
+
+        shader.vertexShader = shader.vertexShader
+          .replace(
+            "#include <common>",
+            `#include <common>
+            attribute float aWaveHeight;
+            varying float vWaveHeight;`
+          )
+          .replace(
+            "#include <begin_vertex>",
+            `#include <begin_vertex>
+            vWaveHeight = aWaveHeight * step(0.0, position.y);`
+          );
+
+        shader.fragmentShader = shader.fragmentShader
+          .replace(
+            "#include <common>",
+            `#include <common>
+            varying float vWaveHeight;
+            uniform vec3 uColorBase;
+            uniform vec3 uColorLow;
+            uniform vec3 uColorHigh;
+            uniform float uMaxHeight;`
+          )
+          .replace(
+            "#include <color_fragment>",
+            `#include <color_fragment>
+            float crest = clamp(vWaveHeight / uMaxHeight, 0.0, 1.0);
+            float valley = clamp(-vWaveHeight / uMaxHeight, 0.0, 1.0);
+            diffuseColor.rgb = mix(uColorBase, uColorHigh, crest);
+            diffuseColor.rgb = mix(diffuseColor.rgb, uColorLow, valley);`
+          );
+
+        materialShader = shader;
+      };
+    }
+
+    function hash2(x, z) {
+      const a = Math.sin(x * 127.1 + z * 311.7) * 43758.5453123;
+      const b = Math.sin(x * 269.5 + z * 183.3) * 24634.6345;
+      return {
+        x: (a - Math.floor(a) - 0.5) * settings.jitter,
+        z: (b - Math.floor(b) - 0.5) * settings.jitter
+      };
+    }
+
+    function addRipple(x, z, strength = 1, age = 0) {
+      while (ripples.length >= settings.maxRipples) {
+        ripples.shift();
+      }
+
+      ripples.push({
+        x,
+        z,
+        age,
+        strength
+      });
+    }
+
+    function addRandomRipple() {
+      addRipple(
+        (Math.random() * 0.5 - 0.25) * bounds,
+        (Math.random() * 0.5 - 0.25) * bounds,
+        0.8 + Math.random() * 0.2
+      );
+    }
+
+    function applySettings() {
+      scene.background = new THREE.Color(settings.backgroundColor);
+      renderer.setClearColor(settings.backgroundColor, 1);
+      renderer.toneMappingExposure = settings.exposure;
+      document.documentElement.style.setProperty("--overlay-opacity", settings.overlayOpacity);
+
+      baseColor.set(settings.baseColor);
+      lowColor.set(settings.lowColor);
+      highColor.set(settings.highColor);
+
+      if (material) {
+        material.color.set(0xffffff);
+        material.emissive.set(settings.baseColor);
+        material.emissiveIntensity = settings.emissiveIntensity;
+        material.roughness = settings.roughness;
+      }
+
+      if (materialShader) {
+        materialShader.uniforms.uColorBase.value.set(settings.baseColor);
+        materialShader.uniforms.uColorLow.value.set(settings.lowColor);
+        materialShader.uniforms.uColorHigh.value.set(settings.highColor);
+        materialShader.uniforms.uMaxHeight.value = settings.maxWaveHeight;
+      }
+
+      ambient.intensity = settings.ambientIntensity;
+      keyLight.intensity = settings.keyIntensity;
+      fillLight.intensity = settings.fillIntensity;
+
+      while (ripples.length > settings.maxRipples) {
+        ripples.shift();
+      }
+    }
+
+    function buildGrid() {
+      if (cubes) {
+        scene.remove(cubes);
+        cubes.geometry.dispose();
+      }
+
+      positions.length = 0;
+      spacing = settings.cubeWidth + settings.gap;
+      bounds = settings.gridSize * spacing;
+      count = settings.gridSize * settings.gridSize;
+
+      const geometry = new THREE.BoxGeometry(
+        settings.cubeWidth,
+        settings.baseHeight,
+        settings.cubeWidth
+      );
+      waveHeightAttribute = new THREE.InstancedBufferAttribute(new Float32Array(count), 1);
+      geometry.setAttribute("aWaveHeight", waveHeightAttribute);
+
+      cubes = new THREE.InstancedMesh(geometry, material, count);
+      cubes.castShadow = true;
+      cubes.receiveShadow = true;
+      scene.add(cubes);
+
+      const offset = ((settings.gridSize - 1) * spacing) / 2;
+
+      for (let row = 0; row < settings.gridSize; row++) {
+        for (let col = 0; col < settings.gridSize; col++) {
+          const index = row * settings.gridSize + col;
+          const x = row * spacing - offset;
+          const z = col * spacing - offset;
+          const jitter = hash2(x, z);
+
+          positions[index] = {
+            x,
+            z,
+            waveX: x + jitter.x,
+            waveZ: z + jitter.z
+          };
+
+          dummy.position.set(x, 0, z);
+          dummy.scale.set(1, 1, 1);
+          dummy.updateMatrix();
+          cubes.setMatrixAt(index, dummy.matrix);
+        }
+      }
+
+      cubes.instanceMatrix.needsUpdate = true;
+      waveHeightAttribute.needsUpdate = true;
+    }
+
+    function scheduleRebuild() {
+      window.clearTimeout(rebuildTimer);
+      rebuildTimer = window.setTimeout(() => {
+        buildGrid();
+        renderOnce();
+      }, 90);
+    }
+
+    function updateCamera() {
+      smoothPointer.x += (pointer.x - smoothPointer.x) * settings.cameraSmoothing;
+      smoothPointer.y += (pointer.y - smoothPointer.y) * settings.cameraSmoothing;
+
+      const radius = window.innerWidth < 680
+        ? settings.mobileCameraRadius
+        : settings.cameraRadius;
+      const alpha = smoothPointer.y * Math.PI * settings.cameraTilt;
+      const beta = smoothPointer.x * Math.PI * settings.cameraOrbit;
+
+      camera.position.set(
+        -radius * Math.cos(alpha) * Math.sin(beta),
+        radius * Math.cos(alpha) * Math.cos(beta),
+        radius * Math.sin(alpha)
+      );
+      camera.lookAt(0, 0, 0);
+    }
+
+    function getWorldPoint(clientX, clientY) {
+      pointer.x = (clientX / window.innerWidth) * 2 - 1;
+      pointer.y = -(clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      return raycaster.ray.intersectPlane(groundPlane, hitPoint);
+    }
+
+    function onPointerMove(event) {
+      if (event.target.closest(".settings-panel, .panel-toggle")) return;
+
+      const point = getWorldPoint(event.clientX, event.clientY);
+      if (!point) return;
+
+      idleTimer = 0;
+      isPointerActive = true;
+
+      if (lastTrailPoint) {
+        const dx = point.x - lastTrailPoint.x;
+        const dz = point.z - lastTrailPoint.z;
+        const distance = Math.hypot(dx, dz);
+        if (distance < 0.1) return;
+        addRipple(point.x, point.z, distance);
+      } else {
+        addRipple(point.x, point.z, 0);
+      }
+      lastTrailPoint = { x: point.x, z: point.z };
+    }
+
+    function onPointerLeave() {
+      lastTrailPoint = null;
+    }
+
+    function resize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      updateCamera();
+    }
+
+    function updateRipples(delta) {
+      const expiry = settings.fadeTime * 4;
+
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        ripples[i].age += delta;
+        if (ripples[i].age > expiry) {
+          ripples.splice(i, 1);
+        }
+      }
+
+      idleTimer += delta;
+      randomTimer += delta;
+
+      if (isPointerActive && idleTimer >= 3) {
+        isPointerActive = false;
+        randomTimer = 0;
+      }
+
+      if (!isPointerActive && randomTimer >= settings.randomEvery) {
+        addRandomRipple();
+        randomTimer = 0;
+      }
+    }
+
+    function waveHeightAt(position) {
+      let height = 0;
+      let totalWeight = 0;
+
+      for (const ripple of ripples) {
+        const dx = position.waveX - ripple.x;
+        const dz = position.waveZ - ripple.z;
+        const dist = Math.hypot(dx, dz);
+        const wavefront = settings.speed * ripple.age;
+        const relDist = dist - wavefront;
+        const envelope = Math.exp(-(relDist * relDist) / (settings.width * settings.width));
+        const fade = Math.exp(-ripple.age / settings.fadeTime);
+        const atten = 1 / (1 + dist * 0.1);
+        const weight = ripple.strength * fade * envelope * atten;
+
+        height += weight * Math.cos(settings.frequency * relDist);
+        totalWeight += weight;
+      }
+
+      height /= Math.max(totalWeight, 1);
+      return clamp(
+        height * settings.amplitude,
+        -settings.maxWaveHeight,
+        settings.maxWaveHeight
+      );
+    }
+
+    function updateCubes() {
+      for (let i = 0; i < count; i++) {
+        const position = positions[i];
+        const heightOffset = waveHeightAt(position);
+        const stretch = Math.max(0.05, (settings.baseHeight + heightOffset) / settings.baseHeight);
+        dummy.position.set(position.x, heightOffset * 0.5, position.z);
+        dummy.scale.set(1, stretch, 1);
+        dummy.updateMatrix();
+        cubes.setMatrixAt(i, dummy.matrix);
+        waveHeightAttribute.setX(i, heightOffset);
+      }
+
+      cubes.instanceMatrix.needsUpdate = true;
+      waveHeightAttribute.needsUpdate = true;
+    }
+
+    function renderOnce() {
+      updateCamera();
+      updateCubes();
+      renderer.render(scene, camera);
+    }
+
+    function render() {
+      const now = performance.now();
+      const delta = Math.min((now - lastTime) / 1000, 0.033);
+      lastTime = now;
+
+      updateCamera();
+      updateRipples(delta);
+      updateCubes();
+      renderer.render(scene, camera);
+
+      if (!shouldFreeze) {
+        requestAnimationFrame(render);
+      }
+    }
+
+    function formatValue(control, value) {
+      if (control.type === "color") return value.toUpperCase();
+      if (control.integer) return `${Math.round(value)}${control.suffix || ""}`;
+      const numericValue = Number(value);
+      const decimals = control.step < 0.01 ? 3 : control.step < 0.1 ? 2 : 1;
+      return numericValue.toFixed(decimals);
+    }
+
+    function findControl(key) {
+      for (const group of controlGroups) {
+        const match = group.controls.find((control) => control.key === key);
+        if (match) return match;
+      }
+      return null;
+    }
+
+    function updateControlOutput(key) {
+      document.querySelectorAll(`[data-output-for="${key}"]`).forEach((output) => {
+        const control = findControl(key);
+        output.textContent = formatValue(control, settings[key]);
+      });
+    }
+
+    function setSetting(key, rawValue) {
+      const control = findControl(key);
+      const value = control.type === "color"
+        ? rawValue
+        : control.integer
+          ? Math.round(Number(rawValue))
+          : Number(rawValue);
+
+      settings[key] = value;
+      updateControlOutput(key);
+      applySettings();
+
+      if (control.rebuild) {
+        scheduleRebuild();
+      } else {
+        renderOnce();
+      }
+    }
+
+    function createControls() {
+      const root = document.getElementById("controls");
+      root.innerHTML = "";
+
+      controlGroups.forEach((group) => {
+        const groupEl = document.createElement("section");
+        groupEl.className = "control-group";
+
+        const title = document.createElement("h2");
+        title.className = "group-title";
+        title.textContent = group.title;
+        groupEl.appendChild(title);
+
+        group.controls.forEach((control) => {
+          const row = document.createElement("label");
+          row.className = "control-row";
+
+          const label = document.createElement("span");
+          label.className = "control-label";
+          label.textContent = control.label;
+
+          const input = document.createElement("input");
+          input.dataset.key = control.key;
+
+          if (control.type === "color") {
+            input.type = "color";
+            input.value = settings[control.key];
+          } else {
+            input.type = "range";
+            input.min = control.min;
+            input.max = control.max;
+            input.step = control.step;
+            input.value = settings[control.key];
+          }
+
+          const output = document.createElement("span");
+          output.className = "control-value";
+          output.dataset.outputFor = control.key;
+          output.textContent = formatValue(control, settings[control.key]);
+
+          const applyInputValue = () => {
+            setSetting(control.key, input.value);
+          };
+
+          input.addEventListener("input", applyInputValue);
+          input.addEventListener("change", applyInputValue);
+
+          row.append(label, input, output);
+          groupEl.appendChild(row);
+        });
+
+        root.appendChild(groupEl);
+      });
+    }
+
+    function syncControls() {
+      document.querySelectorAll("[data-key]").forEach((input) => {
+        const control = findControl(input.dataset.key);
+        input.value = settings[input.dataset.key];
+        if (control) updateControlOutput(control.key);
+      });
+    }
+
+    function resetSettings() {
+      Object.assign(settings, defaultSettings);
+      applySettings();
+      buildGrid();
+      syncControls();
+      ripples.length = 0;
+      randomTimer = 0;
+      idleTimer = 0;
+      isPointerActive = false;
+      renderOnce();
+    }
+
+    function exportSettingsAsJS() {
+      const exportObject = JSON.stringify(settings, null, 2);
+      const js = `// Wavy Cubes Background 参数配置
+// 从 Tools/wavy-cubes-background.html 导出
+
+const wavyCubesSettings = ${exportObject};
+
+export { wavyCubesSettings };
+export default wavyCubesSettings;
+
+if (typeof window !== "undefined") {
+  window.WAVY_CUBES_SETTINGS = wavyCubesSettings;
+}
+`;
+
+      const blob = new Blob([js], { type: "text/javascript;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "wavy-cubes-settings.js";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById("collapse-panel").addEventListener("click", () => {
+      document.body.classList.add("panel-collapsed");
+    });
+
+    document.getElementById("panel-toggle").addEventListener("click", () => {
+      document.body.classList.remove("panel-collapsed");
+    });
+
+    document.getElementById("reset-settings").addEventListener("click", resetSettings);
+    document.getElementById("export-js").addEventListener("click", exportSettingsAsJS);
+
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerleave", onPointerLeave);
+    window.addEventListener("blur", onPointerLeave);
+
+    createMaterial();
+    createControls();
+    applySettings();
+    buildGrid();
+    resize();
+    render();
+  </script>
+</body>
+</html>

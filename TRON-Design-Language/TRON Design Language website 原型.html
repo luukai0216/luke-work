@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Tron Site Structure</title>
+<style>:root{color-scheme:light;background:#f4f4f1}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{box-sizing:border-box;padding:0;background:inherit}iframe{display:block;width:100vw;height:100vh;margin:0;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Tron Site Structure" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Tron Site Structure&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: Gelion, Arial, sans-serif;
+  --font-mono: Gelion, Arial, sans-serif;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: var(--border-radius-lg, 12.5px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+    [aria-pressed=&quot;true&quot;],
+    [aria-selected=&quot;true&quot;],
+    .is-selected
+  ) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: 16px !important;
+  height: 16px !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;tron-pages&quot;&gt;
+  &lt;style&gt;
+    #tron-pages{--red:#ed0029;--ink:#111318;--muted:#686b72;--line:#d9dadd;--paper:#f4f4f1;--card:#fff;--dark:#17181c;display:grid;grid-template-columns:232px minmax(0,1fr);width:100%;min-height:100vh;background:var(--paper);color:var(--ink);font-family:Gelion,Arial,sans-serif}
+    #tron-pages *{box-sizing:border-box}#tron-pages button,#tron-pages input{font:inherit}
+    #tron-pages .side{height:100vh;position:sticky;top:0;padding:26px 18px 20px;background:#111216;color:#fff;display:flex;flex-direction:column;border-right:1px solid #303137}
+    #tron-pages .brand{display:flex;justify-content:space-between;align-items:center;padding:0 8px 22px;border-bottom:1px solid #34353a}.brand b{font-size:25px;letter-spacing:-1.5px}.brand small{color:#777b84;font:10px Gelion,Arial,sans-serif}
+    #tron-pages .nav-label{margin:23px 9px 10px;color:#777b84;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+    #tron-pages .nav{display:grid;gap:4px}.nav button{display:grid;grid-template-columns:28px 1fr;width:100%;padding:12px 9px;border:0;border-left:2px solid transparent;background:transparent;color:#a8abb2;text-align:left;cursor:pointer;font-size:13px}.nav button span:first-child{color:#62656d;font:10px/1.7 Gelion,Arial,sans-serif}.nav button:hover,.nav button.active{background:#222329;color:#fff;border-left-color:var(--red)}
+    #tron-pages .get{width:100%;margin-top:auto;padding:14px 12px;display:flex;justify-content:space-between;border:0;background:var(--red);color:#fff;text-decoration:none;text-align:left;cursor:pointer;font-size:13px;font-weight:700}.get span:last-child{font-size:18px}.side-note{margin-top:auto;padding:0 9px;color:#73767e;font-size:10px;line-height:1.55}.language-select{position:relative;margin-top:12px}.language-select::before{content:&quot;◎&quot;;position:absolute;left:10px;top:50%;z-index:1;transform:translateY(-50%);color:#a9abb1;font-size:13px;pointer-events:none}.language-select select{width:100%;height:40px;padding:0 30px 0 31px;appearance:none;border:1px solid #35363c;border-radius:0;background:#191a1f;color:#f2f2ed;cursor:pointer;font-size:11px}.language-select::after{content:&quot;⌄&quot;;position:absolute;right:10px;top:50%;transform:translateY(-55%);color:#7f828a;pointer-events:none}
+    #tron-pages .viewport{height:100vh;overflow:auto}.page{display:none;min-height:100vh}.page.active{display:block}.page-inner{max-width:1160px;margin:auto;padding:0 38px 100px}
+    #tron-pages .topbar{position:sticky;top:0;z-index:8;height:58px;display:flex;align-items:center;justify-content:flex-end;padding:0 38px;background:rgba(244,244,241,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);font-size:12px}.topbar span{color:var(--muted)}
+    #tron-pages .hero{min-height:520px;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:36px 0 54px}.hero-copy,.hero-visual{padding:42px;border-radius:2px}.hero-copy{display:flex;flex-direction:column;justify-content:space-between;background:#fff}.eyebrow{color:var(--red);font-size:11px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}.hero h1{margin:18px 0 20px;font-size:clamp(50px,7vw,90px);line-height:.9;letter-spacing:-.07em}.hero p{max-width:540px;margin:0;color:var(--muted);font-size:15px;line-height:1.7}.hero-copy .meta{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);display:flex;gap:22px;color:var(--muted);font-size:11px}.hero-visual{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--red);color:#fff;font-size:clamp(90px,16vw,220px);font-weight:800;letter-spacing:-.11em}.hero-visual::after{content:&quot;TYPEFACE / VF&quot;;position:absolute;left:18px;bottom:16px;font:10px Gelion,Arial,sans-serif;letter-spacing:.1em}
+    #tron-pages .page-grid{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:54px}.doc{min-width:0}.toc{position:sticky;top:88px;align-self:start;border-left:1px solid var(--line);padding-left:16px}.toc b{display:block;margin-bottom:12px;font-size:11px}.toc a{display:block;padding:5px 0;color:var(--muted);text-decoration:none;font-size:11px;line-height:1.4}.toc a:hover{color:var(--red)}
+    #tron-pages .section{padding:64px 0;border-top:1px solid var(--line);scroll-margin-top:70px}.section:first-child{border-top:0}.section h2{margin:0 0 18px;font-size:34px;letter-spacing:-.045em}.section .lead{max-width:690px;margin:0 0 34px;color:var(--muted);font-size:15px;line-height:1.75}.section h3{margin:0 0 10px;font-size:17px}.section p{color:var(--muted);font-size:13px;line-height:1.65}
+    #tron-pages .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.concept-dimensions{grid-template-columns:repeat(2,1fr)}.info-card{min-height:190px;padding:22px;background:var(--card);border:1px solid var(--line)}.info-card .n{display:block;margin-bottom:42px;color:var(--red);font:11px Gelion,Arial,sans-serif}.info-card p{margin:0}.wide-card{padding:28px;background:#fff;border:1px solid var(--line)}
+    #tron-pages .origin{display:grid;grid-template-columns:1fr 1fr;gap:10px}.origin-visual{min-height:330px;display:grid;place-items:center;background:#17181c;color:#fff;font-size:160px;font-weight:800;letter-spacing:-.09em}.origin-copy{padding:32px;background:#fff}.origin-copy blockquote{margin:30px 0 0;font-size:25px;line-height:1.15;letter-spacing:-.04em}
+    #tron-pages .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.principle{padding:25px;background:#fff;border-top:4px solid var(--red)}
+    #tron-pages .glyph-show{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.glyph-big{aspect-ratio:1;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-size:clamp(70px,9vw,140px);font-weight:700;letter-spacing:-.08em}.glyph-big small{position:absolute}.feature-notes{margin-top:10px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.feature-note{padding:21px;background:#fff;border:1px solid var(--line)}
+    #tron-pages .tester{background:#f0ca35;color:#111;padding:28px}.tester-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;padding-bottom:22px;border-bottom:1px solid rgba(0,0,0,.25)}.control label{display:flex;justify-content:space-between;margin-bottom:9px;font-size:11px}.control input{width:100%;accent-color:#111}.tester-text{min-height:220px;padding-top:28px;outline:0;font-size:62px;line-height:1.02;letter-spacing:-.05em;font-weight:600}
+    #tron-pages .applications{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}.app-poster{min-height:390px;padding:24px;background:var(--red);color:#fff;display:flex;flex-direction:column;justify-content:space-between}.app-poster strong{font-size:70px;line-height:.82;letter-spacing:-.07em}.app-stack{display:grid;gap:10px}.app-ui,.app-editorial{min-height:190px;padding:22px;background:#fff;border:1px solid var(--line)}.app-ui .amount{font-size:42px;font-weight:700}.app-editorial b{display:block;font-size:28px;line-height:1}
+    #tron-pages .axis-spec{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:18px;border:1px solid var(--line)}.axis-spec div{padding:14px 16px;background:#f7f7f4;border-right:1px solid var(--line)}.axis-spec div:last-child{border-right:0}.axis-spec small{display:block;margin-bottom:5px;color:var(--muted);font:10px Gelion,Arial,sans-serif}.axis-spec b{font-size:13px}.axis{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:18px 0;border-top:1px solid var(--line)}.axis:first-of-type{border-top:0}.axis code{display:inline-block;width:max-content;margin-top:4px;padding:6px 9px;border-radius:0;background:#17181c;color:#fff;font:600 12px/1 Gelion,Arial,sans-serif;letter-spacing:.02em}.axis-demo{font-size:34px;line-height:1;white-space:nowrap;overflow:hidden}
+    #tron-pages .matrix{display:grid;grid-template-columns:110px repeat(5,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.matrix&gt;*{min-height:48px;padding:12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;font-size:11px}.matrix .sample{font-size:22px;line-height:1}
+    #tron-pages .table-scroll{overflow:auto;border:1px solid var(--line)}.table-scroll table{min-width:820px;border:0}table{width:100%;border-collapse:collapse;background:#fff;font-size:11px}th,td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:500}td:first-child{font-weight:700}.token{font-family:Gelion,Arial,sans-serif;color:var(--red);white-space:nowrap}.token-note{margin:0 0 12px;padding:16px 18px;background:#17181c;color:#fff;font-size:12px;line-height:1.7}.token-note code{color:#fff;font-family:Gelion,Arial,sans-serif}.type-scale{display:grid;gap:8px}.scale-row{display:grid;grid-template-columns:140px minmax(0,1fr) 185px;align-items:center;gap:18px;padding:18px;background:#fff;border:1px solid var(--line)}.scale-row b{font-size:11px}.scale-row span:last-child{color:var(--muted);font:10px/1.6 Gelion,Arial,sans-serif}.scale-sample{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.display-lg{font-size:50px;line-height:1;font-weight:700;letter-spacing:-.015em}.display-md{font-size:42px;line-height:1.05;font-weight:700;letter-spacing:-.01em}.display-sm{font-size:36px;line-height:1.08;font-weight:650;letter-spacing:-.005em}.headline-lg{font-size:34px;line-height:1.1;font-weight:650;letter-spacing:-.005em}.headline-md{font-size:29px;line-height:1.15;font-weight:600}.headline-sm{font-size:25px;line-height:1.2;font-weight:600}.title-lg{font-size:22px;line-height:1.25;font-weight:600}.title-md{font-size:19px;line-height:1.3;font-weight:600;letter-spacing:.01em}.title-sm{font-size:16px;line-height:1.35;font-weight:600;letter-spacing:.01em}.body-lg{font-size:18px;line-height:1.5}.body-md{font-size:16px;line-height:1.5}.body-sm{font-size:14px;line-height:1.45;letter-spacing:.01em}.label-lg{font-size:14px;font-weight:600;letter-spacing:.04em}.label-md{font-size:12px;font-weight:600;letter-spacing:.05em}.label-sm{font-size:11px;font-weight:600;letter-spacing:.06em}
+    #tron-pages .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rule{padding:24px;background:#fff;border:1px solid var(--line)}.rule.do{border-top:4px solid #14804a}.rule.dont{border-top:4px solid var(--red)}.rule ul{margin:16px 0 0;padding-left:17px;color:var(--muted);font-size:12px;line-height:1.8}
+    #tron-pages .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{padding:22px;background:#17181c;color:#fff}.stat strong{display:block;font-size:26px}.stat span{color:#9da0a8;font-size:10px}.glyph-grid{display:grid;grid-template-columns:repeat(12,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}.glyph-grid span{aspect-ratio:1;display:grid;place-items:center;background:#fff;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:24px}.feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.feature-item{display:flex;align-items:center;justify-content:space-between;padding:15px 17px;background:#fff;border:1px solid var(--line);font-size:12px}.feature-item code{min-width:48px;padding:6px 9px;border-radius:0;background:#17181c;color:#fff;font:600 12px/1 Gelion,Arial,sans-serif;text-align:center;letter-spacing:.04em}
+    #tron-pages .languages{display:grid;gap:8px}.language{padding:20px 22px;background:#fff;border:1px solid var(--line)}.language b{display:block;margin-bottom:10px;color:var(--red);font-size:10px;text-transform:uppercase}.language span{font-size:21px;line-height:1.35}
+    #tron-pages .download-hero{min-height:430px;margin:36px 0 0;padding:48px;display:flex;flex-direction:column;justify-content:space-between;background:var(--red);color:#fff}.download-hero h1{margin:20px 0 0;font-size:clamp(66px,11vw,150px);line-height:.82;letter-spacing:-.075em}.download-hero p{max-width:560px;margin:28px 0 0;color:#fff;font-size:15px;line-height:1.65}.download-grid{display:grid;grid-template-columns:minmax(0,720px);gap:10px}.download-card{padding:28px;background:#fff;border:1px solid var(--line)}.download-card.featured{background:#17181c;color:#fff}.download-card .file-meta{display:flex;gap:9px;margin:28px 0 20px;flex-wrap:wrap}.download-card .file-meta span{padding:5px 8px;border:1px solid currentColor;font-size:10px}.download-card p{min-height:64px}.download-action{display:flex;justify-content:space-between;align-items:center;width:100%;padding:15px 16px;border:0;background:var(--red);color:#fff;text-decoration:none;font-size:12px;font-weight:700}.download-card:not(.featured) .download-action{background:#17181c}.install-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.install-step{padding:22px;background:#fff;border:1px solid var(--line)}.install-step b{display:block;margin-bottom:35px;color:var(--red);font:11px Gelion,Arial,sans-serif}.license-box{padding:28px;background:#fff;border-left:4px solid var(--red)}
+    @media(max-width:820px){#tron-pages{grid-template-columns:1fr}.side{height:auto;position:sticky;z-index:10;padding:12px 14px}.brand{padding-bottom:10px}.nav-label,.side-note{display:none}.nav{grid-template-columns:repeat(4,1fr);margin-top:8px}.nav button{display:block;padding:8px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px}.nav button span:first-child{display:none}.get{position:absolute;right:14px;top:10px;width:112px;margin:0;padding:9px}.viewport{height:calc(100vh - 105px)}.page-inner{padding:0 16px 70px}.topbar{padding:0 16px}.hero{grid-template-columns:1fr;min-height:0}.hero-copy,.hero-visual{min-height:310px;padding:28px}.page-grid{grid-template-columns:1fr}.toc{display:none}.cards,.principles,.glyph-show,.stats{grid-template-columns:repeat(2,1fr)}.concept-dimensions,.origin,.applications,.do-dont,.download-grid{grid-template-columns:1fr}.tester-controls,.install-steps,.axis-spec{grid-template-columns:1fr}.axis-spec div{border-right:0;border-bottom:1px solid var(--line)}.axis-spec div:last-child{border-bottom:0}.tester-text{font-size:42px}.matrix{grid-template-columns:85px repeat(5,1fr);overflow:auto}.scale-row{grid-template-columns:105px minmax(0,1fr)}.scale-row span:last-child{grid-column:1/-1}.feature-list{grid-template-columns:1fr}.glyph-grid{grid-template-columns:repeat(6,1fr)}.download-hero{padding:30px;min-height:360px}}
+  &lt;/style&gt;
+  &lt;aside class=&quot;side&quot;&gt;
+    &lt;div class=&quot;brand&quot;&gt;&lt;b&gt;TRON&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;nav-label&quot;&gt;Typography&lt;/div&gt;
+    &lt;nav class=&quot;nav&quot; aria-label=&quot;字体页面&quot;&gt;
+      &lt;button class=&quot;active&quot; data-page=&quot;concept&quot;&gt;&lt;span&gt;01&lt;/span&gt;&lt;span&gt;视觉理念&lt;/span&gt;&lt;/button&gt;
+      &lt;button data-page=&quot;features&quot;&gt;&lt;span&gt;02&lt;/span&gt;&lt;span&gt;字形特征&lt;/span&gt;&lt;/button&gt;
+      &lt;button data-page=&quot;system&quot;&gt;&lt;span&gt;03&lt;/span&gt;&lt;span&gt;字体系统&lt;/span&gt;&lt;/button&gt;
+      &lt;button data-page=&quot;glyphs&quot;&gt;&lt;span&gt;04&lt;/span&gt;&lt;span&gt;字符构成&lt;/span&gt;&lt;/button&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;side-note&quot;&gt;&lt;label class=&quot;language-select&quot; aria-label=&quot;语言切换&quot;&gt;&lt;select&gt;&lt;option value=&quot;zh-CN&quot;&gt;简体中文&lt;/option&gt;&lt;option value=&quot;en&quot;&gt;English&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;&lt;/div&gt;
+  &lt;/aside&gt;
+  &lt;main class=&quot;viewport&quot;&gt;
+    &lt;div class=&quot;topbar&quot;&gt;&lt;span class=&quot;current-title&quot;&gt;视觉理念 · 01 / 04&lt;/span&gt;&lt;/div&gt;
+
+    &lt;article class=&quot;page active&quot; data-name=&quot;concept&quot;&gt;
+      &lt;div class=&quot;page-inner&quot;&gt;
+        &lt;header class=&quot;hero&quot;&gt;&lt;div class=&quot;hero-copy&quot;&gt;&lt;div&gt;&lt;div class=&quot;eyebrow&quot;&gt;01 / Visual concept&lt;/div&gt;&lt;h1&gt;视觉&lt;br&gt;理念&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;为开放的数字生态建立清晰、一致、可信的设计语言。&lt;/strong&gt;&lt;br&gt;视觉系统连接品牌、产品、数据与社区体验，让不同触点保持统一识别，并适应持续发展的全球网络。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;meta&quot;&gt;&lt;span&gt;品牌识别&lt;/span&gt;&lt;span&gt;数字产品&lt;/span&gt;&lt;span&gt;生态体验&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;hero-visual&quot;&gt;TR&lt;/div&gt;&lt;/header&gt;
+        &lt;div class=&quot;page-grid&quot;&gt;&lt;div class=&quot;doc&quot;&gt;
+          &lt;section class=&quot;section&quot; id=&quot;concept-position&quot;&gt;&lt;h2&gt;生态设计定位&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;这套设计语言服务于协议、产品、社区、活动与全球传播，将复杂的网络信息转化为清晰体验，并在快速变化的数字环境中维持稳定识别。&lt;/p&gt;&lt;div class=&quot;cards&quot;&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;01&lt;/span&gt;&lt;h3&gt;清晰 Clarity&lt;/h3&gt;&lt;p&gt;减少不必要的视觉噪音，通过明确层级帮助用户理解产品、数据与关键信息。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;02&lt;/span&gt;&lt;h3&gt;连接 Connection&lt;/h3&gt;&lt;p&gt;使用共享的色彩、字体、网格与组件，让不同产品和生态角色形成连续体验。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;03&lt;/span&gt;&lt;h3&gt;一致性 Consistency&lt;/h3&gt;&lt;p&gt;在不同产品、平台与传播触点中保持统一的视觉规则和品牌体验。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;concept-origin&quot;&gt;&lt;h2&gt;视觉语言&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;视觉语言从核心识别出发，延伸到信息组织与数字体验。不同维度共享一致的设计逻辑，并根据场景调整表达方式。&lt;/p&gt;&lt;div class=&quot;origin&quot;&gt;&lt;div class=&quot;origin-visual&quot;&gt;R0&lt;/div&gt;&lt;div class=&quot;origin-copy&quot;&gt;&lt;div class=&quot;eyebrow&quot;&gt;From mark to ecosystem&lt;/div&gt;&lt;h3&gt;从一个标志，扩展为完整系统&lt;/h3&gt;&lt;p&gt;标志、色彩、字体、图像、数据和动态共同构成视觉表达，让不同产品与生态触点保持清晰而连续的体验。&lt;/p&gt;&lt;blockquote&gt;Clear systems.&lt;br&gt;Connected experiences.&lt;br&gt;One shared language.&lt;/blockquote&gt;&lt;/div&gt;&lt;/div&gt;&lt;h3 style=&quot;margin:36px 0 14px&quot;&gt;视觉语言的四个维度&lt;/h3&gt;&lt;div class=&quot;cards concept-dimensions&quot;&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;01 / IDENTITY&lt;/span&gt;&lt;h3&gt;识别&lt;/h3&gt;&lt;p&gt;建立鲜明、统一且可持续延展的品牌形象。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;02 / STRUCTURE&lt;/span&gt;&lt;h3&gt;秩序&lt;/h3&gt;&lt;p&gt;通过一致的层级与结构组织复杂内容和多样场景。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;03 / INFORMATION&lt;/span&gt;&lt;h3&gt;信息&lt;/h3&gt;&lt;p&gt;让技术、网络与数据内容更容易理解、比较和使用。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;04 / EXPERIENCE&lt;/span&gt;&lt;h3&gt;体验&lt;/h3&gt;&lt;p&gt;连接静态、动态、数字与现实触点中的品牌感受。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;concept-principles&quot;&gt;&lt;h2&gt;三项设计原则&lt;/h2&gt;&lt;div class=&quot;principles&quot;&gt;&lt;div class=&quot;principle&quot;&gt;&lt;h3&gt;清晰表达&lt;/h3&gt;&lt;p&gt;通过明确层级、充分对比与简洁结构，让复杂信息更容易理解和使用。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;principle&quot;&gt;&lt;h3&gt;系统一致&lt;/h3&gt;&lt;p&gt;不同产品与传播触点共享相同的设计逻辑，同时允许内容与场景产生变化。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;principle&quot;&gt;&lt;h3&gt;跨场景适配&lt;/h3&gt;&lt;p&gt;设计系统能够覆盖品牌传播、产品界面、数据呈现、活动与社区内容。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;concept-typeface&quot;&gt;&lt;h2&gt;字体在系统中的角色&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;品牌字体是设计语言的基础组成部分。它统一品牌表达、产品阅读与数字信息，让不同场景保持同一种视觉声音。&lt;/p&gt;&lt;div class=&quot;cards&quot;&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;01&lt;/span&gt;&lt;h3&gt;品牌表达&lt;/h3&gt;&lt;p&gt;在标题与核心传播中建立鲜明、稳定且具有识别度的语气。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;02&lt;/span&gt;&lt;h3&gt;产品阅读&lt;/h3&gt;&lt;p&gt;在导航、操作和信息层级中保持清晰，连接品牌体验与产品体验。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;03&lt;/span&gt;&lt;h3&gt;数据呈现&lt;/h3&gt;&lt;p&gt;通过清晰数字与稳定节奏，支持资产、交易和网络信息的快速比较。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;concept-expression&quot;&gt;&lt;h2&gt;品牌表达规范&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;整体表达专业、直接、开放且面向全球。视觉保持克制与秩序，同时通过鲜明色彩和结构张力传递发展动能。&lt;/p&gt;&lt;div class=&quot;do-dont&quot;&gt;&lt;div class=&quot;rule do&quot;&gt;&lt;h3&gt;推荐&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;使用明确层级和充分留白组织复杂信息&lt;/li&gt;&lt;li&gt;让品牌、产品和数据遵循一致的视觉规则&lt;/li&gt;&lt;li&gt;在关键触点使用核心色建立识别与行动引导&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div class=&quot;rule dont&quot;&gt;&lt;h3&gt;不建议&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;叠加过多装饰、阴影或动态特效，干扰内容理解&lt;/li&gt;&lt;li&gt;为了视觉冲击牺牲信息可读性与产品可用性&lt;/li&gt;&lt;li&gt;在不同触点任意改变核心颜色、字体和品牌资产&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+        &lt;/div&gt;&lt;aside class=&quot;toc&quot;&gt;&lt;b&gt;本页内容&lt;/b&gt;&lt;a href=&quot;#concept-position&quot;&gt;生态设计定位&lt;/a&gt;&lt;a href=&quot;#concept-origin&quot;&gt;视觉语言&lt;/a&gt;&lt;a href=&quot;#concept-principles&quot;&gt;设计原则&lt;/a&gt;&lt;a href=&quot;#concept-typeface&quot;&gt;字体角色&lt;/a&gt;&lt;a href=&quot;#concept-expression&quot;&gt;表达规范&lt;/a&gt;&lt;/aside&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+
+    &lt;article class=&quot;page&quot; data-name=&quot;features&quot;&gt;
+      &lt;div class=&quot;page-inner&quot;&gt;
+        &lt;header class=&quot;hero&quot;&gt;&lt;div class=&quot;hero-copy&quot;&gt;&lt;div&gt;&lt;div class=&quot;eyebrow&quot;&gt;02 / Glyph features&lt;/div&gt;&lt;h1&gt;字形&lt;br&gt;特征&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;结构化表达，精确数字。&lt;/strong&gt;&lt;br&gt;均衡比例与严谨形态赋予字体稳健、可信的气质；清晰的字符差异支持直接沟通，并强化数字环境中的精确表达。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;meta&quot;&gt;&lt;span&gt;字形解剖&lt;/span&gt;&lt;span&gt;试字体验&lt;/span&gt;&lt;span&gt;应用场景&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;hero-visual&quot;&gt;Aa&lt;/div&gt;&lt;/header&gt;
+        &lt;div class=&quot;page-grid&quot;&gt;&lt;div class=&quot;doc&quot;&gt;
+          &lt;section class=&quot;section&quot; id=&quot;feature-anatomy&quot;&gt;&lt;h2&gt;标志性字形&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;这套字体通过结构化端点、清晰字腔与稳定基线建立统一的字形语言，在不同字重和尺寸下保持鲜明识别度。&lt;/p&gt;&lt;div class=&quot;glyph-show&quot;&gt;&lt;div class=&quot;glyph-big&quot;&gt;A&lt;/div&gt;&lt;div class=&quot;glyph-big&quot;&gt;R&lt;/div&gt;&lt;div class=&quot;glyph-big&quot;&gt;0&lt;/div&gt;&lt;div class=&quot;glyph-big&quot;&gt;7&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;feature-notes&quot;&gt;&lt;div class=&quot;feature-note&quot;&gt;&lt;h3&gt;结构化端点&lt;/h3&gt;&lt;p&gt;斜切端点延续核心标志的几何方向感，同时保持连续阅读的稳定性。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;feature-note&quot;&gt;&lt;h3&gt;数字辨识度&lt;/h3&gt;&lt;p&gt;0、6、8、9 等相近数字保持明确轮廓差异，适配交易与资产信息。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;feature-note&quot;&gt;&lt;h3&gt;均衡字腔&lt;/h3&gt;&lt;p&gt;内外空间在不同字重中维持一致视觉容量，避免粗体堵塞。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;feature-note&quot;&gt;&lt;h3&gt;基线节奏&lt;/h3&gt;&lt;p&gt;统一高度、比例与基线关系，让连续数字形成可靠而平衡的节奏。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;feature-tester&quot;&gt;&lt;h2&gt;试字体验&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;输入自定义内容，并通过字号、字重与字距控制，实时体验字体在不同排版条件下的表现。&lt;/p&gt;&lt;div class=&quot;tester&quot;&gt;&lt;div class=&quot;tester-controls&quot;&gt;&lt;div class=&quot;control&quot;&gt;&lt;label&gt;&lt;span&gt;字号&lt;/span&gt;&lt;output data-out=&quot;size&quot;&gt;62 px&lt;/output&gt;&lt;/label&gt;&lt;input data-control=&quot;size&quot; type=&quot;range&quot; min=&quot;28&quot; max=&quot;110&quot; value=&quot;62&quot;&gt;&lt;/div&gt;&lt;div class=&quot;control&quot;&gt;&lt;label&gt;&lt;span&gt;字重&lt;/span&gt;&lt;output data-out=&quot;weight&quot;&gt;600&lt;/output&gt;&lt;/label&gt;&lt;input data-control=&quot;weight&quot; type=&quot;range&quot; min=&quot;300&quot; max=&quot;900&quot; step=&quot;100&quot; value=&quot;600&quot;&gt;&lt;/div&gt;&lt;div class=&quot;control&quot;&gt;&lt;label&gt;&lt;span&gt;字距&lt;/span&gt;&lt;output data-out=&quot;spacing&quot;&gt;-5%&lt;/output&gt;&lt;/label&gt;&lt;input data-control=&quot;spacing&quot; type=&quot;range&quot; min=&quot;-8&quot; max=&quot;8&quot; value=&quot;-5&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;tester-text&quot; contenteditable=&quot;true&quot; spellcheck=&quot;false&quot;&gt;Moving value across the world.&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;feature-use&quot;&gt;&lt;h2&gt;应用场景&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;同一套字形语言需要在传播、产品和数据中保持连续，而不是只出现在海报或品牌主视觉里。&lt;/p&gt;&lt;div class=&quot;applications&quot;&gt;&lt;div class=&quot;app-poster&quot;&gt;&lt;span&gt;GLOBAL NETWORK / 2026&lt;/span&gt;&lt;strong&gt;MOVE&lt;br&gt;VALUE&lt;br&gt;FORWARD&lt;/strong&gt;&lt;span&gt;OPEN DIGITAL ECOSYSTEM&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;app-stack&quot;&gt;&lt;div class=&quot;app-ui&quot;&gt;&lt;small&gt;AVAILABLE BALANCE&lt;/small&gt;&lt;div class=&quot;amount&quot;&gt;12,480.62&lt;/div&gt;&lt;p&gt;Asset · Updated now&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;app-editorial&quot;&gt;&lt;small&gt;NETWORK REPORT / 08&lt;/small&gt;&lt;b&gt;Scaling a global digital economy.&lt;/b&gt;&lt;p&gt;Brand communication and editorial headline.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+        &lt;/div&gt;&lt;aside class=&quot;toc&quot;&gt;&lt;b&gt;本页内容&lt;/b&gt;&lt;a href=&quot;#feature-anatomy&quot;&gt;标志性字形&lt;/a&gt;&lt;a href=&quot;#feature-tester&quot;&gt;试字体验&lt;/a&gt;&lt;a href=&quot;#feature-use&quot;&gt;应用场景&lt;/a&gt;&lt;/aside&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+
+    &lt;article class=&quot;page&quot; data-name=&quot;system&quot;&gt;
+      &lt;div class=&quot;page-inner&quot;&gt;
+        &lt;header class=&quot;hero&quot;&gt;&lt;div class=&quot;hero-copy&quot;&gt;&lt;div&gt;&lt;div class=&quot;eyebrow&quot;&gt;03 / Type system&lt;/div&gt;&lt;h1&gt;字体&lt;br&gt;系统&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;从醒目标题到紧凑数据，保持统一的视觉声音。&lt;/strong&gt;&lt;br&gt;变量轴、字重、字号层级与字体令牌共同构成一致、灵活的排版系统。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;meta&quot;&gt;&lt;span&gt;Variable font&lt;/span&gt;&lt;span&gt;Type scale&lt;/span&gt;&lt;span&gt;Tokens&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;hero-visual&quot;&gt;W8&lt;/div&gt;&lt;/header&gt;
+        &lt;div class=&quot;page-grid&quot;&gt;&lt;div class=&quot;doc&quot;&gt;
+          &lt;section class=&quot;section&quot; id=&quot;system-space&quot;&gt;&lt;h2&gt;设计空间&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;Variable Font 通过连续字重轴覆盖从轻量信息到高强调标题的排版需求。设计时可使用连续数值，交付时优先采用推荐节点。&lt;/p&gt;&lt;div class=&quot;wide-card&quot;&gt;&lt;div class=&quot;axis-spec&quot;&gt;&lt;div&gt;&lt;small&gt;AXIS&lt;/small&gt;&lt;b&gt;wght / Weight&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;small&gt;RANGE · DEFAULT&lt;/small&gt;&lt;b&gt;300–900 · 400&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;small&gt;RECOMMENDED&lt;/small&gt;&lt;b&gt;300 / 400 / 500 / 600 / 700 / 900&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;div&gt;&lt;h3&gt;Light&lt;/h3&gt;&lt;code&gt;wght 300&lt;/code&gt;&lt;p&gt;辅助信息&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;axis-demo&quot; style=&quot;font-weight:300&quot;&gt;Global Network 300&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;div&gt;&lt;h3&gt;Semibold&lt;/h3&gt;&lt;code&gt;wght 600&lt;/code&gt;&lt;p&gt;标题与操作&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;axis-demo&quot; style=&quot;font-weight:600&quot;&gt;Global Network 600&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;axis&quot;&gt;&lt;div&gt;&lt;h3&gt;Black&lt;/h3&gt;&lt;code&gt;wght 900&lt;/code&gt;&lt;p&gt;展示与强调&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;axis-demo&quot; style=&quot;font-weight:900&quot;&gt;Global Network 900&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;system-weights&quot;&gt;&lt;h2&gt;字重与用途&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;不同字重承担明确的信息层级，从辅助内容、正文与操作标签，到关键数据和展示标题，形成稳定的视觉秩序。&lt;/p&gt;&lt;div class=&quot;matrix&quot;&gt;&lt;b&gt;用途&lt;/b&gt;&lt;b&gt;Light&lt;/b&gt;&lt;b&gt;Regular&lt;/b&gt;&lt;b&gt;Medium&lt;/b&gt;&lt;b&gt;Bold&lt;/b&gt;&lt;b&gt;Black&lt;/b&gt;&lt;span&gt;品牌标题&lt;/span&gt;&lt;span class=&quot;sample&quot; style=&quot;font-weight:300&quot;&gt;TR&lt;/span&gt;&lt;span class=&quot;sample&quot; style=&quot;font-weight:400&quot;&gt;TR&lt;/span&gt;&lt;span class=&quot;sample&quot; style=&quot;font-weight:500&quot;&gt;TR&lt;/span&gt;&lt;span class=&quot;sample&quot; style=&quot;font-weight:700&quot;&gt;TR&lt;/span&gt;&lt;span class=&quot;sample&quot; style=&quot;font-weight:900&quot;&gt;TR&lt;/span&gt;&lt;span&gt;产品界面&lt;/span&gt;&lt;span&gt;辅助&lt;/span&gt;&lt;span&gt;正文&lt;/span&gt;&lt;span&gt;强调&lt;/span&gt;&lt;span&gt;操作&lt;/span&gt;&lt;span&gt;慎用&lt;/span&gt;&lt;span&gt;数据&lt;/span&gt;&lt;span&gt;次要&lt;/span&gt;&lt;span&gt;默认&lt;/span&gt;&lt;span&gt;重点&lt;/span&gt;&lt;span&gt;关键值&lt;/span&gt;&lt;span&gt;展示值&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;system-scale&quot;&gt;&lt;h2&gt;字号层级&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;Display、Headline、Title、Body、Label 构成五类语义角色，并以 Large、Medium、Small 形成十五级字号系统。每一级同时定义字号、行高、字重、字距和用途。&lt;/p&gt;&lt;div class=&quot;type-scale&quot;&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Display Large&lt;/b&gt;&lt;div class=&quot;scale-sample display-lg&quot;&gt;VALUE&lt;/div&gt;&lt;span&gt;64 / 64 · 700 · −1.5%&lt;br&gt;品牌主视觉&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Display Medium&lt;/b&gt;&lt;div class=&quot;scale-sample display-md&quot;&gt;MOVE FORWARD&lt;/div&gt;&lt;span&gt;52 / 56 · 700 · −1%&lt;br&gt;活动主题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Display Small&lt;/b&gt;&lt;div class=&quot;scale-sample display-sm&quot;&gt;OPEN NETWORK&lt;/div&gt;&lt;span&gt;44 / 48 · 650 · −0.5%&lt;br&gt;页面焦点标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Headline Large&lt;/b&gt;&lt;div class=&quot;scale-sample headline-lg&quot;&gt;Global digital ecosystem&lt;/div&gt;&lt;span&gt;40 / 44 · 650 · −0.5%&lt;br&gt;页面主标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Headline Medium&lt;/b&gt;&lt;div class=&quot;scale-sample headline-md&quot;&gt;Network activity&lt;/div&gt;&lt;span&gt;32 / 38 · 600 · 0%&lt;br&gt;章节标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Headline Small&lt;/b&gt;&lt;div class=&quot;scale-sample headline-sm&quot;&gt;Transaction overview&lt;/div&gt;&lt;span&gt;28 / 34 · 600 · 0%&lt;br&gt;内容分区标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Title Large&lt;/b&gt;&lt;div class=&quot;scale-sample title-lg&quot;&gt;Account activity&lt;/div&gt;&lt;span&gt;24 / 30 · 600 · 0%&lt;br&gt;模块标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Title Medium&lt;/b&gt;&lt;div class=&quot;scale-sample title-md&quot;&gt;Recent transactions&lt;/div&gt;&lt;span&gt;20 / 26 · 600 · 1%&lt;br&gt;卡片标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Title Small&lt;/b&gt;&lt;div class=&quot;scale-sample title-sm&quot;&gt;Transaction details&lt;/div&gt;&lt;span&gt;16 / 22 · 600 · 1%&lt;br&gt;列表标题&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Body Large&lt;/b&gt;&lt;div class=&quot;scale-sample body-lg&quot;&gt;Clear information across products and communications.&lt;/div&gt;&lt;span&gt;18 / 28 · 400 · 0%&lt;br&gt;导语与重点正文&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Body Medium&lt;/b&gt;&lt;div class=&quot;scale-sample body-md&quot;&gt;A consistent type system supports clear reading.&lt;/div&gt;&lt;span&gt;16 / 24 · 400 · 0%&lt;br&gt;默认正文&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Body Small&lt;/b&gt;&lt;div class=&quot;scale-sample body-sm&quot;&gt;Supporting information and secondary descriptions.&lt;/div&gt;&lt;span&gt;14 / 20 · 400 · 1%&lt;br&gt;辅助说明&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Label Large&lt;/b&gt;&lt;div class=&quot;scale-sample label-lg&quot;&gt;CONFIRM TRANSACTION&lt;/div&gt;&lt;span&gt;14 / 18 · 600 · 4%&lt;br&gt;主要操作&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Label Medium&lt;/b&gt;&lt;div class=&quot;scale-sample label-md&quot;&gt;NETWORK STATUS&lt;/div&gt;&lt;span&gt;12 / 16 · 600 · 5%&lt;br&gt;导航与标签&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;scale-row&quot;&gt;&lt;b&gt;Label Small&lt;/b&gt;&lt;div class=&quot;scale-sample label-sm&quot;&gt;UPDATED NOW&lt;/div&gt;&lt;span&gt;11 / 14 · 600 · 6%&lt;br&gt;状态与注释&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;system-tokens&quot;&gt;&lt;h2&gt;字体令牌&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;字体令牌采用统一的语义命名，将视觉参数与具体使用场景连接。字体家族默认为 TRON Variable，单项参数包含字号、行高、字重与字距。&lt;/p&gt;&lt;div class=&quot;token-note&quot;&gt;&lt;code&gt;--type-{role}-{size}&lt;/code&gt;&lt;br&gt;示例：&lt;code&gt;--type-display-large&lt;/code&gt;、&lt;code&gt;--type-body-medium&lt;/code&gt;、&lt;code&gt;--type-label-small&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;table-scroll&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;样式&lt;/th&gt;&lt;th&gt;Token&lt;/th&gt;&lt;th&gt;Size / Line&lt;/th&gt;&lt;th&gt;Weight&lt;/th&gt;&lt;th&gt;Tracking&lt;/th&gt;&lt;th&gt;主要用途&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Display Large&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-display-large&lt;/td&gt;&lt;td&gt;64 / 64&lt;/td&gt;&lt;td&gt;700&lt;/td&gt;&lt;td&gt;−1.5%&lt;/td&gt;&lt;td&gt;品牌主视觉&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Display Medium&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-display-medium&lt;/td&gt;&lt;td&gt;52 / 56&lt;/td&gt;&lt;td&gt;700&lt;/td&gt;&lt;td&gt;−1%&lt;/td&gt;&lt;td&gt;活动主题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Display Small&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-display-small&lt;/td&gt;&lt;td&gt;44 / 48&lt;/td&gt;&lt;td&gt;650&lt;/td&gt;&lt;td&gt;−0.5%&lt;/td&gt;&lt;td&gt;焦点标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Headline Large&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-headline-large&lt;/td&gt;&lt;td&gt;40 / 44&lt;/td&gt;&lt;td&gt;650&lt;/td&gt;&lt;td&gt;−0.5%&lt;/td&gt;&lt;td&gt;页面主标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Headline Medium&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-headline-medium&lt;/td&gt;&lt;td&gt;32 / 38&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;0%&lt;/td&gt;&lt;td&gt;章节标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Headline Small&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-headline-small&lt;/td&gt;&lt;td&gt;28 / 34&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;0%&lt;/td&gt;&lt;td&gt;分区标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Title Large&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-title-large&lt;/td&gt;&lt;td&gt;24 / 30&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;0%&lt;/td&gt;&lt;td&gt;模块标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Title Medium&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-title-medium&lt;/td&gt;&lt;td&gt;20 / 26&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;1%&lt;/td&gt;&lt;td&gt;卡片标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Title Small&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-title-small&lt;/td&gt;&lt;td&gt;16 / 22&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;1%&lt;/td&gt;&lt;td&gt;列表标题&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Body Large&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-body-large&lt;/td&gt;&lt;td&gt;18 / 28&lt;/td&gt;&lt;td&gt;400&lt;/td&gt;&lt;td&gt;0%&lt;/td&gt;&lt;td&gt;导语正文&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Body Medium&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-body-medium&lt;/td&gt;&lt;td&gt;16 / 24&lt;/td&gt;&lt;td&gt;400&lt;/td&gt;&lt;td&gt;0%&lt;/td&gt;&lt;td&gt;默认正文&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Body Small&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-body-small&lt;/td&gt;&lt;td&gt;14 / 20&lt;/td&gt;&lt;td&gt;400&lt;/td&gt;&lt;td&gt;1%&lt;/td&gt;&lt;td&gt;辅助说明&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Label Large&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-label-large&lt;/td&gt;&lt;td&gt;14 / 18&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;4%&lt;/td&gt;&lt;td&gt;主要操作&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Label Medium&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-label-medium&lt;/td&gt;&lt;td&gt;12 / 16&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;5%&lt;/td&gt;&lt;td&gt;导航标签&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Label Small&lt;/td&gt;&lt;td class=&quot;token&quot;&gt;--type-label-small&lt;/td&gt;&lt;td&gt;11 / 14&lt;/td&gt;&lt;td&gt;600&lt;/td&gt;&lt;td&gt;6%&lt;/td&gt;&lt;td&gt;状态注释&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;system-rules&quot;&gt;&lt;h2&gt;使用与可读性&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;字号、行高、字重和行长需要共同控制。以下边界用于保持英文内容在品牌传播与产品界面中的稳定阅读体验。&lt;/p&gt;&lt;div class=&quot;do-dont&quot;&gt;&lt;div class=&quot;rule do&quot;&gt;&lt;h3&gt;推荐&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;产品正文不小于 14px，默认正文使用 16px / 24px&lt;/li&gt;&lt;li&gt;正文行高保持字号的 1.4–1.6 倍&lt;/li&gt;&lt;li&gt;连续正文每行控制在 45–75 个英文字符&lt;/li&gt;&lt;li&gt;全大写仅用于按钮、导航和短状态标签&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div class=&quot;rule dont&quot;&gt;&lt;h3&gt;不推荐&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;使用 Display 或 Headline 样式排布连续正文&lt;/li&gt;&lt;li&gt;长文本使用 600 及以上字重&lt;/li&gt;&lt;li&gt;为压缩空间将正文行高降至 1.4 倍以下&lt;/li&gt;&lt;li&gt;在同一界面使用过多字号或随意拉伸字体&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+        &lt;/div&gt;&lt;aside class=&quot;toc&quot;&gt;&lt;b&gt;本页内容&lt;/b&gt;&lt;a href=&quot;#system-space&quot;&gt;设计空间&lt;/a&gt;&lt;a href=&quot;#system-weights&quot;&gt;字重与用途&lt;/a&gt;&lt;a href=&quot;#system-scale&quot;&gt;字号层级&lt;/a&gt;&lt;a href=&quot;#system-tokens&quot;&gt;字体令牌&lt;/a&gt;&lt;a href=&quot;#system-rules&quot;&gt;使用与可读性&lt;/a&gt;&lt;/aside&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+
+    &lt;article class=&quot;page&quot; data-name=&quot;glyphs&quot;&gt;
+      &lt;div class=&quot;page-inner&quot;&gt;
+        &lt;header class=&quot;hero&quot;&gt;&lt;div class=&quot;hero-copy&quot;&gt;&lt;div&gt;&lt;div class=&quot;eyebrow&quot;&gt;04 / Character composition&lt;/div&gt;&lt;h1&gt;字符&lt;br&gt;构成&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;为英文信息与数字场景而设计。&lt;/strong&gt;&lt;br&gt;通过英文字母、数字、基础符号与 OpenType 功能，呈现字体在品牌传播和数字产品中的核心使用能力。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;meta&quot;&gt;&lt;span&gt;95 Characters&lt;/span&gt;&lt;span&gt;English&lt;/span&gt;&lt;span&gt;Numerals&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;hero-visual&quot;&gt;0↗&lt;/div&gt;&lt;/header&gt;
+        &lt;div class=&quot;page-grid&quot;&gt;&lt;div class=&quot;doc&quot;&gt;
+          &lt;section class=&quot;section&quot; id=&quot;glyph-overview&quot;&gt;&lt;h2&gt;能力概览&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;这套字体以精简而明确的字符配置服务英文传播、数字信息与产品界面，在核心使用场景中保持统一的视觉表达。&lt;/p&gt;&lt;div class=&quot;stats&quot;&gt;&lt;div class=&quot;stat&quot;&gt;&lt;strong&gt;95&lt;/strong&gt;&lt;span&gt;CHARACTERS&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;stat&quot;&gt;&lt;strong&gt;English&lt;/strong&gt;&lt;span&gt;SUPPORTED LANGUAGE&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;stat&quot;&gt;&lt;strong&gt;VF&lt;/strong&gt;&lt;span&gt;FONT FORMAT&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;stat&quot;&gt;&lt;strong&gt;1 Axis&lt;/strong&gt;&lt;span&gt;VARIABLE CONTROL&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;glyph-set&quot;&gt;&lt;h2&gt;字符集&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;以下为代表性字符示例，涵盖英文字母、数字、常用标点、货币符号与基础符号，用于呈现不同类别之间一致的结构与视觉节奏。&lt;/p&gt;&lt;div class=&quot;glyph-grid&quot;&gt;&lt;span&gt;A&lt;/span&gt;&lt;span&gt;B&lt;/span&gt;&lt;span&gt;C&lt;/span&gt;&lt;span&gt;D&lt;/span&gt;&lt;span&gt;E&lt;/span&gt;&lt;span&gt;F&lt;/span&gt;&lt;span&gt;G&lt;/span&gt;&lt;span&gt;H&lt;/span&gt;&lt;span&gt;I&lt;/span&gt;&lt;span&gt;J&lt;/span&gt;&lt;span&gt;K&lt;/span&gt;&lt;span&gt;L&lt;/span&gt;&lt;span&gt;a&lt;/span&gt;&lt;span&gt;b&lt;/span&gt;&lt;span&gt;c&lt;/span&gt;&lt;span&gt;d&lt;/span&gt;&lt;span&gt;e&lt;/span&gt;&lt;span&gt;f&lt;/span&gt;&lt;span&gt;g&lt;/span&gt;&lt;span&gt;h&lt;/span&gt;&lt;span&gt;i&lt;/span&gt;&lt;span&gt;j&lt;/span&gt;&lt;span&gt;k&lt;/span&gt;&lt;span&gt;l&lt;/span&gt;&lt;span&gt;0&lt;/span&gt;&lt;span&gt;1&lt;/span&gt;&lt;span&gt;2&lt;/span&gt;&lt;span&gt;3&lt;/span&gt;&lt;span&gt;4&lt;/span&gt;&lt;span&gt;5&lt;/span&gt;&lt;span&gt;6&lt;/span&gt;&lt;span&gt;7&lt;/span&gt;&lt;span&gt;8&lt;/span&gt;&lt;span&gt;9&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;₿&lt;/span&gt;&lt;span&gt;€&lt;/span&gt;&lt;span&gt;¥&lt;/span&gt;&lt;span&gt;%&lt;/span&gt;&lt;span&gt;+&lt;/span&gt;&lt;span&gt;−&lt;/span&gt;&lt;span&gt;=&lt;/span&gt;&lt;span&gt;↗&lt;/span&gt;&lt;span&gt;→&lt;/span&gt;&lt;span&gt;↘&lt;/span&gt;&lt;span&gt;•&lt;/span&gt;&lt;span&gt;©&lt;/span&gt;&lt;span&gt;®&lt;/span&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;glyph-numerals&quot;&gt;&lt;h2&gt;数字系统&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;数字是区块链体验的核心。从资产价值和交易记录到网络数据，高辨识度与可靠对齐能让复杂信息更易扫描、比较与信任。&lt;/p&gt;&lt;div class=&quot;cards&quot;&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;01&lt;/span&gt;&lt;h3&gt;等宽数字&lt;/h3&gt;&lt;p&gt;每个数字占据一致宽度，用于表格、交易记录、资产价格和代码。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;02&lt;/span&gt;&lt;h3&gt;比例数字&lt;/h3&gt;&lt;p&gt;按字符形态分配宽度，适合标题、正文和品牌传播。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;03&lt;/span&gt;&lt;h3&gt;精确对齐&lt;/h3&gt;&lt;p&gt;共享高度、基线和符号关系，让小数、货币与百分比形成稳定列。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;glyph-features&quot;&gt;&lt;h2&gt;OpenType 功能&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;字体系统提供多种 OpenType 排版功能，可根据正文、数据和强调场景切换数字形式与字符样式。&lt;/p&gt;&lt;div class=&quot;feature-list&quot;&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Tabular Figures&lt;/span&gt;&lt;code&gt;tnum&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Proportional Figures&lt;/span&gt;&lt;code&gt;pnum&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Slashed Zero&lt;/span&gt;&lt;code&gt;zero&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Fractions&lt;/span&gt;&lt;code&gt;frac&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Superscript&lt;/span&gt;&lt;code&gt;sups&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Subscript&lt;/span&gt;&lt;code&gt;subs&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Case-sensitive Forms&lt;/span&gt;&lt;code&gt;case&lt;/code&gt;&lt;/div&gt;&lt;div class=&quot;feature-item&quot;&gt;&lt;span&gt;Stylistic Alternates&lt;/span&gt;&lt;code&gt;salt&lt;/code&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+        &lt;/div&gt;&lt;aside class=&quot;toc&quot;&gt;&lt;b&gt;本页内容&lt;/b&gt;&lt;a href=&quot;#glyph-overview&quot;&gt;能力概览&lt;/a&gt;&lt;a href=&quot;#glyph-set&quot;&gt;字符集&lt;/a&gt;&lt;a href=&quot;#glyph-numerals&quot;&gt;数字系统&lt;/a&gt;&lt;a href=&quot;#glyph-features&quot;&gt;OpenType&lt;/a&gt;&lt;/aside&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+
+    &lt;article class=&quot;page&quot; data-name=&quot;download&quot;&gt;
+      &lt;div class=&quot;page-inner&quot;&gt;
+        &lt;header class=&quot;download-hero&quot;&gt;&lt;div&gt;&lt;div class=&quot;eyebrow&quot; style=&quot;color:#fff&quot;&gt;Download / Variable Typeface&lt;/div&gt;&lt;h1&gt;获取&lt;br&gt;字体&lt;/h1&gt;&lt;/div&gt;&lt;p&gt;下载 Variable Font，用于获准的品牌传播、产品原型和数字体验。安装或部署前，请确认项目适用的字体授权范围。&lt;/p&gt;&lt;/header&gt;
+        &lt;div class=&quot;page-grid&quot; style=&quot;margin-top:54px&quot;&gt;&lt;div class=&quot;doc&quot;&gt;
+          &lt;section class=&quot;section&quot; id=&quot;download-files&quot;&gt;&lt;h2&gt;字体下载&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;Variable Font 通过单一文件提供连续字重控制，适用于设计工具、现代浏览器和支持可变字体的产品环境。&lt;/p&gt;&lt;div class=&quot;download-grid&quot;&gt;&lt;div class=&quot;download-card featured&quot;&gt;&lt;div class=&quot;eyebrow&quot;&gt;Official release&lt;/div&gt;&lt;h3&gt;TRON Variable Font&lt;/h3&gt;&lt;p&gt;包含连续字重变化的主字体文件。适用于 Figma、Adobe 应用、macOS、Windows 以及现代 Web 环境。&lt;/p&gt;&lt;div class=&quot;file-meta&quot;&gt;&lt;span&gt;TTF&lt;/span&gt;&lt;span&gt;VARIABLE&lt;/span&gt;&lt;span&gt;VERSION 1.000&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;download-action&quot; href=&quot;tron-design-language-home/assets/typeface/Tron-Font-VF.ttf&quot; download=&quot;Tron-Font-VF.ttf&quot;&gt;&lt;span&gt;下载 Variable TTF&lt;/span&gt;&lt;span&gt;↓&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+          &lt;section class=&quot;section&quot; id=&quot;download-license&quot;&gt;&lt;h2&gt;授权说明&lt;/h2&gt;&lt;p class=&quot;lead&quot;&gt;本字体面向获准的品牌传播、数字产品与合作项目开放使用。下载和使用字体即表示接受相应的字体授权条款。&lt;/p&gt;&lt;div class=&quot;license-box&quot;&gt;&lt;h3&gt;使用范围&lt;/h3&gt;&lt;p&gt;字体文件可用于获准的企业传播、数字产品与品牌合作。不得上传至公共字体库、转交未获授权的第三方，或修改后以其他名称重新发布。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;cards&quot; style=&quot;margin-top:10px&quot;&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;01&lt;/span&gt;&lt;h3&gt;品牌项目&lt;/h3&gt;&lt;p&gt;官方与获准合作项目，可依据品牌授权范围使用。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;02&lt;/span&gt;&lt;h3&gt;产品嵌入&lt;/h3&gt;&lt;p&gt;网站、App 与软件嵌入遵循对应的 Web、App 或企业授权。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;info-card&quot;&gt;&lt;span class=&quot;n&quot;&gt;03&lt;/span&gt;&lt;h3&gt;文件分发&lt;/h3&gt;&lt;p&gt;字体文件仅限授权项目使用，不得公开上传或转交第三方。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+        &lt;/div&gt;&lt;aside class=&quot;toc&quot;&gt;&lt;b&gt;下载页面&lt;/b&gt;&lt;a href=&quot;#download-files&quot;&gt;字体下载&lt;/a&gt;&lt;a href=&quot;#download-license&quot;&gt;授权说明&lt;/a&gt;&lt;/aside&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/main&gt;
+  &lt;script&gt;
+    (()=&gt;{const root=document.getElementById(&#x27;tron-pages&#x27;);const view=root.querySelector(&#x27;.viewport&#x27;);const pages=[...root.querySelectorAll(&#x27;.page&#x27;)];const nav=[...root.querySelectorAll(&#x27;.nav button&#x27;)];const title=root.querySelector(&#x27;.current-title&#x27;);const names={concept:&#x27;视觉理念 · 01 / 04&#x27;,features:&#x27;字形特征 · 02 / 04&#x27;,system:&#x27;字体系统 · 03 / 04&#x27;,glyphs:&#x27;字符构成 · 04 / 04&#x27;,download:&#x27;获取字体 · Download&#x27;};function show(name){pages.forEach(p=&gt;p.classList.toggle(&#x27;active&#x27;,p.dataset.name===name));nav.forEach(b=&gt;b.classList.toggle(&#x27;active&#x27;,b.dataset.page===name));title.textContent=names[name];view.scrollTop=0}nav.forEach(b=&gt;b.addEventListener(&#x27;click&#x27;,()=&gt;show(b.dataset.page)));const text=root.querySelector(&#x27;.tester-text&#x27;);root.querySelectorAll(&#x27;[data-control]&#x27;).forEach(input=&gt;input.addEventListener(&#x27;input&#x27;,()=&gt;{const key=input.dataset.control;const out=root.querySelector(&#x27;[data-out=&quot;&#x27;+key+&#x27;&quot;]&#x27;);if(key===&#x27;size&#x27;){text.style.fontSize=input.value+&#x27;px&#x27;;out.textContent=input.value+&#x27; px&#x27;}if(key===&#x27;weight&#x27;){text.style.fontWeight=input.value;out.textContent=input.value}if(key===&#x27;spacing&#x27;){text.style.letterSpacing=input.value/100+&#x27;em&#x27;;out.textContent=input.value+&#x27;%&#x27;}}))})();
+  &lt;/script&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>

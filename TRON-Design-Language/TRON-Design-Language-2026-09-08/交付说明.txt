@@ -1,0 +1,11 @@
+TRON Design Language 网站交付包
+
+交付日期：2026-09-08
+
+页面：
+1. TRON-Design-Language-Figma-Exact.html（首页）
+2. Glyph-Features.html（字形特征）
+3. Type-System-standalone.html（字体系统）
+
+assets 文件夹包含三个页面使用的字体、图片、视频与脚本资源。
+请保持 HTML 文件与 assets 文件夹的相对位置不变。

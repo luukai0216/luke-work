@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tile Type Field</title>
+    <style>
+      @font-face {
+        font-family: "Inter Local";
+        src: url("./Inter-VariableFont_opsz,wght.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      :root {
+        color-scheme: light;
+        background: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-width: 100%;
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        background: #ffffff;
+      }
+
+      .tile-stage {
+        position: relative;
+        width: 734px;
+        height: 260px;
+        overflow: hidden;
+        background: #ededed;
+      }
+
+      canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 734px;
+        height: 260px;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="tile-stage"
+      class="tile-stage"
+      role="img"
+      aria-label="The wordmark --type-{role}-{size} rendered as a dense field of square tiles with a morphing colour wave and an interactive cursor light."
+    ></main>
+
+    <script>
+      (() => {
+        "use strict";
+
+        // Edit this one value to replace the complete wordmark.
+        const WORDMARK = "--type-{role}-{size}";
+
+        const CONFIG = {
+          width: 734,
+          height: 260,
+          background: "#EDEDED",
+          fontFamily: '"Inter Local", Inter, Arial, sans-serif',
+          fontWeight: 600,
+          letterTrack: -0.02,
+          fillFraction: 0.92,
+          rest: "#8A8A8A",
+          accent: "#EA0029",
+          accentRgb: "234,0,41",
+          brandHue: 0,
+          baseTileSize: 0.56,
+          baseTileBreathe: 0.10,
+          maxTileSize: 0.9,
+          speed: 0.02,
+          hueSteps: 24,
+          alphaSteps: 6,
+        };
+
+        const TAU = Math.PI * 2;
+        const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
+        const smoothstep = (value, edge0, edge1) => {
+          const t = clamp((value - edge0) / (edge1 - edge0), 0, 1);
+          return t * t * (3 - 2 * t);
+        };
+        const hash = (x, y) => {
+          const result = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+          return result - Math.floor(result);
+        };
+
+        class TileField {
+          constructor(host) {
+            this.host = host;
+            this.canvas = document.createElement("canvas");
+            this.context = this.canvas.getContext("2d");
+            this.canvas.setAttribute("aria-hidden", "true");
+            this.host.appendChild(this.canvas);
+
+            this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+            this.dpr = Math.min(2, window.devicePixelRatio || 1);
+            this.viewWidth = 0;
+            this.viewHeight = 0;
+            this.cell = 2;
+            this.time = 0;
+            this.count = 0;
+            this.x = new Float32Array(0);
+            this.y = new Float32Array(0);
+            this.hueSeed = new Float32Array(0);
+            this.spark = new Uint8Array(0);
+            this.lit = new Float32Array(0);
+            this.seed = new Float32Array(0);
+            this.stepLightness = new Float32Array(CONFIG.hueSteps);
+            this.stepChroma = new Float32Array(CONFIG.hueSteps);
+
+            this.hasPointer = false;
+            this.rawX = 0;
+            this.rawY = 0;
+            this.lightX = 0;
+            this.lightY = 0;
+            this.lightSpeed = 0;
+            this.animationFrame = 0;
+            this.onScreen = true;
+            this.hidden = document.hidden;
+
+            this.resize();
+            window.addEventListener("pointermove", this.onMove, { passive: true });
+            window.addEventListener("pointerleave", this.onLeave);
+            window.addEventListener("blur", this.onLeave);
+            document.addEventListener("visibilitychange", this.onVisibility);
+
+            this.observer = new IntersectionObserver(this.onIntersection, {
+              threshold: 0.2,
+            });
+            this.observer.observe(this.host);
+
+            this.reduced.addEventListener?.("change", this.onMotionPreference);
+          }
+
+          resize() {
+            const rect = this.host.getBoundingClientRect();
+            this.viewWidth = rect.width;
+            this.viewHeight = rect.height;
+            this.dpr = Math.min(2, window.devicePixelRatio || 1);
+            this.cell = Math.max(2, Math.round(this.viewWidth / 460));
+
+            this.canvas.style.width = `${Math.round(this.viewWidth)}px`;
+            this.canvas.style.height = `${Math.round(this.viewHeight)}px`;
+            this.canvas.width = Math.ceil(this.viewWidth * this.dpr);
+            this.canvas.height = Math.ceil(this.viewHeight * this.dpr);
+            this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+            this.context.imageSmoothingEnabled = false;
+
+            this.buildWordmark();
+            if (this.reduced.matches) this.renderStatic();
+          }
+
+          buildWordmark() {
+            const mask = document.createElement("canvas");
+            mask.width = Math.max(1, Math.floor(this.viewWidth));
+            mask.height = Math.max(1, Math.floor(this.viewHeight));
+            const maskContext = mask.getContext("2d", { willReadFrequently: true });
+            const trackedContext = maskContext;
+
+            maskContext.clearRect(0, 0, mask.width, mask.height);
+            maskContext.fillStyle = "#000000";
+            maskContext.textAlign = "center";
+            maskContext.textBaseline = "middle";
+
+            let fontSize = this.viewHeight * 0.9;
+            if ("letterSpacing" in trackedContext) {
+              trackedContext.letterSpacing = `${CONFIG.letterTrack * fontSize}px`;
+            }
+            maskContext.font = `${CONFIG.fontWeight} ${fontSize}px ${CONFIG.fontFamily}`;
+            const measured = maskContext.measureText(WORDMARK).width || 1;
+            fontSize *= (this.viewWidth * CONFIG.fillFraction) / measured;
+            if ("letterSpacing" in trackedContext) {
+              trackedContext.letterSpacing = `${CONFIG.letterTrack * fontSize}px`;
+            }
+            maskContext.font = `${CONFIG.fontWeight} ${fontSize}px ${CONFIG.fontFamily}`;
+            maskContext.fillText(WORDMARK, this.viewWidth / 2, this.viewHeight / 2);
+
+            const pixels = maskContext.getImageData(0, 0, mask.width, mask.height).data;
+            const columns = Math.ceil(this.viewWidth / this.cell);
+            const rows = Math.ceil(this.viewHeight / this.cell);
+            const x = [];
+            const y = [];
+            const spark = [];
+            const seed = [];
+            const hueSeed = [];
+
+            for (let row = 0; row < rows; row += 1) {
+              for (let column = 0; column < columns; column += 1) {
+                const tileX = Math.floor(column * this.cell + this.cell / 2);
+                const tileY = Math.floor(row * this.cell + this.cell / 2);
+                if (tileX >= mask.width || tileY >= mask.height) continue;
+                const alpha = (pixels[(tileY * mask.width + tileX) * 4 + 3] ?? 0) / 255;
+                if (alpha <= 0.5) continue;
+
+                x.push(tileX);
+                y.push(tileY);
+                spark.push(hash(tileX + 7, tileY - 3) > 0.82 ? 1 : 0);
+                seed.push(hash(tileX * 1.3, tileY * 0.7));
+                hueSeed.push(hash(tileX * 0.7 + 11, tileY * 1.9 - 5));
+              }
+            }
+
+            this.count = x.length;
+            this.x = new Float32Array(x);
+            this.y = new Float32Array(y);
+            this.spark = new Uint8Array(spark);
+            this.seed = new Float32Array(seed);
+            this.hueSeed = new Float32Array(hueSeed);
+            this.lit = new Float32Array(this.count);
+          }
+
+          distanceToSegmentSquared(qx, qy, ax, ay, bx, by) {
+            const dx = bx - ax;
+            const dy = by - ay;
+            if (dx === 0 && dy === 0) {
+              const ex = qx - ax;
+              const ey = qy - ay;
+              return ex * ex + ey * ey;
+            }
+            const t = clamp(
+              ((qx - ax) * dx + (qy - ay) * dy) / (dx * dx + dy * dy),
+              0,
+              1,
+            );
+            const ex = qx - (ax + dx * t);
+            const ey = qy - (ay + dy * t);
+            return ex * ex + ey * ey;
+          }
+
+          draw = (timestamp) => {
+            const context = this.context;
+            const {
+              viewWidth,
+              viewHeight,
+              cell,
+              count,
+              x,
+              y,
+              hueSeed,
+              spark,
+              lit,
+              seed,
+            } = this;
+
+            context.clearRect(0, 0, viewWidth, viewHeight);
+            this.time += CONFIG.speed;
+            const time = this.time;
+
+            const previousX = this.lightX;
+            const previousY = this.lightY;
+            if (this.hasPointer) {
+              this.lightX += (this.rawX - this.lightX) * 0.5;
+              this.lightY += (this.rawY - this.lightY) * 0.5;
+            }
+
+            const lightX = this.lightX;
+            const lightY = this.lightY;
+            const stepDistance = Math.hypot(lightX - previousX, lightY - previousY);
+            this.lightSpeed = 0.9 * this.lightSpeed + 0.1 * stepDistance;
+            const reach = clamp(
+              viewHeight * 0.22 + this.lightSpeed * 0.9,
+              viewHeight * 0.18,
+              viewHeight * 0.42,
+            );
+            const influence = 1.5 * reach;
+            const influenceSquared = influence * influence;
+            const minX = Math.min(previousX, lightX) - influence;
+            const maxX = Math.max(previousX, lightX) + influence;
+            const minY = Math.min(previousY, lightY) - influence;
+            const maxY = Math.max(previousY, lightY) + influence;
+
+            const grayTiles = new Path2D();
+            const litTiles = [];
+            const buckets = Array.from({ length: CONFIG.hueSteps }, () =>
+              Array.from({ length: CONFIG.alphaSteps }, () => new Path2D()),
+            );
+            const hueForStep = new Float32Array(CONFIG.hueSteps);
+
+            for (let index = 0; index < count; index += 1) {
+              const tileX = x[index];
+              const tileY = y[index];
+              let target = 0;
+
+              if (
+                this.hasPointer
+                && tileX >= minX
+                && tileX <= maxX
+                && tileY >= minY
+                && tileY <= maxY
+              ) {
+                const distanceSquared = this.distanceToSegmentSquared(
+                  tileX,
+                  tileY,
+                  previousX,
+                  previousY,
+                  lightX,
+                  lightY,
+                );
+                if (distanceSquared <= influenceSquared) {
+                  const angle = Math.atan2(tileY - lightY, tileX - lightX);
+                  const wobble =
+                    1
+                    + 0.30 * Math.sin(3 * angle + time * 1.6)
+                    + 0.16 * Math.sin(5 * angle - time * 1.1 + 1.3);
+                  const falloff = clamp(
+                    1 - Math.sqrt(distanceSquared) / (reach * wobble),
+                    0,
+                    1,
+                  );
+                  target = falloff * falloff * (3 - 2 * falloff);
+                }
+              }
+
+              const response = target > lit[index] ? 0.24 : 0.02;
+              lit[index] += (target - lit[index]) * response;
+
+              const u = tileX / Math.max(viewWidth, 1);
+              const v = tileY / Math.max(viewHeight, 1);
+              const flow =
+                Math.sin((u * 1.6 + 0.4 * Math.sin(time * 0.3)) * TAU + time * 0.8)
+                + 0.7 * Math.sin((v * 2.1 - u * 0.9) * TAU - time * 0.6 + 1.7)
+                + 0.5 * Math.sin((u * 3.3 + v * 2.7) * TAU + time * 0.4 + 4.2)
+                + 0.4 * Math.cos((v * 1.3 - 1.1 * Math.sin(time * 0.2)) * TAU - time * 0.5);
+              let colourAmount = smoothstep(flow, 0.1, 1.6);
+              colourAmount = Math.max(colourAmount, lit[index]);
+
+              const breathe = 0.5 + 0.5 * Math.sin(seed[index] * TAU + time * 1.3);
+              const baseSize = CONFIG.baseTileSize + CONFIG.baseTileBreathe * breathe;
+              const size = cell
+                * (baseSize + (CONFIG.maxTileSize - baseSize) * colourAmount);
+              const half = size / 2;
+              grayTiles.rect(tileX - half, tileY - half, size, size);
+
+              if (colourAmount > 0.04) {
+                const hue = CONFIG.brandHue
+                  + (flow - 0.8) * 16
+                  + (hueSeed[index] - 0.5) * 8;
+                const hueStep = (
+                  (Math.round((hue / 360) * CONFIG.hueSteps) % CONFIG.hueSteps)
+                  + CONFIG.hueSteps
+                ) % CONFIG.hueSteps;
+                hueForStep[hueStep] = hue;
+                this.stepLightness[hueStep] = 0.5;
+                this.stepChroma[hueStep] = 0.085;
+                const alphaStep = Math.min(
+                  CONFIG.alphaSteps - 1,
+                  Math.floor(colourAmount * CONFIG.alphaSteps),
+                );
+                buckets[hueStep][alphaStep].rect(
+                  tileX - half,
+                  tileY - half,
+                  size,
+                  size,
+                );
+              }
+
+              if (lit[index] > 0.02) litTiles.push(index);
+            }
+
+            context.fillStyle = CONFIG.rest;
+            context.fill(grayTiles);
+
+            for (let hueStep = 0; hueStep < CONFIG.hueSteps; hueStep += 1) {
+              const hue = hueForStep[hueStep];
+              for (let alphaStep = 0; alphaStep < CONFIG.alphaSteps; alphaStep += 1) {
+                context.globalAlpha = (alphaStep + 1) / CONFIG.alphaSteps;
+                context.fillStyle = CONFIG.accent;
+                context.fill(buckets[hueStep][alphaStep]);
+              }
+            }
+            context.globalAlpha = 1;
+
+            for (const index of litTiles) {
+              const light = lit[index];
+              const tileX = x[index];
+              const tileY = y[index];
+              const glowSize = cell * (0.7 + (CONFIG.maxTileSize - 0.7) * light);
+              const glowHalf = glowSize / 2;
+
+              if (spark[index]) {
+                const phase = seed[index];
+                const sparkTime = 0.00025 * timestamp;
+                const amplitude = (0.45 + phase) * cell * 0.28;
+                const jitterX = tileX
+                  + Math.sin(0.05 * tileX + 1.3 * sparkTime + phase * TAU) * amplitude;
+                const jitterY = tileY
+                  + Math.cos(0.04 * tileY - 0.9 * sparkTime + phase * TAU) * amplitude;
+                context.fillStyle = `rgba(${CONFIG.accentRgb},${(0.1 * light).toFixed(3)})`;
+                context.fillRect(
+                  jitterX - glowHalf * 1.5,
+                  jitterY - glowHalf * 1.5,
+                  glowSize * 1.5,
+                  glowSize * 1.5,
+                );
+                context.fillStyle = `rgba(${CONFIG.accentRgb},${(0.55 * light).toFixed(3)})`;
+                context.fillRect(
+                  jitterX - glowHalf,
+                  jitterY - glowHalf,
+                  glowSize,
+                  glowSize,
+                );
+              } else {
+                context.fillStyle = `rgba(${CONFIG.accentRgb},${(0.85 * light).toFixed(3)})`;
+                context.fillRect(
+                  tileX - glowHalf,
+                  tileY - glowHalf,
+                  glowSize,
+                  glowSize,
+                );
+              }
+            }
+
+            this.animationFrame = requestAnimationFrame(this.draw);
+          };
+
+          renderStatic() {
+            this.context.clearRect(0, 0, this.viewWidth, this.viewHeight);
+            const tiles = new Path2D();
+            for (let index = 0; index < this.count; index += 1) {
+              const size = this.cell * 0.5;
+              const half = size / 2;
+              tiles.rect(this.x[index] - half, this.y[index] - half, size, size);
+            }
+            this.context.fillStyle = CONFIG.rest;
+            this.context.fill(tiles);
+          }
+
+          onMove = (event) => {
+            if (event.pointerType && event.pointerType !== "mouse") return;
+            const rect = this.canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            if (
+              x >= -40
+              && y >= -40
+              && x <= rect.width + 40
+              && y <= rect.height + 40
+            ) {
+              if (!this.hasPointer) {
+                this.hasPointer = true;
+                this.lightX = x;
+                this.lightY = y;
+                this.lightSpeed = 0;
+              }
+              this.rawX = x;
+              this.rawY = y;
+            } else {
+              this.hasPointer = false;
+            }
+          };
+
+          onLeave = () => {
+            this.hasPointer = false;
+          };
+
+          onVisibility = () => {
+            this.hidden = document.hidden;
+            this.sync();
+          };
+
+          onIntersection = ([entry]) => {
+            this.onScreen = entry?.isIntersecting ?? false;
+            this.sync();
+          };
+
+          onMotionPreference = () => {
+            if (this.reduced.matches) {
+              this.stop();
+              this.renderStatic();
+            } else {
+              this.sync();
+            }
+          };
+
+          sync() {
+            if (this.reduced.matches || this.hidden || !this.onScreen) this.stop();
+            else this.start();
+          }
+
+          start() {
+            if (this.reduced.matches || this.animationFrame) return;
+            this.animationFrame = requestAnimationFrame(this.draw);
+          }
+
+          stop() {
+            if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = 0;
+          }
+
+          destroy() {
+            this.stop();
+            window.removeEventListener("pointermove", this.onMove);
+            window.removeEventListener("pointerleave", this.onLeave);
+            window.removeEventListener("blur", this.onLeave);
+            document.removeEventListener("visibilitychange", this.onVisibility);
+            this.reduced.removeEventListener?.("change", this.onMotionPreference);
+            this.observer.disconnect();
+            this.canvas.remove();
+          }
+        }
+
+        const mount = async () => {
+          if (document.fonts?.load) {
+            try {
+              await document.fonts.load(`${CONFIG.fontWeight} 64px "Inter Local"`);
+            } catch (_) {
+              // The CSS fallback stack remains available if the local font cannot load.
+            }
+          }
+
+          const field = new TileField(document.querySelector("#tile-stage"));
+          field.sync();
+          window.addEventListener("pagehide", () => field.destroy(), { once: true });
+        };
+
+        mount();
+      })();
+    </script>
+  </body>
+</html>

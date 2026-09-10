@@ -1,0 +1,2640 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Glass Type Studio</title>
+    <style>
+      :root {
+        --page: #101113;
+        --surface: #18191c;
+        --surface-raised: #202126;
+        --line: #303137;
+        --line-soft: #27282d;
+        --text: #f2f2ef;
+        --muted: #97989f;
+        --accent: #d6ff3e;
+        --accent-ink: #10130a;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { min-width: 320px; background: var(--page); }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background: var(--page);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button, input, textarea { font: inherit; }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      .app {
+        width: min(1600px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 28px 0 44px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 25px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 33px;
+        height: 33px;
+        border: 1px solid rgba(214, 255, 62, .6);
+        border-radius: 50%;
+        color: var(--accent);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      h1, h2, p { margin: 0; }
+
+      h1 {
+        font-size: 16px;
+        font-weight: 650;
+        letter-spacing: -.02em;
+      }
+
+      .subhead {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .action {
+        min-height: 36px;
+        padding: 0 13px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--text);
+        background: var(--surface);
+        font-size: 12px;
+        transition: border-color .18s ease, background .18s ease, transform .18s ease;
+      }
+
+      .action:hover {
+        border-color: #666873;
+        background: var(--surface-raised);
+      }
+
+      .action:active { transform: translateY(1px); }
+
+      .action.primary {
+        border-color: var(--accent);
+        color: var(--accent-ink);
+        background: var(--accent);
+        font-weight: 700;
+      }
+
+      .action.primary:hover { background: #e1ff6b; }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 342px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: var(--surface);
+      }
+
+      .preview {
+        display: grid;
+        grid-template-rows: auto minmax(430px, 1fr) auto;
+        min-width: 0;
+        min-height: 690px;
+        background: #151619;
+      }
+
+      .preview-toolbar,
+      .preview-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 17px;
+        border-color: var(--line-soft);
+        border-style: solid;
+      }
+
+      .preview-toolbar { border-width: 0 0 1px; }
+      .preview-footer { border-width: 1px 0 0; }
+
+      .eyebrow {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      .preview-mode {
+        display: flex;
+        gap: 6px;
+      }
+
+      .preview-mode button {
+        min-width: 28px;
+        height: 25px;
+        padding: 0 7px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        color: var(--muted);
+        background: transparent;
+        font-size: 11px;
+      }
+
+      .preview-mode button.active {
+        border-color: var(--line);
+        color: var(--text);
+        background: var(--surface-raised);
+      }
+
+      .stage-wrap {
+        display: grid;
+        place-items: center;
+        min-width: 0;
+        padding: 38px;
+        background-color: #18191c;
+        background-image:
+          linear-gradient(45deg, #1c1d21 25%, transparent 25%),
+          linear-gradient(-45deg, #1c1d21 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #1c1d21 75%),
+          linear-gradient(-45deg, transparent 75%, #1c1d21 75%);
+        background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+        background-size: 18px 18px;
+      }
+
+      .stage {
+        position: relative;
+        width: min(100%, 1100px);
+        max-width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.18);
+        background: #ededed;
+      }
+
+      #glass-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+        touch-action: none;
+      }
+
+      .hint {
+        position: absolute;
+        right: 12px;
+        bottom: 11px;
+        padding: 5px 8px;
+        border: 1px solid rgba(0,0,0,.14);
+        border-radius: 5px;
+        color: rgba(0,0,0,.65);
+        background: rgba(255,255,255,.58);
+        backdrop-filter: blur(10px);
+        font-size: 10px;
+        pointer-events: none;
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 3px rgba(214,255,62,.1);
+      }
+
+      .status-dot.paused { background: #777981; box-shadow: none; }
+
+      .shortcut {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .controls {
+        overflow: auto;
+        max-height: calc(100vh - 122px);
+        border-left: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .control-header {
+        padding: 17px 18px 13px;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .control-header h2 {
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      .control-header p {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .control-section {
+        padding: 17px 18px;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        width: calc(100% + 12px);
+        margin: -4px -6px 0;
+        padding: 4px 6px;
+        border-radius: 6px;
+        color: #d8d8dc;
+        background: transparent;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        text-align: left;
+      }
+
+      .section-title:hover {
+        color: var(--text);
+        background: rgba(255,255,255,.03);
+      }
+
+      .section-title:hover .chevron { border-color: #c8c8ce; }
+
+      .section-body { margin-top: 13px; }
+
+      .field .segmented { margin-bottom: 0; }
+
+      .control-section.collapsed { padding-bottom: 15px; }
+      .control-section.collapsed .section-body { display: none; }
+
+      .section-aside {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .chevron {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-top: -2px;
+        border-right: 1.5px solid #8b8c93;
+        border-bottom: 1.5px solid #8b8c93;
+        transform: rotate(45deg);
+        transition: transform .18s ease;
+      }
+
+      .section-title[aria-expanded="false"] .chevron {
+        margin-top: 2px;
+        transform: rotate(-45deg);
+      }
+
+      .lens-panel {
+        margin-top: 14px;
+        padding: 11px;
+        border: 1px solid var(--line-soft);
+        border-radius: 8px;
+        background: #141518;
+      }
+
+      .lens-panel .lens-selector { margin-top: 0; }
+      .lens-panel .field { margin-top: 10px; }
+
+      .lens-panel-title {
+        margin-bottom: 8px;
+        color: #d8d8dc;
+        font-size: 11px;
+        font-weight: 650;
+      }
+
+      .color-meta { min-width: 0; }
+      .color-meta .number-label { margin-bottom: 2px; }
+
+      .segmented {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        gap: 4px;
+        margin-bottom: 12px;
+        padding: 3px;
+        border: 1px solid var(--line-soft);
+        border-radius: 7px;
+        background: #121316;
+      }
+
+      .segmented button {
+        height: 29px;
+        border-radius: 5px;
+        color: var(--muted);
+        background: transparent;
+        font-size: 11px;
+      }
+
+      .segmented button.active {
+        color: var(--text);
+        background: #2a2b31;
+      }
+
+      .lens-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 7px 0 9px;
+      }
+
+      .lens-chip {
+        min-width: 30px;
+        height: 27px;
+        padding: 0 9px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        color: var(--muted);
+        background: #121316;
+        font-size: 11px;
+      }
+
+      .lens-chip.active {
+        border-color: rgba(214, 255, 62, .72);
+        color: var(--accent);
+        background: rgba(214, 255, 62, .09);
+      }
+
+      .angle-help {
+        display: block;
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 87px;
+        resize: vertical;
+        padding: 10px 11px;
+        outline: none;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--text);
+        background: #121316;
+        font-size: 15px;
+        font-weight: 570;
+        line-height: 1.35;
+      }
+
+      textarea:focus,
+      input[type="number"]:focus { border-color: #8fa926; }
+
+      .presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 9px;
+      }
+
+      .preset {
+        padding: 5px 7px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        color: var(--muted);
+        background: transparent;
+        font-size: 10px;
+      }
+
+      .preset:hover { color: var(--text); border-color: #656770; }
+
+      .upload {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 87px;
+        padding: 12px;
+        border: 1px dashed #4b4d55;
+        border-radius: 7px;
+        color: var(--muted);
+        background: #121316;
+        text-align: center;
+        font-size: 11px;
+        line-height: 1.5;
+        cursor: pointer;
+      }
+
+      .upload:hover,
+      .upload.dragging { border-color: var(--accent); color: var(--text); }
+
+      .upload input { display: none; }
+      .upload strong { display: block; color: var(--text); font-size: 12px; font-weight: 600; }
+      .file-name { margin-top: 8px; color: var(--accent); font-size: 10px; overflow-wrap: anywhere; }
+
+      .field { margin-top: 13px; }
+      .field:first-child { margin-top: 0; }
+
+      .field-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 7px;
+      }
+
+      .field-label {
+        color: #d0d0d4;
+        font-size: 12px;
+      }
+
+      output {
+        min-width: 43px;
+        color: var(--muted);
+        font-size: 11px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      input[type="range"] {
+        display: block;
+        width: 100%;
+        height: 15px;
+        margin: 0;
+        accent-color: var(--accent);
+        cursor: ew-resize;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+
+      .number-label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        height: 33px;
+        padding: 0 8px;
+        outline: none;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--text);
+        background: #121316;
+        font-size: 12px;
+      }
+
+      .colors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+
+      .color-field {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        gap: 7px;
+        align-items: center;
+      }
+
+      input[type="color"] {
+        width: 32px;
+        height: 32px;
+        padding: 2px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #121316;
+        cursor: pointer;
+      }
+
+      .color-code {
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 13px;
+      }
+
+      .toggle-copy { color: #d0d0d4; font-size: 12px; }
+      .toggle-copy span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+      .switch {
+        position: relative;
+        width: 35px;
+        height: 20px;
+      }
+
+      .switch input {
+        position: absolute;
+        opacity: 0;
+      }
+
+      .switch-ui {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: #3a3b42;
+        cursor: pointer;
+        transition: background .18s ease;
+      }
+
+      .switch-ui::after {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #d5d5d7;
+        content: "";
+        transition: transform .18s ease;
+      }
+
+      .switch input:checked + .switch-ui { background: #95b226; }
+      .switch input:checked + .switch-ui::after { transform: translateX(15px); background: #f5ffe0; }
+
+      .notice {
+        display: none;
+        margin-top: 12px;
+        padding: 8px 9px;
+        border: 1px solid #765d21;
+        border-radius: 6px;
+        color: #d5bc79;
+        background: #251f12;
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .notice.show { display: block; }
+
+      .help {
+        padding: 15px 18px 20px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.55;
+      }
+
+      kbd {
+        padding: 1px 4px;
+        border: 1px solid #4a4b52;
+        border-radius: 3px;
+        color: #d6d6da;
+        background: #25262b;
+        font: inherit;
+      }
+
+      @media (max-width: 980px) {
+        .workspace { grid-template-columns: 1fr; }
+        .preview { min-height: 520px; }
+        .controls { max-height: none; border-top: 1px solid var(--line); border-left: 0; }
+      }
+
+      @media (max-width: 620px) {
+        .app { width: min(100% - 24px, 1600px); padding-top: 16px; }
+        .topbar { align-items: flex-start; }
+        .top-actions .secondary { display: none; }
+        .preview { min-height: 380px; }
+        .stage-wrap { padding: 18px; }
+        .preview-toolbar, .preview-footer { padding-right: 12px; padding-left: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">G</div>
+          <div>
+            <h1>Glass Type Studio</h1>
+            <p class="subhead">可调的动态玻璃文字编辑器</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="action secondary" id="randomize" type="button">随机一组</button>
+          <button class="action" id="reset" type="button">恢复默认</button>
+          <button class="action" id="export-webgl" type="button">导出 WebGL JS</button>
+          <button class="action primary" id="export-png" type="button">下载 PNG</button>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Glass Type Studio 编辑器">
+        <section class="preview">
+          <div class="preview-toolbar">
+            <span class="eyebrow">Live canvas</span>
+            <div class="preview-mode" aria-label="画布比例">
+              <button type="button" data-preset-size="16:9" class="active">16:9</button>
+              <button type="button" data-preset-size="3:1">3:1</button>
+              <button type="button" data-preset-size="1:1">1:1</button>
+            </div>
+          </div>
+          <div class="stage-wrap">
+            <div class="stage" id="stage">
+              <canvas id="glass-canvas" aria-label="动态玻璃文字预览"></canvas>
+              <span class="hint">移动鼠标可牵引玻璃</span>
+            </div>
+          </div>
+          <div class="preview-footer">
+            <div class="status"><i class="status-dot" id="status-dot"></i><span id="status-copy">动效播放中</span></div>
+            <span class="shortcut">空格键：播放 / 暂停</span>
+          </div>
+        </section>
+
+        <aside class="controls">
+          <div class="control-header">
+            <h2>编辑参数</h2>
+            <p>按布局、材质、光影分组调节。点分组标题可以收起。SVG 会转成单色折射素材；图片则可直接呈现玻璃的折射变化。</p>
+          </div>
+
+          <section class="control-section" data-collapsible>
+            <button type="button" class="section-title" aria-expanded="true">
+              <span>内容</span>
+              <span class="section-aside"><i class="chevron" aria-hidden="true"></i></span>
+            </button>
+            <div class="section-body">
+            <div class="segmented" aria-label="内容类型">
+              <button type="button" class="active" data-content-mode="text">输入文字</button>
+              <button type="button" data-content-mode="svg">上传 SVG</button>
+              <button type="button" data-content-mode="image">上传图片</button>
+            </div>
+            <div id="text-content">
+              <textarea id="text-input" maxlength="160" spellcheck="false" aria-label="要展示的文字">GLASS
+TYPE</textarea>
+              <div class="presets" aria-label="文字预设">
+                <button type="button" class="preset" data-copy="GLASS TYPE">GLASS TYPE</button>
+                <button type="button" class="preset" data-copy="TRON">TRON</button>
+                <button type="button" class="preset" data-copy="MAKE IT MOVE">MAKE IT MOVE</button>
+              </div>
+            </div>
+            <div id="svg-content" hidden>
+              <label class="upload" id="upload-zone">
+                <input id="svg-input" type="file" accept=".svg,image/svg+xml" />
+                <span><strong>选择 SVG 文件</strong>或将文件拖到这里<br /><span id="svg-file-name">尚未选择文件</span></span>
+              </label>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="svg-scale">SVG 尺寸</label><output id="svg-scale-value"></output></div>
+                <input id="svg-scale" type="range" min="20" max="180" step="1" value="100" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="svg-offset-x">水平位置</label><output id="svg-offset-x-value"></output></div>
+                <input id="svg-offset-x" type="range" min="-50" max="50" step="1" value="0" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="svg-offset-y">垂直位置</label><output id="svg-offset-y-value"></output></div>
+                <input id="svg-offset-y" type="range" min="-50" max="50" step="1" value="0" />
+              </div>
+            </div>
+            <div id="image-content" hidden>
+              <label class="upload" id="image-upload-zone">
+                <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp" />
+                <span><strong>选择图片文件</strong>或将文件拖到这里<br /><span id="image-file-name">尚未选择文件</span></span>
+              </label>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="image-scale">图片尺寸</label><output id="image-scale-value"></output></div>
+                <input id="image-scale" type="range" min="80" max="220" step="1" value="100" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="image-offset-x">水平位置</label><output id="image-offset-x-value"></output></div>
+                <input id="image-offset-x" type="range" min="-50" max="50" step="1" value="0" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="image-offset-y">垂直位置</label><output id="image-offset-y-value"></output></div>
+                <input id="image-offset-y" type="range" min="-50" max="50" step="1" value="0" />
+              </div>
+            </div>
+            <div id="text-typography">
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="font-size">字体大小</label><output id="font-size-value"></output></div>
+                <input id="font-size" type="range" min="40" max="160" step="1" value="100" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="font-weight">字重</label><output id="font-weight-value"></output></div>
+                <input id="font-weight" type="range" min="100" max="900" step="10" value="660" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="tracking">字距</label><output id="tracking-value"></output></div>
+                <input id="tracking" type="range" min="-8" max="28" step="1" value="-2" />
+              </div>
+            </div>
+            </div>
+          </section>
+
+          <section class="control-section" data-collapsible>
+            <button type="button" class="section-title" aria-expanded="true">
+              <span>布局</span>
+              <span class="section-aside"><span id="glass-summary">2 颗</span><i class="chevron" aria-hidden="true"></i></span>
+            </button>
+            <div class="section-body">
+            <div class="field">
+              <div class="field-row"><span class="field-label">形状</span></div>
+              <div class="segmented" aria-label="玻璃形状">
+                <button type="button" data-glass-shape="circle">圆</button>
+                <button type="button" data-glass-shape="ellipse">椭圆</button>
+                <button type="button" class="active" data-glass-shape="rounded">圆角方块</button>
+                <button type="button" data-glass-shape="hexagon">六边形</button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="glass-count">数量</label><output id="glass-count-value"></output></div>
+              <input id="glass-count" type="range" min="1" max="8" step="1" value="2" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="glass-spacing">相对距离</label><output id="glass-spacing-value"></output></div>
+              <input id="glass-spacing" type="range" min="0" max="4" step="0.01" value="0.7" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="layout-angle">整体布局角度</label><output id="layout-angle-value"></output></div>
+              <input id="layout-angle" type="range" min="-180" max="180" step="1" value="0" />
+            </div>
+            <div class="lens-panel" id="lens-editor">
+              <div class="lens-panel-title">单颗编辑</div>
+              <div class="lens-selector" id="lens-selector" aria-label="选择需要调整的玻璃"></div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="glass-size">尺寸</label><output id="glass-size-value"></output></div>
+                <input id="glass-size" type="range" min="12" max="160" step="1" value="24" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="lens-angle">位置角度</label><output id="lens-angle-value"></output></div>
+                <input id="lens-angle" type="range" min="-180" max="180" step="1" value="0" />
+              </div>
+              <span class="angle-help">点编号可多选；尺寸和角度会一起应用到选中的玻璃。选「全部」时，相当于整体调节。</span>
+            </div>
+            </div>
+          </section>
+
+          <section class="control-section" data-collapsible>
+            <button type="button" class="section-title" aria-expanded="true">
+              <span>材质</span>
+              <span class="section-aside"><i class="chevron" aria-hidden="true"></i></span>
+            </button>
+            <div class="section-body">
+            <div class="field">
+              <div class="field-row"><span class="field-label">染色</span><output id="tint-strength-value"></output></div>
+              <div class="colors" style="margin-bottom: 8px">
+                <label class="color-field">
+                  <input id="glass-tint" type="color" value="#8EC8FF" />
+                  <span class="color-meta">
+                    <span class="number-label">颜色</span>
+                    <span class="color-code" id="glass-tint-value">#8EC8FF</span>
+                  </span>
+                </label>
+              </div>
+              <input id="tint-strength" type="range" min="0" max="1" step="0.01" value="0" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="distortion">折射强度</label><output id="distortion-value"></output></div>
+              <input id="distortion" type="range" min="0" max="2.8" step="0.05" value="0.1" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="ripple">波纹</label><output id="ripple-value"></output></div>
+              <input id="ripple" type="range" min="0" max="0.75" step="0.01" value="0.06" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="background-blur">背景模糊</label><output id="background-blur-value"></output></div>
+              <input id="background-blur" type="range" min="0" max="32" step="1" value="0" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="dispersion">色散</label><output id="dispersion-value"></output></div>
+              <input id="dispersion" type="range" min="0" max="0.09" step="0.002" value="0.04" />
+            </div>
+            </div>
+          </section>
+
+          <section class="control-section" data-collapsible>
+            <button type="button" class="section-title" aria-expanded="true">
+              <span>光影</span>
+              <span class="section-aside"><i class="chevron" aria-hidden="true"></i></span>
+            </button>
+            <div class="section-body">
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="shadow">投影</label><output id="shadow-value"></output></div>
+              <input id="shadow" type="range" min="0" max="1" step="0.01" value="0.22" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="gloss">边缘透明度</label><output id="gloss-value"></output></div>
+              <input id="gloss" type="range" min="0" max="1" step="0.01" value="1" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="rim-width">边缘粗细</label><output id="rim-width-value"></output></div>
+              <input id="rim-width" type="range" min="0" max="1" step="0.01" value="0.18" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="light-angle">光源方向</label><output id="light-angle-value"></output></div>
+              <input id="light-angle" type="range" min="-180" max="180" step="1" value="-180" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="rotation-speed">3D 自转</label><output id="rotation-speed-value"></output></div>
+              <input id="rotation-speed" type="range" min="0" max="2" step="0.01" value="1" />
+            </div>
+            </div>
+          </section>
+
+          <section class="control-section" data-collapsible>
+            <button type="button" class="section-title" aria-expanded="true">
+              <span>动效</span>
+              <span class="section-aside"><i class="chevron" aria-hidden="true"></i></span>
+            </button>
+            <div class="section-body">
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="speed">速度</label><output id="speed-value"></output></div>
+              <input id="speed" type="range" min="0" max="2.5" step="0.05" value="0.4" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="travel">移动范围</label><output id="travel-value"></output></div>
+              <input id="travel" type="range" min="0" max="1" step="0.01" value="0.4" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="pointer-repel">鼠标避让</label><output id="pointer-repel-value"></output></div>
+              <input id="pointer-repel" type="range" min="0" max="1" step="0.01" value="0.2" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="repel-range">避让范围</label><output id="repel-range-value"></output></div>
+              <input id="repel-range" type="range" min="0" max="1" step="0.01" value="0.3" />
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-copy">循环播放<span>暂停后仍可修改参数</span></div>
+              <label class="switch"><input id="play-toggle" type="checkbox" checked /><span class="switch-ui"></span></label>
+            </div>
+            </div>
+          </section>
+
+          <section class="control-section" data-collapsible>
+            <button type="button" class="section-title" aria-expanded="true">
+              <span>画板</span>
+              <span class="section-aside"><i class="chevron" aria-hidden="true"></i></span>
+            </button>
+            <div class="section-body">
+            <div class="two-col">
+              <label><span class="number-label">导出宽度</span><input id="output-width" type="number" min="1" max="4096" step="1" value="1600" /></label>
+              <label><span class="number-label">导出高度</span><input id="output-height" type="number" min="1" max="4096" step="1" value="900" /></label>
+            </div>
+            <div class="field">
+              <div class="field-row"><span class="field-label">颜色</span></div>
+              <div class="colors">
+                <label class="color-field">
+                  <input id="paper" type="color" value="#EDEDED" />
+                  <span class="color-meta">
+                    <span class="number-label">纸张</span>
+                    <span class="color-code" id="paper-value">#EDEDED</span>
+                  </span>
+                </label>
+                <label class="color-field">
+                  <input id="ink" type="color" value="#0A0A0A" />
+                  <span class="color-meta">
+                    <span class="number-label">文字</span>
+                    <span class="color-code" id="ink-value">#0A0A0A</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="notice" id="webgl-notice">当前浏览器未启用 WebGL，已切换到静态预览。请在桌面版 Chrome 或 Safari 中打开以启用玻璃折射。</div>
+            </div>
+          </section>
+          <div class="help">提示：用 <kbd>空格</kbd> 播放或暂停；SVG 会以自身透明区域作为形状蒙版；图片模式支持 PNG、JPG 和 WebP。</div>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var MAX_LENSES = 8;
+        var canvas = document.getElementById("glass-canvas");
+        var stage = document.getElementById("stage");
+        var stageWrap = stage.parentElement;
+        var previewFooter = document.querySelector(".preview-footer");
+        var app = document.querySelector(".app");
+        var $ = function (selector) { return document.querySelector(selector); };
+        var $$ = function (selector) { return Array.prototype.slice.call(document.querySelectorAll(selector)); };
+
+        var defaults = {
+          mode: "text",
+          text: "GLASS\nTYPE",
+          svgScale: 100,
+          svgOffsetX: 0,
+          svgOffsetY: 0,
+          imageScale: 100,
+          imageOffsetX: 0,
+          imageOffsetY: 0,
+          fontSize: 100,
+          fontWeight: 660,
+          tracking: -2,
+          glassShape: "rounded",
+          glassCount: 2,
+          glassSize: 24,
+          glassSpacing: 0.7,
+          layoutAngle: 0,
+          lensAngles: [0, 0, 0, 0, 0, 0, 0, 0],
+          lensSizes: [24, 24, 24, 24, 24, 24, 24, 24],
+          glassTint: "#8EC8FF",
+          tintStrength: 0,
+          shadow: 0.22,
+          distortion: 0.1,
+          ripple: 0.06,
+          backgroundBlur: 0,
+          dispersion: 0.04,
+          gloss: 1,
+          rimWidth: 0.18,
+          rotationSpeed: 1,
+          lightAngle: -180,
+          speed: 0.4,
+          travel: 0.4,
+          pointerRepel: 0.2,
+          repelRange: 0.3,
+          playing: true,
+          width: 1600,
+          height: 900,
+          paper: "#EDEDED",
+          ink: "#0A0A0A"
+        };
+        var state = clone(defaults);
+        var selectedLensIds = [0, 1];
+        var svgImage = null;
+        var svgName = "";
+        var imageImage = null;
+        var imageName = "";
+        var sourceInvalid = false;
+        var lastTime = performance.now();
+        var staticTime = 0;
+        var resizeTimer = 0;
+
+        function clone(object) {
+          return JSON.parse(JSON.stringify(object));
+        }
+
+        function clamp(value, minimum, maximum) {
+          return Math.min(Math.max(value, minimum), maximum);
+        }
+
+        function hexToRgb(value) {
+          return [
+            parseInt(value.slice(1, 3), 16) / 255,
+            parseInt(value.slice(3, 5), 16) / 255,
+            parseInt(value.slice(5, 7), 16) / 255
+          ];
+        }
+
+        function glassShapeIndex(shape) {
+          return { circle: 0, ellipse: 1, rounded: 2, hexagon: 3 }[shape] || 0;
+        }
+
+        function setStatus() {
+          $("#status-copy").textContent = state.playing ? "动效播放中" : "动效已暂停";
+          $("#status-dot").classList.toggle("paused", !state.playing);
+        }
+
+        function setMode(mode) {
+          state.mode = mode;
+          $$("#text-content, #svg-content, #image-content").forEach(function (element) {
+            element.hidden = element.id !== mode + "-content";
+          });
+          $$("[data-content-mode]").forEach(function (button) {
+            button.classList.toggle("active", button.dataset.contentMode === mode);
+          });
+          $("#text-typography").hidden = mode !== "text";
+          renderer.markSourceDirty();
+        }
+
+        function updateStageRatio() {
+          stage.style.aspectRatio = state.width + " / " + state.height;
+          fitStageToViewport();
+        }
+
+        function fitStageToViewport() {
+          var wrapStyle = window.getComputedStyle(stageWrap);
+          var paddingX = (parseFloat(wrapStyle.paddingLeft) || 0) + (parseFloat(wrapStyle.paddingRight) || 0);
+          var paddingY = (parseFloat(wrapStyle.paddingTop) || 0) + (parseFloat(wrapStyle.paddingBottom) || 0);
+          var appBottom = parseFloat(window.getComputedStyle(app).paddingBottom) || 0;
+          var availableWidth = Math.max(1, stageWrap.clientWidth - paddingX);
+          var availableHeight = Math.max(160, window.innerHeight - stageWrap.getBoundingClientRect().top - previewFooter.getBoundingClientRect().height - appBottom - paddingY - 8);
+          var ratio = state.width / state.height;
+          var displayWidth = Math.min(availableWidth, 1100, availableHeight * ratio);
+          stage.style.width = Math.max(1, Math.floor(displayWidth)) + "px";
+          stage.style.height = Math.max(1, Math.floor(displayWidth / ratio)) + "px";
+        }
+
+        function mapRange(id, key, format) {
+          var input = $("#" + id);
+          var output = $("#" + id + "-value");
+          var update = function () {
+            var previousCount = state.glassCount;
+            state[key] = Number(input.value);
+            output.textContent = format(state[key]);
+            if (key === "glassCount") {
+              $("#glass-summary").textContent = state[key] + " 颗";
+              ensureLensArrays();
+              if (state.glassCount > previousCount && selectedLensIds.length === previousCount) {
+                var fillSize = state.lensSizes[0] || 24;
+                for (var n = previousCount; n < state.glassCount; n += 1) {
+                  state.lensSizes[n] = fillSize;
+                }
+              }
+              if (selectedLensIds.length === previousCount) {
+                selectedLensIds = Array.from({ length: state.glassCount }, function (_, index) { return index; });
+              }
+              renderLensSelector();
+            }
+            if (key === "fontSize" || key === "fontWeight" || key === "tracking" || key === "svgScale" || key === "svgOffsetX" || key === "svgOffsetY" || key === "imageScale" || key === "imageOffsetX" || key === "imageOffsetY") renderer.markSourceDirty();
+          };
+          input.addEventListener("input", update);
+          return function () {
+            input.value = state[key];
+            update();
+          };
+        }
+
+        function ensureLensArrays() {
+          if (!Array.isArray(state.lensAngles)) state.lensAngles = [];
+          if (!Array.isArray(state.lensSizes)) state.lensSizes = [];
+          while (state.lensAngles.length < MAX_LENSES) state.lensAngles.push(0);
+          while (state.lensSizes.length < MAX_LENSES) state.lensSizes.push(24);
+        }
+
+        function selectedLensValues(key, fallback) {
+          return selectedLensIds.map(function (id) {
+            return state[key][id] == null ? fallback : state[key][id];
+          });
+        }
+
+        function updateLensControls() {
+          ensureLensArrays();
+          selectedLensIds = selectedLensIds.filter(function (id) { return id < state.glassCount; });
+          if (!selectedLensIds.length) selectedLensIds = [0];
+          var angles = selectedLensValues("lensAngles", 0);
+          var uniformAngle = angles.every(function (value) { return value === angles[0]; });
+          $("#lens-angle").value = uniformAngle ? angles[0] : 0;
+          $("#lens-angle-value").textContent = uniformAngle ? angles[0] + "°" : "混合";
+          var sizes = selectedLensValues("lensSizes", 24);
+          var uniformSize = sizes.every(function (value) { return value === sizes[0]; });
+          $("#glass-size").value = uniformSize ? sizes[0] : sizes[0];
+          $("#glass-size-value").textContent = uniformSize ? sizes[0] + "%" : "混合";
+          if (uniformSize) state.glassSize = sizes[0];
+        }
+
+        function renderLensSelector() {
+          ensureLensArrays();
+          selectedLensIds = selectedLensIds.filter(function (id) { return id < state.glassCount; });
+          if (!selectedLensIds.length) selectedLensIds = [0];
+          var container = $("#lens-selector");
+          container.innerHTML = "";
+          var addChip = function (label, active, action) {
+            var button = document.createElement("button");
+            button.type = "button";
+            button.className = "lens-chip" + (active ? " active" : "");
+            button.textContent = label;
+            button.addEventListener("click", action);
+            container.appendChild(button);
+          };
+          addChip("全部", selectedLensIds.length === state.glassCount, function () {
+            selectedLensIds = Array.from({ length: state.glassCount }, function (_, index) { return index; });
+            renderLensSelector();
+          });
+          for (var i = 0; i < state.glassCount; i += 1) {
+            (function (id) {
+              var active = selectedLensIds.indexOf(id) !== -1;
+              addChip(String(id + 1), active, function () {
+                if (active && selectedLensIds.length > 1) selectedLensIds = selectedLensIds.filter(function (item) { return item !== id; });
+                else if (!active) selectedLensIds = selectedLensIds.concat(id).sort(function (a, b) { return a - b; });
+                renderLensSelector();
+              });
+            })(i);
+          }
+          updateLensControls();
+        }
+
+        var refreshRanges = [
+          mapRange("font-size", "fontSize", function (v) { return v + "%"; }),
+          mapRange("font-weight", "fontWeight", function (v) { return v; }),
+          mapRange("tracking", "tracking", function (v) { return (v > 0 ? "+" : "") + v + " px"; }),
+          mapRange("svg-scale", "svgScale", function (v) { return v + "%"; }),
+          mapRange("svg-offset-x", "svgOffsetX", function (v) { return (v > 0 ? "+" : "") + v + "%"; }),
+          mapRange("svg-offset-y", "svgOffsetY", function (v) { return (v > 0 ? "+" : "") + v + "%"; }),
+          mapRange("image-scale", "imageScale", function (v) { return v + "%"; }),
+          mapRange("image-offset-x", "imageOffsetX", function (v) { return (v > 0 ? "+" : "") + v + "%"; }),
+          mapRange("image-offset-y", "imageOffsetY", function (v) { return (v > 0 ? "+" : "") + v + "%"; }),
+          mapRange("glass-count", "glassCount", function (v) { return v; }),
+          mapRange("glass-spacing", "glassSpacing", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("layout-angle", "layoutAngle", function (v) { return v + "°"; }),
+          mapRange("tint-strength", "tintStrength", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("distortion", "distortion", function (v) { return v.toFixed(2); }),
+          mapRange("ripple", "ripple", function (v) { return v.toFixed(2); }),
+          mapRange("background-blur", "backgroundBlur", function (v) { return v + " px"; }),
+          mapRange("dispersion", "dispersion", function (v) { return v.toFixed(3); }),
+          mapRange("shadow", "shadow", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("gloss", "gloss", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("rim-width", "rimWidth", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("rotation-speed", "rotationSpeed", function (v) { return v.toFixed(2) + "×"; }),
+          mapRange("light-angle", "lightAngle", function (v) { return v + "°"; }),
+          mapRange("speed", "speed", function (v) { return v.toFixed(2) + "×"; }),
+          mapRange("travel", "travel", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("pointer-repel", "pointerRepel", function (v) { return Math.round(v * 100) + "%"; }),
+          mapRange("repel-range", "repelRange", function (v) { return Math.round(v * 100) + "%"; })
+        ];
+
+        function refreshUi() {
+          $("#text-input").value = state.text;
+          $("#paper").value = state.paper;
+          $("#ink").value = state.ink;
+          $("#glass-tint").value = state.glassTint;
+          $("#paper-value").textContent = state.paper.toUpperCase();
+          $("#ink-value").textContent = state.ink.toUpperCase();
+          $("#glass-tint-value").textContent = state.glassTint.toUpperCase();
+          $("#output-width").value = state.width;
+          $("#output-height").value = state.height;
+          $("#play-toggle").checked = state.playing;
+          $$("[data-glass-shape]").forEach(function (button) {
+            button.classList.toggle("active", button.dataset.glassShape === state.glassShape);
+          });
+          refreshRanges.forEach(function (refresh) { refresh(); });
+          renderLensSelector();
+          setStatus();
+          updateStageRatio();
+        }
+
+        function createShader(gl, type, source) {
+          var shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.warn("Glass shader error:", gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+          }
+          return shader;
+        }
+
+        function GlassRenderer(target) {
+          this.canvas = target;
+          this.source = document.createElement("canvas");
+          this.context = this.source.getContext("2d");
+          this.gl = target.getContext("webgl", {
+            alpha: false,
+            antialias: false,
+            premultipliedAlpha: false,
+            powerPreference: "high-performance"
+          });
+          this.ok = Boolean(this.context && this.gl);
+          this.sourceDirty = true;
+          this.pointer = { x: 0.5, y: 0.5, active: false };
+          this.width = 1;
+          this.height = 1;
+          this.program = null;
+          this.texture = null;
+          this.uniforms = {};
+          if (this.ok) this.setup();
+          if (!this.ok) $("#webgl-notice").classList.add("show");
+          this.resize();
+        }
+
+        GlassRenderer.prototype.setup = function () {
+          var gl = this.gl;
+          var vertexSource = [
+            "attribute vec2 aPosition;",
+            "varying vec2 vUv;",
+            "void main() {",
+            "  vUv = aPosition * .5 + .5;",
+            "  gl_Position = vec4(aPosition, 0., 1.);",
+            "}"
+          ].join("\n");
+          var fragmentSource = [
+            "precision highp float;",
+            "varying vec2 vUv;",
+            "uniform sampler2D uTexture;",
+            "uniform vec2 uResolution;",
+            "uniform vec2 uCenters[8];",
+            "uniform float uScales[8];",
+            "uniform float uAngles[8];",
+            "uniform float uCount;",
+            "uniform float uRadius;",
+            "uniform float uStrength;",
+            "uniform float uRipple;",
+            "uniform float uBackgroundBlur;",
+            "uniform float uDispersion;",
+            "uniform float uGloss;",
+            "uniform float uRimWidth;",
+            "uniform float uLightAngle;",
+            "uniform float uShape;",
+            "uniform float uSpin;",
+            "uniform float uImageMode;",
+            "uniform float uTime;",
+            "uniform vec3 uPaper;",
+            "uniform vec3 uInk;",
+            "uniform vec3 uTint;",
+            "uniform float uTintStrength;",
+            "uniform float uShadow;",
+            "",
+            "vec2 rotateVector(vec2 point, float angle) {",
+            "  float c = cos(angle);",
+            "  float s = sin(angle);",
+            "  return mat2(c, -s, s, c) * point;",
+            "}",
+            "",
+            "float shapeDistance(vec2 point) {",
+            "  if (uShape < .5) return length(point) - 1.;",
+            "  if (uShape < 1.5) { point.x *= .66; return length(point) - 1.; }",
+            "  if (uShape < 2.5) {",
+            "    vec2 delta = abs(point) - vec2(.76);",
+            "    return length(max(delta, 0.)) - .24 + min(max(delta.x, delta.y), 0.);",
+            "  }",
+            "  vec2 hex = abs(point);",
+            "  return max(dot(hex, vec2(.8660254, .5)), hex.y) - 1.;",
+            "}",
+            "",
+            "vec2 glassMap(vec2 pixel, float chroma) {",
+            "  vec2 mapped = pixel;",
+            "  for (int i = 0; i < 8; i++) {",
+            "    float enabled = step(float(i) + .5, uCount);",
+            "    vec2 centre = uCenters[i];",
+            "    float radius = uRadius * uScales[i];",
+            "    vec2 q = mapped - centre;",
+            "    vec2 local = rotateVector(q / max(radius, 1.), uAngles[i]);",
+            "    float unit = length(local);",
+            "    float inside = 1. - smoothstep(-.055, .018, shapeDistance(local));",
+            "    float wave = sin(unit * 18.8496 - uTime * (1.4 + float(i) * .13));",
+            "    float fold = uRipple * wave * smoothstep(.04, .94, unit);",
+            "    float magnification = max(.38, 1. + uStrength * chroma * pow(clamp(unit, 0., 1.35), 2.15) + fold);",
+            "    vec2 refracted = centre + q / magnification;",
+            "    mapped = mix(mapped, refracted, inside * enabled);",
+            "  }",
+            "  return mapped;",
+            "}",
+            "",
+            "float glassCoverage(vec2 pixel) {",
+            "  float coverage = 0.;",
+            "  for (int i = 0; i < 8; i++) {",
+            "    float enabled = step(float(i) + .5, uCount);",
+            "    float radius = uRadius * uScales[i];",
+            "    vec2 local = rotateVector((pixel - uCenters[i]) / max(radius, 1.), uAngles[i]);",
+            "    float inside = 1. - smoothstep(-.055, .018, shapeDistance(local));",
+            "    coverage = max(coverage, inside * enabled);",
+            "  }",
+            "  return coverage;",
+            "}",
+            "",
+            "vec3 blurredSample(vec2 uv) {",
+            "  vec2 blurStep = vec2(uBackgroundBlur * .5 / uResolution.x, uBackgroundBlur * .5 / uResolution.y);",
+            "  vec3 colour = vec3(0.);",
+            "  float total = 0.;",
+            "  for (int y = -2; y <= 2; y++) {",
+            "    for (int x = -2; x <= 2; x++) {",
+            "      float distanceSquared = float(x * x + y * y);",
+            "      float weight = exp(-.5 * distanceSquared);",
+            "      colour += texture2D(uTexture, uv + vec2(float(x) * blurStep.x, float(y) * blurStep.y)).rgb * weight;",
+            "      total += weight;",
+            "    }",
+            "  }",
+            "  return colour / total;",
+            "}",
+            "",
+            "float rimAt(vec2 pixel) {",
+            "  float rim = 0.;",
+            "  for (int i = 0; i < 8; i++) {",
+            "    float enabled = step(float(i) + .5, uCount);",
+            "    float radius = uRadius * uScales[i];",
+            "    vec2 local = rotateVector((pixel - uCenters[i]) / max(radius, 1.), uAngles[i]);",
+            "    float outer = mix(.003, .085, uRimWidth);",
+            "    float inner = max(.0008, outer * .2);",
+            "    float ring = 1. - smoothstep(inner, outer, abs(shapeDistance(local)));",
+            "    float glint = smoothstep(.12, .88, sin(float(i) * 2.1 + uTime * .48) * .5 + .5);",
+            "    rim = max(rim, ring * enabled * (.52 + .48 * glint));",
+            "  }",
+            "  return rim;",
+            "}",
+            "",
+            "vec3 glassSurface(vec2 pixel) {",
+            "  float highlight = 0.;",
+            "  float contour = 0.;",
+            "  float contact = 0.;",
+            "  vec3 light = normalize(vec3(cos(uLightAngle + uSpin), -sin(uLightAngle + uSpin), .82));",
+            "  for (int i = 0; i < 8; i++) {",
+            "    float enabled = step(float(i) + .5, uCount);",
+            "    float radius = uRadius * uScales[i];",
+            "    vec2 q = pixel - uCenters[i];",
+            "    vec2 normalXY = rotateVector(q / max(radius, 1.), uAngles[i]);",
+            "    float unit = length(normalXY);",
+            "    float inside = 1. - smoothstep(-.055, .018, shapeDistance(normalXY));",
+            "    float z = sqrt(max(0., 1. - dot(normalXY, normalXY)));",
+            "    vec3 normal = normalize(vec3(normalXY, z));",
+            "    float shine = pow(max(dot(normal, light), 0.), 22.) * inside;",
+            "    float curvedEdge = smoothstep(.78, 1.02, unit) * inside;",
+            "    float lowerEdge = smoothstep(.9, 1.03, unit) * inside;",
+            "    highlight = max(highlight, shine * enabled);",
+            "    contour = max(contour, curvedEdge * enabled);",
+            "    contact = max(contact, lowerEdge * enabled);",
+            "  }",
+            "  return vec3(highlight, contour, contact);",
+            "}",
+            "",
+            "float glassShadow(vec2 pixel) {",
+            "  if (uShadow < .001) return 0.;",
+            "  vec2 offset = vec2(-cos(uLightAngle), sin(uLightAngle)) * mix(7., 26., uShadow);",
+            "  float coverage = 0.;",
+            "  float casted = 0.;",
+            "  for (int i = 0; i < 8; i++) {",
+            "    float enabled = step(float(i) + .5, uCount);",
+            "    float radius = uRadius * uScales[i];",
+            "    vec2 local = rotateVector((pixel - uCenters[i]) / max(radius, 1.), uAngles[i]);",
+            "    vec2 shifted = rotateVector((pixel - offset - uCenters[i]) / max(radius * 1.06, 1.), uAngles[i]);",
+            "    float inside = 1. - smoothstep(-.055, .018, shapeDistance(local));",
+            "    float blob = 1. - smoothstep(-.16, .46, shapeDistance(shifted));",
+            "    coverage = max(coverage, inside * enabled);",
+            "    casted = max(casted, blob * enabled);",
+            "  }",
+            "  return max(0., casted - coverage) * uShadow;",
+            "}",
+            "",
+            "void main() {",
+            "  vec2 pixel = vUv * uResolution;",
+            "  float shift = uDispersion * 3.0;",
+            "  vec2 redUv = glassMap(pixel, 1. + shift) / uResolution;",
+            "  vec2 greenUv = glassMap(pixel, 1.) / uResolution;",
+            "  vec2 blueUv = glassMap(pixel, 1. - shift) / uResolution;",
+            "  vec3 sampleRed = texture2D(uTexture, redUv).rgb;",
+            "  vec3 sampleGreen = texture2D(uTexture, greenUv).rgb;",
+            "  vec3 sampleBlue = texture2D(uTexture, blueUv).rgb;",
+            "  float blurMask = glassCoverage(pixel);",
+            "  if (uBackgroundBlur > .01 && blurMask > .001) {",
+            "    sampleRed = mix(sampleRed, blurredSample(redUv), blurMask);",
+            "    sampleGreen = mix(sampleGreen, blurredSample(greenUv), blurMask);",
+            "    sampleBlue = mix(sampleBlue, blurredSample(blueUv), blurMask);",
+            "  }",
+            "  float red = 1. - sampleRed.r;",
+            "  float green = 1. - sampleGreen.r;",
+            "  float blue = 1. - sampleBlue.r;",
+            "  vec3 density = clamp(vec3(red, green, blue), 0., 1.);",
+            "  vec3 graphicColour = mix(uPaper, uInk, density);",
+            "  vec3 imageColour = vec3(sampleRed.r, sampleGreen.g, sampleBlue.b);",
+            "  vec3 colour = mix(graphicColour, imageColour, uImageMode);",
+            "  colour *= 1. - glassShadow(pixel) * .46;",
+            "  vec3 stained = colour * mix(vec3(1.), uTint, .78);",
+            "  stained = mix(stained, uTint, .14);",
+            "  colour = mix(colour, stained, blurMask * uTintStrength);",
+            "  vec3 surface = glassSurface(pixel);",
+            "  float rim = rimAt(pixel) * uGloss;",
+            "  colour *= 1. - surface.y * .08;",
+            "  colour *= 1. - surface.z * .03;",
+            "  colour = mix(colour, vec3(1.), surface.x * .35);",
+            "  vec3 rimColour = mix(mix(uPaper, vec3(1.), .66), vec3(1.), uImageMode);",
+            "  colour = mix(colour, rimColour, rim);",
+            "  gl_FragColor = vec4(clamp(colour, 0., 1.), 1.);",
+            "}"
+          ].join("\n");
+          var vertex = createShader(gl, gl.VERTEX_SHADER, vertexSource);
+          var fragment = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
+          if (!vertex || !fragment) {
+            this.ok = false;
+            return;
+          }
+          var program = gl.createProgram();
+          gl.attachShader(program, vertex);
+          gl.attachShader(program, fragment);
+          gl.linkProgram(program);
+          if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.warn("Glass program error:", gl.getProgramInfoLog(program));
+            this.ok = false;
+            return;
+          }
+          this.program = program;
+          this.quad = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.quad);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+          this.texture = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          [
+            "uTexture", "uResolution", "uCenters[0]", "uScales[0]", "uAngles[0]", "uCount",
+            "uRadius", "uStrength", "uRipple", "uBackgroundBlur", "uDispersion", "uGloss",
+            "uRimWidth", "uLightAngle", "uShape", "uSpin", "uImageMode",
+            "uTime", "uPaper", "uInk", "uTint", "uTintStrength", "uShadow"
+          ].forEach(function (name) {
+            this.uniforms[name] = gl.getUniformLocation(program, name);
+          }, this);
+        };
+
+        GlassRenderer.prototype.resize = function () {
+          var box = this.canvas.getBoundingClientRect();
+          var ratio = state.width / state.height;
+          var requestedWidth = Math.max(2, Math.round(box.width * Math.min(window.devicePixelRatio || 1, 2)));
+          var requestedHeight = Math.max(2, Math.round(requestedWidth / ratio));
+          this.width = requestedWidth;
+          this.height = requestedHeight;
+          this.canvas.width = requestedWidth;
+          this.canvas.height = requestedHeight;
+          this.source.width = requestedWidth;
+          this.source.height = requestedHeight;
+          this.sourceDirty = true;
+        };
+
+        GlassRenderer.prototype.markSourceDirty = function () {
+          this.sourceDirty = true;
+        };
+
+        GlassRenderer.prototype.drawSpacedText = function (context, text, x, y, tracking) {
+          if (!tracking) {
+            context.fillText(text, x, y);
+            return;
+          }
+          var letters = Array.prototype.slice.call(text);
+          var widths = letters.map(function (letter) { return context.measureText(letter).width; });
+          var fullWidth = widths.reduce(function (total, width) { return total + width; }, 0) + tracking * Math.max(0, letters.length - 1);
+          var position = x - fullWidth / 2;
+          context.textAlign = "left";
+          letters.forEach(function (letter, index) {
+            context.fillText(letter, position, y);
+            position += widths[index] + tracking;
+          });
+          context.textAlign = "center";
+        };
+
+        GlassRenderer.prototype.prepareText = function (context, width, height) {
+          var text = state.text.trim() || "TYPE";
+          var lines = text.split(/\r?\n/).slice(0, 4);
+          var probe = 100;
+          context.font = state.fontWeight + " " + probe + "px Inter, ui-sans-serif, system-ui, sans-serif";
+          var widest = Math.max.apply(null, lines.map(function (line) {
+            return context.measureText(line || " ").width + state.tracking * Math.max(0, line.length - 1);
+          }));
+          var fontByWidth = (width * .78 / Math.max(widest, 1)) * probe;
+          var fontByHeight = height * .52 / (Math.max(lines.length, 1) * 1.08);
+          var fontSize = clamp(Math.min(fontByWidth, fontByHeight) * (state.fontSize / 100), 14, height * .99);
+          var lineHeight = fontSize * 1.03;
+          var firstLine = height / 2 - ((lines.length - 1) * lineHeight) / 2;
+          context.font = state.fontWeight + " " + fontSize + "px Inter, ui-sans-serif, system-ui, sans-serif";
+          context.fillStyle = "#000000";
+          context.textBaseline = "middle";
+          context.textAlign = "center";
+          lines.forEach(function (line, index) {
+            this.drawSpacedText(context, line || " ", width / 2, firstLine + index * lineHeight, state.tracking);
+          }, this);
+        };
+
+        GlassRenderer.prototype.prepareSvg = function (context, width, height) {
+          if (!svgImage || !svgImage.complete || !svgImage.naturalWidth) {
+            sourceInvalid = true;
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, width, height);
+            this.prepareText(context, width, height);
+            return;
+          }
+          sourceInvalid = false;
+          var sourceRatio = svgImage.naturalWidth / svgImage.naturalHeight;
+          var targetRatio = (width * .72) / (height * .58);
+          var drawWidth;
+          var drawHeight;
+          if (sourceRatio > targetRatio) {
+            drawWidth = width * .72;
+            drawHeight = drawWidth / sourceRatio;
+          } else {
+            drawHeight = height * .58;
+            drawWidth = drawHeight * sourceRatio;
+          }
+          var scale = state.svgScale / 100;
+          drawWidth *= scale;
+          drawHeight *= scale;
+          var x = (width - drawWidth) / 2 + width * state.svgOffsetX / 100;
+          var y = (height - drawHeight) / 2 + height * state.svgOffsetY / 100;
+          context.drawImage(svgImage, x, y, drawWidth, drawHeight);
+          context.globalCompositeOperation = "source-in";
+          context.fillStyle = "#000000";
+          context.fillRect(0, 0, width, height);
+          context.globalCompositeOperation = "destination-over";
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, width, height);
+          context.globalCompositeOperation = "source-over";
+        };
+
+        GlassRenderer.prototype.prepareImage = function (context, width, height) {
+          context.fillStyle = state.paper;
+          context.fillRect(0, 0, width, height);
+          if (!imageImage || !imageImage.complete || !imageImage.naturalWidth) return;
+          var sourceRatio = imageImage.naturalWidth / imageImage.naturalHeight;
+          var canvasRatio = width / height;
+          var drawWidth = sourceRatio > canvasRatio ? height * sourceRatio : width;
+          var drawHeight = sourceRatio > canvasRatio ? height : width / sourceRatio;
+          var scale = state.imageScale / 100;
+          drawWidth *= scale;
+          drawHeight *= scale;
+          var x = (width - drawWidth) / 2 + width * state.imageOffsetX / 100;
+          var y = (height - drawHeight) / 2 + height * state.imageOffsetY / 100;
+          context.drawImage(imageImage, x, y, drawWidth, drawHeight);
+        };
+
+        GlassRenderer.prototype.prepareSource = function () {
+          if (!this.sourceDirty) return;
+          var context = this.context;
+          var width = this.source.width;
+          var height = this.source.height;
+          context.clearRect(0, 0, width, height);
+          if (state.mode === "svg") this.prepareSvg(context, width, height);
+          else if (state.mode === "image") this.prepareImage(context, width, height);
+          else {
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, width, height);
+            this.prepareText(context, width, height);
+          }
+          if (this.ok) {
+            var gl = this.gl;
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.source);
+          }
+          this.sourceDirty = false;
+        };
+
+        GlassRenderer.prototype.computeLenses = function (time) {
+          var centres = [];
+          var scales = [];
+          var angles = [];
+          var individualOrbit = state.travel * .18;
+          var count = Math.max(1, state.glassCount);
+          var separation = state.glassSpacing * .29;
+          var layoutAngle = state.layoutAngle * Math.PI / 180;
+          for (var i = 0; i < MAX_LENSES; i += 1) {
+            var lensAngle = ((state.lensAngles[i] || 0) * Math.PI / 180);
+            var homeAngle = (i / count) * Math.PI * 2 + layoutAngle + lensAngle;
+            var phase = time * (.48 + i * .11) + i * 2.399;
+            var ringScale = count === 1 ? 0 : (count === 2 ? 1 : .58 + (i % 2) * .18);
+            var homeX = .5 + Math.cos(homeAngle) * separation * ringScale;
+            var homeY = .5 + Math.sin(homeAngle) * separation * .68 * ringScale;
+            var x = homeX + Math.cos(phase * 1.08 + i * .74) * individualOrbit * (.55 + (i % 3) * .12);
+            var y = homeY + Math.sin(phase * .84 + i * 1.37) * individualOrbit * (.44 + (i % 4) * .09);
+            if (this.pointer.active) {
+              var deltaX = x - this.pointer.x;
+              var deltaY = y - this.pointer.y;
+              var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+              var range = .12 + state.repelRange * .34;
+              var influence = Math.max(0, 1 - distance / range);
+              var force = state.pointerRepel * .085 * influence * influence;
+              var safeDistance = Math.max(distance, .001);
+              x += (distance < .001 ? Math.cos(i * 2.4) : deltaX / safeDistance) * force;
+              y += (distance < .001 ? Math.sin(i * 2.4) : deltaY / safeDistance) * force;
+            }
+            centres.push(x * this.width, y * this.height);
+            scales.push((.84 + ((Math.sin(time * (1.2 + i * .08) + i * 1.7) + 1) * .08) + i * .018) * ((state.lensSizes[i] || 24) / 100));
+            angles.push(time * state.rotationSpeed * (i % 2 ? -.8 : 1) + i * .42);
+          }
+          return { centres: centres, scales: scales, angles: angles };
+        };
+
+        GlassRenderer.prototype.renderFallback = function () {
+          var context = this.canvas.getContext("2d");
+          if (!context) return;
+          context.fillStyle = state.paper;
+          context.fillRect(0, 0, this.width, this.height);
+          context.drawImage(this.source, 0, 0, this.width, this.height);
+        };
+
+        GlassRenderer.prototype.render = function (time) {
+          this.prepareSource();
+          if (!this.ok || !this.program) {
+            this.renderFallback();
+            return;
+          }
+          var gl = this.gl;
+          var unit = Math.min(this.width, this.height);
+          var lenses = this.computeLenses(time * state.speed);
+          gl.viewport(0, 0, this.width, this.height);
+          gl.useProgram(this.program);
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.quad);
+          var position = gl.getAttribLocation(this.program, "aPosition");
+          gl.enableVertexAttribArray(position);
+          gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+          gl.uniform1i(this.uniforms.uTexture, 0);
+          gl.uniform2f(this.uniforms.uResolution, this.width, this.height);
+          gl.uniform2fv(this.uniforms["uCenters[0]"], new Float32Array(lenses.centres));
+          gl.uniform1fv(this.uniforms["uScales[0]"], new Float32Array(lenses.scales));
+          gl.uniform1fv(this.uniforms["uAngles[0]"], new Float32Array(lenses.angles));
+          gl.uniform1f(this.uniforms.uCount, state.glassCount);
+          gl.uniform1f(this.uniforms.uRadius, unit);
+          gl.uniform1f(this.uniforms.uStrength, state.distortion);
+          gl.uniform1f(this.uniforms.uRipple, state.ripple);
+          gl.uniform1f(this.uniforms.uBackgroundBlur, state.backgroundBlur);
+          gl.uniform1f(this.uniforms.uDispersion, state.dispersion);
+          gl.uniform1f(this.uniforms.uGloss, state.gloss);
+          gl.uniform1f(this.uniforms.uRimWidth, state.rimWidth);
+          gl.uniform1f(this.uniforms.uLightAngle, state.lightAngle * Math.PI / 180);
+          gl.uniform1f(this.uniforms.uShape, glassShapeIndex(state.glassShape));
+          gl.uniform1f(this.uniforms.uSpin, time * state.rotationSpeed);
+          gl.uniform1f(this.uniforms.uImageMode, state.mode === "image" ? 1 : 0);
+          gl.uniform1f(this.uniforms.uTime, time * state.speed);
+          gl.uniform3fv(this.uniforms.uPaper, new Float32Array(hexToRgb(state.paper)));
+          gl.uniform3fv(this.uniforms.uInk, new Float32Array(hexToRgb(state.ink)));
+          gl.uniform3fv(this.uniforms.uTint, new Float32Array(hexToRgb(state.glassTint)));
+          gl.uniform1f(this.uniforms.uTintStrength, state.tintStrength);
+          gl.uniform1f(this.uniforms.uShadow, state.shadow);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+        };
+
+        GlassRenderer.prototype.renderAtOutputSize = function (time, width, height) {
+          var original = {
+            width: this.width,
+            height: this.height,
+            canvasWidth: this.canvas.width,
+            canvasHeight: this.canvas.height,
+            sourceWidth: this.source.width,
+            sourceHeight: this.source.height,
+            dirty: this.sourceDirty
+          };
+          this.width = width;
+          this.height = height;
+          this.canvas.width = width;
+          this.canvas.height = height;
+          this.source.width = width;
+          this.source.height = height;
+          this.sourceDirty = true;
+          this.render(time);
+          var url = this.canvas.toDataURL("image/png");
+          this.width = original.width;
+          this.height = original.height;
+          this.canvas.width = original.canvasWidth;
+          this.canvas.height = original.canvasHeight;
+          this.source.width = original.sourceWidth;
+          this.source.height = original.sourceHeight;
+          this.sourceDirty = true;
+          return url;
+        };
+
+        var renderer = new GlassRenderer(canvas);
+
+        function animationFrame(now) {
+          var elapsed = (now - lastTime) / 1000;
+          lastTime = now;
+          if (state.playing) staticTime += Math.min(elapsed, .1);
+          renderer.render(staticTime);
+          requestAnimationFrame(animationFrame);
+        }
+
+        function setOutputDimension(key, value) {
+          var safe = Math.round(clamp(Number(value) || defaults[key], 1, 4096));
+          state[key] = safe;
+          updateStageRatio();
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () { renderer.resize(); }, 20);
+        }
+
+        function adaptCanvasToImage(image) {
+          var scale = Math.min(1, 4096 / Math.max(image.naturalWidth, image.naturalHeight));
+          state.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          state.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          $("#output-width").value = state.width;
+          $("#output-height").value = state.height;
+          $$("[data-preset-size]").forEach(function (button) { button.classList.remove("active"); });
+          updateStageRatio();
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () { renderer.resize(); }, 20);
+        }
+
+        function useSvg(file) {
+          if (!file) return;
+          if (!/\\.svg$/i.test(file.name) && file.type !== "image/svg+xml") {
+            alert("请选择 SVG 格式的文件。");
+            return;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            alert("SVG 文件请控制在 5 MB 内。");
+            return;
+          }
+          var reader = new FileReader();
+          reader.onload = function () {
+            var image = new Image();
+            image.onload = function () {
+              svgImage = image;
+              svgName = file.name;
+              $("#svg-file-name").textContent = svgName;
+              renderer.markSourceDirty();
+              setMode("svg");
+            };
+            image.onerror = function () {
+              $("#svg-file-name").textContent = "文件无法读取";
+              alert("这个 SVG 无法作为图像载入，请检查文件内容。");
+            };
+            image.src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        }
+
+        function useImage(file) {
+          if (!file) return;
+          if (!/^image\/(png|jpeg|webp)$/i.test(file.type)) {
+            alert("请选择 PNG、JPG 或 WebP 图片。");
+            return;
+          }
+          if (file.size > 12 * 1024 * 1024) {
+            alert("图片文件请控制在 12 MB 内。");
+            return;
+          }
+          var reader = new FileReader();
+          reader.onload = function () {
+            var image = new Image();
+            image.onload = function () {
+              imageImage = image;
+              imageName = file.name;
+              adaptCanvasToImage(image);
+              $("#image-file-name").textContent = imageName + " · 已适配 " + state.width + " × " + state.height;
+              renderer.markSourceDirty();
+              setMode("image");
+            };
+            image.onerror = function () {
+              $("#image-file-name").textContent = "文件无法读取";
+              alert("这张图片无法载入，请尝试 PNG、JPG 或 WebP 文件。");
+            };
+            image.src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        }
+
+        $("#text-input").addEventListener("input", function (event) {
+          state.text = event.target.value;
+          renderer.markSourceDirty();
+        });
+
+        $$("[data-copy]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            state.text = button.dataset.copy;
+            $("#text-input").value = state.text;
+            renderer.markSourceDirty();
+            setMode("text");
+          });
+        });
+
+        $$("[data-content-mode]").forEach(function (button) {
+          button.addEventListener("click", function () { setMode(button.dataset.contentMode); });
+        });
+
+        $$("[data-glass-shape]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            state.glassShape = button.dataset.glassShape;
+            refreshUi();
+          });
+        });
+
+        $("#lens-angle").addEventListener("input", function (event) {
+          ensureLensArrays();
+          var value = Number(event.target.value);
+          selectedLensIds.forEach(function (id) { state.lensAngles[id] = value; });
+          $("#lens-angle-value").textContent = value + "°";
+        });
+
+        $("#glass-size").addEventListener("input", function (event) {
+          ensureLensArrays();
+          var value = Number(event.target.value);
+          selectedLensIds.forEach(function (id) { state.lensSizes[id] = value; });
+          state.glassSize = value;
+          $("#glass-size-value").textContent = value + "%";
+        });
+
+        $("#svg-input").addEventListener("change", function (event) {
+          useSvg(event.target.files && event.target.files[0]);
+        });
+        $("#image-input").addEventListener("change", function (event) {
+          useImage(event.target.files && event.target.files[0]);
+        });
+
+        ["dragenter", "dragover"].forEach(function (eventName) {
+          $("#upload-zone").addEventListener(eventName, function (event) {
+            event.preventDefault();
+            $("#upload-zone").classList.add("dragging");
+          });
+        });
+        ["dragleave", "drop"].forEach(function (eventName) {
+          $("#upload-zone").addEventListener(eventName, function (event) {
+            event.preventDefault();
+            $("#upload-zone").classList.remove("dragging");
+          });
+        });
+        $("#upload-zone").addEventListener("drop", function (event) {
+          useSvg(event.dataTransfer.files && event.dataTransfer.files[0]);
+        });
+        ["dragenter", "dragover"].forEach(function (eventName) {
+          $("#image-upload-zone").addEventListener(eventName, function (event) {
+            event.preventDefault();
+            $("#image-upload-zone").classList.add("dragging");
+          });
+        });
+        ["dragleave", "drop"].forEach(function (eventName) {
+          $("#image-upload-zone").addEventListener(eventName, function (event) {
+            event.preventDefault();
+            $("#image-upload-zone").classList.remove("dragging");
+          });
+        });
+        $("#image-upload-zone").addEventListener("drop", function (event) {
+          useImage(event.dataTransfer.files && event.dataTransfer.files[0]);
+        });
+
+        $("#play-toggle").addEventListener("change", function (event) {
+          state.playing = event.target.checked;
+          setStatus();
+        });
+
+        $$("[data-collapsible] > .section-title").forEach(function (button) {
+          button.addEventListener("click", function () {
+            var open = button.getAttribute("aria-expanded") === "true";
+            button.setAttribute("aria-expanded", open ? "false" : "true");
+            button.parentElement.classList.toggle("collapsed", open);
+          });
+        });
+
+        ["paper", "ink"].forEach(function (key) {
+          $("#" + key).addEventListener("input", function (event) {
+            state[key] = event.target.value.toUpperCase();
+            $("#" + key + "-value").textContent = state[key];
+          });
+        });
+
+        $("#glass-tint").addEventListener("input", function (event) {
+          state.glassTint = event.target.value.toUpperCase();
+          $("#glass-tint-value").textContent = state.glassTint;
+        });
+
+        $("#output-width").addEventListener("change", function (event) {
+          setOutputDimension("width", event.target.value);
+          event.target.value = state.width;
+        });
+        $("#output-height").addEventListener("change", function (event) {
+          setOutputDimension("height", event.target.value);
+          event.target.value = state.height;
+        });
+
+        $$("[data-preset-size]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            var size = button.dataset.presetSize;
+            var dimensions = size === "3:1" ? [1800, 600] : size === "1:1" ? [1200, 1200] : [1600, 900];
+            state.width = dimensions[0];
+            state.height = dimensions[1];
+            $("#output-width").value = state.width;
+            $("#output-height").value = state.height;
+          $$("[data-preset-size]").forEach(function (item) { item.classList.toggle("active", item === button); });
+            updateStageRatio();
+            setTimeout(function () { renderer.resize(); }, 20);
+          });
+        });
+
+        $("#reset").addEventListener("click", function () {
+          state = clone(defaults);
+          selectedLensIds = Array.from({ length: state.glassCount }, function (_, index) { return index; });
+          svgImage = null;
+          svgName = "";
+          imageImage = null;
+          imageName = "";
+          $("#svg-file-name").textContent = "尚未选择文件";
+          $("#image-file-name").textContent = "尚未选择文件";
+          setMode("text");
+          refreshUi();
+          renderer.markSourceDirty();
+          setTimeout(function () { renderer.resize(); }, 20);
+        });
+
+        $("#randomize").addEventListener("click", function () {
+          var shapes = ["circle", "ellipse", "rounded", "hexagon"];
+          var tints = ["#8EC8FF", "#B8F2C5", "#FFD27A", "#E7C6FF", "#9BE7DE", "#F8F4E8"];
+          state.glassShape = shapes[Math.floor(Math.random() * shapes.length)];
+          state.glassCount = Math.floor(2 + Math.random() * 6);
+          state.glassSpacing = Math.round((.1 + Math.random() * .85) * 100) / 100;
+          state.distortion = Math.round((.55 + Math.random() * 1.8) * 20) / 20;
+          state.ripple = Math.round((.05 + Math.random() * .55) * 100) / 100;
+          state.dispersion = Math.round((.006 + Math.random() * .052) * 1000) / 1000;
+          state.speed = Math.round((.28 + Math.random() * 1.55) * 20) / 20;
+          state.travel = Math.round((.2 + Math.random() * .68) * 100) / 100;
+          state.gloss = Math.round((.2 + Math.random() * .75) * 100) / 100;
+          state.rimWidth = Math.round((.08 + Math.random() * .7) * 100) / 100;
+          state.rotationSpeed = Math.round(Math.random() * 150) / 100;
+          state.lightAngle = Math.floor(-160 + Math.random() * 320);
+          state.shadow = Math.round((.12 + Math.random() * .7) * 100) / 100;
+          state.glassTint = tints[Math.floor(Math.random() * tints.length)];
+          state.tintStrength = Math.random() < .35 ? 0 : Math.round((.18 + Math.random() * .55) * 100) / 100;
+          state.lensSizes = [];
+          state.lensAngles = [];
+          for (var i = 0; i < MAX_LENSES; i += 1) {
+            state.lensSizes.push(Math.round(18 + Math.random() * 52));
+            state.lensAngles.push(Math.floor(-40 + Math.random() * 80));
+          }
+          state.glassSize = state.lensSizes[0];
+          selectedLensIds = Array.from({ length: state.glassCount }, function (_, index) { return index; });
+          refreshUi();
+        });
+
+        function downloadFile(filename, contents, mimeType) {
+          var file = new Blob([contents], { type: mimeType });
+          var url = URL.createObjectURL(file);
+          var link = document.createElement("a");
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+        }
+
+        function buildWebglExport() {
+          var config = {
+            mode: state.mode,
+            text: state.text,
+            svg: state.mode === "svg" && svgImage ? svgImage.src : null,
+            image: state.mode === "image" && imageImage ? imageImage.src : null,
+            svgScale: state.svgScale,
+            svgOffsetX: state.svgOffsetX,
+            svgOffsetY: state.svgOffsetY,
+            imageScale: state.imageScale,
+            imageOffsetX: state.imageOffsetX,
+            imageOffsetY: state.imageOffsetY,
+            fontSize: state.fontSize,
+            fontWeight: state.fontWeight,
+            tracking: state.tracking,
+            glassShape: state.glassShape,
+            glassCount: state.glassCount,
+            glassSize: state.glassSize,
+            glassSpacing: state.glassSpacing,
+            layoutAngle: state.layoutAngle,
+            lensAngles: state.lensAngles,
+            lensSizes: state.lensSizes,
+            glassTint: state.glassTint,
+            tintStrength: state.tintStrength,
+            shadow: state.shadow,
+            distortion: state.distortion,
+            ripple: state.ripple,
+            backgroundBlur: state.backgroundBlur,
+            dispersion: state.dispersion,
+            gloss: state.gloss,
+            rimWidth: state.rimWidth,
+            rotationSpeed: state.rotationSpeed,
+            lightAngle: state.lightAngle,
+            speed: state.speed,
+            travel: state.travel,
+            pointerRepel: state.pointerRepel,
+            repelRange: state.repelRange,
+            paper: state.paper,
+            ink: state.ink,
+            width: state.width,
+            height: state.height
+          };
+
+          var template = String.raw`/*
+ * Glass Type WebGL effect
+ *
+ * Usage:
+ *   const effect = mountGlassType(document.querySelector('#glass-type'));
+ *   effect.setOptions({ text: 'TRON', glassCount: 3, glassSpacing: .65 });
+ *
+ * Give the canvas a CSS width and height before mounting it. The effect renders
+ * at the canvas display size and uses the configuration exported from the editor.
+ */
+(function (global) {
+  'use strict';
+
+  var DEFAULTS = __GLASS_TYPE_CONFIG__;
+  var MAX_LENSES = 8;
+
+  function clamp(value, minimum, maximum) {
+    return Math.min(Math.max(value, minimum), maximum);
+  }
+
+  function hexToRgb(value) {
+    return [
+      parseInt(value.slice(1, 3), 16) / 255,
+      parseInt(value.slice(3, 5), 16) / 255,
+      parseInt(value.slice(5, 7), 16) / 255
+    ];
+  }
+
+  function glassShapeIndex(shape) {
+    return { circle: 0, ellipse: 1, rounded: 2, hexagon: 3 }[shape] || 0;
+  }
+
+  function createShader(gl, type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      var message = gl.getShaderInfoLog(shader);
+      gl.deleteShader(shader);
+      throw new Error('Glass Type shader error: ' + message);
+    }
+    return shader;
+  }
+
+  function mountGlassType(canvas, overrides) {
+    if (!canvas || canvas.nodeName !== 'CANVAS') {
+      throw new Error('mountGlassType needs a canvas element.');
+    }
+
+    var state = Object.assign({}, DEFAULTS, overrides || {});
+    var source = document.createElement('canvas');
+    var sourceContext = source.getContext('2d');
+    var gl = canvas.getContext('webgl', {
+      alpha: false,
+      antialias: false,
+      premultipliedAlpha: false,
+      powerPreference: 'high-performance'
+    });
+    if (!gl || !sourceContext) {
+      throw new Error('This browser does not support the WebGL effect.');
+    }
+
+    var width = 1;
+    var height = 1;
+    var sourceDirty = true;
+    var svgImage = null;
+    var imageImage = null;
+    var pointer = { x: .5, y: .5, active: false };
+    var running = true;
+    var frameRequest = 0;
+    var startedAt = performance.now();
+    var pausedElapsed = 0;
+    var resizeObserver = null;
+
+    var vertexSource = [
+      'attribute vec2 aPosition;',
+      'varying vec2 vUv;',
+      'void main() {',
+      '  vUv = aPosition * .5 + .5;',
+      '  gl_Position = vec4(aPosition, 0., 1.);',
+      '}'
+    ].join('\n');
+    var fragmentSource = [
+      'precision highp float;',
+      'varying vec2 vUv;',
+      'uniform sampler2D uTexture;',
+      'uniform vec2 uResolution;',
+      'uniform vec2 uCenters[8];',
+      'uniform float uScales[8];',
+      'uniform float uAngles[8];',
+      'uniform float uCount;',
+      'uniform float uRadius;',
+      'uniform float uStrength;',
+      'uniform float uRipple;',
+      'uniform float uBackgroundBlur;',
+      'uniform float uDispersion;',
+      'uniform float uGloss;',
+      'uniform float uRimWidth;',
+      'uniform float uLightAngle;',
+      'uniform float uShape;',
+      'uniform float uSpin;',
+      'uniform float uImageMode;',
+      'uniform float uTime;',
+      'uniform vec3 uPaper;',
+      'uniform vec3 uInk;',
+      'uniform vec3 uTint;',
+      'uniform float uTintStrength;',
+      'uniform float uShadow;',
+      '',
+      'vec2 rotateVector(vec2 point, float angle) {',
+      '  float c = cos(angle);',
+      '  float s = sin(angle);',
+      '  return mat2(c, -s, s, c) * point;',
+      '}',
+      '',
+      'float shapeDistance(vec2 point) {',
+      '  if (uShape < .5) return length(point) - 1.;',
+      '  if (uShape < 1.5) { point.x *= .66; return length(point) - 1.; }',
+      '  if (uShape < 2.5) {',
+      '    vec2 delta = abs(point) - vec2(.76);',
+      '    return length(max(delta, 0.)) - .24 + min(max(delta.x, delta.y), 0.);',
+      '  }',
+      '  vec2 hex = abs(point);',
+      '  return max(dot(hex, vec2(.8660254, .5)), hex.y) - 1.;',
+      '}',
+      '',
+      'vec2 glassMap(vec2 pixel, float chroma) {',
+      '  vec2 mapped = pixel;',
+      '  for (int i = 0; i < 8; i++) {',
+      '    float enabled = step(float(i) + .5, uCount);',
+      '    vec2 centre = uCenters[i];',
+      '    float radius = uRadius * uScales[i];',
+      '    vec2 q = mapped - centre;',
+      '    vec2 local = rotateVector(q / max(radius, 1.), uAngles[i]);',
+      '    float unit = length(local);',
+      '    float inside = 1. - smoothstep(-.055, .018, shapeDistance(local));',
+      '    float wave = sin(unit * 18.8496 - uTime * (1.4 + float(i) * .13));',
+      '    float fold = uRipple * wave * smoothstep(.04, .94, unit);',
+      '    float magnification = max(.38, 1. + uStrength * chroma * pow(clamp(unit, 0., 1.35), 2.15) + fold);',
+      '    vec2 refracted = centre + q / magnification;',
+      '    mapped = mix(mapped, refracted, inside * enabled);',
+      '  }',
+      '  return mapped;',
+      '}',
+      '',
+      'float glassCoverage(vec2 pixel) {',
+      '  float coverage = 0.;',
+      '  for (int i = 0; i < 8; i++) {',
+      '    float enabled = step(float(i) + .5, uCount);',
+      '    float radius = uRadius * uScales[i];',
+      '    vec2 local = rotateVector((pixel - uCenters[i]) / max(radius, 1.), uAngles[i]);',
+      '    float inside = 1. - smoothstep(-.055, .018, shapeDistance(local));',
+      '    coverage = max(coverage, inside * enabled);',
+      '  }',
+      '  return coverage;',
+      '}',
+      '',
+      'vec3 blurredSample(vec2 uv) {',
+      '  vec2 blurStep = vec2(uBackgroundBlur * .5 / uResolution.x, uBackgroundBlur * .5 / uResolution.y);',
+      '  vec3 colour = vec3(0.);',
+      '  float total = 0.;',
+      '  for (int y = -2; y <= 2; y++) {',
+      '    for (int x = -2; x <= 2; x++) {',
+      '      float distanceSquared = float(x * x + y * y);',
+      '      float weight = exp(-.5 * distanceSquared);',
+      '      colour += texture2D(uTexture, uv + vec2(float(x) * blurStep.x, float(y) * blurStep.y)).rgb * weight;',
+      '      total += weight;',
+      '    }',
+      '  }',
+      '  return colour / total;',
+      '}',
+      '',
+      'float rimAt(vec2 pixel) {',
+      '  float rim = 0.;',
+      '  for (int i = 0; i < 8; i++) {',
+      '    float enabled = step(float(i) + .5, uCount);',
+      '    float radius = uRadius * uScales[i];',
+      '    vec2 local = rotateVector((pixel - uCenters[i]) / max(radius, 1.), uAngles[i]);',
+      '    float outer = mix(.003, .085, uRimWidth);',
+      '    float inner = max(.0008, outer * .2);',
+      '    float ring = 1. - smoothstep(inner, outer, abs(shapeDistance(local)));',
+      '    float glint = smoothstep(.12, .88, sin(float(i) * 2.1 + uTime * .48) * .5 + .5);',
+      '    rim = max(rim, ring * enabled * (.52 + .48 * glint));',
+      '  }',
+      '  return rim;',
+      '}',
+      '',
+      'vec3 glassSurface(vec2 pixel) {',
+      '  float highlight = 0.;',
+      '  float contour = 0.;',
+      '  float contact = 0.;',
+      '  vec3 light = normalize(vec3(cos(uLightAngle + uSpin), -sin(uLightAngle + uSpin), .82));',
+      '  for (int i = 0; i < 8; i++) {',
+      '    float enabled = step(float(i) + .5, uCount);',
+      '    float radius = uRadius * uScales[i];',
+      '    vec2 q = pixel - uCenters[i];',
+      '    vec2 normalXY = rotateVector(q / max(radius, 1.), uAngles[i]);',
+      '    float unit = length(normalXY);',
+      '    float inside = 1. - smoothstep(-.055, .018, shapeDistance(normalXY));',
+      '    float z = sqrt(max(0., 1. - dot(normalXY, normalXY)));',
+      '    vec3 normal = normalize(vec3(normalXY, z));',
+      '    float shine = pow(max(dot(normal, light), 0.), 22.) * inside;',
+      '    float curvedEdge = smoothstep(.78, 1.02, unit) * inside;',
+      '    float lowerEdge = smoothstep(.9, 1.03, unit) * inside;',
+      '    highlight = max(highlight, shine * enabled);',
+      '    contour = max(contour, curvedEdge * enabled);',
+      '    contact = max(contact, lowerEdge * enabled);',
+      '  }',
+      '  return vec3(highlight, contour, contact);',
+      '}',
+      '',
+      'float glassShadow(vec2 pixel) {',
+      '  if (uShadow < .001) return 0.;',
+      '  vec2 offset = vec2(-cos(uLightAngle), sin(uLightAngle)) * mix(7., 26., uShadow);',
+      '  float coverage = 0.;',
+      '  float casted = 0.;',
+      '  for (int i = 0; i < 8; i++) {',
+      '    float enabled = step(float(i) + .5, uCount);',
+      '    float radius = uRadius * uScales[i];',
+      '    vec2 local = rotateVector((pixel - uCenters[i]) / max(radius, 1.), uAngles[i]);',
+      '    vec2 shifted = rotateVector((pixel - offset - uCenters[i]) / max(radius * 1.06, 1.), uAngles[i]);',
+      '    float inside = 1. - smoothstep(-.055, .018, shapeDistance(local));',
+      '    float blob = 1. - smoothstep(-.16, .46, shapeDistance(shifted));',
+      '    coverage = max(coverage, inside * enabled);',
+      '    casted = max(casted, blob * enabled);',
+      '  }',
+      '  return max(0., casted - coverage) * uShadow;',
+      '}',
+      '',
+      'void main() {',
+      '  vec2 pixel = vUv * uResolution;',
+      '  float shift = uDispersion * 3.0;',
+      '  vec2 redUv = glassMap(pixel, 1. + shift) / uResolution;',
+      '  vec2 greenUv = glassMap(pixel, 1.) / uResolution;',
+      '  vec2 blueUv = glassMap(pixel, 1. - shift) / uResolution;',
+      '  vec3 sampleRed = texture2D(uTexture, redUv).rgb;',
+      '  vec3 sampleGreen = texture2D(uTexture, greenUv).rgb;',
+      '  vec3 sampleBlue = texture2D(uTexture, blueUv).rgb;',
+      '  float blurMask = glassCoverage(pixel);',
+      '  if (uBackgroundBlur > .01 && blurMask > .001) {',
+      '    sampleRed = mix(sampleRed, blurredSample(redUv), blurMask);',
+      '    sampleGreen = mix(sampleGreen, blurredSample(greenUv), blurMask);',
+      '    sampleBlue = mix(sampleBlue, blurredSample(blueUv), blurMask);',
+      '  }',
+      '  float red = 1. - sampleRed.r;',
+      '  float green = 1. - sampleGreen.r;',
+      '  float blue = 1. - sampleBlue.r;',
+      '  vec3 density = clamp(vec3(red, green, blue), 0., 1.);',
+      '  vec3 graphicColour = mix(uPaper, uInk, density);',
+      '  vec3 imageColour = vec3(sampleRed.r, sampleGreen.g, sampleBlue.b);',
+      '  vec3 colour = mix(graphicColour, imageColour, uImageMode);',
+      '  colour *= 1. - glassShadow(pixel) * .46;',
+      '  vec3 stained = colour * mix(vec3(1.), uTint, .78);',
+      '  stained = mix(stained, uTint, .14);',
+      '  colour = mix(colour, stained, blurMask * uTintStrength);',
+      '  vec3 surface = glassSurface(pixel);',
+      '  float rim = rimAt(pixel) * uGloss;',
+      '  colour *= 1. - surface.y * .08;',
+      '  colour *= 1. - surface.z * .03;',
+      '  colour = mix(colour, vec3(1.), surface.x * .35);',
+      '  vec3 rimColour = mix(mix(uPaper, vec3(1.), .66), vec3(1.), uImageMode);',
+      '  colour = mix(colour, rimColour, rim);',
+      '  gl_FragColor = vec4(clamp(colour, 0., 1.), 1.);',
+      '}'
+    ].join('\n');
+
+    var vertex = createShader(gl, gl.VERTEX_SHADER, vertexSource);
+    var fragment = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
+    var program = gl.createProgram();
+    gl.attachShader(program, vertex);
+    gl.attachShader(program, fragment);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      throw new Error('Glass Type program error: ' + gl.getProgramInfoLog(program));
+    }
+
+    var quad = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    var texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    var uniforms = {};
+    [
+      'uTexture', 'uResolution', 'uCenters[0]', 'uScales[0]', 'uAngles[0]', 'uCount',
+      'uRadius', 'uStrength', 'uRipple', 'uBackgroundBlur', 'uDispersion', 'uGloss',
+      'uRimWidth', 'uLightAngle', 'uShape', 'uSpin', 'uImageMode',
+      'uTime', 'uPaper', 'uInk', 'uTint', 'uTintStrength', 'uShadow'
+    ].forEach(function (name) { uniforms[name] = gl.getUniformLocation(program, name); });
+
+    function resize() {
+      var rect = canvas.getBoundingClientRect();
+      var cssWidth = Math.max(1, rect.width || canvas.clientWidth || state.width);
+      var cssHeight = Math.max(1, rect.height || canvas.clientHeight || state.height);
+      var dpr = Math.min(global.devicePixelRatio || 1, 2);
+      width = Math.max(2, Math.round(cssWidth * dpr));
+      height = Math.max(2, Math.round(cssHeight * dpr));
+      canvas.width = width;
+      canvas.height = height;
+      source.width = width;
+      source.height = height;
+      sourceDirty = true;
+    }
+
+    function drawSpacedText(context, text, x, y, tracking) {
+      if (!tracking) { context.fillText(text, x, y); return; }
+      var letters = Array.prototype.slice.call(text);
+      var widths = letters.map(function (letter) { return context.measureText(letter).width; });
+      var fullWidth = widths.reduce(function (total, letterWidth) { return total + letterWidth; }, 0) + tracking * Math.max(0, letters.length - 1);
+      var position = x - fullWidth / 2;
+      context.textAlign = 'left';
+      letters.forEach(function (letter, index) {
+        context.fillText(letter, position, y);
+        position += widths[index] + tracking;
+      });
+      context.textAlign = 'center';
+    }
+
+    function paintText(context) {
+      var lines = (state.text || 'TYPE').trim().split(/\r?\n/).slice(0, 4);
+      var probe = 100;
+      context.font = state.fontWeight + ' ' + probe + 'px Inter, ui-sans-serif, system-ui, sans-serif';
+      var widest = Math.max.apply(null, lines.map(function (line) {
+        return context.measureText(line || ' ').width + state.tracking * Math.max(0, line.length - 1);
+      }));
+      var fontByWidth = width * .78 / Math.max(widest, 1) * probe;
+      var fontByHeight = height * .52 / (Math.max(lines.length, 1) * 1.08);
+      var fontSize = clamp(Math.min(fontByWidth, fontByHeight) * (state.fontSize / 100), 14, height * .99);
+      var lineHeight = fontSize * 1.03;
+      var firstLine = height / 2 - (lines.length - 1) * lineHeight / 2;
+      context.font = state.fontWeight + ' ' + fontSize + 'px Inter, ui-sans-serif, system-ui, sans-serif';
+      context.fillStyle = '#000';
+      context.textBaseline = 'middle';
+      context.textAlign = 'center';
+      lines.forEach(function (line, index) {
+        drawSpacedText(context, line || ' ', width / 2, firstLine + index * lineHeight, state.tracking);
+      });
+    }
+
+    function paintSvg(context) {
+      if (!svgImage || !svgImage.complete || !svgImage.naturalWidth) {
+        context.fillStyle = '#fff';
+        context.fillRect(0, 0, width, height);
+        paintText(context);
+        return;
+      }
+      var sourceRatio = svgImage.naturalWidth / svgImage.naturalHeight;
+      var targetRatio = width * .72 / (height * .58);
+      var drawWidth = sourceRatio > targetRatio ? width * .72 : height * .58 * sourceRatio;
+      var drawHeight = sourceRatio > targetRatio ? drawWidth / sourceRatio : height * .58;
+      var scale = state.svgScale / 100;
+      drawWidth *= scale;
+      drawHeight *= scale;
+      context.drawImage(svgImage, (width - drawWidth) / 2 + width * state.svgOffsetX / 100, (height - drawHeight) / 2 + height * state.svgOffsetY / 100, drawWidth, drawHeight);
+      context.globalCompositeOperation = 'source-in';
+      context.fillStyle = '#000';
+      context.fillRect(0, 0, width, height);
+      context.globalCompositeOperation = 'destination-over';
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, width, height);
+      context.globalCompositeOperation = 'source-over';
+    }
+
+    function paintImage(context) {
+      context.fillStyle = state.paper;
+      context.fillRect(0, 0, width, height);
+      if (!imageImage || !imageImage.complete || !imageImage.naturalWidth) return;
+      var sourceRatio = imageImage.naturalWidth / imageImage.naturalHeight;
+      var canvasRatio = width / height;
+      var drawWidth = sourceRatio > canvasRatio ? height * sourceRatio : width;
+      var drawHeight = sourceRatio > canvasRatio ? height : width / sourceRatio;
+      var scale = state.imageScale / 100;
+      drawWidth *= scale;
+      drawHeight *= scale;
+      context.drawImage(imageImage, (width - drawWidth) / 2 + width * state.imageOffsetX / 100, (height - drawHeight) / 2 + height * state.imageOffsetY / 100, drawWidth, drawHeight);
+    }
+
+    function uploadSource() {
+      if (!sourceDirty) return;
+      sourceContext.clearRect(0, 0, width, height);
+      if (state.mode === 'image') paintImage(sourceContext);
+      else if (state.svg) paintSvg(sourceContext);
+      else {
+        sourceContext.fillStyle = '#fff';
+        sourceContext.fillRect(0, 0, width, height);
+        paintText(sourceContext);
+      }
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      sourceDirty = false;
+    }
+
+    function setSvg(value) {
+      if (!value) { svgImage = null; sourceDirty = true; return; }
+      var image = new Image();
+      image.onload = function () { svgImage = image; sourceDirty = true; };
+      image.src = value;
+      svgImage = image;
+    }
+
+    function setImage(value) {
+      if (!value) { imageImage = null; sourceDirty = true; return; }
+      var image = new Image();
+      image.onload = function () { imageImage = image; sourceDirty = true; };
+      image.src = value;
+      imageImage = image;
+    }
+
+    function computeLenses(time) {
+      var centres = [];
+      var scales = [];
+      var angles = [];
+      var individualOrbit = state.travel * .18;
+      var count = Math.max(1, state.glassCount);
+      var separation = state.glassSpacing * .29;
+      var layoutAngle = (state.layoutAngle || 0) * Math.PI / 180;
+      var lensAngles = state.lensAngles || [];
+      for (var i = 0; i < MAX_LENSES; i += 1) {
+        var lensAngle = (lensAngles[i] || 0) * Math.PI / 180;
+        var homeAngle = i / count * Math.PI * 2 + layoutAngle + lensAngle;
+        var phase = time * (.48 + i * .11) + i * 2.399;
+        var ringScale = count === 1 ? 0 : (count === 2 ? 1 : .58 + i % 2 * .18);
+        var homeX = .5 + Math.cos(homeAngle) * separation * ringScale;
+        var homeY = .5 + Math.sin(homeAngle) * separation * .68 * ringScale;
+        var x = homeX + Math.cos(phase * 1.08 + i * .74) * individualOrbit * (.55 + i % 3 * .12);
+        var y = homeY + Math.sin(phase * .84 + i * 1.37) * individualOrbit * (.44 + i % 4 * .09);
+        if (pointer.active) {
+          var deltaX = x - pointer.x;
+          var deltaY = y - pointer.y;
+          var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+          var range = .12 + state.repelRange * .34;
+          var influence = Math.max(0, 1 - distance / range);
+          var force = state.pointerRepel * .085 * influence * influence;
+          var safeDistance = Math.max(distance, .001);
+          x += (distance < .001 ? Math.cos(i * 2.4) : deltaX / safeDistance) * force;
+          y += (distance < .001 ? Math.sin(i * 2.4) : deltaY / safeDistance) * force;
+        }
+        centres.push(x * width, y * height);
+        scales.push((.84 + (Math.sin(time * (1.2 + i * .08) + i * 1.7) + 1) * .08 + i * .018) * ((state.lensSizes && state.lensSizes[i] != null ? state.lensSizes[i] : state.glassSize) / 100));
+        angles.push(time * state.rotationSpeed * (i % 2 ? -.8 : 1) + i * .42);
+      }
+      return { centres: centres, scales: scales, angles: angles };
+    }
+
+    function render(time) {
+      uploadSource();
+      var unit = Math.min(width, height);
+      var lenses = computeLenses(time * state.speed);
+      gl.viewport(0, 0, width, height);
+      gl.useProgram(program);
+      gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+      var position = gl.getAttribLocation(program, 'aPosition');
+      gl.enableVertexAttribArray(position);
+      gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.uniform1i(uniforms.uTexture, 0);
+      gl.uniform2f(uniforms.uResolution, width, height);
+      gl.uniform2fv(uniforms['uCenters[0]'], new Float32Array(lenses.centres));
+      gl.uniform1fv(uniforms['uScales[0]'], new Float32Array(lenses.scales));
+      gl.uniform1fv(uniforms['uAngles[0]'], new Float32Array(lenses.angles));
+      gl.uniform1f(uniforms.uCount, state.glassCount);
+      gl.uniform1f(uniforms.uRadius, unit);
+      gl.uniform1f(uniforms.uStrength, state.distortion);
+      gl.uniform1f(uniforms.uRipple, state.ripple);
+      gl.uniform1f(uniforms.uBackgroundBlur, state.backgroundBlur);
+      gl.uniform1f(uniforms.uDispersion, state.dispersion);
+      gl.uniform1f(uniforms.uGloss, state.gloss);
+      gl.uniform1f(uniforms.uRimWidth, state.rimWidth == null ? .18 : state.rimWidth);
+      gl.uniform1f(uniforms.uLightAngle, state.lightAngle * Math.PI / 180);
+      gl.uniform1f(uniforms.uShape, glassShapeIndex(state.glassShape));
+      gl.uniform1f(uniforms.uSpin, time * state.rotationSpeed);
+      gl.uniform1f(uniforms.uImageMode, state.mode === 'image' ? 1 : 0);
+      gl.uniform1f(uniforms.uTime, time * state.speed);
+      gl.uniform3fv(uniforms.uPaper, new Float32Array(hexToRgb(state.paper)));
+      gl.uniform3fv(uniforms.uInk, new Float32Array(hexToRgb(state.ink)));
+      gl.uniform3fv(uniforms.uTint, new Float32Array(hexToRgb(state.glassTint || '#8EC8FF')));
+      gl.uniform1f(uniforms.uTintStrength, state.tintStrength || 0);
+      gl.uniform1f(uniforms.uShadow, state.shadow || 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+
+    function tick(now) {
+      if (!running) return;
+      render((now - startedAt) / 1000);
+      frameRequest = global.requestAnimationFrame(tick);
+    }
+
+    function onPointerMove(event) {
+      var rect = canvas.getBoundingClientRect();
+      pointer.x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+      pointer.y = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+      pointer.active = true;
+    }
+
+    function onPointerLeave() { pointer.active = false; }
+    resize();
+    setSvg(state.svg);
+    setImage(state.image);
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerleave', onPointerLeave);
+    if (global.ResizeObserver) {
+      resizeObserver = new global.ResizeObserver(resize);
+      resizeObserver.observe(canvas);
+    } else {
+      global.addEventListener('resize', resize);
+    }
+    frameRequest = global.requestAnimationFrame(tick);
+
+    return {
+      canvas: canvas,
+      setOptions: function (next) {
+        next = next || {};
+        Object.assign(state, next);
+        if (Object.prototype.hasOwnProperty.call(next, 'svg')) setSvg(next.svg);
+        if (Object.prototype.hasOwnProperty.call(next, 'image')) setImage(next.image);
+        sourceDirty = true;
+      },
+      play: function () {
+        if (running) return;
+        running = true;
+        startedAt = performance.now() - pausedElapsed;
+        frameRequest = global.requestAnimationFrame(tick);
+      },
+      pause: function () {
+        if (!running) return;
+        pausedElapsed = performance.now() - startedAt;
+        running = false;
+        global.cancelAnimationFrame(frameRequest);
+      },
+      destroy: function () {
+        running = false;
+        global.cancelAnimationFrame(frameRequest);
+        canvas.removeEventListener('pointermove', onPointerMove);
+        canvas.removeEventListener('pointerleave', onPointerLeave);
+        if (resizeObserver) resizeObserver.disconnect();
+        else global.removeEventListener('resize', resize);
+      }
+    };
+  }
+
+  global.mountGlassType = mountGlassType;
+})(window);
+`;
+          return template.replace("__GLASS_TYPE_CONFIG__", JSON.stringify(config, null, 2));
+        }
+
+        $("#export-webgl").addEventListener("click", function () {
+          downloadFile("glass-type-effect.js", buildWebglExport(), "text/javascript;charset=utf-8");
+        });
+
+        $("#export-png").addEventListener("click", function () {
+          var button = $("#export-png");
+          var original = button.textContent;
+          button.textContent = "正在导出…";
+          button.disabled = true;
+          requestAnimationFrame(function () {
+            var url = renderer.renderAtOutputSize(staticTime, state.width, state.height);
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = "glass-type-" + state.width + "x" + state.height + ".png";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            button.textContent = original;
+            button.disabled = false;
+          });
+        });
+
+        canvas.addEventListener("pointermove", function (event) {
+          var rect = canvas.getBoundingClientRect();
+          renderer.pointer.x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+          renderer.pointer.y = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+          renderer.pointer.active = true;
+        });
+        canvas.addEventListener("pointerleave", function () {
+          renderer.pointer.active = false;
+        });
+
+        window.addEventListener("resize", function () {
+          fitStageToViewport();
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () { renderer.resize(); }, 100);
+        });
+
+        window.addEventListener("keydown", function (event) {
+          var tag = document.activeElement && document.activeElement.tagName;
+          if (event.code === "Space" && tag !== "TEXTAREA" && tag !== "INPUT") {
+            event.preventDefault();
+            state.playing = !state.playing;
+            $("#play-toggle").checked = state.playing;
+            setStatus();
+          }
+        });
+
+        document.addEventListener("visibilitychange", function () {
+          lastTime = performance.now();
+        });
+
+        refreshUi();
+        requestAnimationFrame(animationFrame);
+      })();
+    </script>
+  </body>
+</html>

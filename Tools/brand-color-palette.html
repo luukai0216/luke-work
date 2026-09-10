@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>品牌色卡生成器</title>
+<style>
+  :root {
+    --page: #f5f6f8;
+    --panel: #ffffff;
+    --ink: #17191c;
+    --muted: #68707c;
+    --soft: #e7eaf0;
+    --line: #d9dee7;
+    --brand: #216c58;
+    --shadow: 0 14px 36px rgba(23, 25, 28, 0.08);
+    --radius: 8px;
+    --swatch-min: 92px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0) 340px),
+      var(--page);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  button {
+    color: inherit;
+  }
+
+  .app {
+    width: min(1500px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 22px 0 42px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: 0 -20px 20px;
+    padding: 14px 20px 16px;
+    background: rgba(245, 246, 248, 0.86);
+    border-bottom: 1px solid rgba(217, 222, 231, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .toolbar {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) auto auto auto;
+    gap: 12px;
+    align-items: center;
+    width: min(1500px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .brand-field,
+  .segmented,
+  .action-group {
+    min-height: 48px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  }
+
+  .brand-field {
+    display: grid;
+    grid-template-columns: auto 44px minmax(120px, 170px) 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 7px 10px 7px 14px;
+  }
+
+  .field-label,
+  .seg-label {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .color-input {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .color-input::-webkit-color-swatch-wrapper { padding: 0; }
+  .color-input::-webkit-color-swatch {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 50%;
+  }
+  .color-input::-moz-color-swatch {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 50%;
+  }
+
+  .hex-input {
+    width: 100%;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    background: #f2f4f7;
+    color: var(--ink);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+  }
+
+  .hex-input:focus {
+    border-color: color-mix(in srgb, var(--brand), white 20%);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand), transparent 82%);
+  }
+
+  .hex-input.is-invalid {
+    border-color: #d92d20;
+    background: #fff3f1;
+  }
+
+  .brand-meta {
+    min-width: 0;
+    color: var(--muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .segmented {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px 6px 12px;
+  }
+
+  .seg-options {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    border-radius: 7px;
+    background: #eef1f5;
+  }
+
+  .seg-options button,
+  .action-button {
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  }
+
+  .seg-options button {
+    min-width: 46px;
+    height: 30px;
+    padding: 0 10px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .seg-options button.is-active {
+    background: #ffffff;
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(23, 25, 28, 0.12);
+  }
+
+  .action-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 0 12px;
+    background: var(--ink);
+    color: #ffffff;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .action-button.secondary {
+    background: #edf0f5;
+    color: var(--ink);
+  }
+
+  .action-button:hover,
+  .seg-options button:hover {
+    transform: translateY(-1px);
+  }
+
+  .action-button svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2;
+  }
+
+  .overview {
+    max-width: 420px;
+    margin-bottom: 22px;
+  }
+
+  .brand-hero {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+  }
+
+  .brand-hero {
+    min-height: 190px;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  .hero-color {
+    position: relative;
+    min-height: 128px;
+    background: var(--brand);
+  }
+
+  .hero-color::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 42%),
+      radial-gradient(circle at 82% 12%, rgba(255, 255, 255, 0.28), transparent 28%);
+    pointer-events: none;
+  }
+
+  .hero-meta {
+    display: grid;
+    gap: 4px;
+    padding: 14px 16px 16px;
+  }
+
+  .app-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 720;
+  }
+
+  .metric-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .metric-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #f7f8fa;
+    white-space: nowrap;
+  }
+
+  .section {
+    margin-top: 30px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.2;
+    font-weight: 720;
+  }
+
+  .section-kicker {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .palette-scroll {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .palette-grid {
+    display: grid;
+    gap: 8px;
+    min-width: calc(190px + 11 * var(--swatch-min) + 10 * 8px);
+  }
+
+  .palette-row {
+    display: grid;
+    grid-template-columns: 190px repeat(11, minmax(var(--swatch-min), 1fr));
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .neutral-palette-grid {
+    min-width: calc(190px + 12 * var(--swatch-min) + 11 * 8px);
+  }
+
+  .neutral-row {
+    display: grid;
+    grid-template-columns: 190px repeat(12, minmax(var(--swatch-min), 1fr));
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .row-meta {
+    display: grid;
+    align-content: center;
+    min-height: 76px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .row-name {
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .row-detail {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .swatch {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-width: var(--swatch-min);
+    min-height: 76px;
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius);
+    background: #ddd;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  }
+
+  .swatch:hover {
+    transform: translateY(-1px);
+    filter: saturate(1.04);
+    box-shadow: 0 8px 18px rgba(23, 25, 28, 0.12);
+  }
+
+  .swatch.is-anchor {
+    outline: 2px solid rgba(255, 255, 255, 0.72);
+    outline-offset: -4px;
+  }
+
+  .tone,
+  .anchor-label,
+  .token,
+  .value {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tone {
+    font-size: 11px;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .anchor-label {
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 780;
+  }
+
+  .token {
+    align-self: end;
+    font-size: 10px;
+    opacity: 0.82;
+  }
+
+  .value {
+    margin-top: 2px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .neutral-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(var(--swatch-min), 1fr));
+    gap: 8px;
+    min-width: calc(12 * var(--swatch-min) + 11 * 8px);
+  }
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(230px, 1fr));
+    gap: 12px;
+  }
+
+  .status-panel {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--panel);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .status-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .status-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 720;
+  }
+
+  .status-hue {
+    color: var(--muted);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-swatches {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--line);
+  }
+
+  .status-chip {
+    display: grid;
+    align-content: end;
+    min-height: 98px;
+    padding: 9px;
+    border: 0;
+    background: #ddd;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .status-chip span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .status-role {
+    font-size: 10px;
+    font-weight: 720;
+  }
+
+  .status-value {
+    margin-top: 2px;
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.86;
+  }
+
+  .export-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .export-box {
+    width: 100%;
+    min-height: 280px;
+    resize: vertical;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    outline: none;
+    background: #111418;
+    color: #f1f5f9;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .token-summary {
+    display: grid;
+    gap: 10px;
+  }
+
+  .summary-item {
+    display: grid;
+    gap: 3px;
+    min-height: 64px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--panel);
+  }
+
+  .summary-label {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .summary-value {
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 720;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 60;
+    transform: translateX(-50%) translateY(10px);
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 7px;
+    background: rgba(17, 20, 24, 0.92);
+    color: #ffffff;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  body[data-format="rgb"],
+  body[data-format="hsl"] {
+    --swatch-min: 116px;
+  }
+
+  body[data-format="oklch"] {
+    --swatch-min: 148px;
+  }
+
+  @media (max-width: 1100px) {
+    .toolbar {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .brand-field {
+      grid-column: 1 / -1;
+    }
+
+    .status-grid {
+      grid-template-columns: repeat(2, minmax(230px, 1fr));
+    }
+
+    .export-panel {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .app {
+      width: min(100% - 24px, 1500px);
+      padding-top: 12px;
+    }
+
+    .topbar {
+      margin: 0 -12px 18px;
+      padding: 10px 12px 12px;
+    }
+
+    .toolbar {
+      width: min(100% - 24px, 1500px);
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .brand-field {
+      grid-template-columns: auto 42px minmax(0, 1fr);
+    }
+
+    .brand-meta {
+      grid-column: 1 / -1;
+    }
+
+    .segmented {
+      grid-template-columns: 72px 1fr;
+    }
+
+    .seg-options button {
+      min-width: 0;
+      flex: 1;
+      padding: 0 8px;
+    }
+
+    .action-group {
+      justify-content: stretch;
+    }
+
+    .action-button {
+      flex: 1;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 4px;
+      align-items: start;
+    }
+
+    .section-kicker {
+      white-space: normal;
+    }
+
+    .status-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .status-swatches {
+      grid-template-columns: repeat(5, minmax(72px, 1fr));
+      overflow-x: auto;
+    }
+  }
+</style>
+</head>
+<body data-format="hex">
+<div class="app">
+  <header class="topbar">
+    <div class="toolbar">
+      <label class="brand-field">
+        <span class="field-label">中心色</span>
+        <input id="colorInput" class="color-input" type="color" value="#ea0026" aria-label="选择中心色" />
+        <input id="hexInput" class="hex-input" type="text" value="#EA0026" maxlength="7" spellcheck="false" aria-label="输入 HEX 色值" />
+        <span id="brandMeta" class="brand-meta"></span>
+      </label>
+
+      <div class="segmented" aria-label="色彩强度">
+        <span class="seg-label">强度</span>
+        <div class="seg-options" id="chromaMode">
+          <button type="button" data-value="soft">柔和</button>
+          <button type="button" data-value="balanced" class="is-active">均衡</button>
+          <button type="button" data-value="vivid">鲜明</button>
+        </div>
+      </div>
+
+      <div class="segmented" aria-label="色值格式">
+        <span class="seg-label">格式</span>
+        <div class="seg-options" id="formatMode">
+          <button type="button" data-value="hex" class="is-active">HEX</button>
+          <button type="button" data-value="rgb">RGB</button>
+          <button type="button" data-value="hsl">HSL</button>
+          <button type="button" data-value="oklch">OKLCH</button>
+        </div>
+      </div>
+
+      <div class="action-group">
+        <button id="copyCss" class="action-button" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          复制 CSS
+        </button>
+        <button id="downloadJson" class="action-button secondary" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <path d="M7 10l5 5 5-5"></path>
+            <path d="M12 15V3"></path>
+          </svg>
+          JSON
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="overview" aria-label="品牌色概览">
+      <div class="brand-hero">
+        <div class="hero-color" id="heroColor"></div>
+        <div class="hero-meta">
+          <h1 class="app-title">品牌色卡生成器</h1>
+          <div class="metric-row" id="metricRow"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="hueTitle">
+      <div class="section-head">
+        <h2 class="section-title" id="hueTitle">品牌色卡与呼应色相</h2>
+        <div class="section-kicker">IBM 式色阶节奏：主色同相归入品牌行，其余六相按统一明度曲线生成</div>
+      </div>
+      <div class="palette-scroll">
+        <div id="huePalette" class="palette-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="neutralTitle">
+      <div class="section-head">
+        <h2 class="section-title" id="neutralTitle">中性色</h2>
+        <div class="section-kicker">暖灰 / 中性灰 / 冷灰，含深灰与暗灰色阶</div>
+      </div>
+      <div class="palette-scroll">
+        <div id="neutralPalette" class="palette-grid neutral-palette-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="statusTitle">
+      <div class="section-head">
+        <h2 class="section-title" id="statusTitle">状态色</h2>
+        <div class="section-kicker">background / border / default / hover / text</div>
+      </div>
+      <div id="statusPalette" class="status-grid"></div>
+    </section>
+
+    <section class="section" aria-labelledby="exportTitle">
+      <div class="section-head">
+        <h2 class="section-title" id="exportTitle">Tokens</h2>
+        <div class="segmented" aria-label="导出格式">
+          <span class="seg-label">导出</span>
+          <div class="seg-options" id="exportMode">
+            <button type="button" data-value="css" class="is-active">CSS</button>
+            <button type="button" data-value="json">JSON</button>
+          </div>
+        </div>
+      </div>
+      <div class="export-panel">
+        <textarea id="exportBox" class="export-box" readonly spellcheck="false"></textarea>
+        <div class="token-summary" id="tokenSummary"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+  const toneLevels = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  const neutralLevels = [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  const state = {
+    hex: "#EA0026",
+    chroma: "balanced",
+    format: "hex",
+    exportFormat: "css",
+    palette: null
+  };
+
+  const chromaModes = {
+    soft: 0.78,
+    balanced: 1,
+    vivid: 1.18
+  };
+
+  const toneProfile = {
+    50: { chroma: 0.04 },
+    100: { chroma: 0.08 },
+    200: { chroma: 0.24 },
+    300: { chroma: 0.68 },
+    400: { chroma: 0.82 },
+    500: { chroma: 0.98 },
+    600: { chroma: 0.88 },
+    700: { chroma: 0.74 },
+    800: { chroma: 0.56 },
+    900: { chroma: 0.38 },
+    950: { chroma: 0.22 }
+  };
+
+  const neutralLightness = {
+    0: 1,
+    50: 0.982,
+    100: 0.967,
+    200: 0.907,
+    300: 0.827,
+    400: 0.732,
+    500: 0.643,
+    600: 0.542,
+    700: 0.439,
+    800: 0.345,
+    900: 0.269,
+    950: 0.2
+  };
+
+  const hueFamilies = [
+    { key: "red", name: "红", hue: 25.6, strength: 1, midLight: 0.57 },
+    { key: "orange", name: "橙", hue: 50.6, strength: 1, midLight: 0.74 },
+    { key: "yellow", name: "黄", hue: 90.4, strength: 0.98, midLight: 0.83 },
+    { key: "green", name: "绿", hue: 148.2, strength: 0.95, midLight: 0.62 },
+    { key: "cyan", name: "青", hue: 190.8, strength: 0.9, midLight: 0.64 },
+    { key: "blue", name: "蓝", hue: 262, strength: 1, midLight: 0.56 },
+    { key: "purple", name: "紫", hue: 295, strength: 1, midLight: 0.57 }
+  ];
+
+  const neutralFamilies = [
+    { key: "warm", name: "暖灰", hue: 17.3, chroma: 0.006 },
+    { key: "gray", name: "灰色", hue: 0, chroma: 0.001 },
+    { key: "cool", name: "冷灰", hue: 250, chroma: 0.01 }
+  ];
+
+  const statusTargets = [
+    { key: "success", name: "成功", family: "green", levels: { bg: 50, border: 200, default: 500, hover: 600, text: 700 } },
+    { key: "warning", name: "警示", family: "yellow", levels: { bg: 50, border: 200, default: 300, hover: 400, text: 800 } },
+    { key: "danger", name: "危险", family: "red", levels: { bg: 50, border: 200, default: 500, hover: 600, text: 700 } },
+    { key: "info", name: "信息", family: "blue", levels: { bg: 50, border: 200, default: 500, hover: 600, text: 700 } }
+  ];
+
+  const statusRoles = [
+    { role: "bg", label: "背景", level: 50 },
+    { role: "border", label: "边框", level: 200 },
+    { role: "default", label: "默认", level: 600 },
+    { role: "hover", label: "悬停", level: 700 },
+    { role: "text", label: "文本", level: 800 }
+  ];
+
+  const els = {
+    colorInput: document.getElementById("colorInput"),
+    hexInput: document.getElementById("hexInput"),
+    brandMeta: document.getElementById("brandMeta"),
+    metricRow: document.getElementById("metricRow"),
+    heroColor: document.getElementById("heroColor"),
+    huePalette: document.getElementById("huePalette"),
+    neutralPalette: document.getElementById("neutralPalette"),
+    statusPalette: document.getElementById("statusPalette"),
+    exportBox: document.getElementById("exportBox"),
+    tokenSummary: document.getElementById("tokenSummary"),
+    copyCss: document.getElementById("copyCss"),
+    downloadJson: document.getElementById("downloadJson"),
+    toast: document.getElementById("toast")
+  };
+
+  document.getElementById("chromaMode").addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    state.chroma = button.dataset.value;
+    setActive("chromaMode", state.chroma);
+    render();
+  });
+
+  document.getElementById("formatMode").addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    state.format = button.dataset.value;
+    document.body.dataset.format = state.format;
+    setActive("formatMode", state.format);
+    render();
+  });
+
+  document.getElementById("exportMode").addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    state.exportFormat = button.dataset.value;
+    setActive("exportMode", state.exportFormat);
+    updateExport();
+  });
+
+  els.colorInput.addEventListener("input", (event) => {
+    state.hex = normalizeHex(event.target.value);
+    els.hexInput.value = state.hex;
+    els.hexInput.classList.remove("is-invalid");
+    render();
+  });
+
+  els.hexInput.addEventListener("input", (event) => {
+    const value = normalizeHex(event.target.value);
+    if (!value) {
+      els.hexInput.classList.add("is-invalid");
+      return;
+    }
+    els.hexInput.classList.remove("is-invalid");
+    state.hex = value;
+    els.colorInput.value = value;
+    render();
+  });
+
+  els.copyCss.addEventListener("click", () => {
+    copyToClipboard(buildCssTokens(state.palette), "CSS tokens 已复制");
+  });
+
+  els.downloadJson.addEventListener("click", () => {
+    const blob = new Blob([buildJsonTokens(state.palette)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `brand-palette-${state.hex.replace("#", "").toLowerCase()}.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    showToast("JSON 已下载");
+  });
+
+  function render() {
+    const palette = createPalette(state.hex, state.chroma);
+    state.palette = palette;
+    document.documentElement.style.setProperty("--brand", state.hex);
+    els.heroColor.style.background = state.hex;
+    els.brandMeta.textContent = `L ${Math.round(palette.base.L * 100)} · C ${palette.base.C.toFixed(3)} · H ${palette.base.h.toFixed(1)}°`;
+    renderMetrics(palette);
+    renderHuePalette(palette);
+    renderNeutralPalette(palette);
+    renderStatusPalette(palette);
+    updateExport();
+  }
+
+  function createPalette(hex, chromaMode) {
+    const rgb = hexToRgb(hex);
+    const base = rgbToOklch(rgb);
+    const fallbackHue = rgbToHsl(rgb).h || 210;
+    const baseHue = Number.isFinite(base.h) && base.C > 0.012 ? base.h : fallbackHue;
+    const anchorL = clamp(base.L, 0.42, 0.68);
+    const rawChroma = base.C < 0.025 ? 0.082 : base.C;
+    const baseChroma = clamp(rawChroma * chromaModes[chromaMode], 0.045, 0.235);
+    const brandMidLight = clamp(base.L, 0.5, 0.76);
+    const mainFamily = findNearestFamily(baseHue);
+    const lightShift = clamp(base.L - mainFamily.midLight, -0.18, 0.18);
+
+    const brandScale = toneLevels.map((level) => {
+      if (level === 500) {
+        return {
+          ...makeColorRecord(hex, `color-brand-${level}`, level, { ...base, h: baseHue }),
+          anchors: [{ key: "source", name: "主色" }]
+        };
+      }
+      const tone = toneProfile[level];
+      const lightness = toneLightness(level, brandMidLight);
+      const chroma = baseChroma * tone.chroma;
+      return fromOklch(lightness, chroma, baseHue, `color-brand-${level}`, level);
+    });
+
+    const families = hueFamilies.filter((family) => family.key !== mainFamily.key).map((family) => {
+      const hue = family.hue;
+      const midLight = clamp(family.midLight + lightShift, 0.48, 0.88);
+      const tones = toneLevels.map((level) => {
+        return makeIdealTone({ ...family, midLight }, anchorL, baseChroma, level);
+      });
+      return {
+        ...family,
+        hue,
+        midLight,
+        tones
+      };
+    });
+
+    const neutrals = neutralFamilies.map((neutral) => {
+      const hue = neutral.key === "gray" ? baseHue : mixHue(neutral.hue, baseHue, 0.08);
+      const chromaBase = neutral.key === "gray"
+        ? neutral.chroma
+        : clamp(Math.max(neutral.chroma, baseChroma * 0.06), 0.008, 0.018);
+      const tones = neutralLevels.map((level) => {
+        const chroma = level <= 100 ? chromaBase * 0.42 : chromaBase;
+        return fromOklch(neutralLightness[level], chroma, hue, `color-neutral-${neutral.key}-${level}`, level);
+      });
+      return {
+        ...neutral,
+        hue,
+        tones
+      };
+    });
+
+    const familyMap = Object.fromEntries(families.map((family) => [family.key, family]));
+    const statuses = statusTargets.map((status) => {
+      const sourceFamily = familyMap[status.family] || {
+        key: "brand",
+        name: "品牌主色",
+        hue: baseHue,
+        tones: brandScale
+      };
+      const tones = Object.fromEntries(sourceFamily.tones.map((color) => [color.level, color]));
+      return {
+        ...status,
+        hue: sourceFamily.hue,
+        from: sourceFamily.key,
+        sourceName: sourceFamily.name,
+        roles: statusRoles.map((item) => {
+          const level = status.levels[item.role] || item.level;
+          return { ...item, level, color: tones[level] };
+        }),
+        tones
+      };
+    });
+
+    return {
+      source: hex,
+      base: { ...base, h: baseHue },
+      anchorL,
+      baseChroma,
+      lightShift,
+      chromaMode,
+      mainFamily,
+      brandScale,
+      families,
+      neutrals,
+      statuses
+    };
+  }
+
+  function makeIdealTone(family, anchorL, baseChroma, level) {
+    const tone = toneProfile[level];
+    const lightness = toneLightness(level, family.midLight || anchorL);
+    const chroma = baseChroma * family.strength * tone.chroma;
+    return fromOklch(lightness, chroma, family.hue, `color-${family.key}-${level}`, level);
+  }
+
+  function toneLightness(level, midLight) {
+    const lightFactors = {
+      50: 1,
+      100: 0.86,
+      200: 0.65,
+      300: 0.43,
+      400: 0.2
+    };
+    const darkFactors = {
+      600: 0.17,
+      700: 0.34,
+      800: 0.52,
+      900: 0.7,
+      950: 0.84
+    };
+    if (level === 500) return midLight;
+    if (lightFactors[level] !== undefined) {
+      return midLight + (0.985 - midLight) * lightFactors[level];
+    }
+    if (darkFactors[level] !== undefined) {
+      return midLight + (0.15 - midLight) * darkFactors[level];
+    }
+    return midLight;
+  }
+
+  function renderMetrics(palette) {
+    const contrastWhite = contrastRatio(hexToRgb(palette.source), { r: 255, g: 255, b: 255 });
+    const contrastBlack = contrastRatio(hexToRgb(palette.source), { r: 0, g: 0, b: 0 });
+    const items = [
+      `HEX ${palette.source}`,
+      `OKLCH ${Math.round(palette.base.L * 100)}% ${palette.base.C.toFixed(3)} ${palette.base.h.toFixed(1)}°`,
+      `主色相 ${palette.mainFamily.name}`,
+      `白字 ${contrastWhite.toFixed(2)}:1`,
+      `黑字 ${contrastBlack.toFixed(2)}:1`
+    ];
+    els.metricRow.innerHTML = items.map((item) => `<span class="metric-pill">${item}</span>`).join("");
+  }
+
+  function renderHuePalette(palette) {
+    const brandSwatches = palette.brandScale.map((color) => swatchButton(color, "brand")).join("");
+    const brandRow = `
+      <div class="palette-row">
+        <div class="row-meta">
+          <span class="row-name">品牌主色</span>
+          <span class="row-detail">brand · ${palette.mainFamily.name} · H ${palette.base.h.toFixed(1)}°</span>
+        </div>
+        ${brandSwatches}
+      </div>
+    `;
+    const hueRows = palette.families.map((family) => {
+      const swatches = family.tones.map((color) => swatchButton(color, family.key)).join("");
+      return `
+        <div class="palette-row">
+          <div class="row-meta">
+            <span class="row-name">${family.name}</span>
+            <span class="row-detail">${family.key} · H ${family.hue.toFixed(1)}°</span>
+          </div>
+          ${swatches}
+        </div>
+      `;
+    }).join("");
+    els.huePalette.innerHTML = brandRow + hueRows;
+    bindSwatchCopy(els.huePalette);
+  }
+
+  function renderNeutralPalette(palette) {
+    els.neutralPalette.innerHTML = palette.neutrals.map((neutral) => {
+      const swatches = neutral.tones.map((color) => swatchButton(color, neutral.key)).join("");
+      return `
+        <div class="neutral-row">
+          <div class="row-meta">
+            <span class="row-name">${neutral.name}</span>
+            <span class="row-detail">neutral-${neutral.key} · H ${neutral.hue.toFixed(1)}°</span>
+          </div>
+          ${swatches}
+        </div>
+      `;
+    }).join("");
+    bindSwatchCopy(els.neutralPalette);
+  }
+
+  function renderStatusPalette(palette) {
+    els.statusPalette.innerHTML = palette.statuses.map((status) => {
+      const chips = status.roles.map((role) => {
+        const color = role.color;
+        const value = formatColor(color, state.format);
+        return `
+          <button class="status-chip" type="button" style="background:${color.hex};color:${textColor(color.rgb)}" data-copy="${value}" title="${status.name} ${role.label} ${value}">
+            <span class="status-role">${role.label}</span>
+            <span class="status-value">${value}</span>
+          </button>
+        `;
+      }).join("");
+      return `
+        <div class="status-panel">
+          <div class="status-head">
+            <h3 class="status-name">${status.name}</h3>
+            <span class="status-hue">${status.sourceName} · H ${status.hue.toFixed(1)}°</span>
+          </div>
+          <div class="status-swatches">${chips}</div>
+        </div>
+      `;
+    }).join("");
+
+    els.statusPalette.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", () => copyToClipboard(button.dataset.copy, `${button.dataset.copy} 已复制`));
+    });
+  }
+
+  function swatchButton(color, group) {
+    const value = formatColor(color, state.format);
+    const text = textColor(color.rgb);
+    const anchorNames = color.anchors ? color.anchors.map((anchor) => anchor.name).join(" / ") : "";
+    const className = anchorNames ? "swatch is-anchor" : "swatch";
+    return `
+      <button class="${className}" type="button" style="background:${color.hex};color:${text}" data-copy="${value}" title="${color.token} ${anchorNames} ${value}">
+        <span class="tone">${color.level}</span>
+        ${anchorNames ? `<span class="anchor-label">${anchorNames}</span>` : ""}
+        <span class="token">--${color.token}</span>
+        <span class="value">${value}</span>
+      </button>
+    `;
+  }
+
+  function bindSwatchCopy(root) {
+    root.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", () => copyToClipboard(button.dataset.copy, `${button.dataset.copy} 已复制`));
+    });
+  }
+
+  function updateExport() {
+    if (!state.palette) return;
+    els.exportBox.value = state.exportFormat === "json"
+      ? buildJsonTokens(state.palette)
+      : buildCssTokens(state.palette);
+
+    const neutralCount = state.palette.neutrals.reduce((total, neutral) => total + neutral.tones.length, 0);
+    const statusCount = state.palette.statuses.length * statusRoles.length;
+    els.tokenSummary.innerHTML = [
+      ["品牌色阶", state.palette.brandScale.length],
+      ["色相组", state.palette.families.length],
+      ["中性色阶", neutralCount],
+      ["状态语义", statusCount],
+      ["当前格式", state.format.toUpperCase()]
+    ].map(([label, value]) => `
+      <div class="summary-item">
+        <span class="summary-label">${label}</span>
+        <span class="summary-value">${value}</span>
+      </div>
+    `).join("");
+  }
+
+  function buildCssTokens(palette) {
+    const lines = [":root {"];
+    lines.push(`  --color-source-brand: ${palette.source};`);
+    palette.brandScale.forEach((color) => lines.push(`  --${color.token}: ${color.hex};`));
+    palette.families.forEach((family) => {
+      lines.push("");
+      family.tones.forEach((color) => lines.push(`  --${color.token}: ${color.hex};`));
+    });
+    palette.neutrals.forEach((neutral) => {
+      lines.push("");
+      neutral.tones.forEach((color) => lines.push(`  --${color.token}: ${color.hex};`));
+    });
+    lines.push("");
+    palette.statuses.forEach((status) => {
+      status.roles.forEach((role) => {
+        lines.push(`  --color-${status.key}-${role.role}: ${role.color.hex};`);
+      });
+    });
+    lines.push("}");
+    return lines.join("\n");
+  }
+
+  function buildJsonTokens(palette) {
+    const data = {
+      source: {
+        brand: palette.source,
+        chromaMode: palette.chromaMode,
+        mainFamily: palette.mainFamily.key,
+        oklch: {
+          l: round(palette.base.L, 4),
+          c: round(palette.base.C, 4),
+          h: round(palette.base.h, 2)
+        }
+      },
+      brand: {},
+      hues: {},
+      neutral: {},
+      status: {}
+    };
+
+    data.brand = Object.fromEntries(palette.brandScale.map((color) => [color.level, color.hex]));
+
+    palette.families.forEach((family) => {
+      data.hues[family.key] = {
+        name: family.name,
+        hue: round(family.hue, 2),
+        scale: Object.fromEntries(family.tones.map((color) => [color.level, color.hex]))
+      };
+    });
+
+    palette.neutrals.forEach((neutral) => {
+      data.neutral[neutral.key] = {
+        name: neutral.name,
+        hue: round(neutral.hue, 2),
+        scale: Object.fromEntries(neutral.tones.map((color) => [color.level, color.hex]))
+      };
+    });
+
+    palette.statuses.forEach((status) => {
+      data.status[status.key] = {
+        name: status.name,
+        hue: round(status.hue, 2),
+        from: status.from,
+        semantic: Object.fromEntries(status.roles.map((role) => [role.role, role.color.hex])),
+        scale: Object.fromEntries(Object.entries(status.tones).map(([level, color]) => [level, color.hex]))
+      };
+    });
+
+    return JSON.stringify(data, null, 2);
+  }
+
+  function makeColorRecord(hex, token, level, oklchOverride) {
+    const normalized = normalizeHex(hex);
+    const rgb = hexToRgb(normalized);
+    const oklch = oklchOverride || rgbToOklch(rgb);
+    return {
+      token,
+      level,
+      hex: normalized,
+      rgb,
+      hsl: rgbToHsl(rgb),
+      oklch
+    };
+  }
+
+  function fromOklch(L, C, h, token, level) {
+    const color = oklchToDisplayableRgb(L, C, h);
+    return {
+      token,
+      level,
+      hex: rgbToHex(color.rgb),
+      rgb: color.rgb,
+      hsl: rgbToHsl(color.rgb),
+      oklch: { L, C: color.C, h: wrapHue(h) }
+    };
+  }
+
+  function oklchToDisplayableRgb(L, C, h) {
+    let chroma = Math.max(0, C);
+    let rgb = oklchToRgb({ L, C: chroma, h });
+    let guard = 0;
+    while (!inGamut(rgb) && guard < 42) {
+      chroma *= 0.94;
+      rgb = oklchToRgb({ L, C: chroma, h });
+      guard += 1;
+    }
+    return {
+      C: chroma,
+      rgb: {
+        r: Math.round(clamp(rgb.r, 0, 255)),
+        g: Math.round(clamp(rgb.g, 0, 255)),
+        b: Math.round(clamp(rgb.b, 0, 255))
+      }
+    };
+  }
+
+  function formatColor(color, format) {
+    if (format === "rgb") return `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`;
+    if (format === "hsl") {
+      return `hsl(${Math.round(color.hsl.h)} ${Math.round(color.hsl.s)}% ${Math.round(color.hsl.l)}%)`;
+    }
+    if (format === "oklch") {
+      return `oklch(${(color.oklch.L * 100).toFixed(1)}% ${color.oklch.C.toFixed(3)} ${color.oklch.h.toFixed(1)})`;
+    }
+    return color.hex;
+  }
+
+  function normalizeHex(value) {
+    const clean = String(value || "").trim().replace(/^#/, "");
+    if (/^[0-9a-fA-F]{3}$/.test(clean)) {
+      return `#${clean.split("").map((char) => char + char).join("")}`.toUpperCase();
+    }
+    if (/^[0-9a-fA-F]{6}$/.test(clean)) {
+      return `#${clean}`.toUpperCase();
+    }
+    return "";
+  }
+
+  function setActive(groupId, value) {
+    document.querySelectorAll(`#${groupId} button`).forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.value === value);
+    });
+  }
+
+  function copyToClipboard(text, message) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => showToast(message)).catch(() => fallbackCopy(text, message));
+      return;
+    }
+    fallbackCopy(text, message);
+  }
+
+  function fallbackCopy(text, message) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    showToast(message);
+  }
+
+  function showToast(message) {
+    els.toast.textContent = message;
+    els.toast.classList.add("is-visible");
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => els.toast.classList.remove("is-visible"), 1800);
+  }
+
+  function hexToRgb(hex) {
+    const normalized = normalizeHex(hex);
+    const value = normalized.slice(1);
+    return {
+      r: parseInt(value.slice(0, 2), 16),
+      g: parseInt(value.slice(2, 4), 16),
+      b: parseInt(value.slice(4, 6), 16)
+    };
+  }
+
+  function rgbToHex({ r, g, b }) {
+    return `#${[r, g, b].map((channel) => channel.toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+  }
+
+  function rgbToHsl({ r, g, b }) {
+    const rn = r / 255;
+    const gn = g / 255;
+    const bn = b / 255;
+    const max = Math.max(rn, gn, bn);
+    const min = Math.min(rn, gn, bn);
+    const l = (max + min) / 2;
+    let h = 0;
+    let s = 0;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === rn) h = (gn - bn) / d + (gn < bn ? 6 : 0);
+      if (max === gn) h = (bn - rn) / d + 2;
+      if (max === bn) h = (rn - gn) / d + 4;
+      h *= 60;
+    }
+
+    return { h, s: s * 100, l: l * 100 };
+  }
+
+  function rgbToOklch(rgb) {
+    const lab = rgbToOklab(rgb);
+    const C = Math.sqrt(lab.a * lab.a + lab.b * lab.b);
+    const h = wrapHue(Math.atan2(lab.b, lab.a) * 180 / Math.PI);
+    return { L: lab.L, C, h };
+  }
+
+  function rgbToOklab({ r, g, b }) {
+    const lr = srgbToLinear(r / 255);
+    const lg = srgbToLinear(g / 255);
+    const lb = srgbToLinear(b / 255);
+
+    const l = 0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb;
+    const m = 0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb;
+    const s = 0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb;
+
+    const lRoot = Math.cbrt(l);
+    const mRoot = Math.cbrt(m);
+    const sRoot = Math.cbrt(s);
+
+    return {
+      L: 0.2104542553 * lRoot + 0.7936177850 * mRoot - 0.0040720468 * sRoot,
+      a: 1.9779984951 * lRoot - 2.4285922050 * mRoot + 0.4505937099 * sRoot,
+      b: 0.0259040371 * lRoot + 0.7827717662 * mRoot - 0.8086757660 * sRoot
+    };
+  }
+
+  function oklchToRgb({ L, C, h }) {
+    const hue = h * Math.PI / 180;
+    const a = Math.cos(hue) * C;
+    const b = Math.sin(hue) * C;
+
+    const lRoot = L + 0.3963377774 * a + 0.2158037573 * b;
+    const mRoot = L - 0.1055613458 * a - 0.0638541728 * b;
+    const sRoot = L - 0.0894841775 * a - 1.2914855480 * b;
+
+    const l = lRoot * lRoot * lRoot;
+    const m = mRoot * mRoot * mRoot;
+    const s = sRoot * sRoot * sRoot;
+
+    const lr = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
+    const lg = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
+    const lb = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
+
+    return {
+      r: linearToSrgb(lr) * 255,
+      g: linearToSrgb(lg) * 255,
+      b: linearToSrgb(lb) * 255
+    };
+  }
+
+  function srgbToLinear(value) {
+    return value <= 0.04045 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+  }
+
+  function linearToSrgb(value) {
+    return value <= 0.0031308 ? 12.92 * value : 1.055 * Math.pow(value, 1 / 2.4) - 0.055;
+  }
+
+  function inGamut({ r, g, b }) {
+    return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255;
+  }
+
+  function contrastRatio(foreground, background) {
+    const lighter = Math.max(relativeLuminance(foreground), relativeLuminance(background));
+    const darker = Math.min(relativeLuminance(foreground), relativeLuminance(background));
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
+  function relativeLuminance({ r, g, b }) {
+    const channels = [r, g, b].map((channel) => {
+      const value = channel / 255;
+      return value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+    });
+    return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+  }
+
+  function textColor(rgb) {
+    const white = contrastRatio(rgb, { r: 255, g: 255, b: 255 });
+    const black = contrastRatio(rgb, { r: 17, g: 25, b: 39 });
+    return white >= black ? "#FFFFFF" : "#111827";
+  }
+
+  function mixHue(from, to, amount) {
+    const delta = ((((to - from) % 360) + 540) % 360) - 180;
+    return wrapHue(from + delta * amount);
+  }
+
+  function findNearestFamily(hue) {
+    return hueFamilies.reduce((nearest, family) => {
+      return hueDistance(family.hue, hue) < hueDistance(nearest.hue, hue) ? family : nearest;
+    }, hueFamilies[0]);
+  }
+
+  function hueDistance(from, to) {
+    const delta = Math.abs(wrapHue(from) - wrapHue(to));
+    return Math.min(delta, 360 - delta);
+  }
+
+  function wrapHue(hue) {
+    return ((hue % 360) + 360) % 360;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function round(value, digits) {
+    const factor = 10 ** digits;
+    return Math.round(value * factor) / factor;
+  }
+
+  render();
+</script>
+</body>
+</html>
