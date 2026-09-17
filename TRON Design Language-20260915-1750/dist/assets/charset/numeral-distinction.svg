@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="240" viewBox="0 0 480 240">
+  <defs>
+    <style>
+      @font-face{font-family:TRON;src:url('../typeface/Tron-Font-VF-9.11.ttf') format('truetype')}
+      .glyph{font:500 50px TRON,Arial,sans-serif;fill:#111}
+      .label{font:500 10px TRON,Arial,sans-serif;fill:#666;letter-spacing:1px}
+      .kind{font:400 8px TRON,Arial,sans-serif;fill:#888;letter-spacing:.7px}
+    </style>
+  </defs>
+  <rect width="480" height="240" fill="#d9d9d9"/>
+  <text class="label" x="32" y="35">DISTINCT FORMS</text>
+  <line x1="32" y1="49" x2="448" y2="49" stroke="#ea0029" stroke-width="1.5"/>
+  <line x1="176" y1="68" x2="176" y2="215" stroke="#c4c4c4"/>
+  <line x1="304" y1="68" x2="304" y2="215" stroke="#c4c4c4"/>
+  <text class="glyph" x="76" y="150">0</text>
+  <text class="glyph" x="111" y="150" fill-opacity=".32">O</text>
+  <text class="glyph" x="214" y="150">1</text>
+  <text class="glyph" x="249" y="150" fill-opacity=".32">I</text>
+  <text class="glyph" x="332" y="150">5</text>
+  <text class="glyph" x="368" y="150" fill-opacity=".32">S</text>
+  <line x1="76" y1="168" x2="106" y2="168" stroke="#ea0029" stroke-width="2.5"/>
+  <line x1="214" y1="168" x2="244" y2="168" stroke="#ea0029" stroke-width="2.5"/>
+  <line x1="332" y1="168" x2="362" y2="168" stroke="#ea0029" stroke-width="2.5"/>
+  <text class="kind" x="76" y="187">NUMERAL</text>
+  <text class="kind" x="214" y="187">NUMERAL</text>
+  <text class="kind" x="332" y="187">NUMERAL</text>
+</svg>

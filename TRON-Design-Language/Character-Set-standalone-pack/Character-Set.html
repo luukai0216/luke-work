@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Character Set — TRON Design Language</title>
+<style>
+@font-face{font-family:TRON;src:url("assets/typeface/Tron-Font-VF-9.11.ttf") format("truetype");font-weight:400 700;font-style:normal;font-display:swap}
+html{background:#111!important;overscroll-behavior:none}body{overscroll-behavior:none}
+:root{--ink:#111;--paper:#f9f9f9;--red:#ea0029;--line:rgba(17,17,17,.15)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink);font-family:TRON,"PingFang SC","Hiragino Sans GB",sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}img{display:block}h1,h2,h3,p{margin:0}button{font-family:inherit}
+.viewport{position:relative}
+.site{position:absolute;left:50%;top:0;width:1440px;height:4966px;background:var(--paper);transform-origin:top center}
+.nav{position:absolute;z-index:20;left:80px;top:50px;width:1280px;height:48px;display:flex;align-items:center}
+.nav-logo{width:48px;height:48px}
+.nav-center{position:absolute;left:50%;display:flex;gap:10px;transform:translateX(-50%)}
+.menu{width:400px;height:48px;border:0;border-radius:4px;padding:0 16px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;font:500 16px TRON,sans-serif;cursor:pointer}
+.bars{width:16px;display:grid;gap:4px}.bars i{height:2.4px;background:#fff}
+.search{width:48px;height:48px;border:0;border-radius:4px;background:#111;display:grid;place-items:center;cursor:pointer}
+.search img{width:22px;height:22px}
+.lang{margin-left:auto;width:48px;height:48px;border:0;border-radius:4px;background:#e7e7e7;display:grid;place-items:center;cursor:pointer}
+.lang img{width:24px;height:24px;opacity:.6}
+.menu-panel{position:absolute;left:0;top:58px;width:400px;padding:20px;border-radius:4px;background:#111;display:grid;gap:30px;opacity:0;visibility:hidden;transform:translateY(-8px);transition:.25s}
+.menu-panel a{color:#fff;text-decoration:none;font-size:24px;font-weight:400;text-transform:uppercase}
+.section-title{font-size:48px;line-height:1;font-weight:700;letter-spacing:-1px;text-transform:uppercase;padding-bottom:.08em}
+.section-copy{font-size:16px;line-height:1.5;font-weight:400;color:rgba(17,17,17,.6)}
+
+.hero{position:absolute;left:80px;top:148px;width:1280px;height:560px;display:flex;gap:20px}
+.hero-left{width:700px;height:560px;display:flex;flex-direction:column;justify-content:space-between}
+.hero-title{font-size:62px;line-height:1;font-weight:700;text-transform:uppercase}
+.hero-copy{margin-top:40px;width:694px;font-size:14px;font-weight:400;line-height:normal;color:rgba(17,17,17,.6)}
+.hero-banner{width:700px;height:200px;overflow:hidden;background:#111}
+.hero-banner img{width:100%;height:100%;object-fit:cover}
+.hero-visual{position:relative;width:560px;height:560px;overflow:hidden;flex:0 0 560px;background:#ededed}
+.hero-visual canvas,.hero-visual img{display:block;width:100%;height:100%;object-fit:cover}
+
+.capability{position:absolute;left:80px;top:908px;width:1280px}
+.capability-copy{margin-top:50px}
+.cap-grid{margin-top:80px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.cap-card{padding:32px;border-left:1px solid var(--line);cursor:pointer}
+.cap-card strong{display:block;font-size:48px;font-weight:400;letter-spacing:-1px;line-height:1.25;text-transform:uppercase}
+.cap-card .english{text-transform:none}
+.cap-card strong .menu-word,.cap-card strong .menu-char{height:1.25em}
+.cap-card strong .menu-char-track{height:2.5em}
+.cap-card strong .menu-char-track>span{height:1.25em;line-height:1.25;flex:0 0 1.25em}
+.cap-card strong .menu-char-track>span:first-child,.cap-card strong .menu-char-track>span:last-child{font-weight:inherit}
+.cap-card:hover strong .menu-char-track,.cap-card:focus-within strong .menu-char-track{transform:translate3d(0,-50%,0)}
+.cap-card > span{display:block;margin-top:20px;font-size:16px;font-weight:400;line-height:1.5;color:rgba(17,17,17,.6)}
+
+.charset{position:absolute;left:0;top:1466px;width:1440px;height:922px;background:#111;color:#fff;overflow:hidden}
+.charset{box-shadow:0 0 0 100vmax #111;clip-path:inset(0 -100vmax)}
+.charset-head{position:absolute;left:80px;top:80px;width:1280px}
+.charset-head .section-copy{margin-top:50px;color:rgba(255,255,255,.6)}
+.charset-grid{position:absolute;left:80px;top:294px;width:1280px;height:480px;display:grid;grid-template-columns:repeat(16,80px);grid-template-rows:repeat(6,80px)}
+.glyph{position:relative;width:80px;height:80px;margin:0;padding:0;border:0;background:#111;color:#fff;display:grid;place-items:center;font:500 24px/32px TRON,sans-serif;cursor:pointer;-webkit-appearance:none;appearance:none}
+.glyph::after{content:"";position:absolute;inset:-.5px;border:1px solid #333;pointer-events:none}
+.glyph.is-active,.glyph:hover{background:#161616;color:#ed0029}
+.glyph.is-empty,.glyph.is-empty:hover,.glyph.is-empty:focus{background:#111;color:transparent;cursor:default}
+.glyph-preview{position:absolute;left:720px;top:374px;z-index:2;width:320px;height:320px;background:#161616;outline:1px solid #333;outline-offset:-1px;overflow:hidden;pointer-events:none;--ascender:99.5px;--cap:114.17px;--x-height:146.27px;--baseline:228.83px;--descender:259.5px;transition:left .36s cubic-bezier(.22,.61,.36,1),top .36s cubic-bezier(.22,.61,.36,1)}
+.preview-glyph{position:absolute;inset:0;display:block;width:100%;height:100%}
+.metric{position:absolute;left:20px;right:20px;height:1px;background:#ed0029;border:0}
+.metric span{position:absolute;left:0;top:calc(100% + 4px);font-size:10px;line-height:10px;color:#ea0029;font-weight:400;white-space:nowrap}
+.metric-label-above span{top:auto;bottom:calc(100% + 4px)}
+.metric-asc{top:var(--ascender)}.metric-cap{top:var(--cap)}.metric-x{top:var(--x-height)}.metric-base{top:var(--baseline)}.metric-desc{top:var(--descender)}
+.corner{position:absolute;width:8px;height:8px}
+.corner img{width:8px;height:8px}
+.corner-tr{top:.5px;right:.5px}
+.corner-br{bottom:.5px;right:.5px;transform:scaleY(-1)}
+.corner-tl{top:.5px;left:.5px;transform:rotate(180deg) scaleY(-1)}
+.corner-bl{bottom:.5px;left:.5px;transform:rotate(180deg)}
+
+.numerals{position:absolute;left:0;top:2588px;width:1440px}
+.numerals-head{width:1280px;margin:0 auto}
+.numerals-head .section-copy{margin-top:50px}
+.numeral-rows{margin-top:80px;position:relative;left:var(--bleed-left,0px);width:var(--bleed-width,1440px)}
+.numeral-row{position:relative;height:120px;overflow:hidden;border-top:1px solid var(--line);background:var(--paper);cursor:pointer;transition:height .55s cubic-bezier(.22,.61,.36,1)}
+.numeral-row.is-open{height:560px}
+.numeral-row:last-child{border-bottom:1px solid var(--line)}
+.numeral-num{position:absolute;left:calc(80px - var(--bleed-left,0px));top:32px;font-size:24px;font-weight:500;letter-spacing:-1px;line-height:1;text-transform:uppercase}
+.numeral-title{position:absolute;left:calc(190px - var(--bleed-left,0px));top:19px;font-size:160px;font-weight:500;letter-spacing:0;line-height:160px;text-transform:capitalize;white-space:nowrap}
+.numeral-toggle{position:absolute;z-index:2;right:calc(80px - var(--bleed-left,0px));top:32px;width:24px;height:24px;border:0;padding:0;background:transparent;pointer-events:none;-webkit-appearance:none;appearance:none}
+.numeral-toggle img{width:24px;height:24px}
+.numeral-caption{position:absolute;left:calc(190px - var(--bleed-left,0px));top:411px;width:569px}
+.numeral-row[data-row="alignment"] .numeral-caption{top:387px}
+.numeral-zh-title{display:none;margin:0 0 20px;font-size:20px;font-weight:600;line-height:1.5;color:#111}
+.numeral-copy{margin:0;font-size:16px;font-weight:400;line-height:1.5;color:rgba(17,17,17,.6)}
+html[lang="zh-CN"] .numeral-zh-title{display:block}
+html[lang="zh-CN"] .numeral-caption{top:386px}
+html[lang="zh-CN"] .numeral-row[data-row="alignment"] .numeral-caption{top:362px}
+.numeral-illust{position:absolute;left:auto;right:calc(80px - var(--bleed-left,0px));top:239px;width:480px;height:240px;background:#d9d9d9;overflow:hidden}
+.numeral-illust img{display:block;width:480px;height:240px}
+
+.opentype{position:absolute;left:80px;top:3814px;width:1280px;height:700px;display:flex;gap:20px;align-items:flex-start}
+.opentype-copy{width:526px;padding-right:100px}
+.opentype-copy .section-title{width:426px}
+.opentype-copy .section-copy{margin-top:50px}
+.ot-grid{width:734px;height:700px;display:grid;grid-template-columns:357px 357px;grid-template-rows:repeat(4,160px);gap:20px}
+.ot-card{position:relative;background:#fff;overflow:hidden;color:#111;cursor:pointer;transition:background .28s ease,color .28s ease}
+.ot-card h3{position:absolute;left:20px;top:20px;font-size:14px;font-weight:400;line-height:14px;color:rgba(17,17,17,.8);transition:color .28s ease}
+.ot-card .tag{position:absolute;right:20px;bottom:10px;font-size:24px;font-weight:400;line-height:normal;color:rgba(17,17,17,.8);text-align:right;transition:color .28s ease}
+.ot-card .sample{position:absolute;left:50%;top:53px;transform:translateX(-50%);font-size:48px;font-weight:500;line-height:1.1;color:#fff;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility 0s linear .18s}
+.ot-card.is-active{background:#ed0029;color:#fff}
+.ot-card.is-active h3,.ot-card.is-active .tag{color:#fff}
+.ot-card.is-active .sample{opacity:1;visibility:visible;transition:opacity .2s ease .16s,visibility 0s linear .16s}
+.ot-tnum{font-variant-numeric:tabular-nums}
+.ot-pnum{font-variant-numeric:proportional-nums}
+.ot-zero{font-feature-settings:"zero" 1}
+.slashed-zero{position:relative;display:inline-block}
+.slashed-zero:after{content:"";position:absolute;left:50%;top:14%;width:2px;height:72%;background:currentColor;border-radius:1px;transform:translateX(-50%) rotate(-22deg)}
+.ot-frac{font-feature-settings:"frac" 1}
+.ot-case{font-feature-settings:"case" 1}
+.ot-salt{font-feature-settings:"salt" 1}
+
+.site-footer{position:absolute;left:0;top:4714px;width:1440px;height:252px;border-top:1px solid rgba(255,255,255,.14);background:#111;color:#fff}
+.footer-left{position:absolute;left:20px;top:106px;display:flex;align-items:center;gap:10px;transform:translateY(-50%)}
+.footer-left img{width:40px;height:40px}
+.footer-brand{font-size:18px;font-weight:600}
+.footer-copy{margin-top:5px;color:rgba(255,255,255,.55);font-size:12px;font-weight:400}
+.footer-nav{position:absolute;right:20px;top:106px;display:flex;align-items:center;gap:30px;transform:translateY(-50%)}
+.footer-nav a{color:rgba(255,255,255,.72);font-size:12px;font-weight:400;text-decoration:none;text-transform:uppercase}
+.footer-language{padding:7px 10px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:11px}
+.footer-language button{border:0;background:none;color:inherit;font:11px TRON,sans-serif;cursor:pointer}
+.copyright{position:absolute;left:var(--bleed-left,0px);bottom:0;width:var(--bleed-width,1440px);height:40px;border-top:1px solid rgba(255,255,255,.1);display:grid;place-items:center;color:rgba(255,255,255,.48);font-size:12px;font-weight:400}
+@media(min-width:1441px){.site-footer:before{content:"";position:absolute;z-index:-1;left:var(--bleed-left,0px);top:-1px;width:var(--bleed-width,1440px);height:calc(100% + 1px);border-top:1px solid rgba(255,255,255,.14);background:#111}}
+@media(min-width:2560px){.nav{height:40px}.nav-logo,.search,.lang{width:40px;height:40px}.menu{width:320px;height:40px;font-size:14px}.search img{width:18px;height:18px}.lang img{width:20px;height:20px}.bars{width:14px;gap:3px}.menu-panel{top:50px;width:320px;padding:16px;gap:24px}.menu-panel a{font-size:20px}.section-title{font-size:38px}.hero-copy,.section-copy,.cap-card > span,.numeral-copy,.ot-card h3{font-size:13px}}
+
+.nav{position:fixed;left:50%;will-change:transform;transform:translateX(-50%) scale(var(--nav-scale,1));transform-origin:top center;transition:transform .38s cubic-bezier(.22,.61,.36,1)}
+.nav.is-hidden{transform:translateX(-50%) scale(var(--nav-scale,1)) translateY(-110px)}
+.nav:not(.is-ready){transition:none}
+.menu,.search-control{transition:width .5s cubic-bezier(.65,0,.35,1),padding .5s cubic-bezier(.65,0,.35,1)}
+.menu{position:relative}
+.menu-label{max-width:80px;overflow:hidden;opacity:1;white-space:nowrap;transition:max-width .35s ease,opacity .22s ease}
+.menu .bars{opacity:1;transform:rotate(0) scale(1);transition:opacity .2s ease,transform .36s cubic-bezier(.22,.61,.36,1)}
+.close-icon{position:absolute;right:16px;top:50%;width:14px;height:14px;margin-top:-7px;opacity:0;transform:rotate(-90deg) scale(.65);transition:opacity .2s ease,transform .36s cubic-bezier(.22,.61,.36,1)}
+.close-icon img{position:absolute;inset:0;width:14px;height:14px}
+.close-icon img:first-child{transform:scaleY(-1)}
+.nav-center.is-open .menu-panel{opacity:1;visibility:visible;transform:none}
+.nav-center.is-open .bars{opacity:0;transform:rotate(90deg) scale(.65)}
+.nav-center.is-open .close-icon{opacity:1;transform:rotate(0) scale(1)}
+.search-control{width:48px;height:48px;border-radius:4px;background:#111;display:none!important;align-items:center;overflow:hidden}
+.search-input{min-width:0;width:0;height:100%;border:0;outline:0;padding:0;background:transparent;color:#fff;font:500 16px/1 TRON,sans-serif;opacity:0;pointer-events:none}
+.menu-word{display:inline-flex;height:1em;overflow:hidden;vertical-align:top}
+.menu-char{display:inline-block;height:1em;overflow:hidden}
+.menu-char.is-space{width:.3em}
+.menu-char-track{display:flex;height:2em;flex-direction:column;transform:translate3d(0,0,0);transition:transform .58s cubic-bezier(.22,.61,.36,1);transition-delay:calc(var(--menu-char-index)*12ms)}
+.menu-char-track>span{display:block;height:1em;line-height:1;flex:0 0 1em}
+.menu-char-track>span:first-child{font-weight:400}
+.menu-char-track>span:last-child{font-weight:500}
+.menu:hover .menu-char-track,.menu-panel a:hover .menu-char-track,.footer-nav a:hover .menu-char-track,.footer-nav a.is-hovered .menu-char-track{transform:translate3d(0,-50%,0)}
+.text-reveal-title{overflow:hidden}
+.text-reveal-title.is-visible{overflow:visible}
+.text-reveal-inner{display:block}
+.text-reveal-char{display:inline-block;opacity:.04;transform:translateY(112%);transition:transform .76s cubic-bezier(.16,1,.3,1),opacity .34s ease;transition-delay:calc(var(--reveal-delay,0ms) + var(--char-index)*24ms)}
+.text-reveal-title.is-visible .text-reveal-char{opacity:1;transform:translateY(0)}
+.text-reveal-body .text-reveal-inner{opacity:0;transform:translateY(18px);transition:transform .72s cubic-bezier(.22,.61,.36,1),opacity .52s ease}
+.text-reveal-body.is-visible .text-reveal-inner{opacity:1;transform:translateY(0);transition-delay:var(--reveal-delay,0ms)}
+.footer-copy.text-reveal-body .text-reveal-inner{opacity:1!important;transform:none!important;transition:none!important}
+.footer-language button:hover,.footer-language button:focus-visible{color:rgba(255,255,255,.68);outline:none}
+.footer-language button.is-active{color:rgba(255,255,255,.52)}
+html[lang="zh-CN"] .hero-title{font-size:62px}
+@media(prefers-reduced-motion:reduce){.nav,.menu,.menu-char-track,.text-reveal-char,.text-reveal-body .text-reveal-inner,.numeral-row,.ot-card,.ot-card h3,.ot-card .tag,.ot-card .sample,.glyph-preview{transition:none}.text-reveal-char,.text-reveal-body .text-reveal-inner{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="viewport" id="viewport"><main class="site" id="site">
+<nav class="nav">
+  <a href="TRON-Design-Language-Figma-Exact.html"><img class="nav-logo" src="assets/figma-layers/imgGroup173.svg" alt="TRON"></a>
+  <div class="nav-center" id="navCenter">
+    <button class="menu" id="menuToggle" type="button" aria-expanded="false" aria-controls="menuPanel"><span class="menu-label">MENU</span><span class="bars"><i></i><i></i><i></i></span><span class="close-icon" aria-hidden="true"><img src="assets/figma-layers/nav-close.svg" alt=""><img src="assets/figma-layers/nav-close-alt.svg" alt=""></span></button>
+    <div class="search-control" role="search"><input class="search-input" id="searchInput" type="search" placeholder="SEARCH" aria-label="Search"><button class="search" id="searchToggle" type="button" aria-label="Open search" aria-expanded="false"><img src="assets/figma-layers/imgFrame1.svg" alt=""></button></div>
+    <div class="menu-panel" id="menuPanel">
+      <a href="TRON-Design-Language-Figma-Exact.html#panorama">Visual Concept</a>
+      <a href="Glyph-Features.html">Glyph Features</a>
+      <a href="Type-System-standalone.html">Typography System</a>
+      <a href="Character-Set.html">Character Set</a>
+    </div>
+  </div>
+  <button class="lang" aria-label="Language"><img src="assets/figma-layers/imgFrame2.svg" alt=""></button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <h1 class="hero-title">Character<br>Set</h1>
+      <p class="hero-copy">Designed for English information and digital contexts.<br>Letters, numerals, essential symbols and OpenType features demonstrate the typeface’s core capabilities in brand communications and digital products.</p>
+    </div>
+    <div class="hero-banner"><img src="assets/charset/hero-banner.png" alt="100 characters, English, numerals"></div>
+  </div>
+  <div class="hero-visual">
+    <canvas id="heroGlass" width="560" height="560" role="img" aria-label="TRON character collage with a moving glass lens"></canvas>
+  </div>
+</section>
+
+<section class="capability">
+  <h2 class="section-title">Capability overview</h2>
+  <p class="section-copy capability-copy">A focused, clearly defined character set supports English communications, numerical information and product interfaces—maintaining one coherent visual expression across core use cases.</p>
+  <div class="cap-grid">
+    <article class="cap-card"><strong>100</strong><span>CHARACTERS</span></article>
+    <article class="cap-card"><strong class="english">English</strong><span>SUPPORTED LANGUAGE</span></article>
+    <article class="cap-card"><strong>VF</strong><span>FONT FORMAT</span></article>
+    <article class="cap-card"><strong>1 Axis</strong><span>VARIABLE CONTROL</span></article>
+  </div>
+</section>
+
+<section class="charset">
+  <div class="charset-head">
+    <h2 class="section-title">Character Set</h2>
+    <p class="section-copy">These representative characters cover letters, numerals, common punctuation, currency signs and essential symbols, demonstrating consistent structure and visual rhythm across categories.</p>
+  </div>
+  <div class="charset-grid" id="glyphGrid"></div>
+  <div class="glyph-preview" id="glyphPreview">
+    <canvas class="preview-glyph" id="previewGlyph" width="320" height="320" aria-hidden="true"></canvas>
+    <div class="metric metric-asc metric-label-above"><span>ASCENDER</span></div>
+    <div class="metric metric-cap"><span>CAP-HEIGHT</span></div>
+    <div class="metric metric-x"><span>X-HEIGHT</span></div>
+    <div class="metric metric-base"><span>BASE</span></div>
+    <div class="metric metric-desc"><span>DESCENDER</span></div>
+    <span class="corner corner-tr"><img src="assets/charset/corner.svg" alt=""></span>
+    <span class="corner corner-br"><img src="assets/charset/corner-1.svg" alt=""></span>
+    <span class="corner corner-tl"><img src="assets/charset/corner-2.svg" alt=""></span>
+    <span class="corner corner-bl"><img src="assets/charset/corner-3.svg" alt=""></span>
+  </div>
+</section>
+
+<section class="numerals">
+  <div class="numerals-head">
+    <h2 class="section-title">Numeral System</h2>
+    <p class="section-copy">Numerals are central to blockchain experiences. From asset values and transaction records to network data, high distinction and reliable alignment make complex information easier to scan, compare and trust.</p>
+  </div>
+  <div class="numeral-rows" id="numeralRows">
+    <article class="numeral-row" data-row="tabular">
+      <span class="numeral-num">01</span>
+      <h3 class="numeral-title">Tabular</h3>
+      <button class="numeral-toggle" type="button" aria-expanded="false" aria-label="Tabular" tabindex="-1"><img src="assets/charset/icon-plus.svg" alt=""></button>
+      <div class="numeral-caption">
+        <p class="numeral-zh-title">等宽数字</p>
+        <p class="numeral-copy">Every numeral occupies the same width, keeping tables, transactions, asset prices and code aligned in stable columns.</p>
+      </div>
+      <div class="numeral-illust">
+        <img src="assets/charset/numeral-tabular.webp" width="480" height="240" alt="Tabular numerals 12,480.62 and 09,005.10">
+      </div>
+    </article>
+    <article class="numeral-row" data-row="proportional">
+      <span class="numeral-num">02</span>
+      <h3 class="numeral-title">Proportional</h3>
+      <button class="numeral-toggle" type="button" aria-expanded="false" aria-label="Proportional" tabindex="-1"><img src="assets/charset/icon-plus.svg" alt=""></button>
+      <div class="numeral-caption">
+        <p class="numeral-zh-title">比例数字</p>
+        <p class="numeral-copy">Each numeral uses a natural width based on its form, creating a smoother rhythm for headlines, body copy and brand communication.</p>
+      </div>
+      <div class="numeral-illust">
+        <img src="assets/charset/numeral-proportional.webp" width="480" height="240" alt="Proportional numerals 2026 / 08">
+      </div>
+    </article>
+    <article class="numeral-row is-open" data-row="alignment">
+      <span class="numeral-num">03</span>
+      <h3 class="numeral-title">Alignment</h3>
+      <button class="numeral-toggle" type="button" aria-expanded="true" aria-label="Alignment" tabindex="-1"><img src="assets/charset/icon-minus.svg" alt=""></button>
+      <div class="numeral-caption">
+        <p class="numeral-zh-title">精准对齐</p>
+        <p class="numeral-copy">Numerals are central to blockchain experiences. From asset values and transaction records to network data, high distinction and reliable alignment make complex information easier to scan, compare and trust.</p>
+      </div>
+      <div class="numeral-illust">
+        <img src="assets/charset/numeral-alignment.webp" width="480" height="240" alt="Aligned currency and percentage numerals">
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="opentype">
+  <div class="opentype-copy">
+    <h2 class="section-title">OpenType<br>features</h2>
+    <p class="section-copy">OpenType features let the system adapt numeral forms and character styles to body copy, data-heavy interfaces and moments of emphasis.</p>
+  </div>
+  <div class="ot-grid">
+    <article class="ot-card"><h3>Tabular Figures</h3><div class="sample ot-tnum">123.45</div><span class="tag">tnum</span></article>
+    <article class="ot-card is-active"><h3>Superscript</h3><div class="sample">x²</div><span class="tag">sups</span></article>
+    <article class="ot-card"><h3>Proportional Figures</h3><div class="sample ot-pnum">2026</div><span class="tag">pnum</span></article>
+    <article class="ot-card"><h3>Slashed Zero</h3><div class="sample ot-zero"><span class="slashed-zero">0</span></div><span class="tag">zero</span></article>
+    <article class="ot-card"><h3>Fractions</h3><div class="sample ot-frac">1/2</div><span class="tag">frac</span></article>
+    <article class="ot-card"><h3>Subscript</h3><div class="sample">H₂O</div><span class="tag">subs</span></article>
+    <article class="ot-card"><h3>Case-sensitive Forms</h3><div class="sample ot-case">(API)</div><span class="tag">case</span></article>
+    <article class="ot-card"><h3>Stylistic Alternates</h3><div class="sample ot-salt">Ag</div><span class="tag">salt</span></article>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <img src="assets/figma-layers/imgGroup173.svg" alt="TRON">
+    <div>
+      <div class="footer-brand">TRON DESIGN LANGUAGE</div>
+      <p class="footer-copy">Shared design guidelines for the TRON ecosystem.</p>
+    </div>
+  </div>
+  <nav class="footer-nav site-footer-nav">
+    <a href="TRON-Design-Language-Figma-Exact.html#panorama">Visual Concept</a>
+    <a href="Glyph-Features.html">Glyph Features</a>
+    <a href="Type-System-standalone.html">Typography System</a>
+    <a href="#">Character Set</a>
+    <div class="footer-language">
+      <button class="is-active" type="button" aria-pressed="true" data-language="en">EN</button> /
+      <button type="button" aria-pressed="false" data-language="zh-CN">中文</button>
+    </div>
+  </nav>
+  <div class="copyright">© 2026 TRON Design Language. Community maintained.</div>
+</footer>
+</main></div>
+<script src="assets/subpage-i18n.js?v=7"></script>
+<script>
+const site=document.getElementById('site'),viewport=document.getElementById('viewport');
+function resize(){
+  const width=document.documentElement.clientWidth,scale=width>=2560?1.5:Math.min(1,width/1440),bleedWidth=width/scale,bleedLeft=(1440-bleedWidth)/2,totalHeight=4966;
+  site.style.left='50%';
+  site.style.transform=`translateX(-50%) scale(${scale})`;
+  site.style.setProperty('--bleed-width',`${bleedWidth}px`);
+  site.style.setProperty('--bleed-left',`${bleedLeft}px`);
+  site.style.width='1440px';
+  site.style.height=`${totalHeight}px`;
+  viewport.style.width='100%';
+  viewport.style.height=`${totalHeight*scale}px`;
+  if(scrollX)scrollTo(0,scrollY);
+}
+resize();addEventListener('resize',resize);
+
+const glyphs=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','!','"',"'",'(',')',',','-','.','/',':',';','?','[','\\',']','_','–','—','‘','’','“','”','…','','','','','','','','','','',''];
+const grid=document.getElementById('glyphGrid'),preview=document.getElementById('glyphPreview'),previewGlyph=document.getElementById('previewGlyph');
+const CELL=80,PREVIEW=320,COLS=16,ROWS=6,GRID_LEFT=80,GRID_TOP=294,GRID_W=1280,GRID_H=480;
+const defaultIndex=glyphs.indexOf('N');
+let activeIndex=-1;
+const BASELINE=227.5;
+const FONT_SIZE=160;
+const ASCENDER=FONT_SIZE*0.8;
+const CAP_HEIGHT=FONT_SIZE*0.7;
+const X_HEIGHT=FONT_SIZE*0.5;
+const DESCENDER=FONT_SIZE*0.2;
+function paintPreview(character){
+  if(!previewGlyph)return;
+  const dpr=Math.max(2,window.devicePixelRatio||1);
+  previewGlyph.width=PREVIEW*dpr;
+  previewGlyph.height=PREVIEW*dpr;
+  const ctx=previewGlyph.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,PREVIEW,PREVIEW);
+  ctx.font=`500 ${FONT_SIZE}px TRON`;
+  ctx.textAlign='center';
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#fff';
+  if(character)ctx.fillText(character,PREVIEW/2,BASELINE);
+  const nInk=ctx.measureText('N');
+  const xInk=ctx.measureText('x');
+  const capY=nInk.actualBoundingBoxAscent?BASELINE-nInk.actualBoundingBoxAscent:BASELINE-CAP_HEIGHT;
+  const baseY=nInk.actualBoundingBoxDescent?BASELINE+nInk.actualBoundingBoxDescent:BASELINE;
+  const xHeightY=xInk.actualBoundingBoxAscent?BASELINE-xInk.actualBoundingBoxAscent:BASELINE-X_HEIGHT;
+  preview.style.setProperty('--ascender',`${(BASELINE-ASCENDER).toFixed(2)}px`);
+  preview.style.setProperty('--cap',`${capY.toFixed(2)}px`);
+  preview.style.setProperty('--x-height',`${xHeightY.toFixed(2)}px`);
+  preview.style.setProperty('--baseline',`${baseY.toFixed(2)}px`);
+  preview.style.setProperty('--descender',`${(BASELINE+DESCENDER).toFixed(2)}px`);
+}
+function showGlyph(index){
+  const col=index%COLS,row=Math.floor(index/COLS);
+  const cellLeft=GRID_LEFT+col*CELL,cellTop=GRID_TOP+row*CELL;
+  let left=cellLeft+CELL;
+  if(left+PREVIEW>GRID_LEFT+GRID_W)left=cellLeft-PREVIEW;
+  left=Math.min(Math.max(left,GRID_LEFT),GRID_LEFT+GRID_W-PREVIEW);
+  let top=cellTop-CELL;
+  if(top<GRID_TOP)top=GRID_TOP;
+  if(top+PREVIEW>GRID_TOP+GRID_H)top=GRID_TOP+GRID_H-PREVIEW;
+  preview.style.left=left+'px';
+  preview.style.top=top+'px';
+  if(index===activeIndex)return;
+  activeIndex=index;
+  paintPreview(glyphs[index]||'');
+  grid.querySelectorAll('.glyph').forEach((item,itemIndex)=>item.classList.toggle('is-active',itemIndex===index&&glyphs[index]));
+}
+glyphs.forEach((glyph,index)=>{
+  const button=document.createElement('button');
+  button.type='button';
+  button.className=glyph?'glyph':'glyph is-empty';
+  button.textContent=glyph;
+  if(glyph){
+    button.setAttribute('aria-label',`Character ${glyph}`);
+    button.addEventListener('pointerenter',()=>showGlyph(index));
+    button.addEventListener('focus',()=>showGlyph(index));
+    button.addEventListener('click',()=>showGlyph(index));
+  }else{
+    button.disabled=true;
+    button.tabIndex=-1;
+    button.setAttribute('aria-hidden','true');
+  }
+  grid.append(button);
+});
+grid.addEventListener('pointerleave',()=>showGlyph(defaultIndex));
+grid.addEventListener('focusout',event=>{if(!grid.contains(event.relatedTarget))showGlyph(defaultIndex)});
+showGlyph(defaultIndex);
+document.fonts.load('500 160px TRON').then(()=>document.fonts.ready).then(()=>{activeIndex=-1;showGlyph(defaultIndex)});
+
+const navCenter=document.getElementById('navCenter'),menuToggle=document.getElementById('menuToggle'),menuPanel=document.getElementById('menuPanel'),searchToggle=document.getElementById('searchToggle'),searchInput=document.getElementById('searchInput'),footerNav=document.querySelector('.footer-nav');
+function buildAnimatedMenuWord(element){
+  const label=element.textContent.trim(),word=document.createElement('span');
+  word.className='menu-word';word.setAttribute('aria-hidden','true');
+  [...label].forEach((character,index)=>{
+    const char=document.createElement('span'),track=document.createElement('span'),front=document.createElement('span'),back=document.createElement('span'),value=character===' '?String.fromCharCode(160):character;
+    char.className=`menu-char${character===' '?' is-space':''}`;
+    char.style.setProperty('--menu-char-index',index);
+    track.className='menu-char-track';
+    front.textContent=value;back.textContent=value;track.append(front,back);char.append(track);word.append(char);
+  });
+  element.textContent='';element.append(word);return label;
+}
+menuPanel.querySelectorAll('a').forEach(link=>link.setAttribute('aria-label',buildAnimatedMenuWord(link)));
+footerNav.querySelectorAll('a').forEach(link=>{link.setAttribute('aria-label',buildAnimatedMenuWord(link));link.onpointerenter=()=>link.classList.add('is-hovered');link.onpointerleave=()=>link.classList.remove('is-hovered')});
+buildAnimatedMenuWord(menuToggle.querySelector('.menu-label'));
+document.querySelectorAll('.cap-card strong').forEach(sample=>sample.setAttribute('aria-label',buildAnimatedMenuWord(sample)));
+let menuTransitionTimer,menuLeaveTimer;
+function setMenu(open){navCenter.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open))}
+function setSearch(open){navCenter.classList.toggle('is-searching',open);searchToggle.setAttribute('aria-expanded',String(open));if(open){setMenu(false);searchInput.focus()}}
+menuToggle.onclick=()=>{clearTimeout(menuTransitionTimer);if(navCenter.classList.contains('is-searching')){setSearch(false);menuTransitionTimer=setTimeout(()=>setMenu(true),500)}else setMenu(!navCenter.classList.contains('is-open'))};
+searchToggle.onclick=()=>setSearch(!navCenter.classList.contains('is-searching'));
+navCenter.onmouseenter=()=>clearTimeout(menuLeaveTimer);
+navCenter.onmouseleave=()=>{menuLeaveTimer=setTimeout(()=>setMenu(false),180)};
+document.addEventListener('click',e=>{if(!navCenter.contains(e.target)){setMenu(false);setSearch(false)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){setMenu(false);setSearch(false)}});
+
+const floatingNav=document.querySelector('.nav');document.body.append(floatingNav);
+let lastScrollY=scrollY,navTicking=false,navRevealTimer;
+function syncNavScale(){const scale=innerWidth>=2560?1.5:Math.min(1,innerWidth/1440);floatingNav.style.setProperty('--nav-scale',scale);floatingNav.style.top=`${50*scale}px`}
+function updateFloatingNav(){const y=scrollY,delta=y-lastScrollY;if(y<10)floatingNav.classList.remove('is-hidden');else if(delta<-1){if(!navRevealTimer)navRevealTimer=setTimeout(()=>{floatingNav.classList.remove('is-hidden');navRevealTimer=null},180)}else if(delta>1){clearTimeout(navRevealTimer);navRevealTimer=null;floatingNav.classList.add('is-hidden');setMenu(false);setSearch(false)}lastScrollY=y;navTicking=false}
+function requestNavUpdate(){if(!navTicking){navTicking=true;requestAnimationFrame(updateFloatingNav)}}
+addEventListener('scroll',requestNavUpdate,{passive:true});addEventListener('resize',syncNavScale);syncNavScale();requestAnimationFrame(()=>floatingNav.classList.add('is-ready'));
+
+const revealTitles=[...document.querySelectorAll('.site h1,.site h2,.opentype-copy h2,.capability h2,.charset-head h2,.numerals-head h2')];
+const revealBodies=[...document.querySelectorAll('.hero-copy,.capability-copy,.charset-head .section-copy,.numerals-head .section-copy,.opentype-copy .section-copy')];
+const revealCounters=new Map();
+function splitRevealCharacters(root){
+  const nodes=[],walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode())nodes.push(walker.currentNode);
+  let i=0;
+  nodes.forEach(node=>{
+    const fragment=document.createDocumentFragment();
+    [...node.nodeValue].forEach(c=>{
+      if(/\s/.test(c))fragment.append(c);
+      else{const span=document.createElement('span');span.className='text-reveal-char';span.style.setProperty('--char-index',i++);span.textContent=c;fragment.append(span)}
+    });
+    node.replaceWith(fragment);
+  });
+}
+function prepareReveal(element,type){
+  const group=element.closest('section')||document.body,index=revealCounters.get(group)||0;
+  revealCounters.set(group,index+1);
+  element.classList.add(`text-reveal-${type}`);
+  element.style.setProperty('--reveal-delay',`${Math.min(index*65,260)}ms`);
+  const inner=document.createElement('span');inner.className='text-reveal-inner';
+  while(element.firstChild)inner.append(element.firstChild);
+  element.append(inner);
+  if(type==='title')splitRevealCharacters(inner);
+}
+revealTitles.forEach(e=>prepareReveal(e,'title'));
+revealBodies.forEach(e=>prepareReveal(e,'body'));
+const revealItems=[...revealTitles,...revealBodies];
+if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver'in window))revealItems.forEach(e=>e.classList.add('is-visible'));
+else{
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  requestAnimationFrame(()=>revealItems.forEach(e=>observer.observe(e)));
+}
+
+const rows=[...document.querySelectorAll('.numeral-row')];
+const numeralRows=document.getElementById('numeralRows');
+const defaultNumeral=document.querySelector('.numeral-row[data-row="alignment"]');
+let currentNumeral;
+function openRow(target){
+  if(target===currentNumeral)return;
+  currentNumeral=target;
+  rows.forEach(row=>{
+    const open=row===target;
+    row.classList.toggle('is-open',open);
+    const toggle=row.querySelector('.numeral-toggle');
+    const icon=toggle.querySelector('img');
+    toggle.setAttribute('aria-expanded',String(open));
+    icon.src=open?'assets/charset/icon-minus.svg':'assets/charset/icon-plus.svg';
+  });
+}
+rows.forEach(row=>row.addEventListener('pointerenter',()=>openRow(row)));
+numeralRows.addEventListener('pointerleave',()=>openRow(defaultNumeral));
+openRow(defaultNumeral);
+
+const otGrid=document.querySelector('.ot-grid');
+const otCards=[...otGrid.querySelectorAll('.ot-card')];
+const defaultOtCard=otCards[1];
+function setOtActive(card){
+  otCards.forEach(item=>item.classList.toggle('is-active',item===card));
+}
+otCards.forEach(card=>card.addEventListener('pointerenter',()=>setOtActive(card)));
+otGrid.addEventListener('pointerleave',()=>setOtActive(defaultOtCard));
+setOtActive(defaultOtCard);
+</script>
+<script src="assets/charset/glass-type.js?v=6"></script>
+<script>
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+const heroGlass=document.getElementById('heroGlass');
+const heroVisual=heroGlass&&heroGlass.closest('.hero-visual');
+function showHeroFallback(){
+  if(!heroVisual)return;
+  heroVisual.innerHTML='<img src="assets/charset/hero-glass.png" alt="TRON character collage">';
+}
+try{
+  if(!heroGlass||typeof mountGlassType!=='function')throw new Error('missing glass type');
+  const glassEffect=mountGlassType(heroGlass);
+  function syncGlassMotion(){
+    if(!glassEffect)return;
+    if(reducedMotion.matches)glassEffect.pause();
+    else glassEffect.play();
+  }
+  reducedMotion.addEventListener?.('change',syncGlassMotion);
+  syncGlassMotion();
+}catch(error){
+  showHeroFallback();
+}
+</script>
+</body>
+</html>

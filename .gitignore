@@ -3,3 +3,22 @@
 node_modules/
 tronlink-home/tronlink-homepage-mirror/figma-export/
 .claude/worktrees/
+
+# Generated files and local tool state
+.astro/
+.next/
+.cache/
+.openai/
+.sites-runtime/
+.vercel/
+__pycache__/
+*.log
+
+# Local credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+.claude/settings.local.json

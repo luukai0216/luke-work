@@ -1,0 +1,19 @@
+{
+  "figma": {
+    "web_banner": "https://www.figma.com/api/mcp/asset/3a5430c3-dc66-4110-bb0c-32458f87eb9b.png",
+    "app_banner": "https://www.figma.com/api/mcp/asset/65934b07-8d9f-452f-bfd2-d82bc6d81b8d.png",
+    "news_page": "https://www.figma.com/api/mcp/asset/fe616207-ef92-4290-91c9-842eff9afa9c.png",
+    "pagination": "https://www.figma.com/api/mcp/asset/ea993e1a-7127-4f26-88f9-dc33bb96d5e9.png",
+    "problem_3highlights": "https://www.figma.com/api/mcp/asset/66152daf-43d4-41b7-8678-d76acf453701.png",
+    "problem_hover": "https://www.figma.com/api/mcp/asset/b4699999-2e46-4099-b50c-cf714a3a52ec.png",
+    "problem_radius": "https://www.figma.com/api/mcp/asset/c4f06c3a-131f-481d-a3ce-8ff607f94e7a.png",
+    "nav": "https://www.figma.com/api/mcp/asset/629a957c-d143-4ecc-af82-045309561b63.png",
+    "news_list": "https://www.figma.com/api/mcp/asset/226f74ef-cea1-4d32-8b27-d46cdb851d6d.png",
+    "home_news": "https://www.figma.com/api/mcp/asset/be20647c-e518-48fb-96f9-65c0107e7496.png",
+    "transition": "https://www.figma.com/api/mcp/asset/0a821fa3-e58a-4d60-b712-f739b48867f0.png",
+    "news_banner": "https://www.figma.com/api/mcp/asset/c03ca43b-c3c5-41d4-a0b9-a2ea2ff674a4.png",
+    "news_hover_row": "https://www.figma.com/api/mcp/asset/59c8a206-eda1-4552-bae1-029c75e0f173.png",
+    "earn_dropdown": "https://www.figma.com/api/mcp/asset/82111379-1adc-4c1d-ab15-2b27a4a3338e.png",
+    "home_hero": "https://www.figma.com/api/mcp/asset/c6d70df5-aa18-4498-a6a0-2ecfb50e3fcf.png"
+  }
+}

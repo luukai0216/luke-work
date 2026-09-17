@@ -801,6 +801,14 @@ TYPE</textarea>
               <div class="field-row"><label class="field-label" for="layout-angle">整体布局角度</label><output id="layout-angle-value"></output></div>
               <input id="layout-angle" type="range" min="-180" max="180" step="1" value="0" />
             </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="glass-offset-x">整体水平位置</label><output id="glass-offset-x-value"></output></div>
+              <input id="glass-offset-x" type="range" min="-50" max="50" step="1" value="0" />
+            </div>
+            <div class="field">
+              <div class="field-row"><label class="field-label" for="glass-offset-y">整体垂直位置</label><output id="glass-offset-y-value"></output></div>
+              <input id="glass-offset-y" type="range" min="-50" max="50" step="1" value="0" />
+            </div>
             <div class="lens-panel" id="lens-editor">
               <div class="lens-panel-title">单颗编辑</div>
               <div class="lens-selector" id="lens-selector" aria-label="选择需要调整的玻璃"></div>
@@ -812,7 +820,15 @@ TYPE</textarea>
                 <div class="field-row"><label class="field-label" for="lens-angle">位置角度</label><output id="lens-angle-value"></output></div>
                 <input id="lens-angle" type="range" min="-180" max="180" step="1" value="0" />
               </div>
-              <span class="angle-help">点编号可多选；尺寸和角度会一起应用到选中的玻璃。选「全部」时，相当于整体调节。</span>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="lens-offset-x">水平位置</label><output id="lens-offset-x-value"></output></div>
+                <input id="lens-offset-x" type="range" min="-50" max="50" step="1" value="0" />
+              </div>
+              <div class="field">
+                <div class="field-row"><label class="field-label" for="lens-offset-y">垂直位置</label><output id="lens-offset-y-value"></output></div>
+                <input id="lens-offset-y" type="range" min="-50" max="50" step="1" value="0" />
+              </div>
+              <span class="angle-help">点编号可多选；尺寸、角度和位置会一起应用到选中的玻璃。选「全部」时，相当于整体调节。</span>
             </div>
             </div>
           </section>
@@ -980,8 +996,12 @@ TYPE</textarea>
           glassSize: 24,
           glassSpacing: 0.7,
           layoutAngle: 0,
+          glassOffsetX: 0,
+          glassOffsetY: 0,
           lensAngles: [0, 0, 0, 0, 0, 0, 0, 0],
           lensSizes: [24, 24, 24, 24, 24, 24, 24, 24],
+          lensOffsetX: [0, 0, 0, 0, 0, 0, 0, 0],
+          lensOffsetY: [0, 0, 0, 0, 0, 0, 0, 0],
           glassTint: "#8EC8FF",
           tintStrength: 0,
           shadow: 0.22,
@@ -1020,6 +1040,10 @@ TYPE</textarea>
 
         function clamp(value, minimum, maximum) {
           return Math.min(Math.max(value, minimum), maximum);
+        }
+
+        function formatOffset(value) {
+          return (value > 0 ? "+" : "") + value + "%";
         }
 
         function hexToRgb(value) {
@@ -1102,8 +1126,12 @@ TYPE</textarea>
         function ensureLensArrays() {
           if (!Array.isArray(state.lensAngles)) state.lensAngles = [];
           if (!Array.isArray(state.lensSizes)) state.lensSizes = [];
+          if (!Array.isArray(state.lensOffsetX)) state.lensOffsetX = [];
+          if (!Array.isArray(state.lensOffsetY)) state.lensOffsetY = [];
           while (state.lensAngles.length < MAX_LENSES) state.lensAngles.push(0);
           while (state.lensSizes.length < MAX_LENSES) state.lensSizes.push(24);
+          while (state.lensOffsetX.length < MAX_LENSES) state.lensOffsetX.push(0);
+          while (state.lensOffsetY.length < MAX_LENSES) state.lensOffsetY.push(0);
         }
 
         function selectedLensValues(key, fallback) {
@@ -1125,6 +1153,14 @@ TYPE</textarea>
           $("#glass-size").value = uniformSize ? sizes[0] : sizes[0];
           $("#glass-size-value").textContent = uniformSize ? sizes[0] + "%" : "混合";
           if (uniformSize) state.glassSize = sizes[0];
+          var offsetXs = selectedLensValues("lensOffsetX", 0);
+          var uniformOffsetX = offsetXs.every(function (value) { return value === offsetXs[0]; });
+          $("#lens-offset-x").value = uniformOffsetX ? offsetXs[0] : 0;
+          $("#lens-offset-x-value").textContent = uniformOffsetX ? formatOffset(offsetXs[0]) : "混合";
+          var offsetYs = selectedLensValues("lensOffsetY", 0);
+          var uniformOffsetY = offsetYs.every(function (value) { return value === offsetYs[0]; });
+          $("#lens-offset-y").value = uniformOffsetY ? offsetYs[0] : 0;
+          $("#lens-offset-y-value").textContent = uniformOffsetY ? formatOffset(offsetYs[0]) : "混合";
         }
 
         function renderLensSelector() {
@@ -1171,6 +1207,8 @@ TYPE</textarea>
           mapRange("glass-count", "glassCount", function (v) { return v; }),
           mapRange("glass-spacing", "glassSpacing", function (v) { return Math.round(v * 100) + "%"; }),
           mapRange("layout-angle", "layoutAngle", function (v) { return v + "°"; }),
+          mapRange("glass-offset-x", "glassOffsetX", formatOffset),
+          mapRange("glass-offset-y", "glassOffsetY", formatOffset),
           mapRange("tint-strength", "tintStrength", function (v) { return Math.round(v * 100) + "%"; }),
           mapRange("distortion", "distortion", function (v) { return v.toFixed(2); }),
           mapRange("ripple", "ripple", function (v) { return v.toFixed(2); }),
@@ -1371,7 +1409,8 @@ TYPE</textarea>
             "    float inside = 1. - smoothstep(-.055, .018, shapeDistance(normalXY));",
             "    float z = sqrt(max(0., 1. - dot(normalXY, normalXY)));",
             "    vec3 normal = normalize(vec3(normalXY, z));",
-            "    float shine = pow(max(dot(normal, light), 0.), 22.) * inside;",
+            "    float edgeMask = smoothstep(.42, .98, unit);",
+            "    float shine = pow(max(dot(normal, light), 0.), 20.) * inside * edgeMask * .4;",
             "    float curvedEdge = smoothstep(.78, 1.02, unit) * inside;",
             "    float lowerEdge = smoothstep(.9, 1.03, unit) * inside;",
             "    highlight = max(highlight, shine * enabled);",
@@ -1429,7 +1468,7 @@ TYPE</textarea>
             "  float rim = rimAt(pixel) * uGloss;",
             "  colour *= 1. - surface.y * .08;",
             "  colour *= 1. - surface.z * .03;",
-            "  colour = mix(colour, vec3(1.), surface.x * .35);",
+            "  colour = mix(colour, vec3(1.), surface.x * .08);",
             "  vec3 rimColour = mix(mix(uPaper, vec3(1.), .66), vec3(1.), uImageMode);",
             "  colour = mix(colour, rimColour, rim);",
             "  gl_FragColor = vec4(clamp(colour, 0., 1.), 1.);",
@@ -1608,13 +1647,15 @@ TYPE</textarea>
           var count = Math.max(1, state.glassCount);
           var separation = state.glassSpacing * .29;
           var layoutAngle = state.layoutAngle * Math.PI / 180;
+          var originX = .5 + (state.glassOffsetX || 0) / 100;
+          var originY = .5 - (state.glassOffsetY || 0) / 100;
           for (var i = 0; i < MAX_LENSES; i += 1) {
             var lensAngle = ((state.lensAngles[i] || 0) * Math.PI / 180);
             var homeAngle = (i / count) * Math.PI * 2 + layoutAngle + lensAngle;
             var phase = time * (.48 + i * .11) + i * 2.399;
             var ringScale = count === 1 ? 0 : (count === 2 ? 1 : .58 + (i % 2) * .18);
-            var homeX = .5 + Math.cos(homeAngle) * separation * ringScale;
-            var homeY = .5 + Math.sin(homeAngle) * separation * .68 * ringScale;
+            var homeX = originX + Math.cos(homeAngle) * separation * ringScale + ((state.lensOffsetX && state.lensOffsetX[i]) || 0) / 100;
+            var homeY = originY + Math.sin(homeAngle) * separation * .68 * ringScale - ((state.lensOffsetY && state.lensOffsetY[i]) || 0) / 100;
             var x = homeX + Math.cos(phase * 1.08 + i * .74) * individualOrbit * (.55 + (i % 3) * .12);
             var y = homeY + Math.sin(phase * .84 + i * 1.37) * individualOrbit * (.44 + (i % 4) * .09);
             if (this.pointer.active) {
@@ -1844,6 +1885,20 @@ TYPE</textarea>
           $("#glass-size-value").textContent = value + "%";
         });
 
+        $("#lens-offset-x").addEventListener("input", function (event) {
+          ensureLensArrays();
+          var value = Number(event.target.value);
+          selectedLensIds.forEach(function (id) { state.lensOffsetX[id] = value; });
+          $("#lens-offset-x-value").textContent = formatOffset(value);
+        });
+
+        $("#lens-offset-y").addEventListener("input", function (event) {
+          ensureLensArrays();
+          var value = Number(event.target.value);
+          selectedLensIds.forEach(function (id) { state.lensOffsetY[id] = value; });
+          $("#lens-offset-y-value").textContent = formatOffset(value);
+        });
+
         $("#svg-input").addEventListener("change", function (event) {
           useSvg(event.target.files && event.target.files[0]);
         });
@@ -1965,10 +2020,16 @@ TYPE</textarea>
           state.tintStrength = Math.random() < .35 ? 0 : Math.round((.18 + Math.random() * .55) * 100) / 100;
           state.lensSizes = [];
           state.lensAngles = [];
+          state.lensOffsetX = [];
+          state.lensOffsetY = [];
           for (var i = 0; i < MAX_LENSES; i += 1) {
             state.lensSizes.push(Math.round(18 + Math.random() * 52));
             state.lensAngles.push(Math.floor(-40 + Math.random() * 80));
+            state.lensOffsetX.push(0);
+            state.lensOffsetY.push(0);
           }
+          state.glassOffsetX = 0;
+          state.glassOffsetY = 0;
           state.glassSize = state.lensSizes[0];
           selectedLensIds = Array.from({ length: state.glassCount }, function (_, index) { return index; });
           refreshUi();
@@ -2006,8 +2067,12 @@ TYPE</textarea>
             glassSize: state.glassSize,
             glassSpacing: state.glassSpacing,
             layoutAngle: state.layoutAngle,
+            glassOffsetX: state.glassOffsetX,
+            glassOffsetY: state.glassOffsetY,
             lensAngles: state.lensAngles,
             lensSizes: state.lensSizes,
+            lensOffsetX: state.lensOffsetX,
+            lensOffsetY: state.lensOffsetY,
             glassTint: state.glassTint,
             tintStrength: state.tintStrength,
             shadow: state.shadow,
@@ -2230,7 +2295,8 @@ TYPE</textarea>
       '    float inside = 1. - smoothstep(-.055, .018, shapeDistance(normalXY));',
       '    float z = sqrt(max(0., 1. - dot(normalXY, normalXY)));',
       '    vec3 normal = normalize(vec3(normalXY, z));',
-      '    float shine = pow(max(dot(normal, light), 0.), 22.) * inside;',
+      '    float edgeMask = smoothstep(.42, .98, unit);',
+      '    float shine = pow(max(dot(normal, light), 0.), 20.) * inside * edgeMask * .4;',
       '    float curvedEdge = smoothstep(.78, 1.02, unit) * inside;',
       '    float lowerEdge = smoothstep(.9, 1.03, unit) * inside;',
       '    highlight = max(highlight, shine * enabled);',
@@ -2288,7 +2354,7 @@ TYPE</textarea>
       '  float rim = rimAt(pixel) * uGloss;',
       '  colour *= 1. - surface.y * .08;',
       '  colour *= 1. - surface.z * .03;',
-      '  colour = mix(colour, vec3(1.), surface.x * .35);',
+      '  colour = mix(colour, vec3(1.), surface.x * .08);',
       '  vec3 rimColour = mix(mix(uPaper, vec3(1.), .66), vec3(1.), uImageMode);',
       '  colour = mix(colour, rimColour, rim);',
       '  gl_FragColor = vec4(clamp(colour, 0., 1.), 1.);',
@@ -2449,14 +2515,18 @@ TYPE</textarea>
       var count = Math.max(1, state.glassCount);
       var separation = state.glassSpacing * .29;
       var layoutAngle = (state.layoutAngle || 0) * Math.PI / 180;
+      var originX = .5 + (state.glassOffsetX || 0) / 100;
+      var originY = .5 - (state.glassOffsetY || 0) / 100;
       var lensAngles = state.lensAngles || [];
+      var lensOffsetX = state.lensOffsetX || [];
+      var lensOffsetY = state.lensOffsetY || [];
       for (var i = 0; i < MAX_LENSES; i += 1) {
         var lensAngle = (lensAngles[i] || 0) * Math.PI / 180;
         var homeAngle = i / count * Math.PI * 2 + layoutAngle + lensAngle;
         var phase = time * (.48 + i * .11) + i * 2.399;
         var ringScale = count === 1 ? 0 : (count === 2 ? 1 : .58 + i % 2 * .18);
-        var homeX = .5 + Math.cos(homeAngle) * separation * ringScale;
-        var homeY = .5 + Math.sin(homeAngle) * separation * .68 * ringScale;
+        var homeX = originX + Math.cos(homeAngle) * separation * ringScale + (lensOffsetX[i] || 0) / 100;
+        var homeY = originY + Math.sin(homeAngle) * separation * .68 * ringScale - (lensOffsetY[i] || 0) / 100;
         var x = homeX + Math.cos(phase * 1.08 + i * .74) * individualOrbit * (.55 + i % 3 * .12);
         var y = homeY + Math.sin(phase * .84 + i * 1.37) * individualOrbit * (.44 + i % 4 * .09);
         if (pointer.active) {

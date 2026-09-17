@@ -1,0 +1,534 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Character Set — TRON Design Language</title><meta name="description" content="Letters, numerals, essential symbols and OpenType features demonstrate the core capabilities of the TRON typeface."><link rel="canonical" href="https://pqu.infraway.co/design/character-set/"><link rel="alternate" hreflang="en" href="https://pqu.infraway.co/design/character-set/"><link rel="alternate" hreflang="zh-Hans" href="https://pqu.infraway.co/design/zh/character-set/"><link rel="alternate" hreflang="x-default" href="https://pqu.infraway.co/design/character-set/"><meta property="og:type" content="website"><meta property="og:site_name" content="TRON Design Language"><meta property="og:title" content="Character Set — TRON Design Language"><meta property="og:description" content="Letters, numerals, essential symbols and OpenType features demonstrate the core capabilities of the TRON typeface."><meta property="og:url" content="https://pqu.infraway.co/design/character-set/"><meta property="og:image" content="https://pqu.infraway.co/design/og-cover.png"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Character Set — TRON Design Language"><meta name="twitter:description" content="Letters, numerals, essential symbols and OpenType features demonstrate the core capabilities of the TRON typeface."><meta name="twitter:image" content="https://pqu.infraway.co/design/og-cover.png"><link rel="icon" href="/design/assets/logo/tron-tab-icon.svg" type="image/svg+xml"><meta name="theme-color" content="#f9f9f9"><script>(()=>{
+  const url=new URL(location.href);
+  const entering=url.searchParams.get('_tronTransition')==='1';
+  if(entering){
+    document.documentElement.classList.add('is-page-entering');
+    url.searchParams.delete('_tronTransition');
+    try{history.replaceState(history.state,'',url.href)}catch(error){}
+  }
+
+  let overlay;
+  let transitioning=false;
+  let revealTimer, cleanupTimer, navigationTimer;
+  const clearReveal=()=>{clearTimeout(revealTimer);clearTimeout(cleanupTimer)};
+  const buildOverlay=()=>{
+    if(overlay?.isConnected)return overlay;
+    overlay=document.createElement('div');
+    overlay.className='page-transition';
+    overlay.setAttribute('role','status');
+    overlay.setAttribute('aria-label','Loading');
+    overlay.innerHTML=`<div class="page-transition-grid" aria-hidden="true">${Array.from({length:16},(_,index)=>`<i class="page-transition-cube" data-wave="${(index%4)+Math.floor(index/4)}"></i>`).join('')}<svg class="page-transition-logo" viewBox="30 30 104 110" fill="none"><path d="M104.832 46.1015L35 36.25L74.0027 133.147L127.765 64.0832L104.832 46.1015ZM114.763 62.8197L92.0674 67.6935L103.871 54.2805L114.76 62.8197H114.763ZM96.4946 52.0313L81.9267 68.5847L52.9917 45.897L96.4946 52.0343V52.0313ZM73.3277 112.684L48.6769 51.4423L78.6185 74.9204L73.3307 112.684H73.3277ZM80.2726 113.661L85.5056 76.2968L114.146 70.1473L80.2756 113.661H80.2726Z" fill="#fff"/></svg></div>`;
+    document.body.appendChild(overlay);
+    return overlay;
+  };
+
+  window.showPageTransition=(callback,destination)=>{
+    if(transitioning)return;
+    transitioning=true;
+    clearReveal();
+    const loader=buildOverlay();
+    loader.classList.remove('is-exiting');
+    loader.classList.add('is-active');
+    loader.querySelectorAll('.page-transition-cube').forEach(cube=>cube.getAnimations().forEach(animation=>{animation.currentTime=0}));
+    if(destination){
+      destination.searchParams.set('_tronTransition','1');
+    }else{
+      const current=new URL(location.href);
+      current.searchParams.set('_tronTransition','1');
+      try{history.replaceState(history.state,'',current.href)}catch(error){}
+    }
+    navigationTimer=setTimeout(callback,1300);
+  };
+
+  document.addEventListener('click',event=>{
+    if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    const link=event.target.closest?.('a[href]');
+    if(!link||link.target==='_blank'||link.hasAttribute('download'))return;
+    const destination=new URL(link.href,location.href);
+    if(!['http:','https:','file:'].includes(destination.protocol))return;
+    if(destination.origin!==location.origin)return;
+    const sameDocument=destination.pathname===location.pathname&&destination.search===location.search;
+    if(sameDocument)return;
+    event.preventDefault();
+    window.showPageTransition(()=>{location.href=destination.href},destination);
+  },true);
+
+  addEventListener('DOMContentLoaded',()=>{
+    buildOverlay();
+    if(!entering)return;
+    overlay.classList.add('is-active');
+    let revealStarted=false;
+    const reveal=()=>{if(transitioning||revealStarted)return;revealStarted=true;revealTimer=setTimeout(()=>{
+      if(transitioning)return;
+      document.documentElement.classList.add('is-page-revealing');
+      overlay.classList.add('is-exiting');
+      cleanupTimer=setTimeout(()=>{
+        overlay.classList.remove('is-active','is-exiting');
+        document.documentElement.classList.remove('is-page-entering','is-page-revealing');
+      },1050);
+    },120)};
+    // Do not block the reveal on videos or other slow, noncritical assets.
+    revealTimer=setTimeout(reveal,1800);
+    const ready=()=>{if(revealStarted)return;clearTimeout(revealTimer);reveal()};
+    if(document.readyState==='complete')ready();else addEventListener('load',ready,{once:true});
+  },{once:true});
+  addEventListener('pageshow',event=>{
+    if(!event.persisted)return;
+    clearReveal();
+    clearTimeout(navigationTimer);
+    transitioning=false;
+    overlay?.classList.remove('is-active','is-exiting');
+    document.documentElement.classList.remove('is-page-entering','is-page-revealing');
+  });
+})();
+</script><link rel="stylesheet" href="/design/_assets/character-set.VvBQIVgo.css">
+<link rel="stylesheet" href="/design/_assets/character-set.BpPbmGX3.css"></head> <body> <div class="viewport" id="viewport"> <main class="site" id="site"> <nav class="nav" aria-label="Primary navigation"> <a class="nav-home" href="/design/" aria-label="TRON Design Language — home"> <img class="nav-logo" src="/design/assets/figma-layers/imgGroup173.svg" alt="TRON"> </a> <div class="nav-center" id="navCenter"> <button class="menu" id="menuToggle" type="button" aria-expanded="false" aria-controls="menuPanel"> <span class="menu-label">MENU</span> <span class="bars"><i></i><i></i><i></i></span> <span class="close-icon" aria-hidden="true"> <img src="/design/assets/figma-layers/nav-close.svg" alt=""> <img src="/design/assets/figma-layers/nav-close-alt.svg" alt=""> </span> </button> <div class="search-control" id="searchControl" role="search"> <input class="search-input" id="searchInput" type="search" placeholder="SEARCH" aria-label="Search"> <button class="icon-button search-toggle" id="searchToggle" type="button" aria-label="Open search" aria-expanded="false"> <img src="/design/assets/figma-layers/imgFrame1.svg" alt=""> </button> </div> <div class="menu-panel" id="menuPanel"> <a href="/design/#panorama">Visual Concept</a><a href="/design/glyph-features/">Glyph Features</a><a href="/design/typography/">Typography System</a><a href="/design/character-set/">Character Set</a> </div> </div> <a class="lang" data-language="en" href="/design/zh/character-set/" hreflang="zh-Hans" aria-label="Switch to Chinese"> <svg class="lang-glyph" aria-hidden="true" viewBox="0 0 24 24"><path class="lang-letter lang-letter-a" d="M7.504 2c.193 0 .367.112.44.286l3.777 9.09a.455.455 0 0 1-.439.624h-1.02a.473.473 0 0 1-.438-.286L8.809 9.273H4.943l-1.014 2.441A.474.474 0 0 1 3.49 12H2.473a.455.455 0 0 1-.439-.624l3.78-9.09A.475.475 0 0 1 6.255 2h1.249ZM6.876 4.622 5.7 7.454h2.355L6.876 4.622Z"></path><path class="lang-letter lang-letter-zh" d="M17.747 11.09a.46.46 0 0 1 .472.456v1.363h3.309c.26 0 .472.204.472.455v5.454a.46.46 0 0 1-.472.455h-3.309v2.273a.46.46 0 0 1-.472.454H16.8a.46.46 0 0 1-.472-.454v-2.273H13.02a.46.46 0 0 1-.473-.455v-5.454a.46.46 0 0 1 .473-.455h3.308v-1.363a.46.46 0 0 1 .472-.455l.947-.001Zm-1.418 3.638h-1.89v2.728h1.89v-2.728Zm3.78 0h-1.89v2.728h1.89v-2.728Z"></path><path class="lang-arrows" d="M4.514 14.728c.522 0 .945.407.945.91v.908c0 .952.762 1.743 1.749 1.814l.142.005h1.89c.514.011.924.415.924.909s-.41.898-.924.909H7.35c-2.088 0-3.78-1.628-3.78-3.637v-.908c0-.503.422-.91.944-.91ZM16.8 3.818c1.003 0 1.965.383 2.674 1.065a3.64 3.64 0 0 1 1.107 2.572v.908c-.011.494-.431.889-.945.889s-.933-.395-.945-.889v-.908c0-.483-.199-.945-.554-1.286A1.91 1.91 0 0 0 16.8 5.636h-1.89c-.513-.011-.924-.415-.924-.909s.41-.898.924-.909h1.89Z"></path></svg> </a> </nav>  <section class="hero">
+  <div class="hero-left">
+    <div>
+      <h1 class="hero-title">Character<br>Set</h1>
+      <p class="hero-copy">Designed for English information and digital contexts.<br>Letters, numerals, essential symbols and OpenType features demonstrate the typeface’s core capabilities in brand communications and digital products.</p>
+    </div>
+    <div class="hero-banner character-matrix" id="characterMatrix" role="img" aria-label="Interactive character grid containing A to Z and 0 to 9">
+      <div class="character-matrix-grid" id="characterMatrixGrid" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <canvas id="heroGlass" width="560" height="560" role="img" aria-label="TRON character collage with a moving glass lens"></canvas>
+  </div>
+</section>
+
+<section class="capability">
+  <h2 class="section-title">Capability overview</h2>
+  <p class="section-copy capability-copy">A TrueType variable font for English text and numerals, with one continuous weight axis from 400 to 700. Four named weights and built-in kerning support consistent typography across headlines and body copy.</p>
+  <div class="cap-grid">
+    <article class="cap-card"><strong>95</strong><span>CHARACTERS</span><p>Letters, numerals and punctuation for English text and digital interfaces.</p></article>
+    <article class="cap-card"><strong class="english">English</strong><span>CHARACTER COVERAGE</span><p>A–Z, a–z and 0–9, with common punctuation. No Chinese glyphs.</p></article>
+    <article class="cap-card"><strong class="english">3 Types</strong><span>FONT FORMAT</span><p>TTF, OTF and WOFF2 formats for desktop design and web use.</p></article>
+    <article class="cap-card"><strong>400–700</strong><span>WEIGHT RANGE</span><p>One weight axis; presets at 400, 500, 600 and 700, with continuous adjustment.</p></article>
+  </div>
+</section>
+
+<section class="charset">
+  <div class="charset-head">
+    <h2 class="section-title">Character Set</h2>
+    <p class="section-copy">These representative characters cover letters, numerals, common punctuation, currency signs and essential symbols, demonstrating consistent structure and visual rhythm across categories.</p>
+  </div>
+  <div class="charset-grid" id="glyphGrid"></div>
+  <div class="glyph-preview" id="glyphPreview">
+    <canvas class="preview-glyph" id="previewGlyph" width="320" height="320" aria-hidden="true"></canvas>
+    <div class="metric metric-asc metric-label-above"><span>ASCENDER</span></div>
+    <div class="metric metric-cap"><span>CAP-HEIGHT</span></div>
+    <div class="metric metric-x"><span>X-HEIGHT</span></div>
+    <div class="metric metric-base"><span>BASE</span></div>
+    <div class="metric metric-desc"><span>DESCENDER</span></div>
+    <span class="corner corner-tr"><img src="/design/assets/charset/corner.svg" alt=""></span>
+    <span class="corner corner-br"><img src="/design/assets/charset/corner-1.svg" alt=""></span>
+    <span class="corner corner-tl"><img src="/design/assets/charset/corner-2.svg" alt=""></span>
+    <span class="corner corner-bl"><img src="/design/assets/charset/corner-3.svg" alt=""></span>
+  </div>
+</section>
+
+<section class="numerals">
+  <div class="numerals-head">
+    <h2 class="section-title">Numeral System</h2>
+    <p class="section-copy">Numerals are central to blockchain experiences. From asset values and transaction records to network data, high distinction and reliable alignment make complex information easier to scan, compare and trust.</p>
+  </div>
+  <div class="numeral-rows" id="numeralRows">
+    <article class="numeral-row" data-row="distinct">
+      <span class="numeral-num">01</span>
+      <h3 class="numeral-title">Distinct</h3>
+      <button class="numeral-toggle" type="button" aria-expanded="false" aria-label="Distinct numerals" tabindex="-1"><img src="/design/assets/charset/icon-plus.svg" alt=""></button>
+      <div class="numeral-caption">
+        <p class="numeral-zh-title">高辨识数字</p>
+        <p class="numeral-copy">Distinct numeral forms support faster recognition across asset values, transaction records and data-rich interfaces.</p>
+      </div>
+      <div class="numeral-illust">
+        <img src="/design/assets/charset/numeral-distinction.svg?v=5" width="480" height="240" alt="Distinct numeral and letter forms: zero and O, one and I, five and S">
+      </div>
+    </article>
+    <article class="numeral-row" data-row="proportional">
+      <span class="numeral-num">02</span>
+      <h3 class="numeral-title">Proportional</h3>
+      <button class="numeral-toggle" type="button" aria-expanded="false" aria-label="Proportional" tabindex="-1"><img src="/design/assets/charset/icon-plus.svg" alt=""></button>
+      <div class="numeral-caption">
+        <p class="numeral-zh-title">比例数字</p>
+        <p class="numeral-copy">Each numeral uses a natural width based on its form, creating a smoother rhythm for headlines, body copy and brand communication.</p>
+      </div>
+      <div class="numeral-illust">
+        <img src="/design/assets/charset/numeral-proportional.webp" width="480" height="240" alt="Proportional numerals 2026 / 08">
+      </div>
+    </article>
+    <article class="numeral-row is-open" data-row="alignment">
+      <span class="numeral-num">03</span>
+      <h3 class="numeral-title">Alignment</h3>
+      <button class="numeral-toggle" type="button" aria-expanded="true" aria-label="Alignment" tabindex="-1"><img src="/design/assets/charset/icon-minus.svg" alt=""></button>
+      <div class="numeral-caption">
+        <p class="numeral-zh-title">精准对齐</p>
+        <p class="numeral-copy">Clear decimal, currency and percentage positions create stable visual anchors, helping asset prices, transaction records and network data remain easy to scan and compare.</p>
+      </div>
+      <div class="numeral-illust">
+        <img src="/design/assets/charset/numeral-alignment.webp" width="480" height="240" alt="Aligned currency and percentage numerals">
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="opentype">
+  <div class="opentype-copy">
+    <h2 class="section-title">OpenType<br>features</h2>
+    <p class="section-copy">OpenType features let the system adapt numeral forms and character styles to body copy, data-heavy interfaces and moments of emphasis, while maintaining clear hierarchy and a consistent visual expression.</p>
+  </div>
+  <div class="ot-grid">
+    <article class="ot-card"><h3>Kerning</h3><div class="sample ot-kern">AVATAR</div><span class="tag">kern</span></article>
+    <article class="ot-card is-active"><h3>Superscript</h3><div class="sample">x²</div><span class="tag">sups</span></article>
+    <article class="ot-card"><h3>Proportional Figures</h3><div class="sample ot-pnum">2026</div><span class="tag">pnum</span></article>
+    <article class="ot-card"><h3>Slashed Zero</h3><div class="sample ot-zero"><span class="slashed-zero">0</span></div><span class="tag">zero</span></article>
+    <article class="ot-card"><h3>Fractions</h3><div class="sample ot-frac">1/2</div><span class="tag">frac</span></article>
+    <article class="ot-card"><h3>Subscript</h3><div class="sample">H₂O</div><span class="tag">subs</span></article>
+    <article class="ot-card"><h3>Case-sensitive Forms</h3><div class="sample ot-case">(API)</div><span class="tag">case</span></article>
+    <article class="ot-card"><h3>Stylistic Alternates</h3><div class="sample ot-salt">Ag</div><span class="tag">salt</span></article>
+  </div>
+</section>
+   <footer class="site-footer" id="siteFooter"> <div class="site-footer-left"> <div class="site-footer-identity"> <img class="site-footer-logo" src="/design/assets/figma-layers/imgGroup173.svg" alt="TRON"> <div class="site-footer-text"> <div class="site-footer-brand">TRON DESIGN LANGUAGE</div> <p class="site-footer-copy">Shared design guidelines for the TRON ecosystem.</p> </div> </div> </div> <nav class="site-footer-nav" aria-label="Footer navigation"> <a href="/design/#panorama">Visual Concept</a><a href="/design/glyph-features/">Glyph Features</a><a href="/design/typography/">Typography System</a><a href="/design/character-set/">Character Set</a>  <div class="site-footer-language" aria-label="Language"> <a class="is-active" href="/design/character-set/" hreflang="en" aria-current="true">EN</a> <span aria-hidden="true">/</span> <a href="/design/zh/character-set/" hreflang="zh-Hans">中文</a> </div> </nav> <div class="site-footer-copyright"> <span>© 2026 TRON Design Language. Community maintained.</span> </div> </footer> </main> </div>  <script>const site=document.getElementById('site'),viewport=document.getElementById('viewport');
+function resize(){
+  const width=document.documentElement.clientWidth,scale=width>=2560?1.5:Math.min(1,width/1440),bleedWidth=width/scale,bleedLeft=(1440-bleedWidth)/2,totalHeight=4966;
+  site.style.left='50%';
+  site.style.transform=`translateX(-50%) scale(${scale})`;
+  site.style.setProperty('--bleed-width',`${bleedWidth}px`);
+  site.style.setProperty('--bleed-left',`${bleedLeft}px`);
+  site.style.width='1440px';
+  site.style.height=`${totalHeight}px`;
+  viewport.style.width='100%';
+  viewport.style.height=`${totalHeight*scale}px`;
+  if(scrollX)scrollTo(0,scrollY);
+}
+resize();addEventListener('resize',resize);
+
+const glyphs=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','!','"',"'",'(',')',',','-','.','/',':',';','?','[','\\',']','_','–','—','‘','’','“','”','…','','','','','','','','','','',''];
+const grid=document.getElementById('glyphGrid'),preview=document.getElementById('glyphPreview'),previewGlyph=document.getElementById('previewGlyph');
+const CELL=80,PREVIEW=320,COLS=16,ROWS=6,GRID_LEFT=80,GRID_TOP=294,GRID_W=1280,GRID_H=480;
+const defaultIndex=glyphs.indexOf('T');
+let activeIndex=-1;
+const FONT_SIZE=160;
+const ASCENDER=FONT_SIZE*0.8;
+const CAP_HEIGHT=FONT_SIZE*0.7;
+const X_HEIGHT=FONT_SIZE*0.5;
+const DESCENDER=FONT_SIZE*0.2;
+// Center the ascender-to-descender range, including its symmetric outer labels.
+const BASELINE=(PREVIEW+ASCENDER-DESCENDER)/2;
+function paintPreview(character){
+  if(!previewGlyph)return;
+  const dpr=Math.max(2,window.devicePixelRatio||1);
+  previewGlyph.width=PREVIEW*dpr;
+  previewGlyph.height=PREVIEW*dpr;
+  const ctx=previewGlyph.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,PREVIEW,PREVIEW);
+  ctx.font=`500 ${FONT_SIZE}px TronFontVF`;
+  ctx.textAlign='center';
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#fff';
+  if(character)ctx.fillText(character,PREVIEW/2,BASELINE);
+  const nInk=ctx.measureText('N');
+  const xInk=ctx.measureText('x');
+  const capY=nInk.actualBoundingBoxAscent?BASELINE-nInk.actualBoundingBoxAscent:BASELINE-CAP_HEIGHT;
+  const baseY=nInk.actualBoundingBoxDescent?BASELINE+nInk.actualBoundingBoxDescent:BASELINE;
+  const xHeightY=xInk.actualBoundingBoxAscent?BASELINE-xInk.actualBoundingBoxAscent:BASELINE-X_HEIGHT;
+  preview.style.setProperty('--ascender',`${(BASELINE-ASCENDER).toFixed(2)}px`);
+  preview.style.setProperty('--cap',`${capY.toFixed(2)}px`);
+  preview.style.setProperty('--x-height',`${xHeightY.toFixed(2)}px`);
+  preview.style.setProperty('--baseline',`${baseY.toFixed(2)}px`);
+  preview.style.setProperty('--descender',`${(BASELINE+DESCENDER).toFixed(2)}px`);
+}
+function showGlyph(index){
+  const col=index%COLS,row=Math.floor(index/COLS);
+  const cellLeft=GRID_LEFT+col*CELL,cellTop=GRID_TOP+row*CELL;
+  let left=cellLeft+CELL;
+  if(left+PREVIEW>GRID_LEFT+GRID_W)left=cellLeft-PREVIEW;
+  left=Math.min(Math.max(left,GRID_LEFT),GRID_LEFT+GRID_W-PREVIEW);
+  let top=cellTop-CELL;
+  if(top<GRID_TOP)top=GRID_TOP;
+  if(top+PREVIEW>GRID_TOP+GRID_H)top=GRID_TOP+GRID_H-PREVIEW;
+  preview.style.left=left+'px';
+  preview.style.top=top+'px';
+  if(index===activeIndex)return;
+  activeIndex=index;
+  paintPreview(glyphs[index]||'');
+  grid.querySelectorAll('.glyph').forEach((item,itemIndex)=>item.classList.toggle('is-active',itemIndex===index&&glyphs[index]));
+}
+glyphs.forEach((glyph,index)=>{
+  const button=document.createElement('button');
+  button.type='button';
+  button.className=glyph?'glyph':'glyph is-empty';
+  button.textContent=glyph;
+  if(glyph){
+    button.setAttribute('aria-label',`Character ${glyph}`);
+    button.addEventListener('pointerenter',()=>showGlyph(index));
+    button.addEventListener('focus',()=>showGlyph(index));
+    button.addEventListener('click',()=>showGlyph(index));
+  }else{
+    button.disabled=true;
+    button.tabIndex=-1;
+    button.setAttribute('aria-hidden','true');
+  }
+  grid.append(button);
+});
+grid.addEventListener('pointerleave',()=>showGlyph(defaultIndex));
+grid.addEventListener('focusout',event=>{if(!grid.contains(event.relatedTarget))showGlyph(defaultIndex)});
+showGlyph(defaultIndex);
+document.fonts.load('500 160px TronFontVF').then(()=>document.fonts.ready).then(()=>{activeIndex=-1;showGlyph(defaultIndex)});
+
+const navCenter=document.getElementById('navCenter'),menuToggle=document.getElementById('menuToggle'),menuPanel=document.getElementById('menuPanel'),searchToggle=document.getElementById('searchToggle'),searchInput=document.getElementById('searchInput'),footerNav=document.querySelector('.site-footer-nav');
+function buildAnimatedMenuWord(element){
+  const label=element.textContent.trim(),word=document.createElement('span');
+  word.className='menu-word';word.setAttribute('aria-hidden','true');
+  [...label].forEach((character,index)=>{
+    const char=document.createElement('span'),track=document.createElement('span'),front=document.createElement('span'),back=document.createElement('span'),value=character===' '?String.fromCharCode(160):character;
+    char.className=`menu-char${character===' '?' is-space':''}`;
+    char.style.setProperty('--menu-char-index',index);
+    track.className='menu-char-track';
+    front.textContent=value;back.textContent=value;track.append(front,back);char.append(track);word.append(char);
+  });
+  element.textContent='';element.append(word);return label;
+}
+menuPanel.querySelectorAll('a').forEach(link=>link.setAttribute('aria-label',buildAnimatedMenuWord(link)));
+footerNav.querySelectorAll('a:not(.site-footer-language a)').forEach(link=>{link.setAttribute('aria-label',buildAnimatedMenuWord(link));link.onpointerenter=()=>link.classList.add('is-hovered');link.onpointerleave=()=>link.classList.remove('is-hovered')});
+buildAnimatedMenuWord(menuToggle.querySelector('.menu-label'));
+document.querySelectorAll('.cap-card strong').forEach(sample=>sample.setAttribute('aria-label',buildAnimatedMenuWord(sample)));
+let menuTransitionTimer,menuLeaveTimer;
+function setMenu(open){navCenter.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open))}
+function setSearch(open){navCenter.classList.toggle('is-searching',open);searchToggle.setAttribute('aria-expanded',String(open));if(open){setMenu(false);searchInput.focus()}}
+menuToggle.onclick=()=>{clearTimeout(menuTransitionTimer);if(navCenter.classList.contains('is-searching')){setSearch(false);menuTransitionTimer=setTimeout(()=>setMenu(true),500)}else setMenu(!navCenter.classList.contains('is-open'))};
+searchToggle.onclick=()=>setSearch(!navCenter.classList.contains('is-searching'));
+navCenter.onmouseenter=()=>clearTimeout(menuLeaveTimer);
+navCenter.onmouseleave=()=>{menuLeaveTimer=setTimeout(()=>setMenu(false),180)};
+document.addEventListener('click',e=>{if(!navCenter.contains(e.target)){setMenu(false);setSearch(false)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){setMenu(false);setSearch(false)}});
+
+const floatingNav=document.querySelector('.nav');document.body.append(floatingNav);
+let lastScrollY=scrollY,navTicking=false,navRevealTimer;
+function syncNavScale(){const scale=innerWidth>=2560?1.5:Math.min(1,innerWidth/1440);floatingNav.style.setProperty('--nav-scale',scale);floatingNav.style.top=`${50*scale}px`}
+function updateFloatingNav(){const y=scrollY,delta=y-lastScrollY;if(y<10)floatingNav.classList.remove('is-hidden');else if(delta<-1){if(!navRevealTimer)navRevealTimer=setTimeout(()=>{floatingNav.classList.remove('is-hidden');navRevealTimer=null},180)}else if(delta>1){clearTimeout(navRevealTimer);navRevealTimer=null;floatingNav.classList.add('is-hidden');setMenu(false);setSearch(false)}lastScrollY=y;navTicking=false}
+function requestNavUpdate(){if(!navTicking){navTicking=true;requestAnimationFrame(updateFloatingNav)}}
+addEventListener('scroll',requestNavUpdate,{passive:true});addEventListener('resize',syncNavScale);syncNavScale();requestAnimationFrame(()=>floatingNav.classList.add('is-ready'));
+
+const revealTitles=[...document.querySelectorAll('.site h1,.site h2,.opentype-copy h2,.capability h2,.charset-head h2,.numerals-head h2')];
+const revealBodies=[...document.querySelectorAll('.hero-copy,.capability-copy,.charset-head .section-copy,.numerals-head .section-copy,.opentype-copy .section-copy')];
+const revealCounters=new Map();
+function splitRevealCharacters(root){
+  const nodes=[],walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode())nodes.push(walker.currentNode);
+  let i=0;
+  nodes.forEach(node=>{
+    const fragment=document.createDocumentFragment();
+    [...node.nodeValue].forEach(c=>{
+      if(/\s/.test(c))fragment.append(c);
+      else{const span=document.createElement('span');span.className='text-reveal-char';span.style.setProperty('--char-index',i++);span.textContent=c;fragment.append(span)}
+    });
+    node.replaceWith(fragment);
+  });
+}
+function prepareReveal(element,type){
+  const group=element.closest('section')||document.body,index=revealCounters.get(group)||0;
+  revealCounters.set(group,index+1);
+  element.classList.add(`text-reveal-${type}`);
+  element.style.setProperty('--reveal-delay',`${Math.min(index*65,260)}ms`);
+  const inner=document.createElement('span');inner.className='text-reveal-inner';
+  while(element.firstChild)inner.append(element.firstChild);
+  element.append(inner);
+  if(type==='title')splitRevealCharacters(inner);
+}
+revealTitles.forEach(e=>prepareReveal(e,'title'));
+revealBodies.forEach(e=>prepareReveal(e,'body'));
+const revealItems=[...revealTitles,...revealBodies];
+if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver'in window))revealItems.forEach(e=>e.classList.add('is-visible'));
+else{
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  requestAnimationFrame(()=>revealItems.forEach(e=>observer.observe(e)));
+}
+
+const rows=[...document.querySelectorAll('.numeral-row')];
+const numeralRows=document.getElementById('numeralRows');
+const defaultNumeral=document.querySelector('.numeral-row[data-row="alignment"]');
+let currentNumeral;
+function openRow(target){
+  if(target===currentNumeral)return;
+  currentNumeral=target;
+  rows.forEach(row=>{
+    const open=row===target;
+    row.classList.toggle('is-open',open);
+    const toggle=row.querySelector('.numeral-toggle');
+    const icon=toggle.querySelector('img');
+    toggle.setAttribute('aria-expanded',String(open));
+    icon.src=open?'/design/assets/charset/icon-minus.svg':'/design/assets/charset/icon-plus.svg';
+  });
+}
+rows.forEach(row=>row.addEventListener('pointerenter',()=>openRow(row)));
+numeralRows.addEventListener('pointerleave',()=>openRow(defaultNumeral));
+openRow(defaultNumeral);
+
+const otGrid=document.querySelector('.ot-grid');
+const otCards=[...otGrid.querySelectorAll('.ot-card')];
+const defaultOtCard=otCards[1];
+function setOtActive(card){
+  otCards.forEach(item=>item.classList.toggle('is-active',item===card));
+}
+otCards.forEach(card=>card.addEventListener('pointerenter',()=>setOtActive(card)));
+otGrid.addEventListener('pointerleave',()=>setOtActive(defaultOtCard));
+setOtActive(defaultOtCard);
+</script> <script src="/design/assets/charset/glass-type.js?v=6"></script> <script>const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+const heroGlass=document.getElementById('heroGlass');
+const heroVisual=heroGlass&&heroGlass.closest('.hero-visual');
+function showHeroFallback(){
+  if(!heroVisual)return;
+  heroVisual.innerHTML='<img src="/design/assets/charset/hero-glass.png" alt="TRON character collage">';
+}
+try{
+  if(!heroGlass||typeof mountGlassType!=='function')throw new Error('missing glass type');
+  const glassEffect=mountGlassType(heroGlass);
+  function syncGlassMotion(){
+    if(!glassEffect)return;
+    if(reducedMotion.matches)glassEffect.pause();
+    else glassEffect.play();
+  }
+  reducedMotion.addEventListener?.('change',syncGlassMotion);
+  syncGlassMotion();
+}catch(error){
+  showHeroFallback();
+}
+</script> <script>const characterMatrix=document.getElementById('characterMatrix');
+const characterMatrixGrid=document.getElementById('characterMatrixGrid');
+
+if(characterMatrix&&characterMatrixGrid){
+  const characters='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const columns=10;
+  const rows=3;
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const glyphStates=[];
+
+  [...characters].forEach((character,index)=>{
+    const column=index%columns;
+    const row=Math.floor(index/columns);
+    const cell=document.createElement('span');
+    const glyph=document.createElement('canvas');
+
+    cell.className='character-matrix-cell';
+    glyph.className='character-matrix-glyph';
+    glyph.textContent=character;
+    cell.append(glyph);
+    characterMatrixGrid.append(cell);
+    const state={glyph,column,row,currentAngle:0,targetAngle:0,currentTint:0,targetTint:0};
+    glyphStates.push(state);
+    cell.addEventListener('pointerenter',()=>{
+      glyphStates.forEach(neighbor=>{
+        const ring=Math.max(Math.abs(neighbor.column-column),Math.abs(neighbor.row-row));
+        neighbor.targetTint=ring===0?1:ring===1?.6:ring===2?.3:0;
+      });
+      updateTint();
+    });
+  });
+
+  function drawCharacter({glyph,currentTint}){
+    const size=70;
+    const dpr=Math.max(2,window.devicePixelRatio||1);
+      glyph.width=Math.round(size*dpr);
+      glyph.height=Math.round(size*dpr);
+      const context=glyph.getContext('2d');
+      context.scale(dpr,dpr);
+      context.font='700 54px TronFontVF';
+      // Interpolate opaque colors: white → blue → amber → TRON red.
+      const stops=[[0,[255,255,255]],[.3,[0,102,255]],[.6,[255,174,0]],[1,[234,0,41]]];
+      const upper=stops.findIndex(([position])=>position>=currentTint);
+      const end=stops[Math.max(1,upper)];
+      const start=stops[Math.max(1,upper)-1];
+      const blend=(currentTint-start[0])/(end[0]-start[0]);
+      const channels=start[1].map((channel,index)=>Math.round(channel+(end[1][index]-channel)*blend));
+      context.fillStyle=`rgb(${channels.join(',')})`;
+      const bounds=context.measureText(glyph.textContent);
+      const x=(size-bounds.actualBoundingBoxRight+bounds.actualBoundingBoxLeft)/2;
+      const y=(size+bounds.actualBoundingBoxAscent-bounds.actualBoundingBoxDescent)/2;
+      context.fillText(glyph.textContent,x,y);
+  }
+  function drawCharacters(){glyphStates.forEach(drawCharacter)}
+  function updateTint(){
+    if(reducedMotion){
+      glyphStates.forEach(state=>{state.currentTint=state.targetTint});
+      drawCharacters();
+    }else if(!animationFrame)animationFrame=requestAnimationFrame(paint);
+  }
+  characterMatrix.addEventListener('pointerleave',()=>{
+    glyphStates.forEach(state=>{state.targetTint=0});
+    updateTint();
+  });
+  drawCharacters();
+  document.fonts.load('700 54px TronFontVF').then(drawCharacters);
+
+  function setTargets(pointerX,pointerY){
+    const matrixRect=characterMatrix.getBoundingClientRect();
+    const cellSize=(matrixRect.height/rows)/matrixRect.width;
+    glyphStates.forEach(state=>{
+      const centerX=(state.column+.5)*cellSize;
+      const centerY=(state.row+.5)/rows;
+      state.targetAngle=Math.atan2(pointerY-centerY,pointerX-centerX)*180/Math.PI+90;
+    });
+  }
+
+  function resetTargets(){
+    glyphStates.forEach(state=>{state.targetAngle=0});
+  }
+
+  function shortestTurn(from,to){
+    return((to-from+540)%360)-180;
+  }
+
+  function paint(){
+    let moving=false;
+    glyphStates.forEach(state=>{
+      const tintDelta=state.targetTint-state.currentTint;
+      if(Math.abs(tintDelta)>.002){
+        state.currentTint+=tintDelta*.2;
+        moving=true;
+        drawCharacter(state);
+      }else if(tintDelta){
+        state.currentTint=state.targetTint;
+        drawCharacter(state);
+      }
+      const turn=shortestTurn(state.currentAngle,state.targetAngle);
+      if(Math.abs(turn)>.08){state.currentAngle+=turn*.2;moving=true}
+      else state.currentAngle=state.targetAngle;
+      state.glyph.style.setProperty('--matrix-angle',`${state.currentAngle.toFixed(2)}deg`);
+    });
+    if(moving)animationFrame=requestAnimationFrame(paint);
+    else animationFrame=0;
+  }
+
+  function aim(pointerX,pointerY){
+    setTargets(pointerX,pointerY);
+    if(!animationFrame)animationFrame=requestAnimationFrame(paint);
+  }
+
+  resetTargets();
+  let animationFrame=0;
+  paint();
+
+  if(!reducedMotion){
+    let pointerFrame=0;
+    let latestEvent;
+    characterMatrix.addEventListener('pointermove',event=>{
+      latestEvent=event;
+      if(pointerFrame)return;
+      pointerFrame=requestAnimationFrame(()=>{
+        const rect=characterMatrix.getBoundingClientRect();
+        const pointerX=Math.max(0,Math.min(1,(latestEvent.clientX-rect.left)/rect.width));
+        const pointerY=Math.max(0,Math.min(1,(latestEvent.clientY-rect.top)/rect.height));
+        aim(pointerX,pointerY);
+        pointerFrame=0;
+      });
+    },{passive:true});
+    characterMatrix.addEventListener('pointerleave',()=>{
+      resetTargets();
+      if(!animationFrame)animationFrame=requestAnimationFrame(paint);
+    });
+  }
+}
+</script>  </body></html>

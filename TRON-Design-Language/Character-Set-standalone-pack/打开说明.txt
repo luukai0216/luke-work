@@ -1,0 +1,4 @@
+Character Set 单页预览包
+
+双击打开 Character-Set.html 即可预览。
+请保持 HTML 和 assets 文件夹在一起，不要拆开。

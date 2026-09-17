@@ -1,0 +1,1 @@
+{"name":"formfx-studio","private":true,"type":"module","scripts":{"build":"esbuild src/main.js --bundle --minify --format=iife --outfile=dist/app.js && esbuild src/runtime.js --bundle --minify --format=iife --global-name=FormFXRuntime --outfile=dist/effect-runtime.js","dev":"node server.mjs"},"dependencies":{"three":"0.180.0"},"devDependencies":{"esbuild":"0.25.10"}}
