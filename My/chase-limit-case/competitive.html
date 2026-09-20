@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>追逐限价单竞品分析 | luke</title>
+<style>
+:root{--ink:#182b28;--muted:#64736e;--green:#087e62;--bright:#20bc94;--line:#dfe7e2;--paper:#f5f7f3;--soft:#e8f4ed;--red:#b94156;--amber:#8d5b1c;--okx:#111827;--gate:#1a56db;--binance:#9b7400;--sans:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.7 var(--sans)}
+button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer;font:inherit}
+a{color:var(--green);text-underline-offset:4px}
+button:focus-visible,a:focus-visible{outline:3px solid #55adf1;outline-offset:3px}
+h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.22}
+h2{font-size:32px;letter-spacing:-1px}h3{font-size:16px}
+.shell{max-width:1180px;margin:auto;padding:0 40px}
+.topbar{background:#f5f7f3f2;backdrop-filter:blur(14px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+.topbar .shell{max-width:1520px}
+.layout{display:grid;grid-template-columns:252px minmax(0,1fr);align-items:start;max-width:1520px;margin:0 auto}
+.content{min-width:0}
+.sidenav{position:sticky;top:72px;height:calc(100vh - 72px);overflow:auto;padding:22px 14px 40px 18px;border-right:1px solid var(--line);background:#e8eee8;scrollbar-width:thin}
+.sidenav-group{display:flex;flex-direction:column;gap:4px}
+.sidenav a{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:center;width:100%;text-align:left;text-decoration:none;border-radius:10px;padding:10px 10px;color:var(--ink);position:relative}
+.sidenav a .num{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;background:white;border:1px solid var(--line);font:700 12px/1 var(--sans);color:var(--green)}
+.sidenav a .copy b{display:block;font-size:14px;font-weight:700;letter-spacing:-.2px}
+.sidenav a .copy small{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.35}
+.sidenav a:hover{background:#ffffffa8}
+.sidenav a[aria-current=true]{background:var(--ink);color:white;box-shadow:0 8px 18px #182b2814}
+.sidenav a[aria-current=true]:before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3px;background:var(--bright);border-radius:3px}
+.sidenav a[aria-current=true] .num{background:var(--green);border-color:var(--green);color:white}
+.sidenav a[aria-current=true] .copy small{color:#c5ddd3}
+.sidenav-split{height:1px;background:var(--line);margin:14px 10px}
+.sidenav .aside-link{grid-template-columns:1fr;padding:11px 12px}
+.sidenav .aside-link b{font-size:13px}
+.top-inner{display:flex;align-items:center;justify-content:space-between;min-height:72px;gap:20px}
+.wordmark{font-weight:750;font-size:16px;color:var(--ink);text-decoration:none;letter-spacing:-.3px}
+.wordmark span{color:var(--green)}
+.nav{display:flex;gap:16px;align-items:center}
+.nav a{color:var(--muted);font-size:13px;text-decoration:none}
+.nav a:hover{color:var(--green)}
+.print{border:1px solid var(--line);background:transparent;border-radius:30px;padding:8px 15px;font-size:12px}
+.hero{padding:56px 0 40px}
+.hero h1{font-size:48px;font-weight:650;letter-spacing:-2px}
+.hero h1 span{color:var(--green)}
+.lead{font-size:17px;color:var(--muted);max-width:640px;margin-top:16px}
+.hero-meta{display:flex;gap:28px;margin-top:24px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.hero-meta b{display:block;color:var(--ink);font-size:13px;margin-bottom:3px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.chip{font-size:11px;padding:4px 9px;border-radius:99px;background:var(--soft);color:var(--green)}
+.chip.text{background:#eef2ff;color:#314c9b}
+.section{padding:52px 0;border-top:1px solid var(--line)}
+.section-head{margin-bottom:28px;max-width:720px}
+.section-no{font-size:11px;letter-spacing:1.5px;color:var(--green);margin-bottom:10px}
+.section-head p{color:var(--muted);margin-top:10px;font-size:15px}
+.define{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:36px}
+.define article{background:white;border-radius:10px;padding:18px 18px 16px}
+.define small{display:block;font-size:11px;letter-spacing:.8px;color:var(--green);margin-bottom:8px}
+.define p{font-size:14px;color:var(--muted);margin-top:6px}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}
+.timeline li:last-child{border-bottom:0}
+.timeline .n{font:650 12px/1.4 var(--sans);color:var(--green);padding-top:2px}
+.timeline b{display:block;font-size:15px}
+.timeline p{font-size:14px;color:var(--muted);margin-top:4px}
+.ends{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.ends article{padding:16px 18px;background:var(--soft);border-radius:10px}
+.ends b{display:block;font-size:14px;margin-bottom:4px}
+.ends p{font-size:13px;color:var(--muted)}
+.compare{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:white;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.card-head{padding:14px 16px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.brand{font-size:13px;font-weight:700}
+.brand.okx{color:var(--okx)}.brand.gate{color:var(--gate)}.brand.binance{color:var(--binance)}
+.ev{font-size:10px;padding:3px 7px;border-radius:4px;background:#edf1ec;color:#57685c;white-space:nowrap}
+.ev.has-img{background:#e8f4ed;color:var(--green)}
+.ev.text{background:#eef2ff;color:#314c9b}
+.shot{background:#111;min-height:240px;display:flex;align-items:center;justify-content:center;cursor:zoom-in}
+.shot img{max-width:100%;max-height:380px;object-fit:contain;display:block}
+.shot.empty{min-height:160px;background:#f3f6f3;color:#7b8b80;font-size:13px;cursor:default;padding:24px;text-align:center;line-height:1.6}
+.card-body{padding:14px 16px 16px;font-size:13px;color:var(--muted);flex:1}
+.card-body ul{margin:0;padding-left:16px}
+.card-body li+li{margin-top:5px}
+.note{margin-top:16px;font-size:13px;color:var(--muted)}
+.matrix-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;text-align:left;min-width:720px}
+th{color:var(--muted);font-weight:500;background:#edf1ec}
+td,th{padding:12px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:650;white-space:nowrap}
+.no{color:var(--red)}.mid{color:var(--amber)}
+.take{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.insight{padding:18px;background:white;border-radius:10px}
+.insight p{font-size:14px;color:var(--muted);margin-top:8px}
+.warn{margin-top:16px;padding:14px 16px;background:#fff6e8;border-left:3px solid var(--amber);font-size:14px}
+.warn small{display:block;color:var(--muted);margin-top:4px}
+.source-note{font-size:12px;color:var(--muted);margin-top:18px}
+.footer{padding:20px 0 48px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)}
+.lightbox{position:fixed;inset:0;background:#0b151280;display:none;align-items:center;justify-content:center;z-index:80;padding:24px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:min(92vw,980px);max-height:90vh;object-fit:contain;background:#111;border-radius:12px}
+.lightbox button{position:absolute;top:18px;right:18px;border:0;background:white;border-radius:99px;padding:8px 14px}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidenav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:14px 18px 16px}.sidenav-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.hero h1{font-size:36px}.define,.compare,.ends,.take{grid-template-columns:1fr}.hero{padding:40px 0 28px}}
+@media(max-width:760px){.shell{padding:0 18px}.nav a{display:none}.section{padding:36px 0}h2{font-size:26px}.footer{display:block}.timeline li{grid-template-columns:40px 1fr}.sidenav-group{grid-template-columns:1fr}}
+@media print{@page{size:A4;margin:12mm}body{background:white;font-size:11px}.topbar,.sidenav,.print,.lightbox{display:none!important}.layout{display:block}.hero h1{font-size:28px}.shot{break-inside:avoid}.card{break-inside:avoid}.shell{padding:0;max-width:none}a{color:inherit}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="shell top-inner"><a class="wordmark" href="index.html">luke<span>-</span>追逐限价单竞品分析</a><nav class="nav" aria-label="页面导航"><a href="index.html">案例</a><button class="print" id="print-btn">打印</button></nav></div></header>
+
+<div class="layout">
+<nav class="sidenav" id="stage-nav" aria-label="流程阶段">
+  <div class="sidenav-group">
+    <a class="aside-link" href="#overview"><span class="copy"><b>概览</b><small>一笔单怎么走完</small></span></a>
+  </div>
+  <div class="sidenav-split"></div>
+  <div class="sidenav-group">
+    <a href="#s01"><span class="num">01</span><span class="copy"><b>发现类型</b><small>这是什么订单</small></span></a>
+    <a href="#s02"><span class="num">02</span><span class="copy"><b>设置参数</b><small>跟谁、追多远</small></span></a>
+    <a href="#s03"><span class="num">03</span><span class="copy"><b>确认下单</b><small>只挂单与后果</small></span></a>
+    <a href="#s04"><span class="num">04</span><span class="copy"><b>运行中</b><small>现在挂在哪</small></span></a>
+    <a href="#s05"><span class="num">05</span><span class="copy"><b>部分成交</b><small>剩余还在追吗</small></span></a>
+    <a href="#s06"><span class="num">06</span><span class="copy"><b>手动撤单</b><small>撤销的是剩余</small></span></a>
+    <a href="#s07"><span class="num">07</span><span class="copy"><b>触线终止</b><small>追太远怎么停</small></span></a>
+    <a href="#s08"><span class="num">08</span><span class="copy"><b>历史详情</b><small>原因、均价、明细</small></span></a>
+  </div>
+  <div class="sidenav-split"></div>
+  <div class="sidenav-group">
+    <a class="aside-link" href="#summary"><span class="copy"><b>总结</b><small>借什么、避什么</small></span></a>
+  </div>
+</nav>
+
+<div class="content">
+<main class="shell">
+<section class="hero" id="intro">
+  <h1>追逐限价单<span>竞品分析</span></h1>
+  <p class="lead">对照 OKX、Gate、币安同一条路径。前两家是持续跟随的订单类型；币安是在已有挂单上点一次 Chase，改到买一 / 卖一。依据官方教程，未真实下单。</p>
+  <div class="hero-meta">
+    <div><b>对照</b>OKX · Gate · 币安</div>
+    <div><b>资料</b>2026.09.20 · 官方帮助页</div>
+    <div><b>机制</b>持续跟随 / 点一次追价</div>
+  </div>
+  <div class="chips">
+    <span class="chip">有截图</span>
+    <span class="chip text">仅文字</span>
+  </div>
+</section>
+
+<section class="section" id="overview">
+  <div class="section-head">
+    <div class="section-no">概览</div>
+    <h2>挂单价跟着盘口改，直到成交、撤单或触线。</h2>
+    <p>OKX / Gate：下单后系统持续改价。币安：先下一张普通限价，再在委托列表点 Chase，只改这一次。</p>
+  </div>
+  <div class="define">
+    <article><small>跟随</small><h3>买跟买一，卖跟卖一</h3><p>OKX 还可以设价差。Gate 默认贴盘口一价，约每秒改一次。币安确认后改到当前买一 / 卖一。</p></article>
+    <article><small>边界</small><h3>最多追到哪</h3><p>OKX / Gate 可设最大追逐距离，碰到就撤剩余。币安没有这条停止线。</p></article>
+    <article><small>约束</small><h3>只挂单，下单后不能改</h3><p>OKX / Gate 改距离只能撤了重下。币安用 Chase 改价、Cancel 撤剩余，撤单不等于平仓。</p></article>
+  </div>
+  <ol class="timeline">
+    <li><span class="n">01</span><div><b>选订单类型</b><p>OKX / Gate 从限价旁边选出追逐限价。币安没有这个类型，入口在当前委托的 Chase。</p></div></li>
+    <li><span class="n">02</span><div><b>设规则</b><p>数量、跟谁、追多远。距离要能换成具体价格。币安没有这些参数。</p></div></li>
+    <li><span class="n">03</span><div><b>确认</b><p>核对跟随谁、停止线、只挂单。币安核对的是：这次会改到买一还是卖一。</p></div></li>
+    <li><span class="n">04</span><div><b>看当前委托</b><p>还在追、现在挂在哪个价。币安改完后仍是普通限价，Chase 还在旁边。</p></div></li>
+    <li><span class="n">05</span><div><b>部分成交</b><p>已成交留下，剩余继续跟。进度写成 8/100 比只写「部分成交」清楚。</p></div></li>
+    <li><span class="n">06</span><div><b>手动撤单</b><p>撤的是未成交部分。已成交仓位还在。</p></div></li>
+    <li><span class="n">07</span><div><b>碰到停止线</b><p>买到最高追逐价、或卖到最低追逐价，系统停改价并撤剩余。币安没有这一步。</p></div></li>
+    <li><span class="n">08</span><div><b>查历史</b><p>结束原因、成交均价、跟随方式、停止线。原因要能分清：全成、手撤、触线。</p></div></li>
+  </ol>
+  <div class="ends">
+    <article><b>结束 A · 全部成交</b><p>总量成交完，追逐结束。</p></article>
+    <article><b>结束 B · 手动撤销</b><p>剩余撤销，已成交保留。</p></article>
+    <article><b>结束 C · 触线终止</b><p>达到最大追逐距离，系统撤剩余。币安无此路径。</p></article>
+  </div>
+  <div class="define" style="margin-top:36px;margin-bottom:0">
+    <article><small>OKX</small><h3>规则讲得清</h3><p>入口有一句话，距离能换成具体价格。后半段教程薄。</p></article>
+    <article><small>Gate</small><h3>任务管得全</h3><p>独立筛选、分数进度、详情字段。入口和追踪委托撞名。</p></article>
+    <article><small>币安</small><h3>挂单旁一键追价</h3><p>Chase 贴着未成交单。改一次就停，没有持续跟随、也没有停止线。</p></article>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="section-head">
+    <div class="section-no">逐步对照</div>
+    <h2>同一步，三家各做了什么。</h2>
+    <p>绿色 = 官方教程有截图。蓝色 = 只有文字。</p>
+  </div>
+</section>
+
+<section class="section" id="s01" style="border-top:0;padding-top:0">
+  <div class="section-head">
+    <div class="section-no">01 发现</div>
+    <h2>入口放哪，怎么解释。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-02.png" alt="OKX 订单类型底部菜单，追逐限价被选中"/></div>
+      <div class="card-body">
+        <ul>
+          <li>高级委托组：追逐限价、高级限价、移动止盈止损、计划委托</li>
+          <li>副文案：委托价按买一或卖一自动调整</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-01.png" alt="Gate 订单类型列表，追逐限价单被选中"/></div>
+      <div class="card-body">
+        <ul>
+          <li>高级组里，追踪委托和追逐限价单挨着</li>
+          <li>副文案：追逐盘口自动更新</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/binance/binance-app-01.png" alt="币安当前委托列表，挂单旁有 Chase 和 Cancel"/></div>
+      <div class="card-body">
+        <ul>
+          <li>不是新的订单类型。入口在 Open Orders，普通限价旁有 Chase</li>
+          <li>U 本位合约可用；Portfolio Margin 不可用</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s02">
+  <div class="section-head">
+    <div class="section-no">02 设置</div>
+    <h2>跟谁、买多少、追多远。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-03.png" alt="OKX 追逐限价下单表单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>追逐方式：买一／卖一，或买一/卖一距离</li>
+          <li>最大追逐距离是勾选项，弹层算出最高买价 / 最低卖价</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-02.png" alt="Gate 追逐限价确认弹层，背景可见下单表单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>默认盘口最优价；样本可见追逐间隔每秒</li>
+          <li>最大追逐距离在高级选项，可切 %，并显示最高追逐价</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev text">规则</span></div>
+      <div class="shot empty">买单 → 当前买一<br>卖单 → 当前卖一</div>
+      <div class="card-body">
+        <ul>
+          <li>没有跟随方式、价差、最大距离</li>
+          <li>不套用 OKX / Gate 的参数表</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s03">
+  <div class="section-head">
+    <div class="section-no">03 确认</div>
+    <h2>这次改的是什么价。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev text">仅文字</span></div>
+      <div class="shot empty">官方要求二次确认。<br>教程没给弹层截图。</div>
+      <div class="card-body">
+        <ul>
+          <li>写明：不能改价格、数量、最大追逐距离</li>
+          <li>始终 post-only</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-02.png" alt="Gate 确认弹层，含只减仓、Post-Only"/></div>
+      <div class="card-body">
+        <ul>
+          <li>列出合约、方向、数量、买1价、只挂单</li>
+          <li>弹层里没有最高追逐价 / 停止线</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/binance/binance-app-02.png" alt="币安 Chase Order 确认弹层"/></div>
+      <div class="card-body">
+        <ul>
+          <li>写明：买单改到 bid1，卖单改到 ask1</li>
+          <li>可勾选不再提示。样本没显示具体目标价</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s04">
+  <div class="section-head">
+    <div class="section-no">04 运行中</div>
+    <h2>还在追吗，挂在哪。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-05.png" alt="OKX 当前委托，价格旁标追逐"/></div>
+      <div class="card-body">
+        <ul>
+          <li>混在「委托」列表</li>
+          <li>价格写成「委托价格（追逐）」</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-03.png" alt="Gate 当前委托可筛追逐限价单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>可筛「追逐限价单」；标签写开多 + 追逐限价单</li>
+          <li>样本里的追逐价格写「买1价」，不是具体数字挂价</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/binance/binance-app-01.png" alt="币安委托卡片显示价格、数量和 Chase"/></div>
+      <div class="card-body">
+        <ul>
+          <li>改完仍是 Limit，Chase 还在旁边，可以再点</li>
+          <li>列表要回答：现在挂在哪。不要写成「追逐中」</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s05">
+  <div class="section-head">
+    <div class="section-no">05 部分成交</div>
+    <h2>成交一部分，剩余还追。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-05.png" alt="OKX 委托列表有委托数量和已成交量"/></div>
+      <div class="card-body">
+        <ul>
+          <li>能看出数量，样本成交量为零</li>
+          <li>未见「追逐中 + 已成交 20%」的组合表达</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-03.png" alt="Gate 部分成交 8/100 张"/></div>
+      <div class="card-body">
+        <ul>
+          <li>截图：已成交 / 总数量 = 8/100 张</li>
+          <li>FAQ：未成交部分继续按最新盘口一价挂</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/binance/binance-app-01.png" alt="币安委托卡片显示 Filled / Amount"/></div>
+      <div class="card-body">
+        <ul>
+          <li>卡片有 Filled / Amount，样本是 0.000 / 0.500</li>
+          <li>教程没写部分成交后 Chase 作用在剩余还是总量</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s06">
+  <div class="section-head">
+    <div class="section-no">06 撤单</div>
+    <h2>撤的是剩余，不是仓位。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-05.png" alt="OKX 订单卡片可见撤单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>下单后不能改，只能撤了重下</li>
+          <li>有单笔和批量撤单</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-03.png" alt="Gate 当前委托可见单笔撤单与全部撤单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>单笔撤单、全部撤单</li>
+          <li>手动取消是三种终止之一</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/binance/binance-app-01.png" alt="币安 Chase 与 Cancel 并列"/></div>
+      <div class="card-body">
+        <ul>
+          <li>Chase 改价，Cancel 撤单，两个按钮并排</li>
+          <li>不要让用户把追价理解成撤单</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s07">
+  <div class="section-head">
+    <div class="section-no">07 触线</div>
+    <h2>追太远，系统怎么停。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-04.png" alt="OKX 最大追逐距离弹层，预览最高买价最低卖价"/></div>
+      <div class="card-body">
+        <ul>
+          <li>买一 80、最大距离 50：跟到 100；到 130 自动取消</li>
+          <li>弹层同步显示最高买价 / 最低卖价</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev text">仅文字</span></div>
+      <div class="shot empty">买单：最新价 ≥ 最高追逐买价则终止。<br>未见触线结果页。</div>
+      <div class="card-body">
+        <ul>
+          <li>历史状态写成「已终止」</li>
+          <li>规则在 FAQ 和高级选项里</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev text">无此步骤</span></div>
+      <div class="shot empty">点一次 Chase，改完就是普通限价。<br>没有停止线。</div>
+      <div class="card-body">
+        <ul>
+          <li>保护靠确认层，不靠最大追逐距离</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s08">
+  <div class="section-head">
+    <div class="section-no">08 复盘</div>
+    <h2>为什么停、成交多少、均价多少。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev text">仅文字</span></div>
+      <div class="shot empty">教程停在当前委托。<br>历史详情未见。</div>
+      <div class="card-body">
+        <ul>
+          <li>结束原因、改价记录、成交明细均未见</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-04.png" alt="Gate 历史追逐单，100/100 和 0/20 均标已终止"/></div>
+      <div class="card-body">
+        <ul>
+          <li>历史可筛追逐限价单；100/100 和 0/20 都写成「已终止」</li>
+          <li>App 教程最后一张是追踪止盈，不能当追逐单用</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand binance">币安 · App</div><span class="ev text">仅文字</span></div>
+      <div class="shot empty">教程没给历史页。<br>应能看到改前价 / 改后价。</div>
+      <div class="card-body">
+        <ul>
+          <li>单次追价要回答：何时改了什么价。不要做成追逐策略档案</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="summary">
+  <div class="section-head">
+    <div class="section-no">总结</div>
+    <h2>前半段看 OKX，后半段看 Gate。币安看挂单旁的 Chase。</h2>
+  </div>
+  <div class="matrix-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>阶段</th>
+          <th>OKX</th>
+          <th>Gate</th>
+          <th>币安</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>机制</td>
+          <td>持续自动追逐</td>
+          <td>持续自动追逐</td>
+          <td>点一次，改到买一 / 卖一</td>
+        </tr>
+        <tr>
+          <td>发现</td>
+          <td>高级组 + 一句话解释</td>
+          <td>高级组 + 一句话；旁边有追踪委托</td>
+          <td>当前委托旁 Chase</td>
+        </tr>
+        <tr>
+          <td>设置</td>
+          <td>可跟一价或价差；弹层换算高低价</td>
+          <td>默认盘口一价；距离在高级选项</td>
+          <td>无参数</td>
+        </tr>
+        <tr>
+          <td>确认</td>
+          <td class="mid">有二次确认，未见截图</td>
+          <td>有弹层，写了只挂单；停止线未出现</td>
+          <td>写明 bid1 / ask1，可不再提示</td>
+        </tr>
+        <tr>
+          <td>运行</td>
+          <td>混在委托列表，价格旁标「追逐」</td>
+          <td>可筛选；样本写买1价</td>
+          <td>改完仍是 Limit，Chase 还在</td>
+        </tr>
+        <tr>
+          <td>部分成交</td>
+          <td class="mid">有已成交量，未见组合表达</td>
+          <td>8/100 + FAQ：剩余继续追</td>
+          <td>有 Filled / Amount；样本未成交</td>
+        </tr>
+        <tr>
+          <td>撤单</td>
+          <td>单笔 / 批量</td>
+          <td>单笔 / 全部</td>
+          <td>Cancel 和 Chase 并排</td>
+        </tr>
+        <tr>
+          <td>触线</td>
+          <td>规则图清楚；结果页未见</td>
+          <td>最高追逐价 + 历史「已终止」</td>
+          <td class="no">无停止线</td>
+        </tr>
+        <tr>
+          <td>复盘</td>
+          <td class="mid">教程未覆盖详情</td>
+          <td>历史可筛；结束原因不清晰</td>
+          <td class="mid">教程未见改价记录</td>
+        </tr>
+        <tr>
+          <td>只挂单</td>
+          <td>始终 post-only</td>
+          <td>确认页写 Post-Only</td>
+          <td class="mid">教程未写</td>
+        </tr>
+        <tr>
+          <td>改价频率</td>
+          <td>约每秒</td>
+          <td>表单写每 1 秒</td>
+          <td>点一次改一次</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="take" style="margin-top:28px">
+    <article class="insight">
+      <h3>OKX</h3>
+      <p>入口解释、追逐方式、距离换成具体价格。确认页、部分成交、结束原因，教程没给界面。</p>
+    </article>
+    <article class="insight">
+      <h3>Gate</h3>
+      <p>独立筛选、8/100 进度、运行中 / 已终止。入口和追踪委托撞名；确认页没写停止线。</p>
+    </article>
+    <article class="insight">
+      <h3>币安</h3>
+      <p>Chase 贴着未成交单，确认写清改到买一 / 卖一。这是改一次，不是一直追。</p>
+    </article>
+  </div>
+  <div class="warn">
+    <strong>先让用户分清：改一次，还是一直追。</strong>
+    <small>追踪 / 跟踪委托不要放进追逐限价的对照列。追踪是回调后触发新单；追逐是未成交挂单价跟着盘口改。</small>
+  </div>
+  <p class="source-note">依据：<a href="https://www.okx.com/zh-hans/help/how-to-use-chase-order" target="_blank" rel="noreferrer">OKX · 如何使用追逐限价委托</a> · <a href="https://www.gate.com/zh/help/futures/questions/42290" target="_blank" rel="noreferrer">Gate · 如何使用追逐限价单</a> · <a href="https://www.binance.com/en/support/faq/detail/aaba401f472f4aa485d0e9ce2921a181" target="_blank" rel="noreferrer">币安 · App Chase Order</a>。截图在 <code>research/</code>。</p>
+</section>
+
+<footer class="footer">
+  <p>luke / 追逐限价单 · 全流程竞品分析 · 2026.09.20</p>
+  <p>官方教程摘录 · 未真实下单 · 不代表最新 App 实测</p>
+</footer>
+</main>
+</div>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="查看原图"><button type="button" id="lightbox-close">关闭</button><img alt=""></div>
+<script>
+(() => {
+  const nav = document.getElementById('stage-nav');
+  const links = [...nav.querySelectorAll('a[href^="#"]')];
+  const ids = links.map(a => a.getAttribute('href').slice(1));
+  function currentId() {
+    let id = '';
+    for (const next of ids) {
+      const el = document.getElementById(next);
+      if (el && el.getBoundingClientRect().top <= 120) id = next;
+    }
+    return id;
+  }
+  function sync(id = currentId()) {
+    links.forEach(a => {
+      if (a.hash === '#' + id) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  nav.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const el = document.getElementById(a.hash.slice(1));
+    if (!el) return;
+    e.preventDefault();
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 88;
+    window.scrollTo(0, Math.max(0, y));
+    history.replaceState(null, '', a.hash);
+    sync(a.hash.slice(1));
+  });
+  window.addEventListener('scroll', () => sync(), {passive:true});
+  sync();
+  const box = document.getElementById('lightbox');
+  const img = box.querySelector('img');
+  document.addEventListener('click', e => {
+    const pic = e.target.closest('.shot img');
+    if (!pic) return;
+    img.src = pic.src;
+    img.alt = pic.alt;
+    box.classList.add('open');
+  });
+  const close = () => box.classList.remove('open');
+  document.getElementById('lightbox-close').onclick = close;
+  box.addEventListener('click', e => { if (e.target === box) close(); });
+  document.getElementById('print-btn').onclick = () => window.print();
+})();
+</script>
+</body>
+</html>

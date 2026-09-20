@@ -1,5 +1,0 @@
-# TRON Design Language — https://pqu.infraway.co/design/
-User-agent: *
-Allow: /design/
-
-Sitemap: https://pqu.infraway.co/design/sitemap-index.xml
