@@ -1,0 +1,2607 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>追逐限价单 · KuCoin App 设计 | luke</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20width%3D%22855%22%20height%3D%22200%22%20viewBox%3D%220%200%20855%20200%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%20%3Cpath%20d%3D%22M57.7007%2099.9146L116.94%20159.158L154.381%20121.714C160.964%20115.131%20171.734%20115.131%20178.317%20121.714C184.899%20128.297%20184.899%20139.068%20178.317%20145.651L128.908%20195.063C122.326%20201.646%20111.555%20201.646%20104.973%20195.063L34.0221%20123.937V166.339C34.0221%20175.572%2026.4997%20183.351%2017.0111%20183.351C7.52258%20183.351%200%20175.828%200%20166.339V34.003C0%2024.5138%207.52258%2016.9908%2017.0111%2016.9908C26.4997%2016.9908%2034.0221%2024.5138%2034.0221%2034.003V76.0633L105.143%204.93695C111.726%20-1.64565%20122.496%20-1.64565%20129.079%204.93695L178.488%2054.3492C185.07%2060.9318%20185.07%2071.7034%20178.488%2078.286C171.905%2084.8686%20161.135%2084.8686%20154.552%2078.286L117.111%2040.8421L57.7007%20100.085V99.9146ZM117.111%2082.9024C107.622%2082.9024%20100.1%2090.4254%20100.1%2099.9146C100.1%20109.404%20107.622%20116.927%20117.111%20116.927C126.6%20116.927%20134.122%20109.404%20134.122%2099.9146C133.951%2090.4254%20126.429%2082.9024%20117.111%2082.9024Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3Cpath%20d%3D%22M675.398%2099.9995C675.398%2095.0412%20675.398%2090.4249%20675.227%2086.2359C675.056%2082.047%20674.629%2077.9435%20674.116%2074.4385C673.517%2070.7625%20672.406%2067.4285%20670.696%2064.1799C669.158%2060.8459%20666.764%2057.9393%20663.943%2054.9472C659.84%2050.9292%20655.309%2047.9371%20650.266%2045.7144C645.222%2043.6627%20639.41%2042.3804%20632.828%2042.3804C626.245%2042.3804%20620.433%2043.4917%20615.389%2045.7144C610.346%2047.7662%20605.644%2050.8437%20601.456%2054.9472C598.464%2057.8538%20596.412%2060.8459%20594.873%2064.1799C593.335%2067.514%20592.052%2070.7625%20591.454%2074.4385C590.856%2078.1145%20590.514%2081.9615%20590.343%2086.2359C590.172%2090.4249%20590.172%2095.0412%20590.172%2099.9995C590.172%20104.958%20590.172%20109.403%20590.343%20113.763C590.514%20117.952%20590.941%20122.056%20591.454%20125.561C592.052%20129.237%20593.164%20132.571%20594.873%20135.819C596.412%20139.153%20598.806%20142.06%20601.456%20145.052C605.559%20149.07%20610.089%20152.062%20615.389%20154.285C620.433%20156.336%20626.245%20157.619%20632.828%20157.619C639.41%20157.619%20645.051%20156.507%20650.266%20154.285C655.309%20152.233%20660.011%20149.155%20663.943%20145.052C666.935%20142.145%20668.987%20139.153%20670.696%20135.819C672.235%20132.485%20673.517%20129.237%20674.116%20125.561C674.714%20121.885%20675.227%20118.038%20675.227%20113.763C675.398%20109.147%20675.398%20104.958%20675.398%2099.9995ZM653.087%2099.9995C653.087%20105.3%20653.087%20109.916%20652.916%20113.592C652.745%20117.268%20652.574%20120.004%20651.976%20122.397C651.634%20124.62%20651.035%20126.586%20650.266%20127.954C649.497%20129.408%20648.727%20130.861%20647.445%20131.972C645.906%20133.853%20643.684%20135.306%20641.461%20136.418C638.982%20137.529%20636.161%20137.871%20632.998%20138.042C629.836%20138.042%20627.186%20137.529%20624.536%20136.418C622.057%20135.306%20620.005%20134.024%20618.296%20131.972C617.184%20130.861%20616.415%20129.578%20615.475%20127.954C614.705%20126.501%20614.192%20124.62%20613.765%20122.397C613.423%20120.175%20612.996%20117.268%20612.996%20113.592C612.825%20109.916%20612.825%20105.471%20612.825%2099.9995C612.825%2094.5283%20612.825%2090.0829%20612.996%2086.4069C613.167%2082.7309%20613.338%2079.9953%20613.765%2077.6016C614.107%2075.208%20614.705%2073.4127%20615.475%2072.0449C616.244%2070.5916%20617.013%2069.1382%20618.296%2068.0269C619.834%2066.1461%20622.057%2064.6929%20624.536%2063.5815C627.015%2062.4702%20629.836%2062.1282%20632.998%2061.9572C636.161%2061.9572%20638.811%2062.4702%20641.461%2063.5815C643.684%2064.6929%20645.992%2065.9752%20647.445%2068.0269C648.556%2069.1382%20649.326%2070.4206%20650.266%2072.0449C651.035%2073.4982%20651.548%2075.3789%20651.976%2077.6016C652.317%2079.8243%20652.745%2082.7309%20652.916%2086.4069C652.916%2090.0829%20653.087%2094.6993%20653.087%2099.9995Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3Cpath%20d%3D%22M854.91%2044.432C854.91%2043.3207%20853.97%2042.5513%20853.03%2042.5513H834.651C833.54%2042.5513%20832.77%2043.4917%20832.77%2044.432V109.916C832.77%20110.856%20831.488%20111.284%20830.975%20110.429L787.464%2043.1497C787.122%2042.8077%20786.866%2042.5513%20786.353%2042.5513H769.086C768.06%2042.5513%20767.205%2043.4062%20767.205%2044.432V155.652C767.205%20156.764%20768.145%20157.533%20769.086%20157.533H787.464C788.576%20157.533%20789.345%20156.593%20789.345%20155.652V89.9974C789.345%2089.057%20790.627%2088.6295%20791.14%2089.4844L834.651%20156.935C834.993%20157.277%20835.249%20157.533%20835.762%20157.533H853.03C854.141%20157.533%20854.91%20156.593%20854.91%20155.652V44.432Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3Cpath%20d%3D%22M730.278%2044.432C730.278%2043.3207%20729.337%2042.5513%20728.397%2042.5513H710.018C708.907%2042.5513%20708.138%2043.4917%20708.138%2044.432V155.652C708.138%20156.764%20709.078%20157.533%20710.018%20157.533H728.397C729.508%20157.533%20730.278%20156.593%20730.278%20155.652V44.432Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3Cpath%20d%3D%22M507.424%2099.4872C507.424%2094.016%20507.424%2090.8529%20507.595%2087.0914C507.766%2083.3299%20507.937%2080.5088%20508.364%2078.0297C510.074%2068.0275%20517.767%2062.2143%20527.512%2062.2143C537.257%2062.2143%20539.565%2064.437%20543.327%2069.9083C544.865%2072.131%20546.148%2074.9521%20546.917%2078.2006C546.917%2078.5426%20547.088%2078.799%20547.515%2078.799H569.313C569.655%2078.799%20569.655%2078.6281%20569.655%2078.2006C567.433%2064.8644%20560.081%2052.4686%20547.259%2046.4844C541.446%2043.6633%20534.693%2042.1245%20527.17%2042.1245C514.946%2042.1245%20504.432%2046.4844%20495.969%2054.6913C491.097%2059.5641%20488.105%2065.3773%20486.566%2071.9599C485.284%2078.3715%20484.686%2086.4075%20484.686%2098.9743C484.686%20111.541%20485.284%20121.116%20486.566%20127.527C487.848%20134.11%20491.268%20139.923%20495.969%20144.796C504.432%20153.259%20514.775%20157.363%20527.17%20157.363C539.565%20157.363%20541.275%20156.081%20547.259%20153.003C559.825%20147.019%20567.347%20134.965%20569.655%20121.287C569.655%20120.945%20569.655%20120.688%20569.313%20120.688H547.515C547.173%20120.688%20546.917%20120.859%20546.917%20121.287C546.148%20124.45%20545.036%20127.1%20543.327%20129.579C539.565%20134.879%20533.924%20137.102%20527.512%20137.273C517.767%20137.273%20510.245%20131.46%20508.364%20121.458C508.022%20119.235%20507.595%20116.157%20507.595%20112.396C507.424%20109.404%20507.424%20104.702%20507.424%2099.2307V99.4872Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3Cpath%20d%3D%22M276.707%2044.2611C276.707%2043.1498%20275.767%2042.3804%20274.827%2042.3804H256.448C255.337%2042.3804%20254.567%2043.3208%20254.567%2044.2611V155.482C254.567%20156.593%20255.508%20157.362%20256.448%20157.362H274.827C275.938%20157.362%20276.707%20156.422%20276.707%20155.482V123.167C276.707%20122.91%20276.707%20122.739%20276.964%20122.568L290.897%20106.069C291.325%20105.556%20292.18%20105.642%20292.522%20106.24L322.44%20157.106C322.611%20157.448%20323.039%20157.704%20323.552%20157.704H346.119C347.06%20157.704%20347.23%20157.106%20346.888%20156.165L307.225%2088.8861C307.054%2088.5441%20307.054%2088.1166%20307.31%2087.7747L343.726%2044.1757C344.495%2043.2353%20344.067%2042.4659%20342.956%2042.4659H318.166C317.824%2042.4659%20317.141%2042.8933%20316.97%2043.3208L278.588%2089.057C277.99%2089.7409%20276.878%2089.3135%20276.878%2088.4586V44.3466L276.707%2044.2611Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3Cpath%20d%3D%22M412.027%20137.273C401.513%20137.273%20392.11%20127.527%20392.11%20116.072V44.6889C392.11%2043.5775%20391.169%2042.8081%20390.229%2042.8081H371.85C370.739%2042.8081%20369.97%2043.7485%20369.97%2044.6889V115.901C369.97%20141.462%20389.118%20157.619%20412.454%20157.619C435.791%20157.619%20454.939%20141.462%20454.939%20115.901V44.6889C454.939%2043.5775%20453.999%2042.8081%20453.059%2042.8081H434.68C433.569%2042.8081%20432.799%2043.7485%20432.799%2044.6889V116.072C431.859%20127.527%20422.456%20137.273%20412.113%20137.273H412.027Z%22%20fill%3D%22%2300B47D%22%2F%3E%20%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@font-face{
+  font-family:'FigtreeLatin';
+  font-style:normal;
+  font-weight:400 800;
+  font-display:swap;
+  src:url(https://fonts.gstatic.com/s/figtree/v9/_Xms-HUzqDCFdgfMm4S9DQ.woff2) format('woff2');
+  unicode-range:U+0041-005A,U+0061-007A,U+0030-0039;
+}
+@font-face{
+  font-family:'CjkPunctBottom';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url(https://fonts.gstatic.com/l/font?kit=-nF7OG829Oofr2wohFbTp9iFOjMa6HfQNFBxANRwM5boXdIsT2lQR4CD&skey=3904269dc8bdd0a1&v=v39) format('woff2');
+  unicode-range:U+3001-3002,U+FF01,U+FF0C,U+FF1A-FF1B,U+FF1F;
+}
+:root{
+  --ink:#1d1d1d;
+  --muted:rgba(0,0,0,.58);
+  --quiet:rgba(0,0,0,.42);
+  --faint:rgba(0,0,0,.26);
+  --line:rgba(0,0,0,.09);
+  --paper:#fff;
+  --subtle:#f9f9f9;
+  --field:#f6f6f6;
+  --sel:#fafafa;
+  --gray:#898989;
+  --green:#00b47d;
+  --green-wash:#ebf9f5;
+  --green-soft:rgba(0,180,125,.08);
+  --red:#eb4d5d;
+  --red-wash:#fef1f1;
+  --amber:#e96900;
+  --okx:#111;
+  --gate:#1a56db;
+  --sans:'FigtreeLatin','CjkPunctBottom','PingFang TC','PingFang SC','Hiragino Sans GB','Microsoft JhengHei',sans-serif;
+  --ds:.86;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-locale:"zh-Hant"}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0}
+h1,h2,h3{line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.punct{display:inline-block;transform:translateY(.26em);font-family:'CjkPunctBottom','PingFang TC',sans-serif}
+p,li,td,th,.decision span{text-wrap:pretty;line-break:strict;overflow-wrap:break-word}
+.hero p,.sec-head p,.step .lead,.demo-note,.decision span,.plist li span{text-wrap:balance}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;-webkit-tap-highlight-color:transparent}
+button:disabled{cursor:not-allowed;opacity:.45}
+a{color:var(--green);text-underline-offset:4px}
+svg{display:block}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:4px}
+
+.topbar{position:sticky;top:0;z-index:60;height:80px;background:#000}
+.topbar-in{max-width:1400px;margin:auto;padding:0 40px;height:80px}
+.brand-logo{display:flex;align-items:center;line-height:0;color:var(--green)}
+.klogo{height:22px;width:auto;display:block}
+.langs{display:flex;gap:2px;padding:2px;background:#1c1c1c;border:1px solid #333;border-radius:8px}
+.langs button{padding:5px 11px;border-radius:6px;font-size:12px;font-weight:600;color:#a0a0a0}
+.langs button[aria-pressed=true]{background:var(--green-wash);color:#00805a}
+
+.hero{position:relative;overflow:hidden;background:#050505;color:#fff;height:480px}
+.hero::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(5,5,5,.62) 0%,rgba(5,5,5,.28) 44%,transparent 72%);pointer-events:none}
+.hero-particles{position:absolute;inset:0;z-index:0;width:100%;height:100%;pointer-events:none}
+.hero-image{position:absolute;z-index:1;height:125%;width:auto;max-width:none;right:4%;top:-16%;pointer-events:none;user-select:none;mix-blend-mode:lighten}
+.hero-inner{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;max-width:1400px;margin:auto;padding:88px 40px 0}
+
+.shell{max-width:1400px;margin:auto;padding:0 40px}
+.hero-copy{margin:0;padding:0;width:min(560px,52%);max-width:560px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.hero h1{font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-.045em;margin-top:12px;color:#fff}
+.hero p{margin-top:14px;font-size:16px;line-height:1.72;color:rgba(255,255,255,.62)}
+
+.sim{background:var(--subtle);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:80px 0}
+.sec-head h2{font-size:clamp(25px,2.6vw,34px);font-weight:750;letter-spacing:-.04em}
+.sec-head p{margin-top:11px;font-size:15.5px;line-height:1.72;color:var(--muted)}
+
+.sim-grid{margin-top:30px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:start}
+.stage-row{display:flex;align-items:flex-start;gap:28px;padding:26px;border-radius:20px;background:#f1f2f1}
+.stage-col{display:flex;flex-direction:column;flex:none}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:24px 28px 30px}
+.device-scale{width:calc(424px * var(--ds));height:calc(896px * var(--ds))}
+
+.demo{width:224px;flex:none;border:1px solid var(--line);border-radius:14px;padding:15px 16px 16px;background:var(--paper)}
+.demo-h{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.demo-h span:last-child{letter-spacing:0;text-transform:none;font-weight:500;font-size:11px}
+.demo-grid{margin-top:12px;display:grid;grid-template-columns:1fr;gap:7px}
+.demo-grid button{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:12.5px;font-weight:600;text-align:left;line-height:1.3}
+.demo-grid button:hover:not(:disabled){border-color:var(--green);color:#00805a}
+.demo-grid button.wide{margin-top:3px;display:flex;align-items:center;justify-content:center;gap:7px}
+.demo-grid button.wide.on{background:var(--green-soft);border-color:rgba(0,180,125,.3);color:#00805a}
+.demo-note{margin-top:10px;font-size:11.5px;line-height:1.6;color:var(--quiet)}
+
+.flow-nav{padding-bottom:20px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px}
+.flow-nav button{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 17px;border-radius:999px;background:rgba(0,0,0,.045);line-height:1;color:var(--muted);transition:background .14s,color .14s}
+.flow-nav .n{font-size:12px;font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums}
+.flow-nav .nm{font-size:15px;font-weight:650;white-space:nowrap;letter-spacing:-.01em}
+.flow-nav button:hover{background:rgba(0,0,0,.08);color:var(--ink)}
+.flow-nav button[aria-current=true]{background:var(--ink);color:#fff}
+.flow-nav button[aria-current=true] .n{color:rgba(255,255,255,.5)}
+
+.step{margin-top:22px}
+.step-no{font-size:12px;font-weight:700;color:var(--green);letter-spacing:.06em}
+.step h2{margin-top:8px;font-size:clamp(24px,2.2vw,30px);font-weight:750;letter-spacing:-.035em}
+.step .lead{margin-top:12px;font-size:15.5px;line-height:1.75;color:var(--muted)}
+.plist{margin:22px 0 0;padding:0;list-style:none}
+.plist li{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.7;color:var(--muted)}
+.plist li:before{content:"";flex:none;width:5px;height:5px;border-radius:50%;background:var(--green);margin-top:9px}
+.plist li b{color:var(--ink);font-weight:650}
+.decision{margin-top:18px;display:flex;gap:12px;padding:14px 16px;border-radius:12px;background:var(--green-soft);font-size:14px;line-height:1.7}
+.decision i{font-style:normal;flex:none;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);padding-top:4px}
+.step-foot{margin-top:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn-next{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;font-weight:650}
+.btn-next:hover{background:#000}
+
+.spec{padding:80px 0}
+.tbl-wrap{margin-top:26px;border:1px solid var(--line);border-radius:14px;overflow:auto}
+table.cmp{min-width:940px;table-layout:fixed}
+table.cmp th,table.cmp td{width:26%;font-size:13px;line-height:1.7}
+table.cmp th:first-child,table.cmp td:first-child{width:13%}
+table.cmp td.stepname b{white-space:nowrap}
+table.cmp .mine{background:rgba(0,180,125,.05)}
+table.cmp thead .mine{background:var(--green-wash);color:#00805a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:660px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+th{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);background:var(--subtle)}
+tr:last-child td{border-bottom:0}
+td b{font-weight:650}
+td code{font:500 12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--field);padding:2px 6px;border-radius:5px}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:650;white-space:nowrap}
+.tag.g{background:var(--green-wash);color:#00805a}
+.tag.r{background:var(--red-wash);color:#c5303f}
+.tag.a{background:#fff3e6;color:#a54c00}
+.tag.n{background:var(--field);color:var(--muted)}
+.page-foot{border-top:1px solid var(--line);margin-top:0;padding:32px 0 80px;font-size:12.5px;color:var(--quiet)}
+
+.iphone{position:relative;width:424px;height:896px;border-radius:62px;padding:11px;
+  background:linear-gradient(150deg,#55565b 0%,#1a1a1c 15%,#63646a 33%,#232326 51%,#6e6f75 65%,#1f1f21 83%,#4a4b50 100%);
+  box-shadow:0 2px 3px rgba(0,0,0,.4),0 34px 70px rgba(12,16,20,.34),0 8px 22px rgba(12,16,20,.18);
+  transform:scale(var(--ds));transform-origin:top left}
+.iphone:before,.iphone:after{content:"";position:absolute;background:linear-gradient(180deg,#3a3b3f,#7d7e85 45%,#2c2d30);border-radius:2px}
+.iphone:before{left:-2.5px;top:168px;width:3px;height:64px}
+.iphone:after{right:-2.5px;top:214px;width:3px;height:98px}
+.btn-mute{position:absolute;left:-2.5px;top:110px;width:3px;height:30px;border-radius:2px;background:linear-gradient(180deg,#3a3b3f,#7d7e85 45%,#2c2d30)}
+.btn-voldn{position:absolute;left:-2.5px;top:250px;width:3px;height:64px;border-radius:2px;background:linear-gradient(180deg,#3a3b3f,#7d7e85 45%,#2c2d30)}
+.iphone-in{width:100%;height:100%;border-radius:52px;background:#000;padding:3px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.screen{position:relative;width:402px;height:868px;border-radius:49px;overflow:hidden;background:#fff;
+  display:flex;flex-direction:column;font-size:13px;line-height:1.45;color:var(--ink);letter-spacing:0}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:124px;height:35px;border-radius:19px;background:#000;z-index:50;pointer-events:none}
+.home-ind{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:138px;height:5px;border-radius:3px;background:#1d1d1d;opacity:.9;z-index:50;pointer-events:none}
+
+.ios-bar{flex:none;height:54px;padding:15px 24px 0 31px;display:flex;align-items:center;justify-content:space-between;font-size:15.5px;font-weight:650;letter-spacing:.2px}
+.ios-bar .l{display:flex;align-items:center;gap:5px}
+.ios-bar .r{display:flex;align-items:center;gap:6px}
+.sig{display:flex;align-items:flex-end;gap:1.8px;height:11px}
+.sig i{width:3.1px;border-radius:1.1px;background:#000;display:block}
+.sig i:nth-child(1){height:4px}.sig i:nth-child(2){height:6.3px}.sig i:nth-child(3){height:8.6px}.sig i:nth-child(4){height:11px}
+.batt{position:relative;width:27px;height:13px;border-radius:4.2px;background:#b2b2b2;margin-right:3px}
+.batt i{position:absolute;left:0;top:0;bottom:0;border-radius:4.2px 0 0 4.2px;background:#000;display:block}
+.batt b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
+.batt:after{content:"";position:absolute;right:-3.4px;top:4.4px;width:2.2px;height:4.6px;border-radius:0 2px 2px 0;background:#b2b2b2}
+
+.app{flex:1;min-height:0;overflow:hidden auto;scrollbar-width:none;background:#fff;padding-bottom:4px}
+.app::-webkit-scrollbar{display:none}
+.tabbar{flex:none;height:76px;padding:7px 4px 0;border-top:1px solid #f0f0f0;background:#fff;display:grid;grid-template-columns:repeat(5,1fr)}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:600;color:#bcbcbc}
+.tabbar button svg{color:#bcbcbc}
+.tabbar button.on,.tabbar button.on svg{color:var(--ink)}
+
+.k-nav{padding:12px 14px 9px;display:flex;align-items:center;gap:10px}
+.k-nav .tabs{display:flex;align-items:baseline;gap:15px;flex:none}
+.k-nav .tabs b{font-size:18px;font-weight:750;letter-spacing:-.02em}
+.k-nav .tabs span{font-size:16px;font-weight:600;color:#a8a8a8;letter-spacing:-.01em}
+.promo{margin-left:auto;min-width:0;display:flex;align-items:center;gap:5px;background:var(--field);border-radius:999px;padding:6px 11px;font-size:11px;font-weight:650;color:var(--green);white-space:nowrap;overflow:hidden}
+.promo span{overflow:hidden;text-overflow:ellipsis}
+.k-pair{padding:6px 14px 10px;display:flex;align-items:center;gap:7px}
+.k-pair .name{display:flex;align-items:center;gap:6px;min-width:0}
+.k-pair .name b{font-size:18px;font-weight:750;letter-spacing:-.025em}
+.perp{background:var(--field);border-radius:5px;padding:2px 6px;font-size:10.5px;font-weight:600;color:#6e6e6e}
+.k-pair .chg{font-size:12.5px;font-weight:650;color:var(--red)}
+.k-pair .acts{margin-left:auto;display:flex;align-items:center;gap:9px;color:#1d1d1d}
+
+.k-grid{display:grid;grid-template-columns:143px minmax(0,1fr);gap:19px;padding:0 15px}
+
+.fund{display:flex;flex-direction:column;gap:1px;padding-bottom:9px}
+.fund .lbl{font-size:10.5px;color:var(--gray);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;text-decoration-color:#d6d6d6}
+.fund .val{font-size:11.5px;font-weight:600}
+.fund .val em{font-style:normal;color:var(--green)}
+.fund .val span{color:var(--ink)}
+
+.bk-head{display:flex;justify-content:space-between;font-size:10px;line-height:1.25;color:var(--gray);padding-bottom:7px}
+.bk-head span:last-child{text-align:right}
+.bk-row{position:relative;height:26px;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.bk-row .bar{position:absolute;right:0;top:0;bottom:0;width:40%;background:var(--bar);border-radius:1px;transition:width .7s cubic-bezier(.33,1,.68,1)}
+.bk-row span{position:relative}
+.bk-row .q{color:#4a4747;font-weight:500}
+.bk-row.a{color:var(--red);--bar:var(--red-wash)}
+.bk-row.b{color:var(--green);--bar:var(--green-wash)}
+.bk-mid{padding:7px 0 9px}
+.bk-mid b{display:flex;align-items:center;gap:2px;transition:color .25s ease;font-size:22px;font-weight:750;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.bk-mid b.up{color:var(--green)}.bk-mid b.down{color:var(--red)}
+.bump{animation:bump .5s ease-out}
+@keyframes bump{0%{background:rgba(0,180,125,.16);border-radius:3px}100%{background:transparent}}
+.bk-mid .idx{margin-top:1px;display:flex;align-items:center;gap:4px;font-size:10.5px;color:var(--gray);font-variant-numeric:tabular-nums}
+.bk-mid .idx i{font-style:normal;width:12px;height:12px;border-radius:3px;background:var(--field);color:#a2a2a2;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.bk-ratio{margin-top:9px;height:19px;display:flex;align-items:center;font-size:10.5px;font-weight:650;position:relative}
+.bk-ratio .bl{flex:none;transition:flex-basis .7s cubic-bezier(.33,1,.68,1);display:flex;align-items:center;gap:3px;color:var(--green);background:#e0f6ef;height:100%;padding:0 4px 0 2px;clip-path:polygon(0 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.bk-ratio .br{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:3px;color:var(--red);background:#feeaea;height:100%;padding:0 2px 0 8px;clip-path:polygon(6px 0,100% 0,100% 100%,0 100%)}
+.bk-ratio u{text-decoration:none;width:12px;height:12px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
+.bk-ratio .bl u{background:var(--green);color:#fff}
+.bk-ratio .br u{background:var(--red);color:#fff}
+.bk-tick{margin-top:9px;display:flex;align-items:center;gap:6px}
+.bk-tick .sel{flex:1;height:26px;background:var(--field);border-radius:7px;display:flex;align-items:center;justify-content:space-between;padding:0 7px;font-size:11.5px;font-weight:600}
+.bk-tick .dep{width:30px;height:26px;background:var(--field);border-radius:7px;display:flex;align-items:center;justify-content:center;gap:2px}
+.bk-tick .dep i{display:block;width:4px;border-radius:1px}
+
+.k-form{display:flex;flex-direction:column;gap:8px;min-width:0}
+.f-row{display:flex;gap:6px}
+.pick{height:28px;background:var(--field);border-radius:7px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;font-size:12.5px;font-weight:600;gap:4px}
+.pick.wide{flex:1.78}.pick.narrow{flex:1}
+.side{height:32px;background:var(--field);border-radius:999px;display:flex;padding:0;overflow:hidden}
+.side button{flex:1;border-radius:999px;font-size:14px;font-weight:700;color:#8e8e8e;letter-spacing:-.01em}
+.side button.on.buy{background:var(--green-wash);color:var(--green)}
+.side button.on.sell{background:var(--red-wash);color:var(--red)}
+.type-row{height:28px;background:var(--field);border-radius:7px;display:flex;align-items:center;padding:0 8px;gap:6px;width:100%}
+.type-row .ib{flex:none;width:15px;height:15px;border-radius:50%;background:#c4c4c4;display:flex;align-items:center;justify-content:center}
+.type-row .tx{flex:1;text-align:center;font-size:13px;font-weight:650}
+.type-row.plain{justify-content:space-between}
+.type-row.plain .tx.left{text-align:left}
+.hint-row{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--gray);padding:0 2px;margin-top:-3px}
+.hint-row .dot-u{color:var(--gray)}
+.hint-row b{font-weight:700;font-variant-numeric:tabular-nums}
+.hint-row b.g{color:var(--green)}.hint-row b.r{color:var(--red)}.hint-row b.a{color:var(--amber)}
+.k-check .edit{margin-left:auto;display:flex;align-items:center;gap:2px;font-size:11.5px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.field{background:var(--field);border-radius:8px;padding:6px 9px;display:flex;align-items:center;gap:6px;min-height:40px}
+.field .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.field small{font-size:10.5px;color:var(--gray);line-height:1.2}
+.field b,.field input{font-size:15px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.field input{width:100%;border:0;background:none;padding:0;outline:none}
+.field input::placeholder{color:#9c9c9c;font-weight:600;font-size:13.5px;letter-spacing:0}
+.field .ph{font-size:13.5px;font-weight:600;color:#9c9c9c}
+.step-pm{flex:none;display:flex;align-items:center;gap:7px;color:#3d3d3d}
+.step-pm i{width:1px;height:14px;background:#d8d8d8;display:block}
+.step-pm button{width:15px;height:20px;display:flex;align-items:center;justify-content:center}
+.bbo{flex:none;width:48px;min-height:40px;background:var(--field);border-radius:8px;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center}
+.unit{flex:none;display:flex;align-items:center;gap:3px;font-size:13px;font-weight:650}
+.slider{padding:12px 8px 7px;position:relative}
+.slider .track{height:3px;background:#ededed;border-radius:3px;position:relative;pointer-events:none}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;background:var(--ink);border-radius:3px;transition:width .12s linear}
+.slider .dot{position:absolute;top:50%;width:8px;height:8px;border-radius:50%;background:#dedede;transform:translate(-50%,-50%);transition:background .12s linear}
+.slider .dot.on{background:var(--ink)}
+.slider .knob{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;border:2.8px solid var(--ink);transform:translate(-50%,-50%);transition:left .12s linear}
+.slider input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;z-index:3;-webkit-appearance:none;appearance:none;background:transparent}
+.slider input::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%}
+.slider input::-moz-range-thumb{width:26px;height:26px;border:0;border-radius:50%}
+.k-line{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--gray);min-height:19px}
+.k-line b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.k-line .dot-u{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;text-decoration-color:#d6d6d6}
+.k-check{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray);min-height:20px}
+.k-check + .k-check{margin-top:-5px}
+.k-check .box{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid #cfcfcf;display:flex;align-items:center;justify-content:center}
+.k-check.on .box{border-color:var(--green);background:var(--green)}
+.k-check.on{color:var(--ink)}
+.k-check .box svg{color:#fff}
+.k-check.sq .box{border-radius:4px}
+.calc{display:flex;flex-direction:column;gap:3px;padding-top:2px}
+.cta{height:36px;border-radius:999px;background:#1d1d1d;color:#fff;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;width:100%;letter-spacing:-.01em}
+.cta.buy{background:var(--green)}.cta.sell{background:var(--red)}
+.cta.ghost{background:var(--field);color:var(--ink)}
+.err{font-size:11px;color:var(--red);font-weight:600}
+
+.pos-tabs{margin-top:14px;padding:0 15px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #f0f0f0}
+.pos-tabs button{padding-bottom:9px;font-size:13.5px;font-weight:600;color:var(--gray);position:relative;white-space:nowrap}
+.pos-tabs button.on{color:var(--ink);font-weight:750}
+.pos-tabs button.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.5px;border-radius:2px;background:var(--ink)}
+.pos-tabs .sp{margin-left:auto;padding-bottom:9px;color:#9a9a9a}
+.empty{padding:44px 15px;text-align:center;font-size:12.5px;color:#a2a2a2}
+.pos{display:flex;flex-direction:column}
+.pos-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 15px 9px;font-size:12px;color:var(--gray)}
+.pos-bar .box.sq{border-radius:4px}
+.pos-close-all{background:var(--field);border-radius:999px;padding:6px 13px;font-size:12px;font-weight:650;color:var(--ink)}
+.pos-card{padding:2px 15px 16px;display:flex;flex-direction:column;gap:11px;border-top:1px solid #f4f4f4}
+.pos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-top:12px}
+.pos-head .nm{display:flex;align-items:center;gap:5px;font-size:14px}
+.pos-head .nm b{font-weight:750}
+.pos-head .pl{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.pos-head .pl small{font-size:10.5px;color:var(--gray)}
+.pos-head .pl b{font-size:15px;font-weight:750;font-variant-numeric:tabular-nums}
+.pos-head .pl b.g{color:var(--green)}.pos-head .pl b.r{color:var(--red)}
+.pos-head .pl b i{font-style:normal;font-size:12.5px;font-weight:650}
+.pos-tags{display:flex;align-items:center;gap:5px;margin-top:-5px}
+.pos-tags em,.pos-tags span{font-style:normal;font-size:10.5px;font-weight:650;padding:2px 7px;border-radius:5px;background:var(--field);color:#6e6e6e}
+.pos-tags em.long{background:var(--green-wash);color:var(--green)}
+.pos-tags em.short{background:var(--red-wash);color:var(--red)}
+.pos-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px 8px}
+.ps-stat{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ps-stat small{font-size:10px;color:var(--gray);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;text-decoration-color:#dcdcdc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ps-stat b{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.ps-stat:nth-child(3n) small,.ps-stat:nth-child(3n) b{text-align:right}
+.pos-acts{display:flex;gap:7px;margin-top:2px}
+.pos-acts button{flex:1;height:31px;border-radius:8px;background:var(--field);font-size:12px;font-weight:650}
+
+.ord{margin:12px 15px 0;border:1px solid #efefef;border-radius:12px;padding:12px 13px 13px;display:flex;flex-direction:column;gap:9px;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.ord-top{display:flex;align-items:center;gap:7px}
+.ord-top b{font-size:13.5px;font-weight:700}
+.ord-pill{margin-left:auto;padding:3px 8px;border-radius:999px;font-size:10.5px;font-weight:700}
+.ord-pill.run{background:var(--green-wash);color:#00805a}
+.ord-pill.part{background:#fff3e6;color:#a54c00}
+.ord-pill.end{background:var(--field);color:#6e6e6e}
+.ord-meta{font-size:10.5px;color:var(--gray);display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:-4px}
+.ord-meta em{font-style:normal;font-weight:700}
+.ord-meta em.long{color:var(--green)}.ord-meta em.short{color:var(--red)}
+.ord-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px 10px}
+.ord-stat{display:flex;flex-direction:column;gap:1px}
+.ord-stat small{font-size:10px;color:var(--gray)}
+.ord-stat b{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.ord-stat b.g{color:var(--green)}.ord-stat b.r{color:var(--red)}
+.prog{display:flex;flex-direction:column;gap:5px}
+.prog .bar{height:4px;border-radius:3px;background:#f0f0f0;overflow:hidden}
+.prog .bar i{display:block;height:100%;border-radius:3px;background:var(--green)}
+.prog .lb{display:flex;justify-content:space-between;font-size:10.5px;color:var(--gray)}
+.prog .lb b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.ord-foot{display:flex;gap:7px}
+.ord-foot button{flex:1;height:30px;border-radius:8px;background:var(--field);font-size:12.5px;font-weight:650}
+.ord-foot button.dark{background:#1d1d1d;color:#fff}
+.chase-strip{background:var(--green-soft);border-radius:8px;padding:7px 9px;font-size:10.5px;line-height:1.55;color:#3f6f62}
+.chase-strip b{color:#00805a;font-weight:700}
+.chase-strip.amber{background:#fff6ec;color:#8a5116}
+.chase-strip.amber b{color:#a54c00}
+
+.d-head{flex:none;height:46px;padding:0 13px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f4f4f4}
+.d-head b{font-size:15px;font-weight:700}
+.d-head button:last-child{margin-left:auto}
+.res{padding:22px 15px 18px;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center}
+.res .ic{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--green-wash);color:var(--green)}
+.res .ic.amber{background:#fff3e6;color:var(--amber)}
+.res .ic.gray{background:var(--field);color:#8a8a8a}
+.res h3{font-size:17px;font-weight:750}
+.res p{font-size:11.5px;color:var(--gray)}
+.d-sec{padding:0 15px}
+.d-sec-h{font-size:11px;font-weight:700;color:var(--gray);padding:14px 0 7px}
+.d-rows{border:1px solid #f1f1f1;border-radius:11px;overflow:hidden}
+.d-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 12px;font-size:12px;border-bottom:1px solid #f6f6f6}
+.d-row:last-child{border-bottom:0}
+.d-row span{color:var(--gray);white-space:nowrap}
+.d-row b{font-weight:650;text-align:right;font-variant-numeric:tabular-nums}
+.d-row b.g{color:var(--green)}.d-row b.r{color:var(--red)}.d-row b.a{color:var(--amber)}
+.tl{padding:2px 0 0}
+.tl-item{display:flex;gap:10px;padding-bottom:13px;position:relative}
+.tl-item:before{content:"";position:absolute;left:5px;top:14px;bottom:0;width:1px;background:#eee}
+.tl-item:last-child{padding-bottom:4px}
+.tl-item:last-child:before{display:none}
+.tl-item .dt{flex:none;width:11px;height:11px;border-radius:50%;border:2.5px solid #d8d8d8;background:#fff;margin-top:3px;z-index:1}
+.tl-item.done .dt{border-color:var(--green)}
+.tl-item.stop .dt{border-color:var(--amber)}
+.tl-item .tx{flex:1;min-width:0}
+.tl-item .tx b{display:block;font-size:12px;font-weight:650}
+.tl-item .tx small{font-size:10.5px;color:var(--gray);font-variant-numeric:tabular-nums}
+.out-seg{display:flex;gap:5px;padding:12px 15px 0}
+.out-seg button{flex:1;height:27px;border-radius:8px;background:var(--field);font-size:11.5px;font-weight:650;color:#8a8a8a}
+.out-seg button.on{background:#1d1d1d;color:#fff}
+
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.3);z-index:20;animation:fade .18s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:30;background:#fff;border-radius:26px 26px 0 0;max-height:86%;display:flex;flex-direction:column;animation:rise .26s cubic-bezier(.22,1,.36,1)}
+@keyframes rise{from{transform:translateY(24px);opacity:.4}to{transform:translateY(0);opacity:1}}
+.sheet-h{flex:none;padding:20px 16px 12px;display:flex;align-items:center;gap:8px}
+.sheet-h b{font-size:20px;font-weight:750;letter-spacing:-.03em}
+.sheet-h .ib{flex:none;width:17px;height:17px;border-radius:50%;background:#c4c4c4;display:flex;align-items:center;justify-content:center}
+.sheet-h .x{margin-left:auto;color:#9a9a9a}
+.sheet-b{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding-bottom:26px}
+.sheet-b::-webkit-scrollbar{display:none}
+.sheet-foot{flex:none;padding:10px 16px calc(24px + env(safe-area-inset-bottom));border-top:1px solid #f4f4f4;background:#fff}
+
+.topt{width:100%;display:flex;align-items:flex-start;gap:13px;padding:13px 16px;text-align:left}
+.topt.on{background:var(--sel)}
+.topt .gl{flex:none;width:36px;height:26px;margin-top:2px;color:#1d1d1d}
+.topt .tx{flex:1;min-width:0}
+.topt .tx b{display:block;font-size:15px;font-weight:700;letter-spacing:-.02em}
+.topt .tx p{margin-top:2px;font-size:11.5px;line-height:1.5;color:#878787}
+.topt .tx .new{display:inline-block;margin-left:6px;vertical-align:2px;padding:1px 6px;border-radius:999px;background:var(--green-wash);color:#00805a;font-size:9.5px;font-weight:700;letter-spacing:.02em}
+.topt .ck{flex:none;width:20px;height:20px;border-radius:50%;background:#1d1d1d;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:5px}
+.topt .lk{flex:none;margin-top:6px;color:#c4c4c4}
+.sheet-sec{padding:16px 16px 5px;font-size:12.5px;color:var(--gray);font-weight:500}
+.topt.slim{padding:15px 16px;align-items:center}
+.topt.slim .tx b{font-size:15.5px}
+.topt.slim .ck{margin-top:0}
+
+.ex-diagram{margin:4px 16px 0;border:1px solid #f0f0f0;border-radius:12px;padding:13px;background:var(--subtle)}
+.ex-legend{display:flex;gap:14px;padding:9px 0 0;font-size:10.5px;color:var(--gray);flex-wrap:wrap}
+.ex-legend i{display:inline-block;width:14px;height:0;border-top-width:2px;border-top-style:solid;vertical-align:4px;margin-right:5px}
+.ex-list{padding:4px 16px 0;display:flex;flex-direction:column;gap:2px}
+.ex-item{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f4f4f4}
+.ex-item:last-child{border-bottom:0}
+.ex-item .n{flex:none;width:19px;height:19px;border-radius:50%;background:var(--ink);color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ex-item .tx b{display:block;font-size:13px;font-weight:700}
+.ex-item .tx p{margin-top:3px;font-size:11.5px;line-height:1.6;color:#878787}
+.warn{margin:12px 16px 0;display:flex;gap:10px;align-items:flex-start;background:#fff6ec;border-radius:10px;padding:11px 12px;font-size:11.5px;line-height:1.6;color:#8a5116}
+.warn b{color:#a54c00}
+.warn svg{flex:none;margin-top:1px}
+
+.cf-head{margin:0 16px;padding:12px 13px;border-radius:11px;background:var(--field);display:flex;align-items:center;gap:8px}
+.cf-head b{font-size:14px;font-weight:750}
+.cf-head .sd{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700}
+.cf-head .sd.buy{background:var(--green-wash);color:var(--green)}
+.cf-head .sd.sell{background:var(--red-wash);color:var(--red)}
+.cf-list{padding:4px 16px 0}
+.cf-list .d-row{padding:11px 0;border-bottom:1px solid #f4f4f4;font-size:12.5px}
+.cf-list.flat .d-row{border-bottom:0;padding:9px 0}
+.cf-cap{margin:12px 16px 0;font-size:11.5px;line-height:1.65;color:#878787}
+.cf-cap b{color:var(--ink);font-weight:650}
+
+.toast{position:absolute;left:14px;right:14px;bottom:96px;z-index:45;background:rgba(29,29,29,.94);color:#fff;border-radius:12px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.55;animation:rise .3s cubic-bezier(.22,1,.36,1)}
+.toast b{font-weight:700}
+.toast .ic{flex:none;margin-top:1px}
+
+@media(max-width:1240px){
+  :root{--ds:.74}
+  .shell,.hero-inner,.topbar-in,#view-compete .layout{padding:0 24px}
+  .hero-inner{padding-top:76px}
+  .demo{width:206px}
+  .sim-grid{gap:22px}
+  .stage-row{gap:22px;padding:22px}
+}
+@media(max-width:1060px){
+  :root{--ds:.8}
+  .sim-grid{grid-template-columns:1fr}
+  .stage-row{justify-content:center}
+  .demo{width:224px}
+}
+@media(max-width:820px){
+  :root{--ds:.74}
+  .stage-row{flex-direction:column-reverse;align-items:center;gap:22px}
+  .demo{width:100%;max-width:420px}
+  .demo-grid{grid-template-columns:1fr 1fr}
+  .page-tabs{gap:20px}
+  .page-tabs button{font-size:13px}
+  .hero-image{height:130%;width:auto;right:-4%;top:-18%}
+  .hero-copy{width:min(460px,62%)}
+}
+@media(max-width:560px){
+  :root{--ds:.72}
+  .shell,.hero-inner,.topbar-in,#view-compete .layout{padding:0 14px}
+  .hero-inner{padding-top:64px}
+  .hero-copy{width:70%;max-width:none}
+  .hero-image{height:140%;width:auto;right:-18%;top:-20%}
+  .page-tabs{gap:14px}
+  .page-tabs button{font-size:12px}
+  .sim{padding:80px 0}
+  .flow-nav{gap:6px;padding-bottom:16px}
+  .flow-nav button{height:36px;padding:0 13px;gap:6px}
+  .flow-nav .n{font-size:11px}
+  .flow-nav .nm{font-size:13.5px}
+  .demo-grid{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.topbar,.hero-particles,.hero-image,.demo,.flow-nav,.btn-next{display:none}.hero{background:#fff;color:var(--ink);height:auto}.hero::before{display:none}.hero h1{color:var(--ink)}.hero p{color:var(--muted)}.stage-col{position:static}.sim{background:none;border:0}}
+
+.topbar-in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px}
+.brand-logo{justify-self:start}
+.langs{justify-self:end}
+.page-tabs{justify-self:center;display:flex;align-items:center;gap:32px;height:80px;padding:0;background:none;border:0}
+.page-tabs button{position:relative;height:auto;padding:8px 0;border-radius:0;font-size:14px;font-weight:500;color:rgba(255,255,255,.4);white-space:nowrap;letter-spacing:-.01em}
+.page-tabs button:hover{color:rgba(255,255,255,.78)}
+.page-tabs button[aria-current=true]{background:none;color:var(--green);font-weight:600}
+.page-tabs button[aria-current=true]:hover{color:var(--green)}
+
+#view-compete{display:none;background:var(--paper)}
+body[data-page="compete"] #view-compete{display:block}
+body[data-page="compete"] #view-design{display:none}
+body[data-page="compete"] .hero{height:360px}
+body[data-page="compete"] .hero-image{display:none}
+body[data-page="compete"] .hero-copy{width:min(720px,78%);max-width:720px}
+body[data-page="compete"] .hero-inner{padding-top:64px}
+body[data-page="compete"] .hero::before{background:linear-gradient(90deg,rgba(5,5,5,.35) 0%,transparent 70%)}
+
+#view-compete .layout{display:grid;grid-template-columns:184px minmax(0,1fr);align-items:start;max-width:1400px;margin:0 auto;padding:0 40px;gap:8px}
+#view-compete .content{min-width:0;background:var(--paper)}
+#view-compete .shell{max-width:none;margin:0;padding:0 0 0 24px}
+#view-compete .sidenav{position:sticky;top:80px;height:calc(100vh - 80px);overflow:auto;padding:28px 8px 48px 0;border-right:1px solid var(--line);background:transparent;scrollbar-width:thin}
+#view-compete .sidenav-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:650;padding:0 12px;margin-bottom:8px}
+#view-compete .sidenav a{display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;text-decoration:none;border-radius:8px;padding:8px 12px;color:var(--muted);font-size:14px;font-weight:500;line-height:1.4}
+#view-compete .sidenav a .n{width:18px;flex-shrink:0;font-size:12px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+#view-compete .sidenav a:hover{background:rgba(0,0,0,.02);color:var(--ink)}
+#view-compete .sidenav a[aria-current=true]{background:var(--green-soft);color:var(--green);font-weight:650}
+#view-compete .sidenav a[aria-current=true] .n{color:var(--green)}
+#view-compete .sidenav a.top{margin-bottom:4px}
+#view-compete .sidenav a.end{margin-top:8px}
+#view-compete .sidenav-split{height:1px;background:var(--line);margin:10px 12px}
+#view-compete h2{font-size:32px;letter-spacing:-1px}
+#view-compete h3{font-size:16px}
+#view-compete .section{padding:52px 0;border-top:1px solid var(--line)}
+#view-compete .section:first-child{border-top:0;padding-top:40px}
+#view-compete .section-head{margin-bottom:28px;max-width:720px}
+#view-compete .section-no{font-size:11px;letter-spacing:1.5px;color:var(--green);margin-bottom:10px}
+#view-compete .section-head p{color:var(--muted);margin-top:10px;font-size:15px}
+#view-compete .define{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:36px}
+#view-compete .define.pair{grid-template-columns:1fr 1fr}
+#view-compete .define article{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px}
+#view-compete .define small{display:block;font-size:11px;letter-spacing:.8px;color:var(--green);margin-bottom:8px}
+#view-compete .define p{font-size:14px;color:var(--muted);margin-top:6px}
+#view-compete .timeline{list-style:none;margin:0;padding:0}
+#view-compete .timeline li{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}
+#view-compete .timeline li:last-child{border-bottom:0}
+#view-compete .timeline .n{font:650 12px/1.4 var(--sans);color:var(--green);padding-top:2px}
+#view-compete .timeline b{display:block;font-size:15px}
+#view-compete .timeline p{font-size:14px;color:var(--muted);margin-top:4px}
+#view-compete .ends{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+#view-compete .ends article{padding:16px 18px;background:var(--subtle);border:1px solid var(--line);border-radius:16px}
+#view-compete .ends b{display:block;font-size:14px;margin-bottom:4px}
+#view-compete .ends p{font-size:13px;color:var(--muted)}
+#view-compete .compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#view-compete .card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+#view-compete .card-head{padding:14px 16px;display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line)}
+#view-compete .brand{font-size:13px;font-weight:700}
+#view-compete .brand.okx{color:var(--okx)}
+#view-compete .brand.gate{color:var(--gate)}
+#view-compete .ev{font-size:10px;padding:3px 7px;border-radius:4px;background:rgba(0,0,0,.04);color:var(--quiet);white-space:nowrap}
+#view-compete .ev.has-img{background:var(--green-soft);color:var(--green)}
+#view-compete .ev.text,#view-compete .ev.guide{background:rgba(0,0,0,.04);color:var(--muted)}
+#view-compete .shot{background:var(--subtle);min-height:240px;display:flex;align-items:center;justify-content:center;cursor:zoom-in}
+#view-compete .shot img{max-width:100%;max-height:460px;object-fit:contain;display:block}
+#view-compete .shot.empty{min-height:160px;color:var(--quiet);font-size:13px;cursor:default;padding:24px;text-align:center;line-height:1.6}
+#view-compete .card-body{padding:14px 16px 16px;font-size:13px;color:var(--muted);flex:1}
+#view-compete .card-body ul{margin:0;padding-left:16px}
+#view-compete .card-body li+li{margin-top:5px}
+#view-compete .note{margin-top:16px;font-size:13px;color:var(--muted)}
+#view-compete .matrix-wrap{overflow:auto}
+#view-compete table{width:100%;border-collapse:collapse;font-size:13px;text-align:left;min-width:560px}
+#view-compete th{color:var(--quiet);font-weight:500;background:var(--subtle)}
+#view-compete td,#view-compete th{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+#view-compete td:first-child{font-weight:650;white-space:nowrap}
+#view-compete .no{color:var(--red)}
+#view-compete .mid{color:var(--amber)}
+#view-compete .take{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#view-compete .insight{padding:18px;background:#fff;border:1px solid var(--line);border-radius:16px}
+#view-compete .insight p{font-size:14px;color:var(--muted);margin-top:8px}
+#view-compete .warn{margin-top:16px;padding:14px 16px;background:rgba(233,105,0,.08);border-left:3px solid var(--amber);font-size:14px}
+#view-compete .warn small{display:block;color:var(--muted);margin-top:4px}
+#view-compete .source-note{font-size:12px;color:var(--quiet);margin-top:18px}
+#view-compete .footer{padding:20px 0 48px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--quiet);border-top:1px solid var(--line)}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.70);display:none;align-items:center;justify-content:center;z-index:90;padding:24px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:min(92vw,980px);max-height:90vh;object-fit:contain;background:#111;border-radius:16px}
+.lightbox button{position:absolute;top:18px;right:18px;border:0;background:#fff;color:#000;border-radius:99px;padding:8px 14px}
+
+@media(max-width:1100px){
+  #view-compete .layout{grid-template-columns:1fr}
+  #view-compete .sidenav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px 18px}
+  #view-compete .sidenav a{display:inline-flex;width:auto;margin:0 4px 4px 0}
+  #view-compete .define,#view-compete .define.pair,#view-compete .compare,#view-compete .ends,#view-compete .take{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  #view-compete .shell{padding:0}
+  #view-compete .section{padding:36px 0}
+  #view-compete h2{font-size:26px}
+  #view-compete .footer{display:block}
+  #view-compete .timeline li{grid-template-columns:40px 1fr}
+}
+
+</style>
+</head>
+<body data-page="design">
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand-logo" href="#design" data-act="page" data-page="design" aria-label="KuCoin"><svg class="klogo" viewBox="0 0 855 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M57.7007 99.9146L116.94 159.158L154.381 121.714C160.964 115.131 171.734 115.131 178.317 121.714C184.899 128.297 184.899 139.068 178.317 145.651L128.908 195.063C122.326 201.646 111.555 201.646 104.973 195.063L34.0221 123.937V166.339C34.0221 175.572 26.4997 183.351 17.0111 183.351C7.52258 183.351 0 175.828 0 166.339V34.003C0 24.5138 7.52258 16.9908 17.0111 16.9908C26.4997 16.9908 34.0221 24.5138 34.0221 34.003V76.0633L105.143 4.93695C111.726 -1.64565 122.496 -1.64565 129.079 4.93695L178.488 54.3492C185.07 60.9318 185.07 71.7034 178.488 78.286C171.905 84.8686 161.135 84.8686 154.552 78.286L117.111 40.8421L57.7007 100.085V99.9146ZM117.111 82.9024C107.622 82.9024 100.1 90.4254 100.1 99.9146C100.1 109.404 107.622 116.927 117.111 116.927C126.6 116.927 134.122 109.404 134.122 99.9146C133.951 90.4254 126.429 82.9024 117.111 82.9024Z" fill="currentColor"/> <path d="M675.398 99.9995C675.398 95.0412 675.398 90.4249 675.227 86.2359C675.056 82.047 674.629 77.9435 674.116 74.4385C673.517 70.7625 672.406 67.4285 670.696 64.1799C669.158 60.8459 666.764 57.9393 663.943 54.9472C659.84 50.9292 655.309 47.9371 650.266 45.7144C645.222 43.6627 639.41 42.3804 632.828 42.3804C626.245 42.3804 620.433 43.4917 615.389 45.7144C610.346 47.7662 605.644 50.8437 601.456 54.9472C598.464 57.8538 596.412 60.8459 594.873 64.1799C593.335 67.514 592.052 70.7625 591.454 74.4385C590.856 78.1145 590.514 81.9615 590.343 86.2359C590.172 90.4249 590.172 95.0412 590.172 99.9995C590.172 104.958 590.172 109.403 590.343 113.763C590.514 117.952 590.941 122.056 591.454 125.561C592.052 129.237 593.164 132.571 594.873 135.819C596.412 139.153 598.806 142.06 601.456 145.052C605.559 149.07 610.089 152.062 615.389 154.285C620.433 156.336 626.245 157.619 632.828 157.619C639.41 157.619 645.051 156.507 650.266 154.285C655.309 152.233 660.011 149.155 663.943 145.052C666.935 142.145 668.987 139.153 670.696 135.819C672.235 132.485 673.517 129.237 674.116 125.561C674.714 121.885 675.227 118.038 675.227 113.763C675.398 109.147 675.398 104.958 675.398 99.9995ZM653.087 99.9995C653.087 105.3 653.087 109.916 652.916 113.592C652.745 117.268 652.574 120.004 651.976 122.397C651.634 124.62 651.035 126.586 650.266 127.954C649.497 129.408 648.727 130.861 647.445 131.972C645.906 133.853 643.684 135.306 641.461 136.418C638.982 137.529 636.161 137.871 632.998 138.042C629.836 138.042 627.186 137.529 624.536 136.418C622.057 135.306 620.005 134.024 618.296 131.972C617.184 130.861 616.415 129.578 615.475 127.954C614.705 126.501 614.192 124.62 613.765 122.397C613.423 120.175 612.996 117.268 612.996 113.592C612.825 109.916 612.825 105.471 612.825 99.9995C612.825 94.5283 612.825 90.0829 612.996 86.4069C613.167 82.7309 613.338 79.9953 613.765 77.6016C614.107 75.208 614.705 73.4127 615.475 72.0449C616.244 70.5916 617.013 69.1382 618.296 68.0269C619.834 66.1461 622.057 64.6929 624.536 63.5815C627.015 62.4702 629.836 62.1282 632.998 61.9572C636.161 61.9572 638.811 62.4702 641.461 63.5815C643.684 64.6929 645.992 65.9752 647.445 68.0269C648.556 69.1382 649.326 70.4206 650.266 72.0449C651.035 73.4982 651.548 75.3789 651.976 77.6016C652.317 79.8243 652.745 82.7309 652.916 86.4069C652.916 90.0829 653.087 94.6993 653.087 99.9995Z" fill="currentColor"/> <path d="M854.91 44.432C854.91 43.3207 853.97 42.5513 853.03 42.5513H834.651C833.54 42.5513 832.77 43.4917 832.77 44.432V109.916C832.77 110.856 831.488 111.284 830.975 110.429L787.464 43.1497C787.122 42.8077 786.866 42.5513 786.353 42.5513H769.086C768.06 42.5513 767.205 43.4062 767.205 44.432V155.652C767.205 156.764 768.145 157.533 769.086 157.533H787.464C788.576 157.533 789.345 156.593 789.345 155.652V89.9974C789.345 89.057 790.627 88.6295 791.14 89.4844L834.651 156.935C834.993 157.277 835.249 157.533 835.762 157.533H853.03C854.141 157.533 854.91 156.593 854.91 155.652V44.432Z" fill="currentColor"/> <path d="M730.278 44.432C730.278 43.3207 729.337 42.5513 728.397 42.5513H710.018C708.907 42.5513 708.138 43.4917 708.138 44.432V155.652C708.138 156.764 709.078 157.533 710.018 157.533H728.397C729.508 157.533 730.278 156.593 730.278 155.652V44.432Z" fill="currentColor"/> <path d="M507.424 99.4872C507.424 94.016 507.424 90.8529 507.595 87.0914C507.766 83.3299 507.937 80.5088 508.364 78.0297C510.074 68.0275 517.767 62.2143 527.512 62.2143C537.257 62.2143 539.565 64.437 543.327 69.9083C544.865 72.131 546.148 74.9521 546.917 78.2006C546.917 78.5426 547.088 78.799 547.515 78.799H569.313C569.655 78.799 569.655 78.6281 569.655 78.2006C567.433 64.8644 560.081 52.4686 547.259 46.4844C541.446 43.6633 534.693 42.1245 527.17 42.1245C514.946 42.1245 504.432 46.4844 495.969 54.6913C491.097 59.5641 488.105 65.3773 486.566 71.9599C485.284 78.3715 484.686 86.4075 484.686 98.9743C484.686 111.541 485.284 121.116 486.566 127.527C487.848 134.11 491.268 139.923 495.969 144.796C504.432 153.259 514.775 157.363 527.17 157.363C539.565 157.363 541.275 156.081 547.259 153.003C559.825 147.019 567.347 134.965 569.655 121.287C569.655 120.945 569.655 120.688 569.313 120.688H547.515C547.173 120.688 546.917 120.859 546.917 121.287C546.148 124.45 545.036 127.1 543.327 129.579C539.565 134.879 533.924 137.102 527.512 137.273C517.767 137.273 510.245 131.46 508.364 121.458C508.022 119.235 507.595 116.157 507.595 112.396C507.424 109.404 507.424 104.702 507.424 99.2307V99.4872Z" fill="currentColor"/> <path d="M276.707 44.2611C276.707 43.1498 275.767 42.3804 274.827 42.3804H256.448C255.337 42.3804 254.567 43.3208 254.567 44.2611V155.482C254.567 156.593 255.508 157.362 256.448 157.362H274.827C275.938 157.362 276.707 156.422 276.707 155.482V123.167C276.707 122.91 276.707 122.739 276.964 122.568L290.897 106.069C291.325 105.556 292.18 105.642 292.522 106.24L322.44 157.106C322.611 157.448 323.039 157.704 323.552 157.704H346.119C347.06 157.704 347.23 157.106 346.888 156.165L307.225 88.8861C307.054 88.5441 307.054 88.1166 307.31 87.7747L343.726 44.1757C344.495 43.2353 344.067 42.4659 342.956 42.4659H318.166C317.824 42.4659 317.141 42.8933 316.97 43.3208L278.588 89.057C277.99 89.7409 276.878 89.3135 276.878 88.4586V44.3466L276.707 44.2611Z" fill="currentColor"/> <path d="M412.027 137.273C401.513 137.273 392.11 127.527 392.11 116.072V44.6889C392.11 43.5775 391.169 42.8081 390.229 42.8081H371.85C370.739 42.8081 369.97 43.7485 369.97 44.6889V115.901C369.97 141.462 389.118 157.619 412.454 157.619C435.791 157.619 454.939 141.462 454.939 115.901V44.6889C454.939 43.5775 453.999 42.8081 453.059 42.8081H434.68C433.569 42.8081 432.799 43.7485 432.799 44.6889V116.072C431.859 127.527 422.456 137.273 412.113 137.273H412.027Z" fill="currentColor"/></svg></a>
+      <nav class="page-tabs" role="tablist" aria-label="页面">
+        <button type="button" role="tab" id="tab-design" data-act="page" data-page="design"></button>
+        <button type="button" role="tab" id="tab-compete" data-act="page" data-page="compete"></button>
+      </nav>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" data-act="lang" data-lang="zh">简体中文</button>
+        <button type="button" data-act="lang" data-lang="en">English</button>
+      </div>
+    </div>
+  </header>
+  <section class="hero" id="top">
+    <canvas class="hero-particles" aria-hidden="true"></canvas>
+    <img class="hero-image" src="assets/Metallic%20Apple%20Device%20Mockup%20%235.png" alt="" aria-hidden="true">
+    <div class="hero-inner">
+      <div class="hero-copy">
+      <div class="eyebrow" id="eyebrow"></div>
+      <h1 id="hero-title"></h1>
+      <p id="hero-lead"></p>
+    </div>
+  </div>
+</section>
+
+<main id="view-design">
+
+  <div class="sim">
+   <div class="shell">
+    <div class="sec-head">
+      <h2 id="sim-title"></h2>
+      <p id="sim-sub"></p>
+    </div>
+    <div class="sim-grid">
+     <div class="stage-row">
+      <div class="demo">
+        <div class="demo-h"><span id="demo-title"></span><span id="demo-step"></span></div>
+        <div class="demo-grid" id="demo-grid"></div>
+        <p class="demo-note" id="demo-note"></p>
+      </div>
+      <div class="stage-col">
+        <div class="device-scale">
+          <div class="iphone">
+            <span class="btn-mute"></span><span class="btn-voldn"></span>
+            <div class="iphone-in">
+              <div class="screen" id="screen"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+
+     <div class="panel">
+       <nav class="flow-nav" id="flow-nav" role="tablist"></nav>
+       <article class="step" id="step"></article>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="shell">
+    <section class="spec" id="compare"></section>
+    <footer class="page-foot" id="page-foot"></footer>
+  </div>
+</main>
+<div id="view-compete">
+<div class="layout">
+<nav class="sidenav" id="stage-nav" aria-label="目录">
+  <div class="sidenav-label">目录</div>
+  <a class="top" href="#overview">概览</a>
+  <div class="sidenav-split"></div>
+  <a href="#s01"><span class="n">01</span>发现</a>
+  <a href="#s02"><span class="n">02</span>设置</a>
+  <a href="#s03"><span class="n">03</span>确认</a>
+  <a href="#s04"><span class="n">04</span>运行中</a>
+  <a href="#s05"><span class="n">05</span>部分成交</a>
+  <a href="#s06"><span class="n">06</span>撤单</a>
+  <a href="#s07"><span class="n">07</span>触线</a>
+  <a href="#s08"><span class="n">08</span>复盘</a>
+  <div class="sidenav-split"></div>
+  <a class="end" href="#summary">总结</a>
+</nav>
+
+<div class="content">
+<div class="shell">
+<section class="section" id="overview">
+  <div class="section-head">
+    <div class="section-no">概览</div>
+    <h2>挂单价跟着盘口改，直到成交、撤单或触线。</h2>
+    <p>两家都提供持续追价的委托类型。OKX 官方明确下单后不能修改价格、数量或最大追逐距离；Gate 本次只核实到撤单入口，未验证改单能力。</p>
+  </div>
+  <div class="define">
+    <article><small>跟随</small><h3>买跟买一，卖跟卖一</h3><p>都可选盘口一价或与一价的距离。OKX 官方写明每秒更新；Gate 本次界面显示每 1 秒。</p></article>
+    <article><small>边界</small><h3>最多追到哪</h3><p>都可设最大追逐距离。OKX 以初始下单价与最新盘口价的距离判断；Gate 以市场最新价是否达到边界判断。</p></article>
+    <article><small>约束</small><h3>成交方式与改单</h3><p>OKX 明确保持只挂单且不支持改单。Gate 官方说明按 Maker 费率；本次界面未验证改单和只挂单的具体处理。</p></article>
+  </div>
+  <ol class="timeline">
+    <li><span class="n">01</span><div><b>选订单类型</b><p>从限价旁边选出追逐限价。Gate 旁边还有追踪委托，名字容易撞。</p></div></li>
+    <li><span class="n">02</span><div><b>设规则</b><p>数量、跟谁、追多远。距离要能换成具体价格。</p></div></li>
+    <li><span class="n">03</span><div><b>确认</b><p>核对跟随谁、停止线与订单约束。</p></div></li>
+    <li><span class="n">04</span><div><b>看当前委托</b><p>还在追、现在挂在哪个价。</p></div></li>
+    <li><span class="n">05</span><div><b>部分成交</b><p>已成交留下，剩余继续跟。进度写成已成/总量，比只写「部分成交」清楚。</p></div></li>
+    <li><span class="n">06</span><div><b>手动撤单</b><p>撤的是未成交部分。已成交仓位还在。</p></div></li>
+    <li><span class="n">07</span><div><b>碰到停止线</b><p>触发各平台的最高买价或最低卖价规则后，系统终止追逐并撤销剩余。</p></div></li>
+    <li><span class="n">08</span><div><b>查历史</b><p>结束原因、成交均价、跟随方式、停止线。原因要能分清：全成、手撤、触线。</p></div></li>
+  </ol>
+  <div class="ends">
+    <article><b>结束 A · 全部成交</b><p>总量成交完，追逐结束。</p></article>
+    <article><b>结束 B · 手动撤销</b><p>剩余撤销，已成交保留。</p></article>
+    <article><b>结束 C · 触线终止</b><p>达到最大追逐距离，系统撤剩余。</p></article>
+  </div>
+  <div class="define pair" style="margin-top:36px;margin-bottom:0">
+    <article><small>OKX</small><h3>规则讲得清</h3><p>图示把贴一价和留价距画成两条线。确认页写成「买一价 - 1」。运行中却显示成高级限价。</p></article>
+    <article><small>Gate</small><h3>确认写得懂</h3><p>弹层写成「买一价-1」，停止线是具体价格。列表拆成父追逐单 + 子限价单；本次部分成交后结束的父单标为「已终止」。</p></article>
+  </div>
+</section>
+
+<section class="section" id="s01">
+  <div class="section-head">
+    <div class="section-no">01 发现</div>
+    <h2>入口放哪，怎么解释。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/okx-01-types.png" alt="OKX 高级委托，追逐限价被选中"/></div>
+      <div class="card-body">
+        <ul>
+          <li>高级委托第一项：追逐限价</li>
+          <li>副文案：委托价根据当前买一或卖一自动调整</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-01-types.png" alt="Gate 下单类型，追逐限价单被选中，旁边是追踪委托"/></div>
+      <div class="card-body">
+        <ul>
+          <li>高级组里，追踪委托和追逐限价单挨着</li>
+          <li>副文案：追逐盘口自动更新以达到最优价格</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+  <div class="compare" style="margin-top:16px">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · 说明</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/okx-02-explain-bid.png" alt="OKX 追逐买一卖一价图示"/></div>
+      <div class="card-body">
+        <ul>
+          <li>写明价格更新频率：每秒</li>
+          <li>例子：买一 80，最大距离 50，跟到 100；到 130 取消</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · 说明</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-02-explain.png" alt="Gate 追逐限价单图示说明"/></div>
+      <div class="card-body">
+        <ul>
+          <li>以最优买价或卖价下限价，随行情改进入价</li>
+          <li>直到成交、取消或最大追逐距离</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s02">
+  <div class="section-head">
+    <div class="section-no">02 设置</div>
+    <h2>跟谁、买多少、追多远。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/okx-04-form.png" alt="OKX 追逐限价表单，可选买一/卖一价或买一/卖一距离"/></div>
+      <div class="card-body">
+        <ul>
+          <li>买一／卖一价，或买一／卖一距离</li>
+          <li>只减仓、最大追逐距离都是勾选项</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-03-mode.png" alt="Gate 追逐价格：买一/卖一价或买一/卖一距离"/></div>
+      <div class="card-body">
+        <ul>
+          <li>同样两套：买一/卖一价，或买一/卖一距离</li>
+          <li>本次界面显示追逐间隔为每 1 秒；未验证能否调整</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+  <div class="compare" style="margin-top:16px">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · 价距</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/okx-05-maxdist.png" alt="OKX 价距 0.1，最大追逐距离弹层预览最高买价最低卖价"/></div>
+      <div class="card-body">
+        <ul>
+          <li>价距 0.1 → 您的买价 108.20 / 卖价 108.41</li>
+          <li>最大追逐弹层立刻换成最高买价 / 最低卖价</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · 价距</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-05-offset.png" alt="Gate 价距 1 USDT，最大追逐 10%"/></div>
+      <div class="card-body">
+        <ul>
+          <li>价距 1 USDT；最优买价 / 卖价直接列出</li>
+          <li>最大追逐 10% → 页面换算 ≈ 119.05 / 97.41</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s03">
+  <div class="section-head">
+    <div class="section-no">03 确认</div>
+    <h2>核对跟随谁、停止线和订单约束。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/okx-08-confirm.png" alt="OKX 下单确认：追逐价买一价-1，最高买价买一价+20"/></div>
+      <div class="card-body">
+        <ul>
+          <li>追逐价写成「买一价 - 1」，和 Gate 同一套说法</li>
+          <li>最高买价写成「买一价 + 20」，是公式，不是 128.30 这个具体数字</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-06-confirm.png" alt="Gate 确认弹层：追逐价格买一价-1，最高追逐价 118.98"/></div>
+      <div class="card-body">
+        <ul>
+          <li>追逐价格写成「买一价-1」，对应价距 1</li>
+          <li>最高追逐价 118.98，停止线是具体价格</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s04">
+  <div class="section-head">
+    <div class="section-no">04 运行中</div>
+    <h2>还在追吗，挂在哪。</h2>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/okx-06-open.png" alt="OKX 运行中显示为高级限价，委托价格（追逐）108.18"/></div>
+      <div class="card-body">
+        <ul>
+          <li>标签写成「高级限价」，不是追逐限价</li>
+          <li>价格写成「委托价格（追逐）108.18」</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-07-open.png" alt="Gate 当前委托同时出现限价单和追逐限价单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>拆成两行：子限价 + 父追逐限价单</li>
+          <li>追逐价格写「买一价-1」，不是具体挂价数字</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s05">
+  <div class="section-head">
+    <div class="section-no">05 部分成交</div>
+    <h2>部分成交后，剩余如何显示与继续追价。</h2>
+    <p>本次实操未截到部分成交。<a href="https://www.gate.com/zh/help/futures/questions/42290/chase-limit-order/chase-limit-order" target="_blank" rel="noopener noreferrer">Gate 官方教程</a>界面展示 8/100 张，文字说明剩余会继续追价；<a href="https://www.okx.com/zh-hans/help/how-to-use-chase-order" target="_blank" rel="noopener noreferrer">OKX 官方教程</a>样本已成交为 0，无法证明其部分成交界面。</p>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev guide">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-05.png" alt="OKX 官方教程：委托列表有委托数量和已成交量"/></div>
+      <div class="card-body">
+        <ul>
+          <li>列表有委托数量、已成交量；教程样本是 0</li>
+          <li>没见到「追逐中 + 已成交一部分」叠在一起</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev guide">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-03.png" alt="Gate 官方教程旧版界面：当前委托显示已成交 8/100 张"/></div>
+      <div class="card-body">
+        <ul>
+          <li>旧版教程界面写成已成交 / 总数量 8/100 张，仍在当前委托</li>
+          <li>官方文字说明：未成交部分继续按最新盘口一价挂单</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s06">
+  <div class="section-head">
+    <div class="section-no">06 撤单</div>
+    <h2>撤的是剩余，不是仓位。</h2>
+    <p>这次实操没截到撤单当时。下面用官方教程的当前委托。</p>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev guide">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-05.png" alt="OKX 官方教程：订单卡片可见撤单和批量撤单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>单笔撤单、批量撤单</li>
+          <li>下单后不能改，只能撤了重下</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev guide">官方截图</span></div>
+      <div class="shot"><img src="research/gate/gate-app-03.png" alt="Gate 官方教程：当前委托可见撤单和全部撤单"/></div>
+      <div class="card-body">
+        <ul>
+          <li>单笔撤单、全部撤单</li>
+          <li>撤的是未成交部分</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s07">
+  <div class="section-head">
+    <div class="section-no">07 触线</div>
+    <h2>追太远，系统怎么停。</h2>
+    <p>两边都没有碰到停止线之后的结果页。OKX 官方教程给了停止线怎么设。</p>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev guide">官方截图</span></div>
+      <div class="shot"><img src="research/okx/okx-04.png" alt="OKX 官方教程：最大追逐距离弹层，预览最高买价最低卖价"/></div>
+      <div class="card-body">
+        <ul>
+          <li>弹层把距离换成最高买价 / 最低卖价</li>
+          <li>达到后系统自动撤单</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev text">仅文字</span></div>
+      <div class="shot empty">买单：最新价碰到最高追逐买价就停。<br>官方教程也没有触线结果页。</div>
+      <div class="card-body">
+        <ul>
+          <li>历史状态写成「已终止」</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="s08">
+  <div class="section-head">
+    <div class="section-no">08 复盘</div>
+    <h2>为什么停、成交多少、均价多少。</h2>
+    <p>Gate 本次历史截图可见成交数量与均价，但「已终止」没有说明是手动撤单还是触线。OKX 历史页未取证。</p>
+  </div>
+  <div class="compare">
+    <article class="card">
+      <div class="card-head"><div class="brand okx">OKX · App</div><span class="ev text">仅文字</span></div>
+      <div class="shot empty">官方教程停在当前委托。<br>这次实操也没有订单历史。</div>
+      <div class="card-body">
+        <ul>
+          <li>结束原因、改价记录、成交明细都没见到</li>
+        </ul>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="brand gate">Gate · App</div><span class="ev has-img">实操截图</span></div>
+      <div class="shot"><img src="research/live/gate-09-history.png" alt="Gate 历史：限价完全成交，追逐限价单已终止 10.82/20"/></div>
+      <div class="card-body">
+        <ul>
+          <li>子限价写完全成交；父追逐单写「已终止」10.82/20</li>
+          <li>另一笔 0/20 的父单也写「已终止」；截图没有具体终止原因</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="summary">
+  <div class="section-head">
+    <div class="section-no">总结</div>
+    <h2>OKX 解释设置，Gate 官方示例展示部分成交。</h2>
+  </div>
+  <div class="matrix-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>阶段</th>
+          <th>OKX</th>
+          <th>Gate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>机制</td>
+          <td>持续自动追逐</td>
+          <td>持续自动追逐</td>
+        </tr>
+        <tr>
+          <td>发现</td>
+          <td>高级组第一项 + 一句话</td>
+          <td>高级组 + 一句话；旁边有追踪委托</td>
+        </tr>
+        <tr>
+          <td>设置</td>
+          <td>可跟一价或价差；弹层换算高低价</td>
+          <td>同样可跟一价或价差；距离可切 %</td>
+        </tr>
+        <tr>
+          <td>确认</td>
+          <td>「买一价 - 1」；最高买价写成「买一价 + 20」</td>
+          <td>「买一价-1」；最高追逐价是具体数字</td>
+        </tr>
+        <tr>
+          <td>运行</td>
+          <td>显示成高级限价，价格旁标「追逐」</td>
+          <td>父追逐 + 子限价两行</td>
+        </tr>
+        <tr>
+          <td>部分成交</td>
+          <td class="mid">官方截图已成交为 0；部分成交界面未验证</td>
+          <td>旧版教程截图 8/100 张；官方文字确认剩余继续追价</td>
+        </tr>
+        <tr>
+          <td>撤单</td>
+          <td>官方：单笔 / 批量</td>
+          <td>官方：单笔 / 全部撤单</td>
+        </tr>
+        <tr>
+          <td>触线</td>
+          <td>官方：弹层换成最高买价 / 最低卖价</td>
+          <td class="mid">未见结果页</td>
+        </tr>
+        <tr>
+          <td>复盘</td>
+          <td class="mid">未见历史页</td>
+          <td>本次样本显示均价与成交量；未见具体终止原因</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="take" style="margin-top:28px">
+    <article class="insight">
+      <h3>OKX</h3>
+      <p>入口解释、价距图示清楚。确认页用公式：买一价 - 1、买一价 + 20。运行中改叫高级限价，入口和列表对不上。</p>
+    </article>
+    <article class="insight">
+      <h3>Gate</h3>
+      <p>确认页「买一价-1」，停止线直接写成价格。列表父子拆开；本次两个结束样本都写「已终止」，无法从状态区分手撤与触线。</p>
+    </article>
+  </div>
+  <div class="warn">
+    <strong>追踪委托不要放进追逐限价的对照列。</strong>
+    <small>追踪是回调后触发新单；追逐是未成交挂单价跟着盘口改。Gate 入口把两者挨着放，更容易混。</small>
+  </div>
+  <p class="source-note">取证范围：发现、设置、确认、运行中和 Gate 历史使用 2026.09.20 实操截图；部分成交、撤单和停止线设置补自官方教程截图，Gate 部分成交样本是 2024 年界面。规则复核见 <a href="https://www.okx.com/zh-hans/help/how-to-use-chase-order" target="_blank" rel="noopener noreferrer">OKX 官方说明</a>、<a href="https://www.gate.com/zh/help/futures/questions/42290/chase-limit-order/chase-limit-order" target="_blank" rel="noopener noreferrer">Gate 官方教程</a>。未见界面均按「未验证」处理。</p>
+</section>
+
+<footer class="footer">
+  <p>luke / 追逐限价单 · 全流程竞品分析 · 2026.09.20</p>
+  <p>实操截图 · 官方教程补缺 · 不代表最新 App 全量功能</p>
+</footer>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="查看原图"><button type="button" id="lightbox-close">关闭</button><img alt=""></div>
+<script>
+(() => {
+'use strict';
+
+const COPY = {};
+
+COPY.zh = {
+  barName:'追逐限价单设计',
+  tabDesign:'追逐限价单设计',
+  tabCompete:'竞品分析',
+  byline:'by luke',
+  eyebrow:'KUCOIN FUTURES / ORDER TYPE DESIGN',
+  heroTitle:'追逐限价单 设计',
+  heroLead:'挂单价持续跟着盘口一价走，直到成交、撤单或碰到停止线。这份设计把它放进 KuCoin 合约的既有下单路径，重点补上竞品在运行状态和结束原因上没讲清的部分。下面的手机是实时模拟环境，可以直接下单走完整流程。',
+  competeEyebrow:'COMPETITIVE REVIEW / OKX · GATE',
+  competeTitle:'追逐限价单－竞品分析',
+  competeLead:'对照 OKX 与 Gate 同一条路径：下单后挂单价持续跟着盘口改，直到成交、撤单或碰到停止线。',
+  simTitle:'设计原型',
+  simSub:'可操作的高保真原型，盘口实时跳动。第一个标签是选中追逐限价单之后的表单默认样子，往后 9 个标签按顺序走完从入口到结束的流程。',
+  next:'下一步',
+  demoTitle:'模拟环境',
+  demoNote:'盘口每秒跳动，挂价自动跟随，委托挂出后会陆续成交。下面这排按钮不属于 APP，只是替你快速制造事件。',
+  stages:[
+    {name:'追逐限价单',title:'合约交易页',
+     lead:'目前是合约交易页。已选追逐限价单：左边是盘口，右边是下单表单。',
+     points:['<b>买入／卖出：</b>开多还是开空。','<b>买一/卖一价：</b>挂单价贴着盘口一价，盘口动它也动。','<b>数量：</b>这一笔要买多少。','<b>最大追逐距离：</b>默认不勾。不勾就一直追，直到成交或你自己撤。']},
+
+    {name:'发现入口',title:'委托类型面板',
+     lead:'目前是委托类型面板。从交易页点类型后，从底部滑上来。',
+     points:['<b>追逐限价单：</b>新类型，标 NEW。副文案：挂单价跟着买一／卖一走。','<b>位置：</b>夹在高级限价和条件单之间，和跟踪委托分开。','<b>ⓘ：</b>打开规则说明。']},
+
+    {name:'规则说明',title:'规则说明层',
+     lead:'目前是「什么是追逐限价单」。点 ⓘ 打开，讲这类委托怎么跑。',
+     points:['<b>三条线：</b>绿＝盘口买一价，黑＝你的挂单价，橙虚线＝停止线（追到这就停）。','<b>四步：</b>跟谁、差多少、追到哪、怎么结束。对应表单要填的项。','<b>底部提示：</b>只挂单、每秒改一次价；下单后规则不能改。']},
+
+    {name:'设置参数',title:'交易页 · 填参数',
+     lead:'目前还是交易页。跟随方式已改成价距，并勾上了停止线。',
+     points:['<b>买一/卖一距离：</b>不贴着一价，而是差一截。下面「您的买价」是换算后的挂单价。','<b>价距：</b>和盘口差多少 USDT。','<b>最大追逐距离：</b>勾上后填价距。下面「最高买价」是追到哪就停。']},
+
+    {name:'确认下单',title:'确认下单弹层',
+     lead:'目前是确认追逐限价单。点买入后弹出，核对这一笔再提交。',
+     points:['<b>追逐价格：</b>跟谁、怎么跟。例如「买一价 − 1 USDT」。','<b>当前挂价（预览）：</b>此刻会挂出去的价格。标了预览，因为提交后还会变。','<b>最高买价：</b>停止线。到了，系统撤掉还没成交的部分。']},
+
+    {name:'追逐中',title:'当前委托',
+     lead:'目前是交易页下方的当前委托。委托已挂出，正在跟着盘口改价。',
+     points:['<b>追逐中：</b>还在跑，没结束。','<b>当前挂价：</b>这一秒实际挂在盘口上的价格，会跟着跳。','<b>最高买价：</b>停止线，数字不动。','<b>底部灰条：</b>跟谁、到哪停。']},
+
+    {name:'部分成交',title:'当前委托 · 部分成交',
+     lead:'目前还是当前委托。同一张卡片，已经成交了一部分。',
+     points:['<b>部分成交 · 追逐中：</b>成交了一截，剩下的还在追。','<b>成交进度：</b>已成交 / 总量。','<b>底部灰条：</b>已成交变成仓位；剩余继续挂单。']},
+
+    {name:'手动撤单',title:'撤单确认弹层',
+     lead:'目前是「撤销追逐委托？」。点撤单后弹出，先讲清撤什么。',
+     points:['<b>已成交 · 保留为仓位：</b>已经买到的还在，不会平掉。','<b>撤销数量：</b>还没成交的部分，确认后取消。','<b>两个按钮：</b>先不撤 / 确认撤单。']},
+
+    {name:'触线停止',title:'委托历史',
+     lead:'目前是委托历史。最新价碰到停止线，系统自动停，这笔进了历史。',
+     points:['<b>已结束：</b>不再追了。','<b>撤销数量：</b>没成交的部分被系统撤掉。','<b>底部灰条：</b>为什么停——最新价到达停止线。']},
+
+    {name:'历史详情',title:'委托详情',
+     lead:'目前是委托详情。从历史点进这一笔，看结果和原因。',
+     points:['<b>顶部三段：</b>全部成交 / 手动撤单 / 触线停止，可切换对比。','<b>订单结果：</b>为什么停、成交了多少。触线时还有触发时市价。','<b>初始设置：</b>当时跟谁、停止线设在哪。','<b>事件顺序：</b>从下单到结束，按时间排。']}
+  ],
+  compare:{
+    title:'全流程对照',
+    sub:'同一条路径上三家分别怎么做。OKX 与 Gate 取自 2026-09-20 实操截图与官方教程，未见界面的写明未验证。',
+    cols:['流程','OKX','Gate','本方案'],
+    rows:[
+      ['默认参数','默认贴一价，最大追逐距离不勾选，首单无边界。','写明追逐间隔 1 秒，同样不预设最大追逐距离。','同样默认不勾选，但开关位置更显眼，说明层写明「不设边界会一直追」。'],
+      ['发现入口','高级委托第一项，副文案说明会随买一／卖一价自动调整。','与跟踪委托相邻，中文名只差一个字。','排在高级限价后、条件单前，与跟踪委托隔开，加 NEW 标。'],
+      ['规则说明','文档有完整数字例子，界面内没有图。','图示画出买一价与追逐价两条线，可切买卖方向。','在两条线上加第三条停止线，并提前讲只挂单与改单限制。'],
+      ['设置参数','跟随方式下拉 + 弹层，最大追逐距离另起一层并换算成价格。','距离可切百分比，当场换算成具体价格。','沿用两层弹层，每个选项补一句取舍；换算结果常驻表单。'],
+      ['确认下单','「买一价 − 1」好懂，但最高买价仍写成公式。','最高追逐价直接写成数字。','四行；公式与数字并列，当前挂价标「预览」。'],
+      ['追逐中','标签变成「高级限价」，与入口对不上。','拆成父子两行，看不到实际挂价。','一张父卡片，状态与入口同名，给出最新挂价与停止线。'],
+      ['部分成交','官方样本已成交为 0，界面未验证。','教程截图写 8/100 张，文字确认剩余继续追。','「部分成交 · 追逐中」+ 已成交/总量进度条 + 实时均价。'],
+      ['手动撤单','单笔 / 批量撤单，不支持改单。','单笔 / 全部撤单，撤的是未成交部分。','先拆开「保留为仓位」与「撤销数量」，再放按钮。'],
+      ['触线停止','弹层把距离换算成最高买价，达到自动撤单；未见结果页。','规则写明最新价触及即停；同样未见结果页。','结果页给停止线与触发时市价，Toast 说明剩余去向。'],
+      ['历史详情','未取证到订单历史页。','可见成交量与均价，但两种结束都写「已终止」。','三种结束三个名称，配初始设置与事件时间轴。']
+    ]
+  },
+  foot:['luke · 追逐限价单 · KuCoin App 设计 · 2026-09-21'],
+  app:{
+    futures:'合约',copyTrade:'跟单',bots:'机器人',promo:'2026 年秋季 KuLeague',
+    perp:'永续',funding:'资金费率 / 倒计时',cross:'全仓',lev:'3x',
+    buy:'买入',sell:'卖出',price:'价格',total:'累计',qtyUnit:'BTC',
+    limit:'限价单',market:'市价单',advanced:'高级限价',chase:'追逐限价单',condition:'条件单',trailing:'跟踪委托',twap:'TWAP',
+    large:'大额委托',typeTitle:'委托类型',isNew:'NEW',
+    dLimit:'按您指定的价格或更有利价格进行买卖',
+    dMarket:'按市价快速买入或卖出，确保以最有利价格成交',
+    dAdvanced:'包括被动委托、完全成交或取消 (FOK)、立即成交或取消 (IOC) 委托类型',
+    dChase:'挂单价随买一／卖一持续调整，直到成交或到达停止线',
+    dCondition:'达到预设目标价后，触发限价或市价委托。',
+    dTrailing:'当市价达到您的触发价格加上追踪差额时，将以预设的价格和数量挂出委托',
+    dTwap:'把大单拆分成多笔排程执行的小单，以降低滑点',
+    quantity:'数量',avail:'可用',tpsl:'止盈止损',reduceOnly:'只减仓',
+    maxQty:'最多',margin:'保证金',liq:'预估强平价',
+    openOrders:'当前委托',positions:'持有仓位',botTab:'机器人',history:'委托历史',
+    home:'首页',markets:'行情',trade:'交易',assets:'资产',modeBest:'买一价',modeBestSell:'卖一价',modeOffset:'买一价距',modeOffsetSell:'卖一价距',
+    modeTitle:'追逐价格方式',
+    modeBestName:'买一/卖一价',modeBestDesc:'紧贴盘口一价挂单，成交更快，价格随行就市',
+    modeOffsetName:'买一/卖一距离',modeOffsetDesc:'与盘口一价保持固定价距，价格更优，成交更慢',
+    offset:'价距 (USDT)',yourBuy:'您的买价',yourSell:'您的卖价',
+    bid1:'买一价',ask1:'卖一价',
+    maxOn:'最大追逐距离',maxTitle:'最大追逐距离',maxField:'价距',
+    maxHint:'当达到最大追逐距离时，系统将自动撤销您的订单。',maxConfirm:'确认',initPrice:'初始挂价',stopBuy:'最高买价',stopSell:'最低卖价',
+    postOnly:'只挂单 · 每秒更新',submitBuy:'买入开多',submitSell:'卖出开空',
+    errQty:'请输入 0.01 – 1.00 之间的数量。',errOffset:'价距需为 0 – 50 USDT。',errMax:'最大追逐距离需为 10 – 500 USDT。',
+    exTitle:'什么是追逐限价单',
+    exLegend:['盘口买一价','你的委托价','最高买价（停止线）'],
+    exSteps:[
+      ['跟谁','买单跟买一价，卖单跟卖一价。盘口一动，未成交的挂单价就跟着改。'],
+      ['差多少','可以直接贴着一价，也可以保留一段固定价距，例如买一价 − 1 USDT。'],
+      ['追到哪','设置最大追逐距离后，系统换算出一个具体的最高买价，超过就不再追。'],
+      ['怎么结束','全部成交、你手动撤单，或最新价到达停止线由系统撤销剩余。']
+    ],
+    exWarn:'委托以只挂单方式送出、每秒检查一次。<b>下单后不能修改追逐规则</b>，需要调整请先撤销剩余委托再重新下单。',
+    exCta:'我知道了，去设置',
+        cfTitle:'确认追逐限价单',
+    cfType:'委托类型',cfRef:'跟随基准',cfChase:'追逐价格',cfNow:'当前挂价',cfQty:'委托数量',cfExec:'成交约束',preview:'预览',
+    cfCap:'<b>当前挂价只是此刻的预览。</b>提交后，委托价会每秒跟着买一价调整，直到成交或到达停止线。',
+    cfSubmit:'确认下单',cfBack:'返回修改',
+    chasing:'追逐中',partialTag:'部分成交 · 追逐中',endedTag:'已结束',
+    long:'开多',short:'开空',
+    nowPrice:'当前挂价',refPrice:'跟随基准',stopLine:'停止线',orderQty:'委托数量',
+    filled:'已成交',remaining:'剩余',avgPrice:'成交均价',lastPrice:'市场最新价',
+    progress:'成交进度',
+    stripRun:'挂价每秒跟随<b>买一价</b>，到达最高买价后系统撤销剩余。',
+    stripRunSell:'挂价每秒跟随<b>卖一价</b>，到达最低卖价后系统撤销剩余。',
+    stripNoStop:'挂价每秒跟随<b>{ref}</b>；未设停止线，直到成交或手动撤单。',
+    stripPart:'已成交 <b>{f} BTC</b> 保留为仓位；剩余 <b>{r} BTC</b> 仍以最新一价挂单。',
+    stripStop:'最新价到达 <b>{stop}</b>，剩余委托已由系统撤销。',
+    btnCancel:'撤单',btnDetail:'详情',
+    noOrders:'暂无进行中的委托',noHistory:'暂无历史委托',noPosition:'暂无持仓',
+    onlyPair:'当前交易品种',closeAll:'一键平仓',
+    pnl:'收益额',posSize:'持仓量',mmr:'维持保证金率',entryPrice:'开仓均价',markPrice:'标记价格',
+    closePos:'平仓',closeMarket:'市价全平',
+    cxTitle:'撤销追逐委托？',
+    cxCap:'只撤销未成交部分。<b>已成交的 {f} BTC 仍保留为仓位</b>，不会因为撤单而平掉。',
+    cxKeep:'保留为仓位',cxDrop:'撤销数量',cxSubmit:'确认撤单',cxBack:'先不撤',
+    detailTitle:'委托详情',
+    outFull:'委托全部成交',outManual:'手动撤销剩余',outStop:'到达最大追逐距离',
+    segFull:'全部成交',segManual:'手动撤单',segStop:'触线停止',
+    secResult:'订单结果',secSetup:'初始设置',secEvents:'事件顺序',
+    reason:'结束原因',filledTotal:'已成交 / 委托量',triggerAt:'触发时市价',endTime:'结束时间',cancelled:'撤销数量',
+    evSubmit:'提交追逐委托',evFollow:'挂价跟随买一价更新',evFollowSell:'挂价跟随卖一价更新',
+    evPartial:'部分成交 {f} BTC，剩余继续追',evFull:'剩余全部成交',
+    evManual:'用户撤销剩余 {r} BTC',evStop:'最新价到达 {stop}，系统撤销剩余 {r} BTC',
+        toastStop:'<b>到达最大追逐距离</b><br>剩余 {r} BTC 已由系统撤销，已成交 {f} BTC 保留为仓位。',
+    toastPlaced:'<b>追逐限价单已送出</b><br>挂价将每秒跟随盘口调整。',
+    toastCancel:'<b>剩余委托已撤销</b><br>已成交 {f} BTC 保留为仓位。',
+    toastFull:'<b>委托全部成交</b><br>{q} BTC 已成交，追逐结束。',
+    dOpenTypes:'打开委托类型',dPickChase:'选择追逐限价单',dOpenExplain:'打开规则说明',
+    dCloseSheet:'关闭说明层',dGoConfig:'去设置参数',dFlipSide:'切换买入／卖出',dOpenMode:'选择追逐方式',
+    dSubmit:'送出委托',dBack:'返回修改',dConfirm:'确认下单',
+    dPartial:'触发部分成交',dFull:'触发全部成交',dStop:'触发停止线',dCancel:'撤单',
+    dDoCancel:'确认撤单',dDetail:'查看详情',dRestart:'重新开始',
+    dPause:'暂停行情',dPlay:'继续行情'
+  }
+};
+
+COPY.en = {
+  barName:'Chase Limit Order design',
+  tabDesign:'Chase Limit design',
+  tabCompete:'Competitive analysis',
+  byline:'by luke',
+  eyebrow:'KUCOIN FUTURES / ORDER TYPE DESIGN',
+  heroTitle:'Chase Limit Order Design',
+  heroLead:'The resting price keeps following the best bid or ask until it fills, is cancelled, or hits a stop boundary. This design fits it into KuCoin Futures’ existing path and closes the gaps competitors leave around live status and end reasons. The phone is a live simulation — place an order and watch the whole flow.',
+  competeEyebrow:'COMPETITIVE REVIEW / OKX · GATE',
+  competeTitle:'Chase Limit — competitive review',
+  competeLead:'Same path on OKX and Gate: after submit, the resting price keeps following the book until it fills, is cancelled, or hits a stop.',
+  simTitle:'Design prototype',
+  simSub:'A working high-fidelity prototype on a live order book. The first tab is how the form looks right after Chase Limit is selected; the nine after it walk the order from entry to ending.',
+  next:'Next step',
+  demoTitle:'Simulated market',
+  demoNote:'The book ticks every second, the resting price follows, and a live order fills in slices. The buttons below are not part of the app — they just fabricate events quickly.',
+  stages:[
+    {name:'Chase Limit',title:'Futures trade page',
+     lead:'This is the futures trade page. Chase Limit is selected: book on the left, this order on the right.',
+     points:['<b>Buy / Sell:</b> long or short.','<b>Best bid / ask:</b> the order sits on the best price and moves with it.','<b>Quantity:</b> how much this order is for.','<b>Max chase distance:</b> off by default. Off means it keeps chasing until filled or you cancel.']},
+
+    {name:'Discover',title:'Order type sheet',
+     lead:'This is the order-type sheet. It slides up from the trade page when you tap the type row.',
+     points:['<b>Chase Limit:</b> new type, marked NEW. Subcopy: the resting price follows the best bid or ask.','<b>Placement:</b> between Advanced Limit and Conditional, apart from Trailing Stop.','<b>ⓘ:</b> opens the explainer.']},
+
+    {name:'Explain',title:'Explainer sheet',
+     lead:'This is “What is a Chase Limit order”. Opened from ⓘ, it shows how this order type runs.',
+     points:['<b>Three lines:</b> green = best bid, black = your order price, orange dashed = the stop (it stops here).','<b>Four steps:</b> follow, offset, boundary, ending — matching the form fields.','<b>Footer note:</b> post-only, repriced every second; the rule cannot be edited after submit.']},
+
+    {name:'Configure',title:'Trade page · set fields',
+     lead:'Still the trade page. Follow mode is now an offset, and the stop is ticked on.',
+     points:['<b>Bid / ask offset:</b> not sitting on the best price — a gap is kept. “Your buy price” below is the converted order price.','<b>Offset:</b> how many USDT away from the book.','<b>Max chase distance:</b> tick, then enter a distance. “Highest buy price” below is where it stops.']},
+
+    {name:'Confirm',title:'Confirm sheet',
+     lead:'This is Confirm Chase Limit. It appears after Buy, to check this order before submit.',
+     points:['<b>Chase price:</b> what it follows, and how — e.g. “best bid − 1 USDT”.','<b>Current order price (Preview):</b> the price that would rest right now. Tagged Preview because it will still move after submit.','<b>Highest buy price:</b> the stop. On contact, the system cancels the unfilled part.']},
+
+    {name:'Chasing',title:'Open orders',
+     lead:'This is Open Orders under the trade page. The order is live and repricing with the book.',
+     points:['<b>Chasing:</b> still running, not finished.','<b>Order price:</b> the price actually on the book this second; it ticks.','<b>Highest buy price:</b> the stop; this number stays put.','<b>Grey strip:</b> what it follows, and where it stops.']},
+
+    {name:'Part fill',title:'Open orders · part filled',
+     lead:'Still Open Orders. Same card, now partly filled.',
+     points:['<b>Part filled · Chasing:</b> some filled, the rest still chasing.','<b>Fill progress:</b> filled / total.','<b>Grey strip:</b> filled amount is now a position; the remainder stays on the book.']},
+
+    {name:'Cancel',title:'Cancel sheet',
+     lead:'This is “Cancel chase order?”. It appears after Cancel, and states what gets cancelled.',
+     points:['<b>Filled · kept as position:</b> what already filled stays; it is not closed.','<b>Cancelled amount:</b> the unfilled part, dropped if you confirm.','<b>Two buttons:</b> keep chasing / cancel remaining.']},
+
+    {name:'Boundary',title:'Order history',
+     lead:'This is Order History. Last price hit the stop, the system ended it, and the order moved here.',
+     points:['<b>Ended:</b> no longer chasing.','<b>Cancelled amount:</b> the unfilled part the system dropped.','<b>Grey strip:</b> why it stopped — last price reached the stop.']},
+
+    {name:'History',title:'Order details',
+     lead:'This is Order details. Opened from history, it shows the outcome and the reason.',
+     points:['<b>Top switcher:</b> full fill / manual cancel / boundary stop — tap to compare.','<b>Order outcome:</b> why it stopped, and how much filled. A boundary stop also shows the market price at trigger.','<b>Initial setup:</b> what it followed, and where the stop was set.','<b>Event sequence:</b> from submit to end, in time order.']}
+  ],
+  compare:{
+    title:'Step-by-step comparison',
+    sub:'What each of the three does at every step. OKX and Gate come from hands-on screenshots taken 2026-09-20 plus official tutorials; anything not seen in a UI is marked unverified.',
+    cols:['Step','OKX','Gate','This design'],
+    rows:[
+      ['Default parameters','Defaults to the best price, boundary unticked — a first order has no limit.','States a 1-second interval, and likewise pre-sets no boundary.','Also unticked by default, but the switch sits in a more prominent slot and the explainer states what no boundary means.'],
+      ['Discover','First item under Advanced, with a line on following the best bid or ask.','Sits next to Trailing Stop; the two Chinese names differ by one character.','After Advanced Limit, before Conditional, apart from Trailing Stop, with a NEW badge.'],
+      ['Explain','Docs carry a full worked example, but there is no diagram in the UI.','Diagram draws the best bid and chase price, and flips between buy and sell.','Adds a third line — the boundary — and states the post-only and no-edit rules early.'],
+      ['Configure','Follow mode is a dropdown into a sheet; the boundary is a separate sheet that resolves to a price.','Distance can switch to a percentage and resolves on the spot.','Same two sheets, plus a trade-off sentence per option; conversions stay on the form.'],
+      ['Confirm','“Best bid − 1” is clear, but the highest buy price is still a formula.','The highest chase price is written as a number.','Four rows; formula beside number, order price tagged Preview.'],
+      ['Chasing','The label becomes “Advanced Limit”, breaking the link to the entry point.','A parent and a child row; the actual resting price is never shown.','One parent card, named after the entry point, with the latest price and the boundary.'],
+      ['Part fill','The official sample has 0 filled, so the UI is unverified.','A tutorial shows 8/100 contracts and confirms the remainder keeps chasing.','“Part filled · Chasing” plus a filled/total bar and a live average price.'],
+      ['Cancel','Single and bulk cancel; no editing.','Single and cancel-all, on the unfilled portion.','Splits “kept as position” from “cancelled amount” before the button.'],
+      ['Boundary','The sheet resolves the distance to a price and cancels on contact; no result screen.','Rules state it stops on contact; likewise no result screen.','The result gives the boundary and the market price at stop, and where the remainder went.'],
+      ['History','No order history page in evidence.','Shows quantity and average price, but both endings read “Terminated”.','Three endings, three names, with the original setup and a timestamped sequence.']
+    ]
+  },
+  foot:['luke · Chase Limit Order · KuCoin App design · 2026-09-21'],
+  app:{
+    futures:'Futures',copyTrade:'Copy Trading',bots:'Bots',promo:'KuLeague Fall 2026',
+    perp:'Perp',funding:'Funding / Next Funding',cross:'Cross',lev:'3x',
+    buy:'Buy',sell:'Sell',price:'Price',total:'Total',qtyUnit:'BTC',
+    limit:'Limit',market:'Market',advanced:'Advanced Limit',chase:'Chase Limit',condition:'Conditional',trailing:'Trailing Stop',twap:'TWAP',
+    large:'Large Orders',typeTitle:'Order Type',isNew:'NEW',
+    dLimit:'Buy or sell at your specified price or better',
+    dMarket:'Buy or sell quickly at the best available price in the market',
+    dAdvanced:'Includes Post Only, Fill or Kill (FOK), and Immediate or Cancel (IOC) order types',
+    dChase:'The resting price keeps following the best bid or ask until it fills or stops',
+    dCondition:'Triggers a limit or market order when the preset target price is reached.',
+    dTrailing:'When the market price reaches your trigger plus trailing delta, an order at your preset price and amount is placed',
+    dTwap:'Splits a large order into smaller, scheduled executions to reduce slippage.',
+    quantity:'Quantity',avail:'Avail.',tpsl:'TP/SL',reduceOnly:'Reduce Only',
+    maxQty:'Max',margin:'Margin',liq:'Est. Liq. Price',
+    openOrders:'Open Orders',positions:'Positions',botTab:'Bot',history:'History',
+    home:'Home',markets:'Markets',trade:'Trade',assets:'Assets',modeBest:'Best bid',modeBestSell:'Best ask',modeOffset:'Bid offset',modeOffsetSell:'Ask offset',
+    modeTitle:'Chase price mode',
+    modeBestName:'Best bid / ask',modeBestDesc:'Rest right on the best price — fills faster, price follows the market',
+    modeOffsetName:'Bid / ask offset',modeOffsetDesc:'Keep a fixed distance from the best price — better price, slower fill',
+    offset:'Offset (USDT)',yourBuy:'Your buy price',yourSell:'Your sell price',
+    bid1:'Best bid',ask1:'Best ask',
+    maxOn:'Max chase distance',maxTitle:'Max chase distance',maxField:'Distance',
+    maxHint:'When the maximum chase distance is reached, the system cancels your order automatically.',maxConfirm:'Confirm',initPrice:'Initial order price',stopBuy:'Highest buy price',stopSell:'Lowest sell price',
+    postOnly:'Post only · every 1s',submitBuy:'Buy / Long',submitSell:'Sell / Short',
+    errQty:'Enter a quantity between 0.01 and 1.00.',errOffset:'Offset must be 0 – 50 USDT.',errMax:'Max chase distance must be 10 – 500 USDT.',
+    exTitle:'What is a Chase Limit order',
+    exLegend:['Best bid','Your order price','Highest buy price'],
+    exSteps:[
+      ['Follow','A buy follows the best bid, a sell follows the best ask. Every time the book moves, the unfilled order is repriced.'],
+      ['Offset','Sit right on the best price, or keep a fixed distance from it — for example best bid − 1 USDT.'],
+      ['Boundary','Set a maximum chase distance and the system resolves it into a concrete highest buy price. It never chases past that.'],
+      ['Ending','Fully filled, cancelled by you, or the last price reaches the boundary and the system cancels the remainder.']
+    ],
+    exWarn:'Orders are submitted post-only and checked once per second. <b>The chase rule cannot be edited after submission</b> — cancel the remaining order and place a new one instead.',
+    exCta:'Got it — set it up',
+    cfTitle:'Confirm Chase Limit',
+    cfType:'Order type',cfRef:'Reference',cfChase:'Chase price',cfNow:'Current order price',cfQty:'Quantity',cfExec:'Execution',preview:'Preview',
+    cfCap:'<b>The current order price is only a preview.</b> After submission it is repriced every second to follow the best bid, until it fills or reaches the boundary.',
+    cfSubmit:'Place Chase Order',cfBack:'Back to edit',
+    chasing:'Chasing',partialTag:'Part filled · Chasing',endedTag:'Ended',
+    long:'Long',short:'Short',
+    nowPrice:'Order price',refPrice:'Reference',stopLine:'Boundary',orderQty:'Quantity',
+    filled:'Filled',remaining:'Remaining',avgPrice:'Avg. fill',lastPrice:'Last price',
+    progress:'Fill progress',
+    stripRun:'Repriced every second to the <b>best bid</b>; cancelled by the system at the highest buy price.',
+    stripRunSell:'Repriced every second to the <b>best ask</b>; cancelled by the system at the lowest sell price.',
+    stripNoStop:'Repriced every second to the <b>{ref}</b>; no boundary, so it runs until filled or cancelled.',
+    stripPart:'<b>{f} BTC</b> filled and held as a position; <b>{r} BTC</b> still resting at the latest best price.',
+    stripStop:'The last price reached <b>{stop}</b>, so the remainder was cancelled by the system.',
+    btnCancel:'Cancel',btnDetail:'Details',
+    noOrders:'No open orders',noHistory:'No order history yet',noPosition:'No open position',
+    onlyPair:'Current pair',closeAll:'Close All',
+    pnl:'Unrealized PnL',posSize:'Position',mmr:'Maint. margin rate',entryPrice:'Entry price',markPrice:'Mark price',
+    closePos:'Close',closeMarket:'Market Close',
+    cxTitle:'Cancel chase order?',
+    cxCap:'Only the unfilled portion is cancelled. <b>The {f} BTC already filled stays as a position</b> and is not closed.',
+    cxKeep:'Kept as position',cxDrop:'Cancelled amount',cxSubmit:'Cancel remaining',cxBack:'Keep chasing',
+    detailTitle:'Order details',
+    outFull:'Order fully filled',outManual:'Cancelled by you',outStop:'Maximum chase distance reached',
+    segFull:'Full fill',segManual:'Manual cancel',segStop:'Boundary stop',
+    secResult:'Order outcome',secSetup:'Initial setup',secEvents:'Event sequence',
+    reason:'End reason',filledTotal:'Filled / Ordered',triggerAt:'Market price at stop',endTime:'End time',cancelled:'Cancelled amount',
+    evSubmit:'Chase order submitted',evFollow:'Order price followed the best bid',evFollowSell:'Order price followed the best ask',
+    evPartial:'Part filled {f} BTC, remainder kept chasing',evFull:'Remainder fully filled',
+    evManual:'You cancelled the remaining {r} BTC',evStop:'Last price reached {stop}; system cancelled {r} BTC',
+    toastStop:'<b>Maximum chase distance reached</b><br>{r} BTC cancelled by the system; {f} BTC filled and kept as a position.',
+    toastPlaced:'<b>Chase Limit order placed</b><br>The resting price will follow the book every second.',
+    toastCancel:'<b>Remaining order cancelled</b><br>{f} BTC filled and kept as a position.',
+    toastFull:'<b>Order fully filled</b><br>{q} BTC filled; the chase has ended.',
+    dOpenTypes:'Open order types',dPickChase:'Pick Chase Limit',dOpenExplain:'Open the explainer',
+    dCloseSheet:'Close explainer',dGoConfig:'Go to setup',dFlipSide:'Flip buy / sell',dOpenMode:'Choose follow mode',
+    dSubmit:'Submit order',dBack:'Back to edit',dConfirm:'Place order',
+    dPartial:'Trigger part fill',dFull:'Trigger full fill',dStop:'Trigger boundary',dCancel:'Cancel order',
+    dDoCancel:'Confirm cancel',dDetail:'View details',dRestart:'Restart',
+    dPause:'Pause market',dPlay:'Resume market',dHistory:'View history'
+  }
+};
+
+const ST = { DEFAULT:0, DISCOVER:1, EXPLAIN:2, CONFIG:3, CONFIRM:4, CHASING:5, PARTIAL:6, CANCEL:7, BOUNDARY:8, HISTORY:9 };
+const STAGES = 10;
+const S = {
+  lang:(()=>{try{return localStorage.getItem('kucoin-chase-lang')==='en'?'en':'zh'}catch{return 'zh'}})(),
+  stage:0, sheet:null, tab:'orders', view:'trade',
+  type:'chase', side:'buy', mode:'best', qty:0.25, offset:1,
+  maxOn:false, maxDist:150, maxDraft:150, reduceOnly:false,
+  bid:80808.3, ask:80819.5, dir:-1, countdown:1074, balance:12480.55,
+  order:null, outcome:'stop', toast:'', err:'', prevSheet:null, live:true, page:'design'
+};
+const T = () => COPY[S.lang];
+const A = () => COPY[S.lang].app;
+const $ = s => document.querySelector(s);
+const PUNCT_RE = /[，。、：；！？]/;
+function wrapCjkPunct(root){
+  if(!root) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      const p = n.parentElement;
+      if(!p || p.closest('.punct,.iphone,#screen,svg,.klogo')) return NodeFilter.FILTER_REJECT;
+      if(/^(SCRIPT|STYLE|TEXTAREA|INPUT)$/.test(p.tagName)) return NodeFilter.FILTER_REJECT;
+      return PUNCT_RE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  for(const n of nodes){
+    const parts = n.nodeValue.split(/([，。、：；！？])/);
+    if(parts.length < 2) continue;
+    const frag = document.createDocumentFragment();
+    for(const part of parts){
+      if(!part) continue;
+      if(/^[，。、：；！？]$/.test(part)){
+        const s = document.createElement('span');
+        s.className = 'punct';
+        s.textContent = part;
+        frag.appendChild(s);
+      } else frag.appendChild(document.createTextNode(part));
+    }
+    n.parentNode.replaceChild(frag, n);
+  }
+}
+const num = (n,d=1) => Number.isFinite(Number(n))
+  ? Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}) : '—';
+const btc = n => (Math.round(Number(n)*100)/100).toFixed(2);
+const fill = (s,map) => s.replace(/\{(\w+)\}/g, (_,k)=> map[k] ?? '');
+const COMPETE_IDS = new Set(['compete','overview','s01','s02','s03','s04','s05','s06','s07','s08','summary']);
+function pageFromHash(){
+  return COMPETE_IDS.has(location.hash.slice(1)) ? 'compete' : 'design';
+}
+function applyPageCopy(){
+  const c = T();
+  const compete = S.page === 'compete';
+  $('#eyebrow').textContent = compete ? c.competeEyebrow : c.eyebrow;
+  $('#hero-title').textContent = compete ? c.competeTitle : c.heroTitle;
+  $('#hero-lead').textContent = compete ? c.competeLead : c.heroLead;
+  wrapCjkPunct($('.hero-copy'));
+  document.title = compete
+    ? (S.lang==='zh' ? '追逐限价单 · 竞品分析 | luke' : 'Chase Limit · competitive review | luke')
+    : (S.lang==='zh' ? '追逐限价单 · KuCoin App 设计 | luke' : 'Chase Limit Order · KuCoin App design | luke');
+  $('#tab-design').textContent = c.tabDesign;
+  $('#tab-compete').textContent = c.tabCompete;
+  for(const b of document.querySelectorAll('.page-tabs button')){
+    const on = b.dataset.page === S.page;
+    b.setAttribute('aria-current', String(on));
+    b.setAttribute('aria-selected', String(on));
+  }
+  document.body.dataset.page = S.page;
+}
+function setPage(page, opts={}){
+  const next = page === 'compete' ? 'compete' : 'design';
+  const changed = S.page !== next;
+  S.page = next;
+  applyPageCopy();
+  if(next === 'compete' && S.live) setLive(false);
+  if(opts.updateHash !== false){
+    const h = opts.hash || (next === 'compete' ? '#compete' : '#design');
+    if(location.hash !== h) history.replaceState(null, '', h);
+  }
+  if(opts.scroll !== false && changed) window.scrollTo(0, 0);
+  if(changed) window.dispatchEvent(new Event('resize'));
+  if(opts.target){
+    const el = document.getElementById(opts.target);
+    if(el){
+      const y = el.getBoundingClientRect().top + window.pageYOffset - 88;
+      window.scrollTo(0, Math.max(0, y));
+    }
+  }
+}
+
+const ref = () => S.side==='buy' ? S.bid : S.ask;
+const orderPrice = () => {
+  const o = S.mode==='offset' ? Number(S.offset)||0 : 0;
+  return ref() + (S.side==='buy' ? -o : o);
+};
+const maxQty = () => Math.floor(S.balance * 3 / Math.max(1, orderPrice()) * 100) / 100;
+const qtyPct = () => Math.round(Math.min(1, Number(S.qty) / Math.max(0.02, maxQty())) * 100);
+const stopFrom = base => S.side==='buy'
+  ? base + (Number(S.maxDist)||0)
+  : base - (Number(S.maxDist)||0);
+
+const PATHS = {
+  menu:'<path d="M3 6h18M3 12h12M3 18h18"/>',
+  chart:'<path d="M3 4v15a2 2 0 0 0 2 2h16"/><path d="m7 14 3.5-3.5L14 14l5.5-6.5"/>',
+  gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12"/><path d="M12 8C9.5 8 7.5 7.2 7.5 5.8S8.6 3.6 9.6 4C11 4.5 12 6.4 12 8Zm0 0c2.5 0 4.5-.8 4.5-2.2S15.4 3.6 14.4 4C13 4.5 12 6.4 12 8Z"/>',
+  candles:'<path d="M7.8 2.7v3M7.8 18.3v3M16.4 2.7v3M16.4 18.3v3"/><rect x="4.2" y="5.7" width="7.2" height="12.6" rx="2" fill="currentColor" stroke="none"/><rect x="13.6" y="6.5" width="5.6" height="11" rx="1.4"/>',
+  more:'<circle cx="5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
+  caret:'<path d="m6 9 6 6 6-6"/>',
+  caretUp:'<path d="m6 15 6-6 6 6"/>',
+  close:'<path d="M6 6l12 12M18 6 6 18"/>',
+  back:'<path d="m15 4-8 8 8 8"/>',
+  check:'<path d="m5 12.5 4.5 4.5L19 7"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.4"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  swap:'<circle cx="12" cy="12" r="9"/><path d="M8 10.5h7l-2-2M16 13.5H9l2 2"/>',
+  plus:'<path d="M12 6v12M6 12h12"/>',
+  minus:'<path d="M6 12h12"/>',
+  lock:'<rect x="5.5" y="10" width="13" height="10" rx="3"/><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10M12 14v2"/>',
+  shield:'<path d="M12 3.2 5 6v5.6c0 4.3 2.9 7.6 7 9.2 4.1-1.6 7-4.9 7-9.2V6Z"/><path d="m9 12 2.2 2.2L15.2 10"/>',
+  xcircle:'<circle cx="12" cy="12" r="8.5"/><path d="m9.5 9.5 5 5M14.5 9.5l-5 5"/>',
+  home:'<path d="M12 3.4 3.6 9.6V20a1 1 0 0 0 1 1h4.6v-5.6h5.6V21h4.6a1 1 0 0 0 1-1V9.6Z"/>',
+  markets:'<path d="M5 20V9.5M12 20V4M19 20v-7"/>',
+  tradeIc:'<path d="M4 8.5h14l-3.2-3.2M20 15.5H6l3.2 3.2"/>',
+  trend:'<path d="m3.5 17 5.5-6 3.5 3.5L20 6"/><path d="M14.5 6H20v5.5"/>',
+  wallet:'<rect x="3" y="6" width="18" height="13.5" rx="3.5"/><path d="M3 10.5h18"/><circle cx="16.5" cy="15" r="1.1" fill="currentColor" stroke="none"/>',
+  bell:'<path d="M18 16H6l1.5-2.2V10a4.5 4.5 0 0 1 9 0v3.8Z"/><path d="M10.5 19h3M4 4l16 16"/>',
+  tickUp:'<path d="m12 7 6 9H6Z" fill="currentColor" stroke="none"/>',
+  tickDown:'<path d="m12 17 6-9H6Z" fill="currentColor" stroke="none"/>',
+  play:'<path d="M8 5.5 18 12 8 18.5Z" fill="currentColor" stroke="none"/>',
+  pause:'<rect x="7" y="5.5" width="3.6" height="13" rx="1.2" fill="currentColor" stroke="none"/><rect x="13.4" y="5.5" width="3.6" height="13" rx="1.2" fill="currentColor" stroke="none"/>',
+  kucoin:'<rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><path d="M8.7 7.2v9.6"/><path d="m8.7 12 4.1-4.1 2.5 2.5L13.1 12l2.2 1.9-2.5 2.5L8.7 12Z"/>'
+};
+const ico = (n, s=18, w=1.7) =>
+  `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[n]||''}</svg>`;
+
+/* order-type glyphs, drawn to echo the KuCoin sheet illustrations */
+const GLYPH = {
+  limit:'<path d="M2 21h8.5L18 9.5" stroke-dasharray="2.6 2.6"/><path d="M22.5 8H34"/><circle cx="19.6" cy="8.8" r="2.4" fill="#fff"/>',
+  market:'<path d="M2 13h11.5"/><path d="M20.4 13H34" stroke-dasharray="2.6 2.6"/><circle cx="17" cy="13" r="2.4" fill="#fff"/>',
+  advanced:'<rect x="1.5" y="13.5" width="10" height="8" rx="1" fill="#efefef" stroke="none"/><path d="M2 21h8.5L18 9.5"/><circle cx="19.6" cy="8.8" r="2.4" fill="#fff"/><path d="M23.5 6.5h.01M27 4h.01M30.5 6.5h.01M27 9.5h.01" stroke-width="2.1"/>',
+  chase:'<path d="M2 21h5v-4h5v-4h5" stroke-dasharray="2.6 2.6"/><path d="M17 13h4.4"/><circle cx="24.4" cy="10.6" r="2.4" fill="#fff"/><path d="M27.6 8.2 33 3.4"/><path d="M29.4 3.4H33.6V7.4" stroke-width="1.5"/>',
+  condition:'<path d="M2 20 11.5 13"/><circle cx="14.4" cy="11.2" r="2.4" fill="#fff"/><path d="M17.5 9.6 26 5.4M17.5 13.4 26 17.6" stroke-dasharray="2.6 2.6"/><circle cx="29" cy="4.4" r="2.2" fill="#fff"/><circle cx="29" cy="19" r="2.2" fill="#fff"/>',
+  trailing:'<rect x="1.5" y="13" width="9.5" height="8.5" rx="1" fill="#efefef" stroke="none"/><rect x="18.5" y="2.5" width="11" height="8.5" rx="1" fill="#efefef" stroke="none"/><path d="M3 12.5 10.5 21 26 4"/><circle cx="28.4" cy="2.8" r="2.2" fill="#fff"/>',
+  twap:'<circle cx="12" cy="13" r="9.5" stroke-dasharray="3 2.6"/><path d="M12 7.5V13l4 2.4"/>'
+};
+const infoDot = size =>
+  `<svg width="${size}" height="${size}" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="4.5" r="1.2" fill="#fff"/><rect x="6.85" y="6.9" width="2.3" height="5.6" rx="1.15" fill="#fff"/></svg>`;
+const glyph = n => `<svg class="gl" viewBox="0 0 36 26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${GLYPH[n]||''}</svg>`;
+
+function iosBar(){
+  return `<div class="ios-bar">
+    <div class="l"><span>${S.clock}</span></div>
+    <div class="r"><span class="sig"><i></i><i></i><i></i><i></i></span>
+      <svg width="17" height="12.2" viewBox="0 0 17 12.2" fill="none" aria-hidden="true">
+        <path d="M1.25 3.55a10.6 10.6 0 0 1 14.5 0" stroke="#000" stroke-width="2.1" stroke-linecap="round"/>
+        <path d="M4.15 6.95a6.4 6.4 0 0 1 8.7 0" stroke="#000" stroke-width="2.1" stroke-linecap="round"/>
+        <path d="M8.5 11.9 6.1 9.55a3.45 3.45 0 0 1 4.8 0L8.5 11.9Z" fill="#000"/>
+      </svg>
+      <span class="batt"><i style="width:30%"></i><b>30</b></span></div>
+  </div>`;
+}
+function appNav(){
+  const x = A();
+  return `<div class="k-nav">
+    <div class="tabs"><b>${x.futures}</b><span>${x.copyTrade}</span><span>${x.bots}</span></div>
+    <div class="promo">🏆<span>${x.promo}</span></div>
+  </div>`;
+}
+function pairBar(){
+  const x = A();
+  return `<div class="k-pair">
+    <div class="name">${ico('menu',17,1.9)}<b>BTCUSDT</b><span class="perp">${x.perp}</span><span class="chg">-1.29%</span></div>
+    <div class="acts">${ico('chart',17)}${ico('gift',17)}${ico('candles',17,1.6)}${ico('more',17)}</div>
+  </div>`;
+}
+function tabBar(active='futures'){
+  const x = A();
+  const items = [['kucoin',x.home],['markets',x.markets],['tradeIc',x.trade],['trend',x.futures],['wallet',x.assets]];
+  const keys = ['home','markets','trade','futures','assets'];
+  return `<nav class="tabbar">${items.map(([i,l],n)=>
+    `<button type="button" class="${keys[n]===active?'on':''}" data-act="noop">${ico(i,21,1.7)}<span>${l}</span></button>`).join('')}</nav>`;
+}
+/* live depth ladder, regenerated as the market ticks */
+const DEPTH = { ask:[], bid:[], ratio:45 };
+const ASK_OFF = [4.1,3.3,2.4,1.4,0], BID_OFF = [0,1.1,2.3,3.4,4.6];
+function seedDepth(){
+  const r = () => Math.round((0.35 + Math.random()*1.25)*1000)/1000;
+  DEPTH.ask = Array.from({length:5}, r);
+  DEPTH.bid = Array.from({length:5}, r);
+}
+function rollDepth(){
+  const walk = v => Math.round(Math.max(0.18, Math.min(1.75, v + (Math.random()-0.5)*0.34))*1000)/1000;
+  DEPTH.ask = DEPTH.ask.map(walk);
+  DEPTH.bid = DEPTH.bid.map(walk);
+  DEPTH.ratio = Math.max(24, Math.min(76, DEPTH.ratio + Math.round((Math.random()-0.5)*5)));
+}
+seedDepth();
+function bookInner(){
+  const x = A();
+  const peak = Math.max(...DEPTH.ask, ...DEPTH.bid);
+  const row = (side,off,i) => {
+    const d = DEPTH[side][i], price = side==='ask' ? S.ask+off : S.bid-off;
+    return `<div class="bk-row ${side==='ask'?'a':'b'}"><i class="bar" data-bar="${side}${i}" style="width:${Math.round(d/peak*92)}%"></i>`
+      + `<span data-px="${side}${i}">${num(price)}</span><span class="q" data-qt="${side}${i}">${d.toFixed(3)}</span></div>`;
+  };
+  const asks = ASK_OFF.map((v,i)=>row('ask',v,i)).join('');
+  const bids = BID_OFF.map((v,i)=>row('bid',v,i)).join('');
+  const up = S.dir >= 0;
+  return `<div class="fund"><span class="lbl">${x.funding}</span><span class="val"><em>0.0060%</em><span> / <span data-cd>${S.countdown}</span></span></span></div>
+    <div class="bk-head"><span>${x.price}<br>(USDT)</span><span>${x.total}<br>(BTC)</span></div>
+    ${asks}
+    <div class="bk-mid"><b class="${up?'up':'down'}" data-mid>${num(S.bid)}${ico(up?'tickUp':'tickDown',13,2.6)}</b><div class="idx"><i>M</i><span data-idx>${num(S.bid,2)}</span></div></div>
+    ${bids}
+    <div class="bk-ratio"><span class="bl" data-ratio style="flex:0 0 ${DEPTH.ratio}%"><u>B</u><span data-rb>${DEPTH.ratio}%</span></span><span class="br"><span data-rs>${100-DEPTH.ratio}%</span><u>S</u></span></div>
+    <div class="bk-tick"><span class="sel">0.1${ico('caret',11,2.2)}</span>
+      <span class="dep"><i style="height:11px;background:var(--red)"></i><i style="height:7px;background:var(--green)"></i><i style="height:11px;background:var(--green)"></i></span></div>`;
+}
+function book(){ return `<div class="bk">${bookInner()}</div>`; }
+function paintBook(root){
+  const bk = root.querySelector('.bk');
+  if(!bk) return;
+  if(!bk.querySelector('[data-bar="ask0"]')){ bk.innerHTML = bookInner(); return; }
+  const peak = Math.max(...DEPTH.ask, ...DEPTH.bid);
+  const put = (sel, val) => { const el = bk.querySelector(sel); if(el && el.textContent !== val) el.textContent = val; };
+  const paint = (side, offs) => offs.forEach((off,i) => {
+    const d = DEPTH[side][i];
+    const bar = bk.querySelector(`[data-bar="${side}${i}"]`);
+    if(bar) bar.style.width = Math.round(d/peak*92) + '%';
+    put(`[data-px="${side}${i}"]`, num(side==='ask' ? S.ask+off : S.bid-off));
+    put(`[data-qt="${side}${i}"]`, d.toFixed(3));
+  });
+  paint('ask', ASK_OFF);
+  paint('bid', BID_OFF);
+  const mid = bk.querySelector('[data-mid]'), up = S.dir >= 0;
+  if(mid){
+    const cls = up ? 'up' : 'down';
+    if(!mid.classList.contains(cls)){ mid.classList.remove('up','down'); mid.classList.add(cls); }
+    const txt = num(S.bid);
+    if(mid.firstChild && mid.firstChild.nodeValue !== txt){
+      mid.firstChild.nodeValue = txt;
+      if(mid.lastElementChild) mid.lastElementChild.outerHTML = ico(up ? 'tickUp' : 'tickDown', 13, 2.6);
+    }
+  }
+  put('[data-idx]', num(S.bid,2));
+  put('[data-cd]', S.countdown);
+  put('[data-rb]', DEPTH.ratio + '%');
+  put('[data-rs]', (100 - DEPTH.ratio) + '%');
+  const bl = bk.querySelector('[data-ratio]');
+  if(bl) bl.style.flexBasis = DEPTH.ratio + '%';
+}
+function slider(pct){
+  const stops = [0,25,50,75,100];
+  return `<div class="slider">
+    <div class="track"><div class="fill" style="width:${pct}%"></div>
+      ${stops.map(p=>`<span class="dot ${p<=pct?'on':''}" style="left:${p}%"></span>`).join('')}
+      <span class="knob" style="left:${pct}%"></span></div>
+    <input type="range" min="0.01" max="${Math.max(0.02, maxQty())}" step="0.01" value="${S.qty}" data-field="qty" aria-label="${A().quantity}">
+  </div>`;
+}
+function headRows(){
+  const x = A();
+  return `<div class="f-row">
+      <span class="pick wide">${x.cross}${ico('caret',12,2.2)}</span>
+      <span class="pick narrow">${x.lev}${ico('caret',12,2.2)}</span>
+    </div>
+    <div class="side">
+      <button type="button" class="${S.side==='buy'?'on buy':''}" data-act="side" data-v="buy">${x.buy}</button>
+      <button type="button" class="${S.side==='sell'?'on sell':''}" data-act="side" data-v="sell">${x.sell}</button>
+    </div>`;
+}
+function typeRow(label){
+  return `<button type="button" class="type-row" data-act="types">
+    <span class="ib" data-act="explain">${infoDot(15)}</span><span class="tx">${label}</span>${ico('caret',13,2.2)}</button>`;
+}
+function limitForm(){
+  const x = A(), buy = S.side==='buy';
+  return `<div class="k-form">
+    ${headRows()}
+    ${typeRow(x.limit)}
+    <div class="f-row">
+      <div class="field" style="flex:1;min-width:0">
+        <div class="col"><small>${x.price} (USDT)</small><b data-bind="limitprice">${num(ref())}</b></div>
+        <span class="step-pm">${ico('minus',15,2)}<i></i>${ico('plus',15,2)}</span>
+      </div>
+      <span class="bbo">BBO</span>
+    </div>
+    <div class="field"><div class="col"><span class="ph">${x.quantity} (BTC)</span></div>
+      <span class="unit">BTC${ico('caret',12,2.2)}</span></div>
+    ${slider(0)}
+    <div class="k-line"><span>${x.avail}</span><b>${num(S.balance,2)} USDT <span style="color:var(--green);display:inline-block;vertical-align:-3px">${ico('swap',14,1.8)}</span></b></div>
+    <label class="k-check"><span class="box"></span><span class="dot-u">${x.tpsl}</span></label>
+    <label class="k-check"><span class="box"></span><span class="dot-u">${x.reduceOnly}</span></label>
+    <div class="calc">
+      <div class="k-line"><span class="dot-u">${x.maxQty}</span><b data-bind="maxqty">${btc(maxQty())} BTC</b></div>
+      <div class="k-line"><span class="dot-u">${x.margin}</span><b>0.00 USDT</b></div>
+      <div class="k-line"><span class="dot-u">${x.liq}</span><b>-- USDT</b></div>
+    </div>
+    <button type="button" class="cta ${buy?'buy':'sell'}" data-act="types">${buy?x.submitBuy:x.submitSell}</button>
+  </div>`;
+}
+function chaseForm(){
+  const x = A(), buy = S.side==='buy';
+  const p = orderPrice(), stop = stopFrom(p);
+  const pct = qtyPct();
+  const modeLabel = S.mode==='best' ? x.modeBestName : x.modeOffsetName;
+  return `<div class="k-form">
+    ${headRows()}
+    ${typeRow(x.chase)}
+    <button type="button" class="type-row plain" data-act="mode-sheet">
+      <span class="tx left">${modeLabel}</span>${ico('caret',13,2.2)}</button>
+    ${S.mode==='offset' ? `<div class="field">
+        <div class="col"><small>${x.offset}</small><input inputmode="decimal" value="${S.offset}" data-field="offset" aria-label="${x.offset}"></div>
+        <span class="step-pm"><button type="button" data-act="bump" data-field="offset" data-v="-0.5">${ico('minus',15,2)}</button><i></i><button type="button" data-act="bump" data-field="offset" data-v="0.5">${ico('plus',15,2)}</button></span>
+      </div>
+      <div class="hint-row"><span class="dot-u">${buy?x.yourBuy:x.yourSell}</span> <b class="${buy?'g':'r'}" data-bind="now">${num(p)}</b></div>`
+    : `<div class="hint-row"><span><span class="dot-u">${x.bid1}</span> <b class="g" data-bind="bid1">${num(S.bid)}</b></span><span><span class="dot-u">${x.ask1}</span> <b class="r" data-bind="ask1">${num(S.ask)}</b></span></div>`}
+    <div class="field">
+      <div class="col"><small>${x.quantity} (BTC)</small><input inputmode="decimal" value="${S.qty}" data-field="qty" aria-label="${x.quantity}"></div>
+      <span class="unit">BTC${ico('caret',12,2.2)}</span>
+    </div>
+    ${slider(pct)}
+    <div class="k-line"><span>${x.avail}</span><b>${num(S.balance,2)} USDT <span style="color:var(--green);display:inline-block;vertical-align:-3px">${ico('swap',14,1.8)}</span></b></div>
+    <label class="k-check sq ${S.reduceOnly?'on':''}"><span class="box" data-act="toggle" data-v="reduceOnly">${S.reduceOnly?ico('check',9,3):''}</span><span class="dot-u" data-act="toggle" data-v="reduceOnly">${x.reduceOnly}</span></label>
+    <label class="k-check sq ${S.maxOn?'on':''}"><span class="box" data-act="max-toggle">${S.maxOn?ico('check',9,3):''}</span><span class="dot-u" data-act="max-sheet">${x.maxOn}</span>${S.maxOn?`<button type="button" class="edit" data-act="max-sheet">${S.maxDist} USDT ${ico('caret',11,2.4)}</button>`:''}</label>
+    ${S.maxOn ? `<div class="hint-row"><span class="dot-u">${buy?x.stopBuy:x.stopSell}</span> <b class="a" data-bind="stop">${num(stop)}</b></div>` : ''}
+    ${S.err ? `<p class="err">${x[S.err]}</p>` : ''}
+    <div class="calc">
+      <div class="k-line"><span class="dot-u">${x.maxQty}</span><b data-bind="maxqty">${btc(maxQty())} BTC</b></div>
+      <div class="k-line"><span class="dot-u">${x.margin}</span><b data-bind="margin">${num(p*Number(S.qty)/3,2)} USDT</b></div>
+      <div class="k-line"><span class="dot-u">${x.liq}</span><b data-bind="liq">${num(buy?p*0.68:p*1.32,1)} USDT</b></div>
+    </div>
+    <button type="button" class="cta ${buy?'buy':'sell'}" data-act="submit">${buy?x.submitBuy:x.submitSell}</button>
+  </div>`;
+}
+function posTabs(counts){
+  const x = A();
+  const tabs = [['orders',`${x.openOrders} (${counts.o})`],['positions',`${x.positions} (${counts.p})`],['history',`${x.history} (${counts.h})`]];
+  return `<div class="pos-tabs">${tabs.map(([k,l])=>
+    `<button type="button" class="${S.tab===k?'on':''}" data-act="tab" data-v="${k}">${l}</button>`).join('')}
+    <span class="sp">${ico('clock',18)}</span></div>`;
+}
+function ordersSection(){
+  const x = A(), o = S.order, done = !!(o && o.reason);
+  const counts = { o: o && !done ? 1 : 0, p: o && o.filled > 0 ? 1 : 0, h: done ? 1 : 0 };
+  let body;
+  if(S.tab === 'history') body = done ? orderCard() : `<div class="empty">${x.noHistory}</div>`;
+  else if(S.tab === 'positions') body = o && o.filled > 0 ? positionCard() : `<div class="empty">${x.noPosition}</div>`;
+  else body = o && !done ? orderCard() : `<div class="empty">${x.noOrders}</div>`;
+  return posTabs(counts) + body + '<div style="height:18px"></div>';
+}
+function positionCard(){
+  const x = A(), o = S.order;
+  const entry = o.avg || o.initPrice;
+  const mark = o.side === 'buy' ? S.bid : S.ask;
+  const pnl = (mark - entry) * o.filled * (o.side === 'buy' ? 1 : -1);
+  const pnlPct = entry ? pnl / (entry * o.filled / 3) * 100 : 0;
+  const good = pnl >= 0;
+  const marginUsed = entry * o.filled / 3;
+  const liq = o.side === 'buy' ? entry * 0.68 : entry * 1.32;
+  const stat = (label, value, cls='') =>
+    `<div class="ps-stat"><small>${label}</small><b class="${cls}">${value}</b></div>`;
+  return `<div class="pos">
+    <div class="pos-bar"><label class="k-check" style="min-height:0"><span class="box sq"></span><span>${x.onlyPair}</span></label>
+      <button type="button" class="pos-close-all">${x.closeAll}</button></div>
+    <div class="pos-card">
+      <div class="pos-head">
+        <span class="nm"><b>BTCUSDT</b><span class="perp">${x.perp}</span>${ico('caret',12,2.2)}</span>
+        <span class="pl"><small class="dot-u">${x.pnl} (USDT)</small>
+          <b class="${good?'g':'r'}" data-bind="pospnl">${good?'+':''}${num(pnl,2)} <i>(${good?'+':''}${pnlPct.toFixed(2)}%)</i></b></span>
+      </div>
+      <div class="pos-tags"><em class="${o.side==='buy'?'long':'short'}">${o.side==='buy'?x.buy:x.sell}</em><span>${x.cross}</span><span>${x.lev}</span></div>
+      <div class="pos-grid">
+        ${stat(`${x.posSize} (BTC)`, btc(o.filled))}
+        ${stat(`${x.margin} (USDT)`, num(marginUsed,2))}
+        ${stat(x.mmr, '0.65%')}
+        ${stat(x.entryPrice, num(entry))}
+        ${stat(x.markPrice, `<span data-bind="posmark">${num(mark)}</span>`)}
+        ${stat(x.liq, num(liq))}
+      </div>
+      <div class="pos-acts"><button type="button">${x.tpsl}</button><button type="button">${x.closePos}</button><button type="button">${x.closeMarket}</button></div>
+    </div>
+  </div>`;
+}
+function tradeScreen(){
+  return `${iosBar()}<div class="app">
+    ${appNav()}${pairBar()}
+    <div class="k-grid">${book()}${S.type==='chase' ? chaseForm() : limitForm()}</div>
+    ${ordersSection()}
+  </div>${tabBar('futures')}`;
+}
+const T0='21:58:22', T1='21:58:41', T2='21:59:06';
+function makeOrder(){
+  const p = orderPrice();
+  S.order = { side:S.side, mode:S.mode, offset:Number(S.offset)||0, qty:Number(S.qty)||0.25,
+    initPrice:p, price:p, ref:ref(), stop:S.maxOn?stopFrom(p):null,
+    filled:0, avg:null, reason:null, trigger:null };
+}
+function order(){ if(!S.order) makeOrder(); return S.order; }
+function syncPrice(){
+  const o = S.order; if(!o || o.reason) return;
+  const base = o.side==='buy' ? S.bid : S.ask;
+  o.ref = base;
+  o.price = base + (o.mode==='offset' ? (o.side==='buy' ? -o.offset : o.offset) : 0);
+}
+function partFill(){
+  const o = order();
+  const slice = Math.round(o.qty * 0.32 * 100) / 100;
+  o.filled = Math.min(Math.max(0.01, slice), Math.round((o.qty - 0.01) * 100) / 100);
+  if(o.filled <= 0) o.filled = 0;
+  o.avg = o.filled > 0 ? o.initPrice : null;
+  syncPrice();
+}
+function endOrder(reason){
+  const o = order();
+  o.reason = reason;
+  const x = A();
+  if(reason==='full'){ o.avg = o.avg ? (o.avg+o.price)/2 : o.price; o.filled = o.qty;
+    setToast(fill(x.toastFull,{q:btc(o.qty)})); }
+  S.tab = reason==='full' ? 'positions' : 'history';
+  if(reason==='manual'){ setToast(fill(x.toastCancel,{f:btc(o.filled)})); }
+  if(reason==='stop'){
+    if(o.stop!=null){ o.trigger = o.stop;
+      if(o.side==='buy'){ S.bid = o.stop; S.ask = o.stop+11.2; } else { S.ask = o.stop; S.bid = o.stop-11.2; } }
+    setToast(fill(x.toastStop,{r:btc(o.qty-o.filled), f:btc(o.filled)}));
+  }
+  S.outcome = reason; S.sheet = null;
+}
+function applyOutcome(kind){
+  makeOrder();
+  if(kind!=='full') partFill();
+  endOrder(kind);
+  S.toast = '';
+}
+const SIM = { timer:0, t0:0 };
+const hhmmss = n => [Math.floor(n/3600), Math.floor(n/60)%60, n%60].map(v=>String(v).padStart(2,'0')).join(':');
+S.clock = '21:58';
+S.countdown = hhmmss(1074);
+
+function moveMarket(d){
+  const prev = S.bid;
+  S.bid = Math.round((S.bid + d)*10)/10;
+  S.ask = Math.round((S.bid + 8 + Math.random()*6)*10)/10;
+  S.dir = S.bid === prev ? S.dir : (S.bid > prev ? 1 : -1);
+}
+function stepOrder(){
+  const o = S.order;
+  if(!o || o.reason) return null;
+  syncPrice();
+  const last = o.side === 'buy' ? S.bid : S.ask;
+  if(o.stop != null && ((o.side==='buy' && last >= o.stop) || (o.side==='sell' && last <= o.stop))){
+    endOrder('stop'); S.stage = ST.BOUNDARY; return 'stop';
+  }
+  /* a resting post-only order fills when the book trades back through it */
+  const favourable = o.side === 'buy' ? S.dir < 0 : S.dir > 0;
+  if(favourable && Math.random() < 0.3){
+    const rest = Math.round((o.qty - o.filled)*100)/100;
+    const slice = Math.min(rest, Math.round((0.01 + Math.random()*0.05)*100)/100);
+    if(slice > 0){
+      o.avg = o.filled > 0 ? (o.avg*o.filled + o.price*slice)/(o.filled + slice) : o.price;
+      o.filled = Math.round((o.filled + slice)*100)/100;
+      if(o.filled >= o.qty - 0.0001){ endOrder('full'); S.stage = ST.PARTIAL; S.view = 'trade'; return 'full'; }
+      if(S.stage === ST.CHASING){ S.stage = ST.PARTIAL; return 'partial'; }
+      return 'fill';
+    }
+  }
+  return null;
+}
+function tick(){
+  if(!S.live) return;
+  S.countdown = hhmmss(Math.max(0, 1074 - Math.floor((Date.now() - SIM.t0)/1000)));
+  moveMarket((Math.random() - 0.5) * 9);
+  rollDepth();
+  const event = stepOrder();
+  /* structural changes need a full render; everything else is patched in place */
+  if(event === 'stop' || event === 'full' || event === 'partial') render();
+  else patch();
+}
+function setLive(on){
+  S.live = on;
+  clearInterval(SIM.timer);
+  if(on){ if(!SIM.t0) SIM.t0 = Date.now(); SIM.timer = setInterval(tick, 700); }
+}
+/* in-place refresh of every number the market moves */
+function patch(){
+  const root = $('#screen');
+  if(!root) return;
+  paintBook(root);
+  const o = S.order, live = o && !o.reason;
+  const p = live ? o.price : orderPrice();
+  const set = (name, val) => {
+    const el = root.querySelector(`[data-bind="${name}"]`);
+    if(!el || el.textContent === val) return;
+    el.textContent = val;
+    el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  };
+  set('limitprice', num(ref()));
+  set('bid1', num(S.bid));
+  set('ask1', num(S.ask));
+  set('now', num(orderPrice()));
+  if(S.maxOn) set('stop', num(stopFrom(orderPrice())));
+  set('maxqty', btc(maxQty()) + ' BTC');
+  set('margin', num(orderPrice()*Number(S.qty)/3, 2) + ' USDT');
+  set('liq', num(S.side==='buy' ? orderPrice()*0.68 : orderPrice()*1.32, 1) + ' USDT');
+  set('cfnow', num(orderPrice()) + ' USDT');
+  set('cfref', `${S.side==='buy' ? A().modeBest : A().modeBestSell} · ${num(ref())}`);
+  set('maxbuy', num(stopFrom(orderPrice())));
+  if(o){
+    set('ordprice', live ? num(o.price) : (o.avg ? num(o.avg) : '—'));
+    set('ordref', live ? num(o.ref) : num(o.side==='buy' ? S.bid : S.ask));
+    set('ordfilled', btc(o.filled));
+    const bar = root.querySelector('[data-bind="ordbar"]');
+    if(bar) bar.style.width = Math.min(100, Math.round(o.filled/o.qty*100)) + '%';
+    const strip = root.querySelector('[data-bind="ordstrip"]');
+    if(strip){ const t = stripText(); if(strip.innerHTML !== t) strip.innerHTML = t; }
+    if(root.querySelector('[data-bind="pospnl"]')){
+      const entry = o.avg || o.initPrice, mark = o.side==='buy' ? S.bid : S.ask;
+      const pnl = (mark - entry) * o.filled * (o.side==='buy' ? 1 : -1);
+      const pct = entry ? pnl / (entry * o.filled / 3) * 100 : 0;
+      const el = root.querySelector('[data-bind="pospnl"]');
+      el.className = pnl >= 0 ? 'g' : 'r';
+      el.innerHTML = `${pnl>=0?'+':''}${num(pnl,2)} <i>(${pnl>=0?'+':''}${pct.toFixed(2)}%)</i>`;
+      set('posmark', num(mark));
+    }
+  }
+}
+
+function reasonLabel(r){ const x=A(); return r==='full'?x.outFull : r==='manual'?x.outManual : x.outStop; }
+function stripText(){
+  const x = A(), o = S.order;
+  if(!o) return '';
+  const rest = Math.max(0, Math.round((o.qty - o.filled)*100)/100);
+  if(o.reason === 'stop') return fill(x.stripStop, {stop:num(o.stop)});
+  if(o.reason) return '';
+  if(o.filled > 0) return fill(x.stripPart, {f:btc(o.filled), r:btc(rest)});
+  if(o.stop == null) return fill(x.stripNoStop, {ref: o.side==='buy' ? x.modeBest : x.modeBestSell});
+  return o.side==='buy' ? x.stripRun : x.stripRunSell;
+}
+function stripHtml(){
+  const o = S.order, txt = stripText();
+  if(!txt) return '';
+  return `<div class="chase-strip ${o.reason==='stop'?'amber':''}" data-bind="ordstrip">${txt}</div>`;
+}
+function orderCard(){
+  const x = A(), o = order(), rest = Math.max(0, o.qty-o.filled);
+  const pct = Math.min(100, Math.round(o.filled/o.qty*100));
+  const done = !!o.reason;
+  const pill = done ? `<span class="ord-pill end">${x.endedTag}</span>`
+    : o.filled>0 ? `<span class="ord-pill part">${x.partialTag}</span>`
+    : `<span class="ord-pill run">${x.chasing}</span>`;
+  const stopTxt = o.stop==null ? '—' : num(o.stop);
+  const strip = stripHtml();
+  return `<div class="ord">
+    <div class="ord-top"><b>BTCUSDT</b><span class="perp">${x.perp}</span>${pill}</div>
+    <div class="ord-meta"><em class="${o.side==='buy'?'long':'short'}">${o.side==='buy'?x.long:x.short}</em>
+      <span>·</span><span>${x.chase}</span><span>·</span><span>${done?T2:T0}</span></div>
+    <div class="ord-stats">
+      <div class="ord-stat"><small>${done?x.avgPrice:x.nowPrice} (USDT)</small><b data-bind="ordprice" class="${done?'':(o.side==='buy'?'g':'r')}">${done?(o.avg?num(o.avg):'—'):num(o.price)}</b></div>
+      ${done
+        ? (o.reason==='full' ? '' : `<div class="ord-stat"><small>${x.cancelled}</small><b>${btc(rest)} BTC</b></div>`)
+        : `<div class="ord-stat"><small>${o.side==='buy'?x.stopBuy:x.stopSell}</small><b>${stopTxt}</b></div>`}
+    </div>
+    <div class="prog">
+      <div class="lb"><span>${x.progress}</span><span><b data-bind="ordfilled">${btc(o.filled)}</b> / ${btc(o.qty)} BTC</span></div>
+      <div class="bar"><i data-bind="ordbar" style="width:${pct}%"></i></div>
+    </div>
+    ${strip}
+    <div class="ord-foot">
+      <button type="button" data-act="detail">${x.btnDetail}</button>
+      ${done?'':`<button type="button" class="dark" data-act="ask-cancel">${x.btnCancel}</button>`}
+    </div>
+  </div>`;
+}
+function detailScreen(){
+  const x = A(), o = order(), rest = Math.max(0, o.qty-o.filled);
+  const r = o.reason || 'stop';
+  const iconName = r==='full' ? 'check' : r==='manual' ? 'xcircle' : 'shield';
+  const tone = r==='full' ? '' : r==='manual' ? 'gray' : 'amber';
+  const modeTxt = o.mode==='offset'
+    ? `${o.side==='buy'?x.modeBest:x.modeBestSell} ${o.side==='buy'?'−':'+'} ${o.offset} USDT`
+    : (o.side==='buy'?x.modeBest:x.modeBestSell);
+  const result = [
+    [x.reason, `<b class="${r==='full'?'g':r==='stop'?'a':''}">${reasonLabel(r)}</b>`],
+    [x.filledTotal, `<b>${btc(o.filled)} / ${btc(o.qty)} BTC</b>`],
+    [x.avgPrice, `<b>${o.avg?num(o.avg)+' USDT':'—'}</b>`],
+    ...(r==='full' ? [] : [[x.cancelled, `<b>${btc(rest)} BTC</b>`]]),
+    ...(r==='stop' ? [[x.triggerAt, `<b class="a">${num(o.trigger||o.stop)} USDT</b>`]] : []),
+    [x.endTime, `<b>2026-09-20 ${T2}</b>`]
+  ];
+  const setup = [
+    [x.cfType, `<b>${x.chase}</b>`],
+    [x.cfRef, `<b>${o.side==='buy'?x.modeBest:x.modeBestSell}</b>`],
+    [x.cfChase, `<b>${modeTxt}</b>`],
+    [x.initPrice, `<b>${num(o.initPrice)} USDT</b>`],
+    [o.side==='buy'?x.stopBuy:x.stopSell, `<b>${o.stop==null?'—':num(o.stop)+' USDT'}</b>`],
+    [x.cfExec, `<b>${x.postOnly}</b>`]
+  ];
+  const events = [
+    ['done', x.evSubmit, `${T0} · ${num(o.initPrice)} USDT`],
+    ['done', o.side==='buy'?x.evFollow:x.evFollowSell, `${T0} – ${T2}`],
+    ...(o.filled>0 && r!=='full' ? [['done', fill(x.evPartial,{f:btc(o.filled)}), `${T1} · ${num(o.avg||o.initPrice)} USDT`]] : []),
+    ...(r==='full' ? [['done', x.evFull, `${T2} · ${num(o.avg||o.price)} USDT`]] :
+        r==='manual' ? [['stop', fill(x.evManual,{r:btc(rest)}), T2]] :
+        [['stop', fill(x.evStop,{stop:num(o.trigger||o.stop), r:btc(rest)}), T2]])
+  ];
+  const rows = list => `<div class="d-rows">${list.map(([k,v])=>`<div class="d-row"><span>${k}</span>${v}</div>`).join('')}</div>`;
+  return `${iosBar()}
+  <div class="d-head"><button type="button" data-act="back" aria-label="${x.cfBack}">${ico('back',19,2)}</button><b>${x.detailTitle}</b><button type="button" data-act="noop">${ico('more',18)}</button></div>
+  <div class="app">
+    <div class="out-seg" role="group">
+      ${[['full',x.segFull],['manual',x.segManual],['stop',x.segStop]].map(([k,l])=>
+        `<button type="button" class="${r===k?'on':''}" data-act="outcome" data-v="${k}">${l}</button>`).join('')}
+    </div>
+    <div class="res"><span class="ic ${tone}">${ico(iconName,23,2)}</span>
+      <h3>${reasonLabel(r)}</h3>
+      <p>BTCUSDT ${x.perp} · ${o.side==='buy'?x.submitBuy:x.submitSell} · ${x.chase}</p></div>
+    <div class="d-sec">
+      <div class="d-sec-h">${x.secResult}</div>${rows(result)}
+      <div class="d-sec-h">${x.secSetup}</div>${rows(setup)}
+      <div class="d-sec-h">${x.secEvents}</div>
+      <div class="tl">${events.map(([c,b,s])=>`<div class="tl-item ${c}"><span class="dt"></span><span class="tx"><b>${b}</b><small>${s}</small></span></div>`).join('')}</div>
+    </div>
+    <div style="height:20px"></div>
+  </div>${tabBar('futures')}`;
+}
+
+function typesSheet(){
+  const x = A();
+  const rows = [
+    ['limit', x.limit, x.dLimit, false],
+    ['market', x.market, x.dMarket, false],
+    ['advanced', x.advanced, x.dAdvanced, false],
+    ['chase', x.chase, x.dChase, true],
+    ['condition', x.condition, x.dCondition, false],
+    ['trailing', x.trailing, x.dTrailing, false]
+  ];
+  const sel = S.type;
+  const row = ([id,name,desc,isNew]) => `<button type="button" class="topt ${sel===id?'on':''}" data-act="pick" data-v="${id}">
+      ${glyph(id)}
+      <span class="tx"><b>${name}${isNew?`<span class="new">${x.isNew}</span>`:''}</b><p>${desc}</p></span>
+      ${sel===id ? `<span class="ck">${ico('check',11,2.8)}</span>` : (id==='chase'?`<span class="lk" data-act="explain">${ico('info',17,1.8)}</span>`:'')}
+    </button>`;
+  return `<div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${x.typeTitle}">
+    <div class="sheet-h"><b>${x.typeTitle}</b><span class="ib" data-act="explain">${infoDot(17)}</span>
+      <button type="button" class="x" data-act="close" aria-label="${x.cfBack}">${ico('close',19,2)}</button></div>
+    <div class="sheet-b">
+      ${rows.map(row).join('')}
+      <div class="sheet-sec">${x.large}</div>
+      ${row(['twap',x.twap,x.dTwap,false])}
+    </div>
+  </div>`;
+}
+function explainSheet(){
+  const x = A();
+  return `<div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${x.exTitle}">
+    <div class="sheet-h"><b>${x.exTitle}</b>
+      <button type="button" class="x" data-act="close" aria-label="${x.cfBack}">${ico('close',19,2)}</button></div>
+    <div class="sheet-b">
+      <div class="ex-diagram">
+        <svg viewBox="0 0 330 124" width="100%" height="124" fill="none" aria-hidden="true">
+          <line x1="8" y1="112" x2="322" y2="112" stroke="#e6e6e6" stroke-width="1"/>
+          <path d="M8 96h48v-14h48V68h48V52h48V36h48V24h48" stroke="#00b47d" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M8 104h48V90h48V76h48V60h48V44h48V32h48" stroke="#1d1d1d" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="0"/>
+          <line x1="8" y1="24" x2="322" y2="24" stroke="#e96900" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <circle cx="296" cy="24" r="4.5" fill="#e96900"/>
+          <circle cx="296" cy="32" r="4" fill="#1d1d1d"/>
+          <text x="10" y="18" font-size="9" fill="#a54c00" font-family="inherit">${x.exLegend[2]}</text>
+        </svg>
+        <div class="ex-legend">
+          <span><i style="border-color:#00b47d"></i>${x.exLegend[0]}</span>
+          <span><i style="border-color:#1d1d1d"></i>${x.exLegend[1]}</span>
+          <span><i style="border-color:#e96900;border-top-style:dashed"></i>${x.exLegend[2]}</span>
+        </div>
+      </div>
+      <div class="ex-list">${x.exSteps.map(([t,d],i)=>
+        `<div class="ex-item"><span class="n">${i+1}</span><span class="tx"><b>${t}</b><p>${d}</p></span></div>`).join('')}</div>
+      <div class="warn">${ico('info',19,1.8)}<span>${x.exWarn}</span></div>
+    </div>
+    <div class="sheet-foot"><button type="button" class="cta" data-act="pick" data-v="chase">${x.exCta}</button></div>
+  </div>`;
+}
+function modeSheet(){
+  const x = A();
+  const rows = [
+    ['best', x.modeBestName, x.modeBestDesc],
+    ['offset', x.modeOffsetName, x.modeOffsetDesc]
+  ];
+  return `<div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${x.modeTitle}">
+    <div class="sheet-h"><b>${x.modeTitle}</b>
+      <button type="button" class="x" data-act="close" aria-label="${x.cfBack}">${ico('close',19,2)}</button></div>
+    <div class="sheet-b">
+      ${rows.map(([id,name,desc])=>`<button type="button" class="topt slim ${S.mode===id?'on':''}" data-act="mode" data-v="${id}">
+        <span class="tx"><b>${name}</b><p>${desc}</p></span>
+        ${S.mode===id ? `<span class="ck">${ico('check',11,2.8)}</span>` : ''}</button>`).join('')}
+    </div>
+  </div>`;
+}
+function maxSheet(){
+  const x = A(), buy = S.side==='buy';
+  const base = orderPrice();
+  const d = Number(S.maxDraft);
+  const ok = Number.isFinite(d) && d >= 10 && d <= 500;
+  const hi = buy ? base + (d||0) : base - (d||0);
+  return `<div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${x.maxTitle}">
+    <div class="sheet-h"><b>${x.maxTitle}</b>
+      <button type="button" class="x" data-act="close" aria-label="${x.cfBack}">${ico('close',19,2)}</button></div>
+    <div class="sheet-b">
+      <div style="padding:0 16px">
+        <div class="field" style="min-height:46px">
+          <div class="col"><input inputmode="decimal" value="${S.maxDraft}" data-field="maxDraft" placeholder="${x.maxField}" aria-label="${x.maxTitle}"></div>
+          <span class="unit">USDT${ico('caret',12,2.2)}</span>
+        </div>
+        <div class="hint-row" style="padding-top:10px">
+          <span><span class="dot-u">${x.stopBuy}</span> <b class="g">${buy ? num(hi) : num(base)}</b></span>
+          <span><span class="dot-u">${x.stopSell}</span> <b class="r">${buy ? num(base) : num(hi)}</b></span>
+        </div>
+        <p class="cf-cap" style="margin:12px 0 0">${x.maxHint}</p>
+        ${ok ? '' : `<p class="err" style="margin-top:8px">${x.errMax}</p>`}
+      </div>
+    </div>
+    <div class="sheet-foot"><button type="button" class="cta buy" data-act="max-apply" ${ok?'':'disabled'}>${x.maxConfirm}</button></div>
+  </div>`;
+}
+function confirmSheet(){
+  const x = A(), buy = S.side==='buy';
+  const p = orderPrice(), stop = stopFrom(p);
+  const modeTxt = S.mode==='offset'
+    ? `${buy?x.modeBest:x.modeBestSell} ${buy?'−':'+'} ${S.offset} USDT`
+    : (buy?x.modeBest:x.modeBestSell);
+  const rows = [
+    [x.cfChase, `<b>${modeTxt}</b>`],
+    [x.cfNow, `<b class="${buy?'g':'r'}"><span data-bind="cfnow">${num(p)} USDT</span> <span class="tag n" style="font-size:10px">${x.preview}</span></b>`],
+    [x.cfQty, `<b>${btc(S.qty)} BTC</b>`],
+    [buy?x.stopBuy:x.stopSell, `<b class="a">${S.maxOn ? `<span data-bind="maxbuy">${num(stop)}</span> USDT` : '—'}</b>`]
+  ];
+  return `<div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${x.cfTitle}">
+    <div class="sheet-h"><b>${x.cfTitle}</b>
+      <button type="button" class="x" data-act="close" aria-label="${x.cfBack}">${ico('close',19,2)}</button></div>
+    <div class="sheet-b">
+      <div class="cf-head"><b>BTCUSDT</b><span class="perp">${x.perp}</span>
+        <span class="sd ${buy?'buy':'sell'}" style="margin-left:auto">${buy?x.submitBuy:x.submitSell}</span></div>
+      <div class="cf-list flat">${rows.map(([k,v])=>`<div class="d-row"><span>${k}</span>${v}</div>`).join('')}</div>
+      <p class="cf-cap">${x.cfCap}</p>
+    </div>
+    <div class="sheet-foot"><button type="button" class="cta ${buy?'buy':'sell'}" data-act="place">${x.cfSubmit}</button></div>
+  </div>`;
+}
+function cancelSheet(){
+  const x = A(), o = order(), rest = Math.max(0, o.qty-o.filled);
+  return `<div class="scrim" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${x.cxTitle}">
+    <div class="sheet-h"><b>${x.cxTitle}</b>
+      <button type="button" class="x" data-act="close" aria-label="${x.cxBack}">${ico('close',19,2)}</button></div>
+    <div class="sheet-b">
+      <div class="cf-head"><b>BTCUSDT</b><span class="perp">${x.perp}</span>
+        <span class="ord-pill part" style="margin-left:auto">${o.filled>0?x.partialTag:x.chasing}</span></div>
+      <div class="cf-list flat">
+        <div class="d-row"><span>${x.filled} · ${x.cxKeep}</span><b class="g">${btc(o.filled)} BTC</b></div>
+        <div class="d-row"><span>${x.cxDrop}</span><b class="r">${btc(rest)} BTC</b></div>
+        <div class="d-row"><span>${x.avgPrice}</span><b>${o.avg?num(o.avg)+' USDT':'—'}</b></div>
+      </div>
+      <p class="cf-cap">${fill(x.cxCap,{f:btc(o.filled)})}</p>
+    </div>
+    <div class="sheet-foot" style="display:flex;gap:9px">
+      <button type="button" class="cta ghost" style="flex:1 1 0" data-act="close">${x.cxBack}</button>
+      <button type="button" class="cta" style="flex:1 1 0;background:var(--red)" data-act="do-cancel">${x.cxSubmit}</button>
+    </div>
+  </div>`;
+}
+function toastEl(){
+  if(!S.toast) return '';
+  return `<div class="toast"><span class="ic">${ico('info',18,1.8)}</span><span>${S.toast}</span></div>`;
+}
+
+const DEMOS = [
+  () => [['mode-sheet','dOpenMode'],['flip-side','dFlipSide'],['max-sheet','maxOn'],['submit','dSubmit']],
+  () => [['types','dOpenTypes'],['explain','dOpenExplain'],['pick-chase','dPickChase']],
+  () => [['close','dCloseSheet'],['pick-chase','dGoConfig']],
+  () => [['flip-side','dFlipSide'],['mode-sheet','dOpenMode'],['max-sheet','maxOn'],['submit','dSubmit']],
+  () => [['close','dBack'],['place','dConfirm']],
+  () => [['do-partial','dPartial'],['do-full','dFull'],['do-stop','dStop'],['ask-cancel','dCancel']],
+  () => [['do-full','dFull'],['do-stop','dStop'],['ask-cancel','dCancel'],['restart','dRestart']],
+  () => [['close','dBack'],['do-cancel','dDoCancel']],
+  () => [['detail','dDetail'],['restart','dRestart']],
+  () => [['outcome-full','segFull'],['outcome-manual','segManual'],['outcome-stop','segStop'],['restart','dRestart']]
+];
+function resetMarket(){ S.bid = 80808.3; S.ask = 80819.5; S.dir = -1; SIM.t0 = Date.now(); seedDepth(); }
+function goto(n){
+  S.stage = Math.max(0, Math.min(STAGES-1, n));
+  S.err = ''; S.toast = '';
+  const st = S.stage;
+  S.type = (st===ST.DISCOVER || st===ST.EXPLAIN) ? 'limit' : 'chase';
+  S.prevSheet = st===ST.EXPLAIN ? 'types' : null;
+  S.view = st===ST.HISTORY ? 'detail' : 'trade';
+  S.sheet = st===ST.DISCOVER ? 'types' : st===ST.EXPLAIN ? 'explain'
+    : st===ST.CONFIRM ? 'confirm' : st===ST.CANCEL ? 'cancel' : null;
+  S.tab = (st===ST.BOUNDARY || st===ST.HISTORY) ? 'history' : 'orders';
+  if(st===ST.DEFAULT) S.mode = 'best';
+  if(st===ST.CONFIG || st===ST.CONFIRM) S.mode = 'offset';
+  S.maxOn = st !== ST.DEFAULT;
+  if(st <= ST.CONFIRM){ S.order = null; resetMarket(); }
+  else if(st===ST.CHASING){ resetMarket(); makeOrder(); }
+  else if(st===ST.PARTIAL || st===ST.CANCEL){ resetMarket(); makeOrder(); partFill(); }
+  else if(st===ST.BOUNDARY){ resetMarket(); makeOrder(); partFill(); endOrder('stop'); S.toast = ''; }
+  else if(st===ST.HISTORY){ resetMarket(); applyOutcome(S.outcome); }
+  setLive(st <= ST.PARTIAL);
+  render();
+}
+
+let toastTimer = 0;
+const TOAST_MS = 4200;
+function setToast(msg){ S.toast = msg; S.toastAt = Date.now(); }
+function renderScreen(){
+  const body = S.view==='detail' ? detailScreen() : tradeScreen();
+  const sheet = S.sheet==='types' ? typesSheet()
+    : S.sheet==='explain' ? explainSheet()
+    : S.sheet==='mode' ? modeSheet()
+    : S.sheet==='max' ? maxSheet()
+    : S.sheet==='confirm' ? confirmSheet()
+    : S.sheet==='cancel' ? cancelSheet() : '';
+  const el = $('#screen');
+  el.innerHTML = `<div class="island"></div>${body}${sheet}${toastEl()}<div class="home-ind"></div>`;
+  if(S.view==='trade' && S.stage>=ST.CHASING){
+    const app = el.querySelector('.app'), anchor = el.querySelector('.pos-tabs');
+    if(app && anchor) app.scrollTop = anchor.offsetTop - 4;
+  }
+  clearTimeout(toastTimer);
+  if(S.toast){
+    const left = TOAST_MS - (Date.now() - (S.toastAt || 0));
+    if(left <= 0){ S.toast = ''; el.querySelector('.toast')?.remove(); }
+    else toastTimer = setTimeout(() => { S.toast = ''; renderScreen(); }, left);
+  }
+}
+function renderStory(){
+  const c = T(), x = A(), st = c.stages[S.stage];
+  document.documentElement.lang = S.lang==='zh' ? 'zh-Hant' : 'en';
+  applyPageCopy();
+  $('#sim-title').textContent = c.simTitle;
+  $('#sim-sub').textContent = c.simSub;
+  $('#demo-title').textContent = c.demoTitle;
+  $('#demo-step').textContent = `${S.stage+1} / ${STAGES}`;
+  $('#demo-note').textContent = c.demoNote;
+  for(const b of document.querySelectorAll('.langs button'))
+    b.setAttribute('aria-pressed', String(b.dataset.lang===S.lang));
+
+  $('#flow-nav').innerHTML = c.stages.map((s,i)=>
+    `<button type="button" role="tab" data-act="stage" data-v="${i}" aria-selected="${i===S.stage}" aria-current="${i===S.stage}">
+      <span class="n">${String(i+1).padStart(2,'0')}</span><span class="nm">${s.name}</span></button>`).join('');
+
+  $('#step').innerHTML = `
+    <div class="step-no">${String(S.stage+1).padStart(2,'0')} / ${STAGES} · ${st.name}</div>
+    <h2>${st.title}</h2>
+    <p class="lead">${st.lead}</p>
+    <ul class="plist">${st.points.map(p=>`<li><span>${p}</span></li>`).join('')}</ul>
+    <div class="step-foot">
+      ${S.stage<STAGES-1 ? `<button type="button" class="btn-next" data-act="stage" data-v="${S.stage+1}">${c.next} →</button>` : `<button type="button" class="btn-next" data-act="stage" data-v="0">${x.dRestart} ↺</button>`}
+    </div>`;
+
+  $('#demo-grid').innerHTML = DEMOS[S.stage]().map(([act,key])=>
+    `<button type="button" data-act="${act}">${x[key]}</button>`).join('')
+    + `<button type="button" class="wide ${S.live?'on':''}" data-act="live">${ico(S.live?'pause':'play',13,2)}<span>${S.live?x.dPause:x.dPlay}</span></button>`;
+
+  const cp = c.compare;
+  $('#compare').innerHTML = `
+    <div class="sec-head"><h2>${cp.title}</h2><p>${cp.sub}</p></div>
+    <div class="tbl-wrap"><table class="cmp"><thead><tr>${cp.cols.map((h,i)=>`<th${i===3?' class="mine"':''}>${h}</th>`).join('')}</tr></thead>
+      <tbody>${cp.rows.map(r=>`<tr>${r.map((cell,i)=>
+        i===0 ? `<td class="stepname"><b>${cell}</b></td>` : `<td${i===3?' class="mine"':''}>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+
+  $('#page-foot').textContent = c.foot[0];
+  wrapCjkPunct($('#view-design'));
+  wrapCjkPunct($('#view-compete'));
+}
+function render(){
+  const a = document.activeElement;
+  const field = a && a.dataset ? a.dataset.field : null;
+  const caret = field && a.selectionStart != null ? a.selectionStart : null;
+  renderStory(); renderScreen();
+  if(field){
+    const el = document.querySelector(`input[data-field="${field}"]:not([type=range])`);
+    if(el){ el.focus(); if(caret != null){ try{ el.setSelectionRange(caret, caret); }catch{} } }
+  }
+}
+
+function validate(){
+  const q = Number(S.qty), o = Number(S.offset), m = Number(S.maxDist);
+  S.err = '';
+  if(!Number.isFinite(q) || q < 0.01 || q > 1) S.err = 'errQty';
+  else if(S.mode==='offset' && (!Number.isFinite(o) || o < 0 || o > 50)) S.err = 'errOffset';
+  else if(S.maxOn && (!Number.isFinite(m) || m < 10 || m > 500)) S.err = 'errMax';
+  return !S.err;
+}
+function setLang(l){
+  if(l!=='zh' && l!=='en') return;
+  S.lang = l;
+  try{ localStorage.setItem('kucoin-chase-lang', l); }catch{}
+  render();
+}
+document.addEventListener('input', e => {
+  const f = e.target.closest('[data-field]');
+  if(!f) return;
+  S[f.dataset.field] = f.value === '' ? '' : Number(f.value);
+  const p = orderPrice();
+  const now = $('.js-now'), stopEl = $('.js-stop');
+  if(now) now.textContent = num(p)+' USDT';
+  if(stopEl && S.maxOn) stopEl.textContent = num(stopFrom(p))+' USDT';
+  if(f.type === 'range'){
+    const pct = qtyPct();
+    const box = f.closest('.slider');
+    box.querySelector('.fill').style.width = pct+'%';
+    box.querySelector('.knob').style.left = pct+'%';
+    box.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('on', i*25 <= pct));
+    const txt = document.querySelector('input[data-field="qty"][inputmode]');
+    if(txt) txt.value = S.qty;
+  }
+});
+/* drive the slider from pointer events: the native range thumb is invisible,
+   so grabbing anywhere on the track has to work */
+const POINTER = 'onpointerdown' in window;
+const EV = POINTER ? ['pointerdown','pointermove','pointerup'] : ['mousedown','mousemove','mouseup'];
+document.addEventListener(EV[0], e => {
+  const box = e.target.closest('.slider');
+  if(!box) return;
+  const input = box.querySelector('input[type=range]');
+  const track = box.querySelector('.track');
+  if(!input || !track) return;
+  const min = Number(input.min) || 0, max = Number(input.max) || 1, step = Number(input.step) || 0.01;
+  const apply = ev => {
+    const r = track.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+    const raw = min + ratio * (max - min);
+    input.value = (Math.round(raw / step) * step).toFixed(2);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+  const up = () => {
+    document.removeEventListener(EV[1], apply);
+    document.removeEventListener(EV[2], up);
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  document.addEventListener(EV[1], apply);
+  document.addEventListener(EV[2], up);
+  apply(e);
+  e.preventDefault();
+});
+document.addEventListener('change', e => {
+  const f = e.target.closest('input[type=range][data-field]');
+  if(f) render();
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if(!b) return;
+  const act = b.dataset.act, v = b.dataset.v;
+  switch(act){
+    case 'page': e.preventDefault(); setPage(b.dataset.page); return;
+    case 'lang': setLang(b.dataset.lang); return;
+    case 'stage': goto(Number(v)); $('.sim').scrollIntoView({block:'start',behavior:'smooth'}); return;
+    case 'types': S.sheet = 'types'; S.prevSheet = null; break;
+    case 'explain': S.prevSheet = S.sheet; S.sheet = 'explain'; S.stage = ST.EXPLAIN; break;
+    case 'close':
+      if(S.sheet==='explain' && S.prevSheet==='types'){ S.sheet = 'types'; S.stage = ST.DISCOVER; }
+      else if(S.sheet==='explain'){ S.stage = S.type==='chase' ? ST.CONFIG : ST.DISCOVER; S.sheet = S.type==='chase' ? null : 'types'; }
+      else { S.sheet = null; if(S.stage===ST.CONFIRM) S.stage = ST.CONFIG; else if(S.stage===ST.CANCEL) S.stage = ST.PARTIAL; }
+      S.prevSheet = null;
+      break;
+    case 'pick':
+      S.type = v==='chase' ? 'chase' : 'limit';
+      S.sheet = null; S.prevSheet = null; S.view = 'trade'; S.order = null;
+      S.stage = v==='chase' ? ST.CONFIG : ST.DISCOVER;
+      if(v!=='chase') S.sheet = 'types';
+      break;
+    case 'side': S.side = v; S.order = null; break;
+    case 'mode': S.mode = v; S.sheet = null; break;
+    case 'flip-side': S.side = S.side==='buy' ? 'sell' : 'buy'; S.order = null; break;
+    case 'mode-sheet': S.sheet = 'mode'; break;
+    case 'max-sheet': S.maxDraft = S.maxDist; S.sheet = 'max'; break;
+    case 'max-apply': {
+      const d = Number(S.maxDraft);
+      if(!Number.isFinite(d) || d < 10 || d > 500) break;
+      S.maxDist = d; S.maxOn = true; S.sheet = null; S.err = '';
+      break;
+    }
+    case 'max-toggle':
+      if(S.maxOn){ S.maxOn = false; }
+      else { S.maxDraft = S.maxDist; S.sheet = 'max'; }
+      break;
+    case 'toggle': S[v] = !S[v]; break;
+    case 'live': setLive(!S.live); break;
+    case 'bump': {
+      const k = b.dataset.field;
+      const step = Number(v);
+      const next = Math.round((Number(S[k]) + step) * 100) / 100;
+      S[k] = Math.max(0, next);
+      break;
+    }
+    case 'submit': if(!validate()){ break; } S.sheet = 'confirm'; S.stage = ST.CONFIRM; break;
+    case 'place':
+      makeOrder(); S.sheet = null; S.view = 'trade'; S.tab = 'orders'; S.stage = ST.CHASING;
+      setToast(A().toastPlaced); setLive(true);
+      break;
+    case 'do-partial': partFill(); S.stage = ST.PARTIAL; break;
+    case 'do-full': endOrder('full'); S.stage = ST.PARTIAL; S.view = 'trade'; setLive(false); break;
+    case 'do-stop':
+      if(S.order && !S.order.reason && S.order.stop != null){
+        if(S.order.side==='buy'){ S.bid = S.order.stop; S.ask = S.order.stop + 11.2; }
+        else { S.ask = S.order.stop; S.bid = S.order.stop - 11.2; }
+      }
+      endOrder('stop'); S.stage = ST.BOUNDARY; S.view = 'trade'; setLive(false); break;
+    case 'ask-cancel': S.sheet = 'cancel'; S.stage = ST.CANCEL; break;
+    case 'do-cancel': endOrder('manual'); S.sheet = null; S.stage = ST.BOUNDARY; S.view = 'trade'; setLive(false); break;
+    case 'detail': S.view = 'detail'; S.sheet = null; S.stage = ST.HISTORY; setLive(false); break;
+    case 'back': S.view = 'trade'; S.stage = ST.BOUNDARY; break;
+    case 'tab': S.tab = v; break;
+    case 'outcome': S.outcome = v; applyOutcome(v); S.view = 'detail'; S.stage = ST.HISTORY; setLive(false); break;
+    case 'outcome-full': S.outcome='full'; applyOutcome('full'); S.view='detail'; S.stage=ST.HISTORY; setLive(false); break;
+    case 'outcome-manual': S.outcome='manual'; applyOutcome('manual'); S.view='detail'; S.stage=ST.HISTORY; setLive(false); break;
+    case 'outcome-stop': S.outcome='stop'; applyOutcome('stop'); S.view='detail'; S.stage=ST.HISTORY; setLive(false); break;
+    case 'restart': goto(0); return;
+    case 'noop': return;
+    default: return;
+  }
+  render();
+});
+document.addEventListener('keydown', e => {
+  const typing = ['INPUT','TEXTAREA'].includes(document.activeElement?.tagName);
+  if(e.key === 'Escape' && S.sheet){ S.sheet = null; render(); }
+  else if(!typing && S.page==='design' && e.key === 'ArrowRight') goto(S.stage + 1);
+  else if(!typing && S.page==='design' && e.key === 'ArrowLeft') goto(S.stage - 1);
+});
+window.addEventListener('hashchange', () => {
+  const id = location.hash.slice(1);
+  if(COMPETE_IDS.has(id))
+    setPage('compete', {updateHash:false, scroll:id==='compete', target:id==='compete' ? null : id});
+  else
+    setPage('design', {updateHash:false, scroll:true});
+});
+
+S.page = pageFromHash();
+document.body.dataset.page = S.page;
+if(S.page === 'compete') setLive(false);
+else setLive(true);
+render();
+{
+  const id = location.hash.slice(1);
+  if(COMPETE_IDS.has(id) && id !== 'compete'){
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if(!el) return;
+      const y = el.getBoundingClientRect().top + window.pageYOffset - 88;
+      window.scrollTo(0, Math.max(0, y));
+    });
+  }
+}
+})();
+</script>
+<script>
+(() => {
+  const hero = document.querySelector('.hero');
+  const canvas = document.querySelector('.hero-particles');
+  if (!hero || !canvas) return;
+  const context = canvas.getContext('2d');
+  if (!context) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const pointer = { x: -1000, y: -1000, active: false };
+  const hoverColors = Array.from({ length: 11 }, (_, index) => {
+    const t = index / 10;
+    return `rgb(${Math.round(220 - 220 * t)}, ${Math.round(220 - 40 * t)}, ${Math.round(220 - 95 * t)})`;
+  });
+  let dots = [];
+  let width = 0;
+  let height = 0;
+  let frame = 0;
+  let running = false;
+  let visible = true;
+
+  function resize() {
+    const bounds = hero.getBoundingClientRect();
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    width = bounds.width;
+    height = bounds.height;
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    const gap = width < 640 ? 24 : 27;
+    dots = [];
+    for (let y = gap / 2; y < height; y += gap) {
+      for (let x = gap / 2; x < width; x += gap) {
+        dots.push({
+          x: x + (Math.random() - .5) * 16,
+          y: y + (Math.random() - .5) * 16,
+          size: .64 + Math.random() * .68,
+          alpha: .17 + Math.random() * .21,
+          phase: Math.random() * Math.PI * 2,
+          shiftX: 0,
+          shiftY: 0
+        });
+      }
+    }
+    if (reducedMotion.matches) draw(0);
+  }
+
+  function draw(time) {
+    context.clearRect(0, 0, width, height);
+    const tick = time * .001;
+
+    for (const dot of dots) {
+      const driftX = reducedMotion.matches ? 0 : Math.sin(tick * .32 + dot.phase) * 3.5;
+      const driftY = reducedMotion.matches ? 0 : Math.cos(tick * .27 + dot.phase * 1.4) * 3.5;
+      const x = dot.x + driftX;
+      const y = dot.y + driftY;
+      let targetX = 0;
+      let targetY = 0;
+      let influence = 0;
+
+      if (pointer.active && !reducedMotion.matches) {
+        const deltaX = x - pointer.x;
+        const deltaY = y - pointer.y;
+        const distance = Math.hypot(deltaX, deltaY);
+        if (distance < 170) {
+          influence = (1 - distance / 170) ** 2;
+          const direction = Math.max(distance, 1);
+          targetX = deltaX / direction * influence * 28;
+          targetY = deltaY / direction * influence * 28;
+        }
+      }
+
+      dot.shiftX += (targetX - dot.shiftX) * .09;
+      dot.shiftY += (targetY - dot.shiftY) * .09;
+      context.fillStyle = hoverColors[Math.round(Math.min(1, influence * 3.6) * 10)];
+      context.globalAlpha = Math.min(dot.alpha + influence * .62, .92);
+      context.beginPath();
+      context.arc(x + dot.shiftX, y + dot.shiftY, dot.size + influence * .55, 0, Math.PI * 2);
+      context.fill();
+    }
+    context.globalAlpha = 1;
+    if (running) frame = requestAnimationFrame(draw);
+  }
+
+  function start() {
+    if (running || reducedMotion.matches || !visible || document.hidden) return;
+    running = true;
+    frame = requestAnimationFrame(draw);
+  }
+
+  function stop() {
+    running = false;
+    cancelAnimationFrame(frame);
+  }
+
+  hero.addEventListener('pointermove', event => {
+    const bounds = hero.getBoundingClientRect();
+    pointer.x = event.clientX - bounds.left;
+    pointer.y = event.clientY - bounds.top;
+    pointer.active = true;
+  });
+  hero.addEventListener('pointerleave', () => { pointer.active = false; });
+  window.addEventListener('resize', resize, { passive: true });
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) { stop(); draw(0); }
+    else start();
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      visible ? start() : stop();
+    }).observe(hero);
+  }
+
+  resize();
+  start();
+})();
+</script>
+<script>
+(() => {
+  const nav = document.getElementById('stage-nav');
+  if(!nav) return;
+  const links = [...nav.querySelectorAll('a[href^="#"]')];
+  const ids = links.map(a => a.getAttribute('href').slice(1));
+  function currentId(){
+    let id = '';
+    for(const next of ids){
+      const el = document.getElementById(next);
+      if(el && el.getBoundingClientRect().top <= 100) id = next;
+    }
+    return id;
+  }
+  function sync(id = currentId()){
+    links.forEach(a => {
+      if(a.hash === '#' + id) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  nav.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const el = document.getElementById(a.hash.slice(1));
+    if(!el) return;
+    e.preventDefault();
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 88;
+    window.scrollTo(0, Math.max(0, y));
+    history.replaceState(null, '', a.hash);
+    sync(a.hash.slice(1));
+  });
+  window.addEventListener('scroll', () => {
+    if(document.body.dataset.page === 'compete') sync();
+  }, {passive:true});
+  sync();
+
+  const box = document.getElementById('lightbox');
+  const img = box.querySelector('img');
+  document.addEventListener('click', e => {
+    const pic = e.target.closest('#view-compete .shot img');
+    if(!pic) return;
+    img.src = pic.src;
+    img.alt = pic.alt;
+    box.classList.add('open');
+  });
+  const close = () => box.classList.remove('open');
+  document.getElementById('lightbox-close').onclick = close;
+  box.addEventListener('click', e => { if(e.target === box) close(); });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && box.classList.contains('open')) close();
+  });
+})();
+</script>
+</body>
+</html>
